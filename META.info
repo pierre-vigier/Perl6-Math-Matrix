@@ -1,0 +1,11 @@
+{
+    "name"          : "Math::Matrix",
+    "version"       : "0.1.0",
+    "author"        : "github:pierre-vigier",
+    "description"   : "Math::Matrix",
+    "depends"       : [ ],
+    "provides" : {
+        "Math::Matrix"    : "lib/Math/Matrix.pm6"
+    },
+    "source-url"    : "git@github.com:pierre-vigier/Perl6-Math-Matrix.git"
+}

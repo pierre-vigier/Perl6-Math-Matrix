@@ -31,7 +31,7 @@ method T(Math::Matrix:D: ) {
     return Math::Matrix.new( @transposed );
 }
 
-method multiply(Math::Matrix:D: Math::Matrix $b ) {
+multi method multiply(Math::Matrix:D: Math::Matrix $b ) {
     my @product;
     die "Number of columns of the second matrix is different from number of rows of the first operand" unless self.column-count == $b.row-count;
     for ^$!row-count X ^$b.column-count -> ($r, $c) {
@@ -40,10 +40,58 @@ method multiply(Math::Matrix:D: Math::Matrix $b ) {
     return Math::Matrix.new( @product );;
 }
 
+multi method multiply(Math::Matrix:D: Real $r ) {
+    self.apply( * * $r );
+}
+
 method apply(Math::Matrix:D: &coderef) {
     return Math::Matrix.new( @.rows.map: {
             [ $_.map( &coderef ) ]
     });
+}
+
+method negative() {
+    self.apply( - * );
+}
+
+method add(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b.row-count and $!column-count == $b.column-count } ) {
+    my @sum;
+    for ^$!row-count X ^$b.column-count -> ($r, $c) {
+        @sum[$r][$c] = @!rows[$r][$c] + $b.rows[$r][$c];
+    }
+    return Math::Matrix.new( @sum );
+}
+
+method substract(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b.row-count and $!column-count == $b.column-count } ) {
+    my @substract;
+    for ^$!row-count X ^$b.column-count -> ($r, $c) {
+        @substract[$r][$c] = @!rows[$r][$c] - $b.rows[$r][$c];
+    }
+    return Math::Matrix.new( @substract );
+}
+
+multi sub infix:<⋅>( Math::Matrix $a, Math::Matrix $b where { $a.row-count == $b.column-count} ) is export {
+    $a.multiply( $b );
+}
+
+multi sub infix:<dot>(Math::Matrix $a, Math::Matrix $b) is export {
+    $a ⋅ $b;
+}
+
+multi sub infix:<*>(Math::Matrix $a, Real $r) is export {
+    $a.multiply( $r );
+}
+
+multi sub infix:<*>(Real $r, Math::Matrix $a) is export {
+    $a.multiply( $r );
+}
+
+multi sub infix:<+>(Math::Matrix $a, Math::Matrix $b) is export {
+    $a.add($b);
+}
+
+multi sub infix:<->(Math::Matrix $a, Math::Matrix $b) is export {
+    $a.substract($b);
 }
 
 =begin pod
@@ -77,10 +125,35 @@ Purpose of that library is to propose some tools for Matrix calculation
 
     my $product = $matrix1.multiply( $matrix2 )
     return a new Matrix, result of the dotProduct of the current matrix with matrix2
+    Call be called throug operator ⋅ or dot , like following:
+    my $c = $a ⋅ $b ;
+    my $c = $a dot $b ;
+
+    Matrix can be multiplied by a Real as well, and with operator *
+    my $c = $a.multiply( 2.5 );
+    my $c = 2.5 * $a;
+    my $c = $a * 2.5;
 
 =head2 method apply
 
     my $new = $matrix.apply( * + 2 );
     return a new matrix which is the current one with the function given in parameter applied to every cells
+
+=head2 method negative
+
+    my $new = $matrix.negative();
+    return the negative of a matrix
+
+=head2 method add
+
+    my $new = $matrix.add( $matrix2 );
+    Return addition of 2 matrices of the same size, can use operator +
+    $new = $matrix + $matrix2;
+
+=head2 method substract
+
+    my $new = $matrix.substract( $matrix2 );
+    Return substraction of 2 matrices of the same size, can use operator -
+    $new = $matrix - $matrix2;
 
 =end pod
