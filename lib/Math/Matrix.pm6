@@ -64,7 +64,7 @@ multi method perl(Math::Matrix:D: )
 }
 
 method equal(Math::Matrix:D: Math::Matrix $b) {
-    self.rows eqv $b.rows;
+    self.rows ~~ $b.rows;
 }
 
 method T(Math::Matrix:D: ) {
@@ -136,22 +136,6 @@ multi method determinant(Math::Matrix:D: ) {
         }
         return $det;
     }
-}
-
-multi sub infix:<==>( Math::Matrix $a, Math::Matrix $b ) is export {
-    $a.equal( $b );
-}
-
-multi sub infix:<eq>( Math::Matrix $a, Math::Matrix $b ) is export {
-    $a == $b;
-}
-
-multi sub infix:<!=>( Math::Matrix $a, Math::Matrix $b ) is export {
-    not $a.equal( $b );
-}
-
-multi sub infix:<ne>( Math::Matrix $a, Math::Matrix $b ) is export {
-    not $a.equal( $b );
 }
 
 multi sub infix:<⋅>( Math::Matrix $a, Math::Matrix $b where { $a.column-count == $b.row-count} ) is export {
