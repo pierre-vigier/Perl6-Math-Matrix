@@ -1,6 +1,6 @@
 unit class Math::Matrix;
 
-has @.rows;
+has @.rows is required;
 has Int $.row-count;
 has Int $.column-count;
 
@@ -14,6 +14,45 @@ multi method new( @r ) {
     self.bless( rows => @r , row-count => @r.elems, column-count => @r[0].elems );
 }
 
+my class Row {
+    has $.cells;
+
+    multi method new( $c is rw ) {
+        self.bless( cells => $c );
+    }
+
+    multi method elems(Row:D:) {
+        $!cells.elems;
+    }
+
+    multi method AT-POS(Row:D: Int $index) {
+        $!cells.elems;
+        fail X::OutOfRange.new(
+            :what<Column index> , :got($index), :range("0..{$!cells.elems - 1}")
+        ) unless 0 <= $index < $!cells.elems;
+        return-rw $!cells[$index];
+    }
+
+    multi method EXISTS-POS( Row:D: $index ) {
+        return 0 <= $index < $!cells.elems;
+    }
+};
+
+multi method elems(Math::Matrix:D: ) {
+    @!rows.elems;
+}
+
+multi method AT-POS( Math::Matrix:D: Int $index ) {
+    fail X::OutOfRange.new(
+        :what<Row index> , :got($index), :range("0..{$.row-count -1 }")
+    ) unless 0 <= $index < $.row-count;
+    return Row.new( @!rows[$index] );
+}
+
+multi method EXISTS-POS( Math::Matrix:D: $index ) {
+    return 0 <= $index < $.row-count;
+}
+
 multi method Str(Math::Matrix:D: )
 {
     @.rows;
@@ -22,7 +61,10 @@ multi method Str(Math::Matrix:D: )
 multi method perl(Math::Matrix:D: )
 {
     self.WHAT.perl ~ ".new(" ~ @!rows.perl ~ ")";
-    #return "Math::Matrix.new(" ~ @!rows ~ ")";
+}
+
+method equal(Math::Matrix:D: Math::Matrix $b) {
+    self.rows eq $b.rows;
 }
 
 method T(Math::Matrix:D: ) {
@@ -31,7 +73,7 @@ method T(Math::Matrix:D: ) {
     return Math::Matrix.new( @transposed );
 }
 
-multi method multiply(Math::Matrix:D: Math::Matrix $b ) {
+multi method dotProduct(Math::Matrix:D: Math::Matrix $b ) {
     my @product;
     die "Number of columns of the second matrix is different from number of rows of the first operand" unless self.column-count == $b.row-count;
     for ^$!row-count X ^$b.column-count -> ($r, $c) {
@@ -70,8 +112,50 @@ method substract(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b.row-c
     return Math::Matrix.new( @substract );
 }
 
-multi sub infix:<⋅>( Math::Matrix $a, Math::Matrix $b where { $a.row-count == $b.column-count} ) is export {
-    $a.multiply( $b );
+multi method determinant(Math::Matrix:D: ) {
+    fail "Not square matrix" unless $!row-count == $!column-count;
+    fail "Matrix has to have at least 2 lines/columns" unless $!row-count >= 2;
+    if $!row-count == 2 {
+        return @!rows[0][0] * @!rows[1][1] - @!rows[0][1] * @!rows[1][0];
+    } else {
+        my $det = 0;
+        for ^$!column-count -> $x {
+            my @intermediate;
+            for 1..^$!row-count -> $r {
+                my @r;
+                for (0..^$x,$x^..^$!column-count).flat -> $c {
+                        @r.push( @!rows[$r][$c] );
+                }
+                @intermediate.push( [@r] );
+            }
+            if $x %% 2 {
+                $det += @!rows[0][$x] * Math::Matrix.new( @intermediate ).determinant();
+            } else {
+                $det -= @!rows[0][$x] * Math::Matrix.new( @intermediate ).determinant();
+            }
+        }
+        return $det;
+    }
+}
+
+multi sub infix:<==>( Math::Matrix $a, Math::Matrix $b ) is export {
+    $a.equal( $b );
+}
+
+multi sub infix:<eq>( Math::Matrix $a, Math::Matrix $b ) is export {
+    $a == $b;
+}
+
+multi sub infix:<!=>( Math::Matrix $a, Math::Matrix $b ) is export {
+    not $a.equal( $b );
+}
+
+multi sub infix:<ne>( Math::Matrix $a, Math::Matrix $b ) is export {
+    not $a.equal( $b );
+}
+
+multi sub infix:<⋅>( Math::Matrix $a, Math::Matrix $b where { $a.column-count == $b.row-count} ) is export {
+    $a.dotProduct( $b );
 }
 
 multi sub infix:<dot>(Math::Matrix $a, Math::Matrix $b) is export {
@@ -121,9 +205,9 @@ Purpose of that library is to propose some tools for Matrix calculation
 
     return a new Matrix, which is the transposition of the current one
 
-=head2 method multiply
+=head2 method dotProduct
 
-    my $product = $matrix1.multiply( $matrix2 )
+    my $product = $matrix1.dotProduct( $matrix2 )
     return a new Matrix, result of the dotProduct of the current matrix with matrix2
     Call be called throug operator ⋅ or dot , like following:
     my $c = $a ⋅ $b ;
@@ -155,5 +239,10 @@ Purpose of that library is to propose some tools for Matrix calculation
     my $new = $matrix.substract( $matrix2 );
     Return substraction of 2 matrices of the same size, can use operator -
     $new = $matrix - $matrix2;
+
+=head2 method determinant
+
+    my $det = $matrix.determinant( );
+    Calculate the determinant of a square matrix
 
 =end pod
