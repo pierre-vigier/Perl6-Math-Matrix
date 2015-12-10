@@ -64,7 +64,7 @@ multi method perl(Math::Matrix:D: )
 }
 
 method equal(Math::Matrix:D: Math::Matrix $b) {
-    self.rows eq $b.rows;
+    self.rows eqv $b.rows;
 }
 
 method T(Math::Matrix:D: ) {
