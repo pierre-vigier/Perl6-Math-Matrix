@@ -15,6 +15,8 @@ DESCRIPTION
 
 Perl6 already provide a lot of tools to work with array, shaped array, and so on, however, even hyper operators does not seem to be enough to do matrix calculation Purpose of that library is to propose some tools for Matrix calculation
 
+I should probably use shaped array for the implementation, but i am encountering some issues for now. Problem being it might break the syntax for creation of a Matrix,  use with consideration...
+
 METHODS
 =======
 
@@ -72,8 +74,16 @@ method substract
     Return substraction of 2 matrices of the same size, can use operator -
     $new = $matrix - $matrix2;
 
+method multiply
+---------------
+
+    my $new = $matrix.multiply( $matrix2 );
+    Return multiply of elements of 2 matrices of the same size, can use operator *
+    $new = $matrix * $matrix2;
+
 method determinant
 ------------------
 
     my $det = $matrix.determinant( );
     Calculate the determinant of a square matrix
+
