@@ -1,6 +1,6 @@
 use Test;
 use Math::Matrix;
-plan 7;
+plan 8;
 
 subtest {
     plan 2;
@@ -49,6 +49,16 @@ subtest {
     ok $matrix.substract( $matrix2 ) eqv $expected, "Substraction of matrices";
     ok $matrix - $matrix2 eqv $expected, "Substraction of matrices using - operator";
 }, "Substraction of matrices";
+
+subtest {
+    plan 2;
+    my $matrix = Math::Matrix.new([[1,2],[3,4]]);
+    my $matrix2 = Math::Matrix.new([[4,3],[2,1]]);
+    my $expected = Math::Matrix.new([[ 4 , 6 ],[ 6 , 4 ]]);
+    say $matrix.multiply( $matrix2 );
+    ok $matrix.multiply( $matrix2 ) eqv $expected, "Multiplication of matrices (element by element)";
+    ok $matrix * $matrix2 eqv $expected, "Multiplication of matrices using * operator";
+}, "Multiplication of matrices";
 
 subtest {
     plan 3;

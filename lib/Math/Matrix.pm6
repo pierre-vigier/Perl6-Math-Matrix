@@ -112,6 +112,14 @@ method substract(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b.row-c
     return Math::Matrix.new( @substract );
 }
 
+multi method multiply(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b.row-count and $!column-count == $b.column-count } ) {
+    my @multiply;
+    for ^$!row-count X ^$b.column-count -> ($r, $c) {
+        @multiply[$r][$c] = @!rows[$r][$c] * $b.rows[$r][$c];
+    }
+    return Math::Matrix.new( @multiply );
+}
+
 multi method determinant(Math::Matrix:D: ) {
     fail "Not square matrix" unless $!row-count == $!column-count;
     fail "Matrix has to have at least 2 lines/columns" unless $!row-count >= 2;
@@ -154,6 +162,10 @@ multi sub infix:<*>(Real $r, Math::Matrix $a) is export {
     $a.multiply( $r );
 }
 
+multi sub infix:<*>(Math::Matrix $a, Math::Matrix $b  where { $a.row-count == $b.row-count and $a.column-count == $b.column-count}) is export {
+    $a.multiply( $b );
+}
+
 multi sub infix:<+>(Math::Matrix $a, Math::Matrix $b) is export {
     $a.add($b);
 }
@@ -174,6 +186,10 @@ Matrix stuff, transposition, dot Product, and so on
 Perl6 already provide a lot of tools to work with array, shaped array, and so on,
 however, even hyper operators does not seem to be enough to do matrix calculation
 Purpose of that library is to propose some tools for Matrix calculation
+
+I should probably use shaped array for the implementation, but i am encountering
+some issues for now. Problem being it might break the syntax for creation of a Matrix, 
+use with consideration...
 
 =head1 METHODS
 
@@ -223,6 +239,12 @@ Purpose of that library is to propose some tools for Matrix calculation
     my $new = $matrix.substract( $matrix2 );
     Return substraction of 2 matrices of the same size, can use operator -
     $new = $matrix - $matrix2;
+
+=head2 method multiply
+
+    my $new = $matrix.multiply( $matrix2 );
+    Return multiply of elements of 2 matrices of the same size, can use operator *
+    $new = $matrix * $matrix2;
 
 =head2 method determinant
 
