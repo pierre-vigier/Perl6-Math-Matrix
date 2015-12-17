@@ -67,10 +67,10 @@ method add
     Return addition of 2 matrices of the same size, can use operator +
     $new = $matrix + $matrix2;
 
-method substract
+method subtract
 ----------------
 
-    my $new = $matrix.substract( $matrix2 );
+    my $new = $matrix.subtract( $matrix2 );
     Return substraction of 2 matrices of the same size, can use operator -
     $new = $matrix - $matrix2;
 

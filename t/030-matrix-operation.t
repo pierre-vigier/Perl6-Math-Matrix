@@ -46,7 +46,7 @@ subtest {
     my $matrix = Math::Matrix.new([[1,2],[3,4]]);
     my $matrix2 = Math::Matrix.new([[4,3],[2,1]]);
     my $expected = Math::Matrix.new([[ -3 , -1 ],[ 1 , 3 ]]);
-    ok $matrix.substract( $matrix2 ) eqv $expected, "Substraction of matrices";
+    ok $matrix.subtract( $matrix2 ) eqv $expected, "Substraction of matrices";
     ok $matrix - $matrix2 eqv $expected, "Substraction of matrices using - operator";
 }, "Substraction of matrices";
 

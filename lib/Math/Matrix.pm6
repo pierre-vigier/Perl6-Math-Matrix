@@ -104,12 +104,12 @@ method add(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b.row-count a
     return Math::Matrix.new( @sum );
 }
 
-method substract(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b.row-count and $!column-count == $b.column-count } ) {
-    my @substract;
+method subtract(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b.row-count and $!column-count == $b.column-count } ) {
+    my @subtract;
     for ^$!row-count X ^$b.column-count -> ($r, $c) {
-        @substract[$r][$c] = @!rows[$r][$c] - $b.rows[$r][$c];
+        @subtract[$r][$c] = @!rows[$r][$c] - $b.rows[$r][$c];
     }
-    return Math::Matrix.new( @substract );
+    return Math::Matrix.new( @subtract );
 }
 
 multi method multiply(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b.row-count and $!column-count == $b.column-count } ) {
@@ -171,7 +171,7 @@ multi sub infix:<+>(Math::Matrix $a, Math::Matrix $b) is export {
 }
 
 multi sub infix:<->(Math::Matrix $a, Math::Matrix $b) is export {
-    $a.substract($b);
+    $a.subtract($b);
 }
 
 =begin pod
@@ -234,9 +234,9 @@ use with consideration...
     Return addition of 2 matrices of the same size, can use operator +
     $new = $matrix + $matrix2;
 
-=head2 method substract
+=head2 method subtract
 
-    my $new = $matrix.substract( $matrix2 );
+    my $new = $matrix.subtract( $matrix2 );
     Return substraction of 2 matrices of the same size, can use operator -
     $new = $matrix - $matrix2;
 
