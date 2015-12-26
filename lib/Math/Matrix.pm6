@@ -1,177 +1,63 @@
 unit class Math::Matrix;
 
-has @.rows is required;
-has Int $.row-count;
-has Int $.column-count;
+has $.cells is readonly;
 
-multi method new( @r ) {
-    my $col-count;
-    for @r -> $row {
-        FIRST { $col-count = $row.elems; }
-        die "Expect an Array of Array" unless $row ~~ Array;
-        die "All Row must contains the same number of elements" unless $row.elems == $col-count;
-    }
-    self.bless( rows => @r , row-count => @r.elems, column-count => @r[0].elems );
-}
-
-my class Row {
-    has $.cells;
-
-    multi method new( $c is rw ) {
-        self.bless( cells => $c );
-    }
-
-    multi method elems(Row:D:) {
-        $!cells.elems;
-    }
-
-    multi method AT-POS(Row:D: Int $index) {
-        $!cells.elems;
-        fail X::OutOfRange.new(
-            :what<Column index> , :got($index), :range("0..{$!cells.elems - 1}")
-        ) unless 0 <= $index < $!cells.elems;
-        return-rw $!cells[$index];
-    }
-
-    multi method EXISTS-POS( Row:D: $index ) {
-        return 0 <= $index < $!cells.elems;
-    }
-};
-
-multi method elems(Math::Matrix:D: ) {
-    @!rows.elems;
-}
-
-multi method AT-POS( Math::Matrix:D: Int $index ) {
-    fail X::OutOfRange.new(
-        :what<Row index> , :got($index), :range("0..{$.row-count -1 }")
-    ) unless 0 <= $index < $.row-count;
-    return Row.new( @!rows[$index] );
-}
-
-multi method EXISTS-POS( Math::Matrix:D: $index ) {
-    return 0 <= $index < $.row-count;
+method new( @c ) {
+    die "Expect an Array of Array" unless all @c ~~ Array;
+    die "All Row must contains the same number of elements" unless @c[0] == all @c[*];
+    my Numeric @array[@c.elems,@c[0].elems] = @c.map( *.flat );
+    self.bless( cells => @array );
 }
 
 multi method Str(Math::Matrix:D: )
 {
-    @.rows;
+    $!cells;
 }
 
 multi method perl(Math::Matrix:D: )
 {
-    self.WHAT.perl ~ ".new(" ~ @!rows.perl ~ ")";
+    self.WHAT.perl ~ ".new(" ~ $!cells.perl ~ ")";
 }
 
 method equal(Math::Matrix:D: Math::Matrix $b) {
-    self.rows ~~ $b.rows;
+    $.cells.shape eqv $b.cells.shape && $.cells.values eqv $b.cells.values;
 }
 
 method T(Math::Matrix:D: ) {
     my @transposed;
-    for ^$!row-count X ^$!column-count -> ($x, $y) { @transposed[$y][$x] = @!rows[$x][$y] }
+    for ^$!cells.shape[0] X ^$!cells.shape[1] -> ($x, $y) { @transposed[$y][$x] = $!cells[$x;$y] }
     return Math::Matrix.new( @transposed );
 }
 
 multi method dotProduct(Math::Matrix:D: Math::Matrix $b ) {
     my @product;
-    die "Number of columns of the second matrix is different from number of rows of the first operand" unless self.column-count == $b.row-count;
-    for ^$!row-count X ^$b.column-count -> ($r, $c) {
-        @product[$r][$c] += @!rows[$r][$_] * $b.rows[$_][$c] for ^$b.row-count;
+    die "Number of columns of the first matrix is different from number of rows of the second operand" unless $!cells.shape[1] == $b.cells.shape[0];
+    for ^$!cells.shape[0] X ^$b.cells.shape[1] -> ($r, $c) {
+        @product[$r][$c] += $!cells[$r;$_] * $b.cells[$_;$c] for ^$b.cells.shape[0];
     }
     return Math::Matrix.new( @product );;
 }
 
-multi method multiply(Math::Matrix:D: Real $r ) {
-    self.apply( * * $r );
-}
-
-method apply(Math::Matrix:D: &coderef) {
-    return Math::Matrix.new( @.rows.map: {
-            [ $_.map( &coderef ) ]
-    });
-}
-
 method negative() {
-    self.apply( - * );
+    my Numeric @neg[$!cells.shape[0],$!cells.shape[1]] = $!cells.map( - * ).rotor($!cells.shape[0]);
+    return self.bless( cells => @neg );
 }
 
-method add(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b.row-count and $!column-count == $b.column-count } ) {
-    my @sum;
-    for ^$!row-count X ^$b.column-count -> ($r, $c) {
-        @sum[$r][$c] = @!rows[$r][$c] + $b.rows[$r][$c];
-    }
-    return Math::Matrix.new( @sum );
+method add(Math::Matrix:D: Math::Matrix $b) { #$b where { self.cells.shape eqv $b.cells.shape } ) {
+    #say $.cells >>+<< $b.cells;
+    say $.cells;
+    say $b.cells;
+    say $.cells >>+<< $b.cells;
+    #my Numeric @sum[$!cells.shape[0],$!cells.shape[1]] = (self.cells >>+<< $b.cells).rotor($!cells.shape[0]);
+    #return Math::Matrix.new( @sum );
 }
 
-method subtract(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b.row-count and $!column-count == $b.column-count } ) {
-    my @subtract;
-    for ^$!row-count X ^$b.column-count -> ($r, $c) {
-        @subtract[$r][$c] = @!rows[$r][$c] - $b.rows[$r][$c];
-    }
-    return Math::Matrix.new( @subtract );
-}
-
-multi method multiply(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b.row-count and $!column-count == $b.column-count } ) {
-    my @multiply;
-    for ^$!row-count X ^$b.column-count -> ($r, $c) {
-        @multiply[$r][$c] = @!rows[$r][$c] * $b.rows[$r][$c];
-    }
-    return Math::Matrix.new( @multiply );
-}
-
-multi method determinant(Math::Matrix:D: ) {
-    fail "Not square matrix" unless $!row-count == $!column-count;
-    fail "Matrix has to have at least 2 lines/columns" unless $!row-count >= 2;
-    if $!row-count == 2 {
-        return @!rows[0][0] * @!rows[1][1] - @!rows[0][1] * @!rows[1][0];
-    } else {
-        my $det = 0;
-        for ^$!column-count -> $x {
-            my @intermediate;
-            for 1..^$!row-count -> $r {
-                my @r;
-                for (0..^$x,$x^..^$!column-count).flat -> $c {
-                        @r.push( @!rows[$r][$c] );
-                }
-                @intermediate.push( [@r] );
-            }
-            if $x %% 2 {
-                $det += @!rows[0][$x] * Math::Matrix.new( @intermediate ).determinant();
-            } else {
-                $det -= @!rows[0][$x] * Math::Matrix.new( @intermediate ).determinant();
-            }
-        }
-        return $det;
-    }
-}
-
-multi sub infix:<⋅>( Math::Matrix $a, Math::Matrix $b where { $a.column-count == $b.row-count} ) is export {
+multi sub infix:<⋅>( Math::Matrix $a, Math::Matrix $b where { $a.cells.shape[1] == $b.cells.shape[0]} ) is export {
     $a.dotProduct( $b );
 }
 
 multi sub infix:<dot>(Math::Matrix $a, Math::Matrix $b) is export {
     $a ⋅ $b;
-}
-
-multi sub infix:<*>(Math::Matrix $a, Real $r) is export {
-    $a.multiply( $r );
-}
-
-multi sub infix:<*>(Real $r, Math::Matrix $a) is export {
-    $a.multiply( $r );
-}
-
-multi sub infix:<*>(Math::Matrix $a, Math::Matrix $b  where { $a.row-count == $b.row-count and $a.column-count == $b.column-count}) is export {
-    $a.multiply( $b );
-}
-
-multi sub infix:<+>(Math::Matrix $a, Math::Matrix $b) is export {
-    $a.add($b);
-}
-
-multi sub infix:<->(Math::Matrix $a, Math::Matrix $b) is export {
-    $a.subtract($b);
 }
 
 =begin pod
@@ -188,7 +74,7 @@ however, even hyper operators does not seem to be enough to do matrix calculatio
 Purpose of that library is to propose some tools for Matrix calculation
 
 I should probably use shaped array for the implementation, but i am encountering
-some issues for now. Problem being it might break the syntax for creation of a Matrix, 
+some issues for now. Problem being it might break the syntax for creation of a Matrix,
 use with consideration...
 
 =head1 METHODS
