@@ -5,13 +5,17 @@ has Int $.row-count;
 has Int $.column-count;
 
 multi method new( @r ) {
-    my $col-count;
-    for @r -> $row {
-        FIRST { $col-count = $row.elems; }
-        die "Expect an Array of Array" unless $row ~~ Array;
-        die "All Row must contains the same number of elements" unless $row.elems == $col-count;
-    }
+    die "Expect an Array of Array" unless all @r ~~ Array;
+    die "All Row must contains the same number of elements" unless @r[0] == all @r[*];
     self.bless( rows => @r , row-count => @r.elems, column-count => @r[0].elems );
+}
+
+method identity(Math::Matrix:U: Int $size) {
+    my @identity;
+    for ^$size X ^$size -> ($r, $c) {
+        @identity[$r][$c] = $r==$c??1!!0;
+    }
+    self.bless( rows => @identity, row-count => $size, column-count => $size );
 }
 
 my class Row {
@@ -200,6 +204,12 @@ use with consideration...
 =item rows : an array of row, each row being an array of cells
 
    Number of cell per row must be identical
+
+=head2 method identity
+
+    my $matrix = Math::Matrix.identity( 3 );
+    This method is a constructor that returns an identity matrix of the size given in parameter
+    All the cells are set to 0 except the top/left to bottom/right diagonale, set to 1
 
 =head2 method T
 

@@ -29,6 +29,13 @@ method new method new( [[1,2],[3,4]])
 
     Number of cell per row must be identical
 
+method identity
+---------------
+
+    my $matrix = Math::Matrix.identity( 3 );
+    This method is a constructor that returns an identity matrix of the size given in parameter
+    All the cells are set to 0 except the top/left to bottom/right diagonale, set to 1
+
 method T
 --------
 
@@ -68,7 +75,7 @@ method add
     $new = $matrix + $matrix2;
 
 method subtract
-----------------
+---------------
 
     my $new = $matrix.subtract( $matrix2 );
     Return substraction of 2 matrices of the same size, can use operator -
@@ -86,4 +93,3 @@ method determinant
 
     my $det = $matrix.determinant( );
     Calculate the determinant of a square matrix
-
