@@ -91,9 +91,9 @@ multi method multiply(Math::Matrix:D: Real $r ) {
 }
 
 method apply(Math::Matrix:D: &coderef) {
-    return Math::Matrix.new( @.rows.map: {
+    return Math::Matrix.new( [ @.rows.map: {
             [ $_.map( &coderef ) ]
-    });
+    } ] );
 }
 
 method negative() {
