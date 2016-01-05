@@ -77,3 +77,12 @@ subtest {
     dies-ok { $matrix2.determinant() } , "Non square matrix, no determinant";
 }, "Determinant";
 
+
+subtest {
+    plan 2;
+    my $matrix = Math::Matrix.new([[1,2,5,4],[1,2,3,2],[9,8,4,1],[1,3,4,6]]);
+    ok $matrix.trace() == 13 , "Trace of a Matrix";
+    my $matrix2 = Math::Matrix.new([[1,2,5,4],[1,2,3,2],[9,8,4,1]]);
+    dies-ok { $matrix2.trace() } , "Non square matrix, no trace";
+}, "Trace";
+
