@@ -10,6 +10,21 @@ multi method new( @r ) {
     self.bless( rows => @r , row-count => @r.elems, column-count => @r[0].elems );
 }
 
+multi method new(Int:D: :$identity ) {
+    die "Expect a natural Number greater 0" unless $identity > 0;
+    my @r = [0 xx $identity] xx $identity;
+    for ^$identity { @r[$_][$_] = 1 }
+    self.bless( rows => @r , row-count => @r.elems, column-count => @r.elems );
+}
+
+multi method new( :@diag ) {
+    die "Expect an List of Number" unless +@diag > 0 and all @diag ~~ Numeric;
+    my @r = [0 xx +@diag] xx +@diag;
+    for @diag.kv -> $row, $value { @r[$row][$row] = $value }
+    self.bless( rows => @r , row-count => @r.elems, column-count => @r.elems );
+}
+
+
 method identity(Math::Matrix:U: Int $size) {
     my @identity;
     for ^$size X ^$size -> ($r, $c) {
@@ -154,7 +169,7 @@ multi method trace(Math::Matrix:D: ) {
     fail "Not square matrix" unless $!row-count == $!column-count;
     my $tr = 0;
     for ^$!column-count -> $x {
-	$tr += @!rows[$x][$x] ;
+        $tr += @!rows[$x][$x];
     }
     return $tr;
 }
