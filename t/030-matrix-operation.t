@@ -1,6 +1,6 @@
 use Test;
 use Math::Matrix;
-plan 8;
+plan 9;
 
 subtest {
     plan 2;
