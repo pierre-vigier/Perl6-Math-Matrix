@@ -150,7 +150,7 @@ multi method determinant(Math::Matrix:D: ) {
     }
 }
 
-multi method determinant(Math::Matrix:D: ) {
+multi method trace(Math::Matrix:D: ) {
     fail "Not square matrix" unless $!row-count == $!column-count;
     my $tr = 0;
     for ^$!column-count -> $x {
