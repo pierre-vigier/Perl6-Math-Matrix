@@ -1,6 +1,6 @@
 use Test;
 use Math::Matrix;
-plan 13;
+plan 15;
 
 lives-ok { my $matrix = Math::Matrix.new([[1,2],[3,4]]); }, "Able to create a materix";
 dies-ok { my $matrix = Math::Matrix.new([[1,2],[1,2,3]]); }, "Different nuber of elements per line";
@@ -32,3 +32,6 @@ nok $matrixd.is-square(), "Is not a square matrix";
 
 ok $diagonal.is-symmetric(), "Is a symmetric matrix";
 nok $matrixa.is-symmetric(), "Is not a symmetric matrix";
+
+ok $identity.is-orthogonal(), "Is a orthogonal matrix";
+nok $matrixa.is-orthogonal(), "Is not a orthogonal matrix";

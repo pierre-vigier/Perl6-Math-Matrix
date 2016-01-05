@@ -76,7 +76,7 @@ multi method perl(Math::Matrix:D: )
     self.WHAT.perl ~ ".new(" ~ @!rows.perl ~ ")";
 }
 
-method equal(Math::Matrix:D: Math::Matrix $b) {
+method equal(Math::Matrix:D: Math::Matrix $b --> Bool) {
     self.rows ~~ $b.rows;
 }
 
@@ -92,6 +92,11 @@ method is-symmetric( --> Bool) {
         }
     }
     return True;
+}
+
+method is-orthogonal( --> Bool) {
+    die "Number of columns is different from number of rows " unless self.is-square;
+    return self.dotProduct( self.T ) eqv Math::Matrix.identity( +@!rows );
 }
 
 method T(Math::Matrix:D: ) {
@@ -250,6 +255,32 @@ use with consideration...
     my $matrix = Math::Matrix.identity( 3 );
     This method is a constructor that returns an identity matrix of the size given in parameter
     All the cells are set to 0 except the top/left to bottom/right diagonale, set to 1
+
+=head2 method equal
+
+    if $matrixa.equal( $matrixb ) {
+    if $matrixa eqv $matrixb {
+
+    Checks two matrices for Equality
+
+=head2 method is-square
+
+    if $matrix.is-square {
+
+    Tells if number of rows and colums are the same
+
+=head2 method is-symmetric
+
+    if $matrix.is-symmetric {
+
+    Returns True if every cell with coordinates x y has same value as the cell on y x.
+
+=head2 method is-orthogonal
+
+    if $matrix.is-orthogonal {
+
+    Is True if the matrix multiplied (dotProduct) with its transposed version (T)
+    is an identity matrix.
 
 =head2 method T
 
