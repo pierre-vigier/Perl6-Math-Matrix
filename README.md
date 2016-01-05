@@ -93,3 +93,9 @@ method determinant
 
     my $det = $matrix.determinant( );
     Calculate the determinant of a square matrix
+
+method trace
+------------
+
+    my $tr = $matrix.trace( );
+    Calculate the trace of a square matrix
