@@ -46,8 +46,8 @@ method dotProduct
 
     my $product = $matrix1.dotProduct( $matrix2 )
     return a new Matrix, result of the dotProduct of the current matrix with matrix2
-    Call be called throug operator \x{22c5} or dot , like following:
-    my $c = $a \x{22c5} $b ;
+    Call be called throug operator ⋅ or dot , like following:
+    my $c = $a ⋅ $b ;
     my $c = $a dot $b ;
 
     Matrix can be multiplied by a Real as well, and with operator *
