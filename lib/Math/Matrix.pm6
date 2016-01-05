@@ -150,6 +150,15 @@ multi method determinant(Math::Matrix:D: ) {
     }
 }
 
+multi method trace(Math::Matrix:D: ) {
+    fail "Not square matrix" unless $!row-count == $!column-count;
+    my $tr = 0;
+    for ^$!column-count -> $x {
+	$tr += @!rows[$x][$x] ;
+    }
+    return $tr;
+}
+
 multi sub infix:<⋅>( Math::Matrix $a, Math::Matrix $b where { $a.column-count == $b.row-count} ) is export {
     $a.dotProduct( $b );
 }
@@ -260,5 +269,10 @@ use with consideration...
 
     my $det = $matrix.determinant( );
     Calculate the determinant of a square matrix
+
+=head2 method trace
+
+    my $tr = $matrix.trace( );
+    Calculate the trace of a square matrix
 
 =end pod
