@@ -80,15 +80,16 @@ method equal(Math::Matrix:D: Math::Matrix $b) {
     self.rows ~~ $b.rows;
 }
 
-method is-square( --> Bool ) {
+method is-square( --> Bool) {
     return self.column-count == self.row-count ?? True !! False;
 }
 
-method is-symmetric( --> Bool ) {
+method is-symmetric( --> Bool) {
     die "Number of columns is different from number of rows " unless self.is-square;
     for ^$.row-count - 2 -> $r {
         for $r + 1 .. $.row-count - 1 -> $c {
             return False unless @!rows[$r][$c] == @!rows[$c][$r];
+        }
     }
     return True;
 }
