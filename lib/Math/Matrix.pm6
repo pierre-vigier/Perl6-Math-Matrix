@@ -10,20 +10,14 @@ multi method new( @r ) {
     self.bless( rows => @r , row-count => @r.elems, column-count => @r[0].elems );
 }
 
-multi method new(Int:D: :$identity ) {
-    die "Expect a natural Number greater 0" unless $identity > 0;
-    my @r = [0 xx $identity] xx $identity;
-    for ^$identity { @r[$_][$_] = 1 }
-    self.bless( rows => @r , row-count => @r.elems, column-count => @r.elems );
+method diagonal( @diagval ) {
+    die "Expect an List of Number" unless +@diagval > 0 and all @diagval ~~ Numeric;
+    my @diag;
+    for ^+@diagval X ^+@diagval -> ($r, $c) {
+        @diag[$r][$c] = $r==$c ?? @diagval[$r] !! 0;
+    }
+    self.bless( rows => @diag, row-count => +@diag, column-count => +@diag );
 }
-
-multi method new( :@diag ) {
-    die "Expect an List of Number" unless +@diag > 0 and all @diag ~~ Numeric;
-    my @r = [0 xx +@diag] xx +@diag;
-    for @diag.kv -> $row, $value { @r[$row][$row] = $value }
-    self.bless( rows => @r , row-count => @r.elems, column-count => @r.elems );
-}
-
 
 method identity(Math::Matrix:U: Int $size) {
     my @identity;
@@ -86,6 +80,19 @@ method equal(Math::Matrix:D: Math::Matrix $b) {
     self.rows ~~ $b.rows;
 }
 
+method is-square( --> Bool ) {
+    return self.column-count == self.row-count ?? True !! False;
+}
+
+method is-symmetric( --> Bool ) {
+    die "Number of columns is different from number of rows " unless self.is-square;
+    for ^$.row-count - 2 -> $r {
+        for $r + 1 .. $.row-count - 1 -> $c {
+            return False unless @!rows[$r][$c] == @!rows[$c][$r];
+    }
+    return True;
+}
+
 method T(Math::Matrix:D: ) {
     my @transposed;
     for ^$!row-count X ^$!column-count -> ($x, $y) { @transposed[$y][$x] = @!rows[$x][$y] }
@@ -140,7 +147,7 @@ multi method multiply(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b.
 }
 
 multi method determinant(Math::Matrix:D: ) {
-    fail "Not square matrix" unless $!row-count == $!column-count;
+    fail "Not square matrix" unless self.is-square;
     fail "Matrix has to have at least 2 lines/columns" unless $!row-count >= 2;
     if $!row-count == 2 {
         return @!rows[0][0] * @!rows[1][1] - @!rows[0][1] * @!rows[1][0];
@@ -166,7 +173,7 @@ multi method determinant(Math::Matrix:D: ) {
 }
 
 multi method trace(Math::Matrix:D: ) {
-    fail "Not square matrix" unless $!row-count == $!column-count;
+    fail "Not square matrix" unless self.is-square;
     my $tr = 0;
     for ^$!column-count -> $x {
         $tr += @!rows[$x][$x];
@@ -213,7 +220,7 @@ Matrix stuff, transposition, dot Product, and so on
 
 Perl6 already provide a lot of tools to work with array, shaped array, and so on,
 however, even hyper operators does not seem to be enough to do matrix calculation
-Purpose of that library is to propose some tools for Matrix calculation
+Purpose of that library is to propose some tools for Matrix calculation.
 
 I should probably use shaped array for the implementation, but i am encountering
 some issues for now. Problem being it might break the syntax for creation of a Matrix, 
@@ -228,6 +235,14 @@ use with consideration...
 =item rows : an array of row, each row being an array of cells
 
    Number of cell per row must be identical
+
+=head2 method diagonal
+
+    my $matrix = Math::Matrix.diagonal( 2, 4, 5 );
+    This method is a constructor that returns an diagonal matrix of the size given 
+    by count of the parameter.
+    All the cells are set to 0 except the top/left to bottom/right diagonale, 
+    set to given values.
 
 =head2 method identity
 

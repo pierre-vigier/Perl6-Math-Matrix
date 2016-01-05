@@ -9,7 +9,7 @@ subtest {
 
     ok $matrix.T eq $expected, "Transposition result correct";
     ok $matrix.T.T eq $matrix, "Double tranposition does nothing";
-}, "tranposition";
+}, "Tranposition";
 
 subtest {
     plan 5;

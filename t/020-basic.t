@@ -1,6 +1,6 @@
 use Test;
 use Math::Matrix;
-plan 8;
+plan 9;
 
 lives-ok { my $matrix = Math::Matrix.new([[1,2],[3,4]]); }, "Able to create a materix";
 dies-ok { my $matrix = Math::Matrix.new([[1,2],[1,2,3]]); }, "Different nuber of elements per line";
@@ -19,3 +19,7 @@ nok $matrixa eqv $matrixc , "Non equal matrices, with eqv";
 my $identity = Math::Matrix.identity(3);
 my $expected = Math::Matrix.new([[1,0,0],[0,1,0],[0,0,1]]);
 ok $identity eqv $expected, "Get identity matrix";
+
+my $diagonal = Math::Matrix.diagonal(1,2,3);
+my $expect   = Math::Matrix.new([[1,0,0],[0,2,0],[0,0,3]]);
+ok $identity eqv $expect, "Get diagonal matrix";
