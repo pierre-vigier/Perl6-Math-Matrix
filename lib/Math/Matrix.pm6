@@ -49,10 +49,6 @@ my class Row {
     multi method EXISTS-POS( Row:D: $index ) {
         return 0 <= $index < $!cells.elems;
     }
-
-    method apply(Row:D: &coderef, Row:D: $sr) {
-        return Row.new( @$!cells >>[&coderef]>> @$sr  );
-    }
 };
 
 multi method elems(Math::Matrix:D: ) {
