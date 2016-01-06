@@ -27,11 +27,11 @@ my $expect   = Math::Matrix.new([[1,0,0],[0,2,0],[0,0,3]]);
 ok $identity eqv $expect, "Get diagonal matrix";
 
 
-ok $matrixa.is-square() , "Is a square matrix";
-nok $matrixd.is-square(), "Is not a square matrix";
+ok $matrixa.is-square,  "Is a square matrix";
+nok $matrixd.is-square, "Is not a square matrix";
 
-ok $diagonal.is-symmetric(), "Is a symmetric matrix";
-nok $matrixa.is-symmetric(), "Is not a symmetric matrix";
+ok $diagonal.is-symmetric, "Is a symmetric matrix";
+nok $matrixa.is-symmetric, "Is not a symmetric matrix";
 
-ok $identity.is-orthogonal(), "Is a orthogonal matrix";
-nok $matrixa.is-orthogonal(), "Is not a orthogonal matrix";
+ok $identity.is-orthogonal, "Is a orthogonal matrix";
+nok $matrixa.is-orthogonal, "Is not a orthogonal matrix";
