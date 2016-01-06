@@ -86,7 +86,8 @@ method is-square(Math::Matrix:D: --> Bool) {
 
 method is-symmetric(Math::Matrix:D: --> Bool) {
     die "Number of columns is different from number of rows " unless self.is-square;
-    for ^$.row-count - 2 -> $r {
+    return True if $.row-count < 2;
+    for ^$.row-count - 1 -> $r {
         for $r + 1 .. $.row-count - 1 -> $c {
             return False unless @!rows[$r][$c] == @!rows[$c][$r];
         }
