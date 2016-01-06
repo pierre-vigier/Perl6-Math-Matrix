@@ -10,13 +10,13 @@ multi method new( @r ) {
     self.bless( rows => @r , row-count => @r.elems, column-count => @r[0].elems );
 }
 
-method diagonal( *@diagval ) {
-    #die "Expect an List of Number" unless +@diagval > 0 and [and] @diagval >>~~>> Numeric;
+method diagonal(Math::Matrix:U: *@diagval ) {
+    die "Expect an List of Number" unless +@diagval > 0 and [and] @diagval >>~~>> Numeric;
     my @diag;
     for ^+@diagval X ^+@diagval -> ($r, $c) {
         @diag[$r][$c] = $r==$c ?? @diagval[$r] !! 0;
     }
-    self.bless( rows => @diag, row-count => +@diag, column-count => +@diag );
+    self.bless( rows => @diag, row-count => +@diagval, column-count => +@diagval );
 }
 
 method identity(Math::Matrix:U: Int $size) {
