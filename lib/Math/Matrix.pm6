@@ -10,7 +10,7 @@ multi method new( @r ) {
     self.bless( rows => @r , row-count => @r.elems, column-count => @r[0].elems );
 }
 
-method diagonal( @diagval ) {
+method diagonal( *@diagval ) {
     die "Expect an List of Number" unless +@diagval > 0 and all @diagval ~~ Numeric;
     my @diag;
     for ^+@diagval X ^+@diagval -> ($r, $c) {
