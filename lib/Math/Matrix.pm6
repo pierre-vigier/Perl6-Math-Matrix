@@ -11,7 +11,7 @@ multi method new( @r ) {
 }
 
 method diagonal( *@diagval ) {
-    die "Expect an List of Number" unless +@diagval > 0 and all @diagval ~~ Numeric;
+    die "Expect an List of Number" unless +@diagval > 0 and [and] @diagval >>~~>> Numeric;
     my @diag;
     for ^+@diagval X ^+@diagval -> ($r, $c) {
         @diag[$r][$c] = $r==$c ?? @diagval[$r] !! 0;
