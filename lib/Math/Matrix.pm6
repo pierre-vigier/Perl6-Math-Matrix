@@ -10,13 +10,13 @@ multi method new( @r ) {
     self.bless( rows => @r , row-count => @r.elems, column-count => @r[0].elems );
 }
 
-method diagonal(Math::Matrix:U: *@diagval ) {
-    die "Expect an List of Number" unless +@diagval > 0 and [and] @diagval >>~~>> Numeric;
-    my @diag;
-    for ^+@diagval X ^+@diagval -> ($r, $c) {
-        @diag[$r][$c] = $r==$c ?? @diagval[$r] !! 0;
+method diagonal(Math::Matrix:U: @diagval)method diagonal(Math::Matrix:U: @diag ) {
+    die "Expect an List of Number" unless +@diag > 0 and [and] @diag >>~~>> Numeric;
+    my @d;
+    for ^+@d X ^+@d -> ($r, $c) {
+        @d[$r][$c] = $r==$c ?? @diag[$r] !! 0;
     }
-    self.bless( rows => @diag, row-count => +@diagval, column-count => +@diagval );
+    self.bless( rows => @d, row-count => +@diag, column-count => +@diag );
 }
 
 method identity(Math::Matrix:U: Int $size) {
@@ -25,6 +25,14 @@ method identity(Math::Matrix:U: Int $size) {
         @identity[$r][$c] = $r==$c??1!!0;
     }
     self.bless( rows => @identity, row-count => $size, column-count => $size );
+}
+
+method zero(Math::Matrix:U: Int $rows, Int $cols) {
+    my @zero;
+    for ^$rows X ^$cols -> ($r, $c) {
+        @identity[$r][$c] = 0;
+    }
+    self.bless( rows => @zero, row-count => $rows, column-count => $cols );
 }
 
 my class Row {
@@ -82,6 +90,21 @@ method equal(Math::Matrix:D: Math::Matrix $b --> Bool) {
 
 method is-square(Math::Matrix:D: --> Bool) {
     return self.column-count == self.row-count;
+}
+
+method is-identity(Math::Matrix:D: --> Bool) {
+    die "Number of columns is different from number of rows " unless self.is-square;
+    for ^$.row-count X ^$.row-count -> ($r, $c) {
+        return False unless @!rows[$r][$c] == ($r == $c ?? 1 !! 0);
+    }
+    return True;
+}
+
+method is-zero(Math::Matrix:D: --> Bool) {
+    for ^$.row-count X ^$.col-count -> ($r, $c) {
+        return False unless @!rows[$r][$c] == 0;
+    }
+    return True;
 }
 
 method is-symmetric(Math::Matrix:D: --> Bool) {
