@@ -49,6 +49,10 @@ my class Row {
     multi method EXISTS-POS( Row:D: $index ) {
         return 0 <= $index < $!cells.elems;
     }
+
+    method apply(Row:D: &coderef, Row:D: $sr) {
+        return Row.new( @$!cells >>[&coderef]>> @$sr  );
+    }
 };
 
 multi method elems(Math::Matrix:D: ) {
@@ -81,7 +85,7 @@ method equal(Math::Matrix:D: Math::Matrix $b --> Bool) {
 }
 
 method is-square( --> Bool) {
-    return self.column-count == self.row-count ?? True !! False;
+    return self.column-count == self.row-count;
 }
 
 method is-symmetric( --> Bool) {
