@@ -94,19 +94,19 @@ method equal(Math::Matrix:D: Math::Matrix $b --> Bool) {
 }
 
 method is-square(Math::Matrix:D: --> Bool) {
-    return $!column-count == $!row-count;
+    return $.column-count == $.row-count;
 }
 
 method is-identity(Math::Matrix:D: --> Bool) {
     die "Number of columns is different from number of rows " unless self.is-square;
-    for ^$!row-count X ^$!row-count -> ($r, $c) {
+    for ^$.row-count X ^$.row-count -> ($r, $c) {
         return False unless @!rows[$r][$c] == ($r == $c ?? 1 !! 0);
     }
     return True;
 }
 
 method is-zero(Math::Matrix:D: --> Bool) {
-    for ^$!row-count X ^$!col-count -> ($r, $c) {
+    for ^$.row-count X ^$.col-count -> ($r, $c) {
         return False unless @!rows[$r][$c] == 0;
     }
     return True;
@@ -115,7 +115,7 @@ method is-zero(Math::Matrix:D: --> Bool) {
 method is-symmetric(Math::Matrix:D: --> Bool) {
     die "Number of columns is different from number of rows " unless self.is-square;
     return True if $.row-count < 2;
-    for ^($!row-count - 1) -> $r {
+    for ^($.row-count - 1) -> $r {
         for $r + 1 .. $.row-count - 1 -> $c {
             return False unless @!rows[$r][$c] == @!rows[$c][$r];
         }
