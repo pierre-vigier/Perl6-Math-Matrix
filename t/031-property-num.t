@@ -38,8 +38,8 @@ subtest {
     my $diagonal = Math::Matrix.diagonal([1,2,3]);
     my $matrix = Math::Matrix.new([[1,2,3],[2,4,6],[3,6,9]]);
 
-    ok $zero.rank == 3     ,"Zero Matrix has full kernel";
-    ok $identity.rank == 0 ,"Identity has no kernel";
-    ok $diagonal.rank == 0 ,"Diagonal has no kernel";
-    ok $matrix.rank == 2   ,"Custom Matrinx with larger Kernel has lesser rank";
+    ok $zero.kernel == 3     ,"Zero Matrix has full kernel";
+    ok $identity.kernel == 0 ,"Identity has no kernel";
+    ok $diagonal.kernel == 0 ,"Diagonal has no kernel";
+    ok $matrix.kernel == 2   ,"Custom Matrinx with larger Kernel has lesser rank";
 }, "Kernel";
