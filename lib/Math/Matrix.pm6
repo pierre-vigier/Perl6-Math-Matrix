@@ -106,7 +106,7 @@ method is-identity(Math::Matrix:D: --> Bool) {
 }
 
 method is-zero(Math::Matrix:D: --> Bool) {
-    for ^$.row-count X ^$.col-count -> ($r, $c) {
+    for ^self.row-count X ^self.col-count -> ($r, $c) {
         return False unless @!rows[$r][$c] == 0;
     }
     return True;
