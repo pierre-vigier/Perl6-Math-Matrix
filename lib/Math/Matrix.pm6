@@ -106,7 +106,7 @@ method is-identity(Math::Matrix:D: --> Bool) {
 }
 
 method is-zero(Math::Matrix:D: --> Bool) {
-    for ^$!row-count X ^$!col-count -> ($r, $c) {
+    for ^$.row-count X ^$.col-count -> ($r, $c) {
         return False unless @!rows[$r][$c] == 0;
     }
     return True;
@@ -115,7 +115,7 @@ method is-zero(Math::Matrix:D: --> Bool) {
 method is-symmetric(Math::Matrix:D: --> Bool) {
     die "Number of columns is different from number of rows " unless self.is-square;
     return True if $.row-count < 2;
-    for ^($!row-count - 1) -> $r {
+    for ^($.row-count - 1) -> $r {
         for $r + 1 .. $.row-count - 1 -> $c {
             return False unless @!rows[$r][$c] == @!rows[$c][$r];
         }
@@ -137,7 +137,7 @@ method T(Math::Matrix:D: ) {
 multi method dotProduct(Math::Matrix:D: Math::Matrix $b ) {
     my @product;
     die "Number of columns of the second matrix is different from number of rows of the first operand" unless self.column-count == $b.row-count;
-    for ^$!row-count X ^$b.column-count -> ($r, $c) {
+    for ^$.row-count X ^$b.column-count -> ($r, $c) {
         @product[$r][$c] += @!rows[$r][$_] * $b.rows[$_][$c] for ^$b.row-count;
     }
     return Math::Matrix.new( @product );;
