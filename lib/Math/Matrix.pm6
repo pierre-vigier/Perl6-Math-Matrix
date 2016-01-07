@@ -238,6 +238,10 @@ P:  while shift @nz -> $p {
     return $rank;
 }
 
+multi method kernel(Math::Matrix:D: --> Int) {
+    return min(self.size) - self.rank;
+}
+
 multi sub infix:<⋅>( Math::Matrix $a, Math::Matrix $b where { $a.column-count == $b.row-count} ) is export {
     $a.dotProduct( $b );
 }
