@@ -13,11 +13,11 @@ my $diagonal = Math::Matrix.diagonal([1,2,3]);
 ok $zero.size ==    (3,4),  "Right size";
 ok $matrixa.size == (2,2),  "Right size too";
 
-ok $matrixa.is-square,  "Is a square matrix";
-nok $matrixd.is-square, "Is not a square matrix";
+ok $matrixa.is-square,    "Is a square matrix";
+nok $matrixd.is-square,   "Is not a square matrix";
 
-ok $zero.is-zero,      "Is a zero matrix";
-nok $identity.is-zero, "Is not a zero matrix";
+ok $zero.is-zero,         "Is a zero matrix";
+nok $identity.is-zero,    "Is not a zero matrix";
 
 ok $identity.is-identity,  "Is a identity matrix";
 nok $diagonal.is-identity, "Is not a identity matrix";

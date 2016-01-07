@@ -94,7 +94,7 @@ method equal(Math::Matrix:D: Math::Matrix $b --> Bool) {
 }
 
 method is-square(Math::Matrix:D: --> Bool) {
-    return self.column-count == self.row-count;
+    return $.column-count == $.row-count;
 }
 
 method is-identity(Math::Matrix:D: --> Bool) {
@@ -106,7 +106,7 @@ method is-identity(Math::Matrix:D: --> Bool) {
 }
 
 method is-zero(Math::Matrix:D: --> Bool) {
-    for ^self.row-count X ^self.col-count -> ($r, $c) {
+    for ^self.row-count X ^self.column-count-> ($r, $c) {
         return False unless @!rows[$r][$c] == 0;
     }
     return True;
