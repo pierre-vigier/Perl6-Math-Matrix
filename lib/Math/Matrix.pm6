@@ -394,7 +394,15 @@ use with consideration...
 
 =head2 method rank
 
-    my $rank = $matrix.rank( );
-    Calculate the rank, the number of independent row vectors.
+    my $r = $matrix.rank( );
+    rank is the number of independent row or column vectors
+    or als calles independent dimensions 
+    (thats why this command is sometimes calles dim)
+
+=head2 method kernel
+
+    my $tr = $matrix.kernel( );
+    kernel of matrix, number of dependent rows or columns
+
 
 =end pod
