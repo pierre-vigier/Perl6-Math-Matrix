@@ -4,7 +4,7 @@ has @.rows is required;
 has Int $.row-count;
 has Int $.column-count;
 
-subset Pos_Int of Int where { * > 0 };
+subset Pos_Int of Int where * > 0 ;
 
 multi method new( @r ) {
     die "Expect an Array of Array" unless all @r ~~ Array;
