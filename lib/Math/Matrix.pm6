@@ -29,7 +29,7 @@ method identity(Math::Matrix:U: Int $size) {
     self.bless( rows => @identity, row-count => $size, column-count => $size );
 }
 
-method zero(Math::Matrix:U: Int $rows, Int $cols) {
+method zero(Math::Matrix:U: Int $rows, Int $cols = $rows) {
     my @zero;
     for ^$rows X ^$cols -> ($r, $c) {
         @zero[$r][$c] = 0;
@@ -218,7 +218,7 @@ multi method determinant(Math::Matrix:D: ) {
     }
 }
 
-multi method trace(Math::Matrix:D: --> Int) {
+multi method trace(Math::Matrix:D: --> Numeric) {
     fail "Not square matrix" unless self.is-square;
     my $tr = 0;
     for ^$!row-count -> $r {
