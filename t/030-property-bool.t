@@ -10,7 +10,7 @@ my $zero = Math::Matrix.zero(3,4);
 my $identity = Math::Matrix.identity(3);
 my $diagonal = Math::Matrix.diagonal([1,2,3]);
 my $ut = Math::Matrix.new([[1,2,3],[0,5,6],[0,0,6]]);
-my $lt = Math::Matrix.new([[1,0,0],[4,5,0],[4,5,0]]);
+my $lt = Math::Matrix.new([[1,0,0],[4,5,0],[4,5,6]]);
 
 
 ok $matrixa.is-square,    "Is a square matrix";

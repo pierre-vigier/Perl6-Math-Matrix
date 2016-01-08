@@ -124,7 +124,7 @@ method is-diagonal(Math::Matrix:D: --> Bool) {
 method is-upper-triangular(Math::Matrix:D: --> Bool) {
     die "Number of columns is different from number of rows" unless self.is-square;
     for ^$.row-count X ^$.row-count -> ($r, $c) {
-        return False if @!rows[$r][$c] != 0 and $r < $c;
+        return False if @!rows[$r][$c] != 0 and $r > $c;
     }
     return True;
 }
@@ -132,7 +132,7 @@ method is-upper-triangular(Math::Matrix:D: --> Bool) {
 method is-lower-triangular(Math::Matrix:D: --> Bool) {
     die "Number of columns is different from number of rows" unless self.is-square;
     for ^$.row-count X ^$.row-count -> ($r, $c) {
-        return False if @!rows[$r][$c] != 0 and $r > $c;
+        return False if @!rows[$r][$c] != 0 and $r < $c;
     }
     return True;
 }
