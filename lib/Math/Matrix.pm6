@@ -427,5 +427,11 @@ use with consideration...
     my $tr = $matrix.kernel( );
     kernel of matrix, number of dependent rows or columns
 
+=head2 method norm
+
+    my $norm = $matrix.norm( );   # euclidian norm
+    my $norm = $matrix.norm(1);   # L1 norm (p-norm)
+    my $norm = $matrix.norm(4,3); # p - q - norm   
+
 
 =end pod
