@@ -55,7 +55,7 @@ subtest {
     dies-ok { $zero.norm(1,0) } , "there is no n,0 norm";
     dies-ok { $zero.norm(0.1) } , "only whole number norms";
     dies-ok { $zero.norm(1,0.1) } ,"only whole number norms";
-    ok $zero.norm == 0     ,       "Zero matrix is 0 in any norm" };
+    ok $zero.norm == 0     ,       "Zero matrix is 0 in any norm";
     ok $identity.norm == 1 ,       "Identity has alwas norm of 1";
     ok $diagonal.norm == $diagonal.trace ,"norm of diagonal matrix is equal trace in euclid space";
     ok $matrix.norm(1,1) == 36     ,"1,1 norm is just sum of elements";
