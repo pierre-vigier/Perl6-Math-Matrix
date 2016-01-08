@@ -183,7 +183,7 @@ multi method multiply(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b.
     return Math::Matrix.new( @multiply );
 }
 
-multi method determinant(Math::Matrix:D: ) {
+multi method determinant(Math::Matrix:D: --> Numeric) {
     fail "Not square matrix" unless self.is-square;
     return 1            if $!row-count == 0;
     return @!rows[0][0] if $!row-count == 1;
@@ -219,7 +219,7 @@ multi method determinant(Math::Matrix:D: ) {
 }
 
 multi method trace(Math::Matrix:D: --> Numeric) {
-    fail "Not square matrix" unless self.is-square;
+p    fail "Not square matrix" unless self.is-square;
     my $tr = 0;
     for ^$!row-count -> $r {
         $tr += @!rows[$r][$r];
@@ -252,7 +252,7 @@ multi method kernel(Math::Matrix:D: --> Int) {
     return min(self.size) - self.rank;
 }
 
-multi method norm(Math::Matrix:D: Pos_Int $p = 2, Pos_Int $q = 1 --> Int) {
+multi method norm(Math::Matrix:D: Pos_Int $p = 2, Pos_Int $q = 1 --> Numeric) {
     my $norm = 0;
     for ^$!column-count -> $col {
         my $col_value = 0;
