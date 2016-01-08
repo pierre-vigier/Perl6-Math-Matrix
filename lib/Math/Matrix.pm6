@@ -105,6 +105,10 @@ method is-square(Math::Matrix:D: --> Bool) {
     return $.column-count == $.row-count;
 }
 
+method is-invertible(Math::Matrix:D: --> Bool) {
+    return self.is-square and self.determinant != 0;
+}
+
 method is-identity(Math::Matrix:D: --> Bool) {
     die "Number of columns is different from number of rows" unless self.is-square;
     for ^$.row-count X ^$.row-count -> ($r, $c) {
@@ -150,8 +154,9 @@ method is-symmetric(Math::Matrix:D: --> Bool) {
 
 method is-orthogonal(Math::Matrix:D: --> Bool) {
     die "Number of columns is different from number of rows" unless self.is-square;
-    return self.dotProduct( self.T ) eqv Math::Matrix.identity( +@!rows );
+    return self.dotProduct( self.T ) eqv Math::Matrix.identity( $.row-count );
 }
+
 
 method T(Math::Matrix:D: ) {
     my @transposed;

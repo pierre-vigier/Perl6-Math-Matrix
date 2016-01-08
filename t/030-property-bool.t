@@ -1,6 +1,6 @@
 use Test;
 use Math::Matrix;
-plan 21;
+plan 26;
 
 my $matrixa = Math::Matrix.new([[1,2],[3,4]]);
 my $matrixc = Math::Matrix.new([[8,8],[8,8]]);
@@ -41,3 +41,9 @@ nok $matrixa.is-symmetric, "Is not a symmetric matrix";
 
 ok $identity.is-orthogonal, "Is a orthogonal matrix";
 nok $matrixa.is-orthogonal, "Is not a orthogonal matrix";
+
+ok $identity.is-invertible, "Identity matrix is invertible";
+ok $diagonal.is-invertible, "Diagonal matrix is invertible";
+ok $diagonal.is-invertible, "A full ranked square matrix is invertible";
+nok $zero.is-invertible,    "Zero matrix is not invertible";
+nok $matrixd.is-invertible, "Matrix with defect Is not invertible";
