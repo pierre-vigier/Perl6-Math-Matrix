@@ -190,13 +190,13 @@ multi method determinant(Math::Matrix:D: --> Numeric) {
     if $!row-count == 2 {
         return @!rows[0][0] * @!rows[1][1] 
              - @!rows[0][1] * @!rows[1][0];
-    } elsif $!row-count = 3 {
-        return @!rows[0][0] * @!rows[1][1] * @!rows[2][2]
-             + @!rows[0][1] * @!rows[1][2] * @!rows[2][0]
-             + @!rows[0][2] * @!rows[1][0] * @!rows[2][1]
-             - @!rows[0][2] * @!rows[1][1] * @!rows[2][0]
-             - @!rows[0][1] * @!rows[1][0] * @!rows[2][2]
-             - @!rows[0][0] * @!rows[1][2] * @!rows[2][1];
+#    } elsif $!row-count = 3 {
+#        return @!rows[0][0] * @!rows[1][1] * @!rows[2][2]
+#             + @!rows[0][1] * @!rows[1][2] * @!rows[2][0]
+#             + @!rows[0][2] * @!rows[1][0] * @!rows[2][1]
+#             - @!rows[0][2] * @!rows[1][1] * @!rows[2][0]
+#             - @!rows[0][1] * @!rows[1][0] * @!rows[2][2]
+#             - @!rows[0][0] * @!rows[1][2] * @!rows[2][1];
     } else {
         my $det = 0;
         for ^$!column-count -> $x {

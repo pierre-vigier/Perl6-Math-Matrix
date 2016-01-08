@@ -62,6 +62,6 @@ subtest {
     dies-ok { $zero.norm(1,0.1) } ,"only whole number norms";
     ok $zero.norm == 0            ,"Zero matrix is 0 in any norm";
     ok $identity.norm == 3        ,"Identity matrix norm equals rank";
-    ok $diagonal.norm == 14       ,"norm of diagonal matrix is equal trace in euclid space";
+    ok $diagonal.norm == 6        ,"Norm of diagonal matrix is equal trace in euclid space";
     ok $matrix.norm(1,1) == 36    ,"1,1 norm is just sum of elements";
 }, "Norm";
