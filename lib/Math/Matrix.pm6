@@ -219,7 +219,7 @@ multi method determinant(Math::Matrix:D: --> Numeric) {
 }
 
 multi method trace(Math::Matrix:D: --> Numeric) {
-p    fail "Not square matrix" unless self.is-square;
+    fail "Not square matrix" unless self.is-square;
     my $tr = 0;
     for ^$!row-count -> $r {
         $tr += @!rows[$r][$r];
