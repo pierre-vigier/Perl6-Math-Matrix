@@ -201,7 +201,7 @@ multi method determinant(Math::Matrix:D: --> Numeric) {
         my $det = 0;
         for ^$!column-count -> $x {
             my @intermediate;
-            for 1 .. ^$!row-count -> $r {
+            for 1..^$!row-count -> $r {
                 my @r;
                 for (0..^$x,$x^..^$!column-count).flat -> $c {
                         @r.push( @!rows[$r][$c] );
