@@ -210,15 +210,15 @@ multi method determinant(Math::Matrix:D: ) {
 multi method trace(Math::Matrix:D: --> Int) {
     fail "Not square matrix" unless self.is-square;
     my $tr = 0;
-    for ^$!column-count -> $x {
-        $tr += @!rows[$x][$x];
+    for ^$!row-count -> $r {
+        $tr += @!rows[$r][$r];
     }
     return $tr;
 }
 
 multi method rank(Math::Matrix:D: --> Int) {
     my $rank = 0;
-    my @nz; #none zero rows
+    my @nz;  # none zero rows
     for @!rows -> $r {
         push @nz, $r unless [and]($r.flat X== 0);
     }
@@ -227,11 +227,10 @@ P:  while shift @nz -> $p {
         for @nz -> $cmp_row {
             my $cmp_col = 0;
             $cmp_col++ while $p[$cmp_col] == 0 and $cmp_row[$cmp_col] == 0;
-            next if ($p[$cmp_col] == 0 and $cmp_row[$cmp_col] != 0) or 
-                    ($p[$cmp_col] != 0 and $cmp_row[$cmp_col] == 0);
-            my $q =  $p[$cmp_col]     /    $cmp_row[$cmp_col];
-            my $diff = $p >>-<< ($q <<*<<$cmp_row);
-            next P if [and]($diff.flat X== 0);
+            next          if $p[$cmp_col] == 0 or  $cmp_row[$cmp_col] == 0);
+            my $q =          $p[$cmp_col]    /     $cmp_row[$cmp_col];
+            my $diff =       $p  >>-<<   ($q <<*<< $cmp_row);
+            next P        if [and]($diff.flat X== 0);
         }
         $rank++;
     }
