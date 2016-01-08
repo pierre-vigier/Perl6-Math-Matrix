@@ -1,6 +1,16 @@
 use Test;
 use Math::Matrix;
-plan 5;
+plan 6;
+
+
+subtest {
+    plan 2;
+    my $zero = Math::Matrix.zero(3,3);
+    my $matrixa = Math::Matrix.new([[1,2],[3,4]]);
+
+    ok $zero.size ==    (3,4),  "Right size";
+    ok $matrixa.size == (2,2),  "Right size too";
+}, "Size";
 
 subtest {
     plan 5;

@@ -76,13 +76,11 @@ multi method EXISTS-POS( Math::Matrix:D: $index ) {
     return 0 <= $index < $.row-count;
 }
 
-multi method Str(Math::Matrix:D: )
-{
+multi method Str(Math::Matrix:D: ) {
     @.rows;
 }
 
-multi method perl(Math::Matrix:D: )
-{
+multi method perl(Math::Matrix:D: ) {
     self.WHAT.perl ~ ".new(" ~ @!rows.perl ~ ")";
 }
 
@@ -95,17 +93,6 @@ method equal(Math::Matrix:D: Math::Matrix $b --> Bool) {
     self.rows ~~ $b.rows;
 }
 
-method is-square(Math::Matrix:D: --> Bool) {
-    return $.column-count == $.row-count;
-}
-
-method is-identity(Math::Matrix:D: --> Bool) {
-    die "Number of columns is different from number of rows " unless self.is-square;
-    for ^$.row-count X ^$.row-count -> ($r, $c) {
-        return False unless @!rows[$r][$c] == ($r == $c ?? 1 !! 0);
-    }
-    return True;
-}
 
 method is-zero(Math::Matrix:D: --> Bool) {
     for ^$.row-count X ^$.column-count -> ($r, $c) {
@@ -114,8 +101,44 @@ method is-zero(Math::Matrix:D: --> Bool) {
     return True;
 }
 
+method is-square(Math::Matrix:D: --> Bool) {
+    return $.column-count == $.row-count;
+}
+
+method is-identity(Math::Matrix:D: --> Bool) {
+    die "Number of columns is different from number of rows" unless self.is-square;
+    for ^$.row-count X ^$.row-count -> ($r, $c) {
+        return False unless @!rows[$r][$c] == ($r == $c ?? 1 !! 0);
+    }
+    return True;
+}
+
+method is-diagonal(Math::Matrix:D: --> Bool) {
+    die "Number of columns is different from number of rows" unless self.is-square;
+    for ^$.row-count X ^$.row-count -> ($r, $c) {
+        return False if @!rows[$r][$c] != 0 and $r != $c;
+    }
+    return True;
+}
+
+method is-upper-triangular(Math::Matrix:D: --> Bool) {
+    die "Number of columns is different from number of rows" unless self.is-square;
+    for ^$.row-count X ^$.row-count -> ($r, $c) {
+        return False if @!rows[$r][$c] != 0 and $r < $c;
+    }
+    return True;
+}
+
+method is-lower-triangular(Math::Matrix:D: --> Bool) {
+    die "Number of columns is different from number of rows" unless self.is-square;
+    for ^$.row-count X ^$.row-count -> ($r, $c) {
+        return False if @!rows[$r][$c] != 0 and $r > $c;
+    }
+    return True;
+}
+
 method is-symmetric(Math::Matrix:D: --> Bool) {
-    die "Number of columns is different from number of rows " unless self.is-square;
+    die "Number of columns is different from number of rows" unless self.is-square;
     return True if $.row-count < 2;
     for ^($.row-count - 1) -> $r {
         for $r + 1 .. $.row-count - 1 -> $c {
@@ -126,7 +149,7 @@ method is-symmetric(Math::Matrix:D: --> Bool) {
 }
 
 method is-orthogonal(Math::Matrix:D: --> Bool) {
-    die "Number of columns is different from number of rows " unless self.is-square;
+    die "Number of columns is different from number of rows" unless self.is-square;
     return self.dotProduct( self.T ) eqv Math::Matrix.identity( +@!rows );
 }
 
@@ -190,7 +213,7 @@ multi method determinant(Math::Matrix:D: --> Numeric) {
     if $!row-count == 2 {
         return @!rows[0][0] * @!rows[1][1] 
              - @!rows[0][1] * @!rows[1][0];
-    } elsif $!row-count = 3 {
+    } elsif $!row-count == 3 {
         return @!rows[0][0] * @!rows[1][1] * @!rows[2][2]
              + @!rows[0][1] * @!rows[1][2] * @!rows[2][0]
              + @!rows[0][2] * @!rows[1][0] * @!rows[2][1]
@@ -429,9 +452,9 @@ use with consideration...
 
 =head2 method norm
 
-    my $norm = $matrix.norm( );   # euclidian norm
-    my $norm = $matrix.norm(1);   # L1 norm (p-norm)
-    my $norm = $matrix.norm(4,3); # p - q - norm   
+    my $norm = $matrix.norm( );   # euclidian norm (L2, p = 2)
+    my $norm = $matrix.norm(1);   # p-norm, L1 = sum of all cells
+    my $norm = $matrix.norm(4,3); # p,q - norm, p = 4, q = 3   
 
 
 =end pod
