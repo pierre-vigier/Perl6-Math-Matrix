@@ -3,9 +3,10 @@ use Math::Matrix;
 plan 5;
 
 subtest {
-    plan 4;
+    plan 5;
     my $zero = Math::Matrix.zero(3,3);
     my $identity = Math::Matrix.identity(3);
+    my $diagonal = Math::Matrix.diagonal([1,2,3]);
     my $matrix = Math::Matrix.new([[1,2,5,4],[1,2,3,2],[9,8,4,1],[1,3,4,6]]);
     my $matrix2 = Math::Matrix.new([[1,2,5,4],[1,2,3,2],[9,8,4,1]]);
 
