@@ -227,7 +227,7 @@ P:  while shift @nz -> $p {
         for @nz -> $cmp_row {
             my $cmp_col = 0;
             $cmp_col++ while $p[$cmp_col] == 0 and $cmp_row[$cmp_col] == 0;
-            next          if $p[$cmp_col] == 0 or  $cmp_row[$cmp_col] == 0);
+            next          if $p[$cmp_col] == 0 or  $cmp_row[$cmp_col] == 0;
             my $q =          $p[$cmp_col]    /     $cmp_row[$cmp_col];
             my $diff =       $p  >>-<<   ($q <<*<< $cmp_row);
             next P        if [and]($diff.flat X== 0);
@@ -240,6 +240,10 @@ P:  while shift @nz -> $p {
 multi method kernel(Math::Matrix:D: --> Int) {
     return min(self.size) - self.rank;
 }
+
+# multi method norm(Math::Matrix:D: Int p, Int q --> Int) {
+# }
+
 
 multi sub infix:<⋅>( Math::Matrix $a, Math::Matrix $b where { $a.column-count == $b.row-count} ) is export {
     $a.dotProduct( $b );
