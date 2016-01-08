@@ -1,4 +1,4 @@
-:unit class Math::Matrix;
+unit class Math::Matrix;
 
 has @.rows is required;
 has Int $.row-count;
