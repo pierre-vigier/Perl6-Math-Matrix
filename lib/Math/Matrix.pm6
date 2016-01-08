@@ -252,16 +252,16 @@ multi method kernel(Math::Matrix:D: --> Int) {
     return min(self.size) - self.rank;
 }
 
-multi method norm(Math::Matrix:D: Pos_Int p = 2, Pos_Int q = 1 --> Int) {
+multi method norm(Math::Matrix:D: Pos_Int $p = 2, Pos_Int $q = 1 --> Int) {
     my $norm = 0;
     for ^$!column-count -> $col {
         my $col_value = 0;
         for ^$!row-count -> $row {
-            $col_value += abs(@!rows[$row][$col]) ** p;
+            $col_value += abs(@!rows[$row][$col]) ** $p;
         }
-        $norm += $col_value ** (q/p);
+        $norm += $col_value ** ($q / $p);
     }
-    return $norm ** (1/q);   
+    return $norm ** (1/$q);   
 }
 
 
