@@ -1,8 +1,10 @@
-unit class Math::Matrix;
+:unit class Math::Matrix;
 
 has @.rows is required;
 has Int $.row-count;
 has Int $.column-count;
+
+subset Pos_Int of Int where { * > 0 }
 
 multi method new( @r ) {
     die "Expect an Array of Array" unless all @r ~~ Array;
@@ -183,14 +185,23 @@ multi method multiply(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b.
 
 multi method determinant(Math::Matrix:D: ) {
     fail "Not square matrix" unless self.is-square;
-    fail "Matrix has to have at least 2 lines/columns" unless $!row-count >= 2;
+    return 1            if $!row-count == 0;
+    return @!rows[0][0] if $!row-count == 1;
     if $!row-count == 2 {
-        return @!rows[0][0] * @!rows[1][1] - @!rows[0][1] * @!rows[1][0];
+        return @!rows[0][0] * @!rows[1][1] 
+             - @!rows[0][1] * @!rows[1][0];
+    } elsif $!row-count = 3 {
+        return @!rows[0][0] * @!rows[1][1] * @!rows[2][2]
+             + @!rows[0][1] * @!rows[1][2] * @!rows[2][0]
+             + @!rows[0][2] * @!rows[1][0] * @!rows[2][1]
+             - @!rows[0][2] * @!rows[1][1] * @!rows[2][0]
+             - @!rows[0][1] * @!rows[1][0] * @!rows[2][2]
+             - @!rows[0][0] * @!rows[1][2] * @!rows[2][1];
     } else {
         my $det = 0;
         for ^$!column-count -> $x {
             my @intermediate;
-            for 1..^$!row-count -> $r {
+            for 1 .. ^$!row-count -> $r {
                 my @r;
                 for (0..^$x,$x^..^$!column-count).flat -> $c {
                         @r.push( @!rows[$r][$c] );
@@ -241,8 +252,17 @@ multi method kernel(Math::Matrix:D: --> Int) {
     return min(self.size) - self.rank;
 }
 
-# multi method norm(Math::Matrix:D: Int p, Int q --> Int) {
-# }
+multi method norm(Math::Matrix:D: Pos_Int p = 2, Pos_Int q = 1 --> Int) {
+    my $norm = 0;
+    for ^$!column-count -> $col {
+        my $col_value = 0;
+        for ^$!row-count -> $row {
+            $col_value += abs(@!rows[$row][$col]) ** p;
+        }
+        $norm += $col_value ** (q/p);
+    }
+    return $norm ** (1/q);   
+}
 
 
 multi sub infix:<⋅>( Math::Matrix $a, Math::Matrix $b where { $a.column-count == $b.row-count} ) is export {
