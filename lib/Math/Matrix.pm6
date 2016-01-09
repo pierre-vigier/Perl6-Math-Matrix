@@ -159,7 +159,7 @@ method is-orthogonal(Math::Matrix:D: --> Bool) {
 method T(Math::Matrix:D: --> Math::Matrix:D  )         { self.transposed }
 method transposed(Math::Matrix:D: --> Math::Matrix:D ) {
     my @transposed;
-    for ^$!row-count X ^$!column-count -> ($r, $c) { @transposed[$r][$c] = @!rows[$r][$c] }
+    for ^$!row-count X ^$!column-count -> ($r, $c) { @transposed[$c][$r] = @!rows[$r][$c] }
     return Math::Matrix.new( @transposed );
 }
 
