@@ -17,13 +17,13 @@ subtest {
     my $diagonal = Math::Matrix.diagonal([1,2,3]);
     my $matrixa  = Math::Matrix.new([[1,2,3],[2,4,6],[3,6,9]]);
     my $matrixb  = Math::Matrix.new([[1,2],[3,4]]);
-    my $expectb  = Math::Matrix.new([[-2,1],[1.5,-.5]]);
+    my $expectb  = Math::Matrix.new([[-2,1],[1.5,-0.5]]);
     my $matrixc  = Math::Matrix.new([[1,1,0],[0,1,1],[1,0,1]]);
-    my $expectc  = Math::Matrix.new([[0.5,-.5,.5],[0.5,.5,-.5],[-0.5,.5,.5]]);
+    my $expectc  = Math::Matrix.new([[0.5,-.5,0.5],[0.5,.5,-0.5],[-0.5,0.5,0.5]]);
     my $expectd  = Math::Matrix.new([[1,0,0],[0,0.5,0],[0,0,1/3]]);
  
-    dies-ok Math::Matrix.zero(3,4),    "only square matrices can be inverted";
-    dies-ok $matrixa,                  "only none singular matrices can be inverted";
+    dies-ok {Math::Matrix.zero(3,4).inverted},   "only square matrices can be inverted";
+    dies-ok {$matrixa.inverted},       "only none singular matrices can be inverted";
     ok $matrixb.inverted eq $expectb,  "Inversion works correctly";
     ok $matrixb.inverted.inverted eq $matrixb, "Double Inversion does nothing";
     ok $identity.inverted eq $identity,"Inverted identity is identity";

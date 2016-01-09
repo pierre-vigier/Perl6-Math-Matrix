@@ -1,6 +1,6 @@
 use Test;
 use Math::Matrix;
-plan 26;
+plan 25;
 
 my $matrixa = Math::Matrix.new([[1,2],[3,4]]);
 my $matrixc = Math::Matrix.new([[8,8],[8,8]]);
@@ -21,7 +21,6 @@ nok $identity.is-zero,    "Is not a zero matrix";
 
 ok $diagonal.is-diagonal, "Is a diagonal matrix";
 nok $ut.is-diagonal,      "Is not a diagonal matrix";
-dies-ok { $matrixd.is-diagonal } , "Non square matrix, no determinant";
 
 ok $ut.is-upper-triangular,       "Is an upper triangular matrix";
 ok $diagonal.is-upper-triangular, "Diagonal are upper triangular";
