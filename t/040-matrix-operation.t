@@ -17,7 +17,7 @@ subtest {
     my $diagonal = Math::Matrix.diagonal([1,2,3]);
     my $matrixa  = Math::Matrix.new([[1,2,3],[2,4,6],[3,6,9]]);
     my $matrixb  = Math::Matrix.new([[1,2],[3,4]]);
-    my $expectb  = Math::Matrix.new([[-2,1],[1.5,-0.5]]);
+    my $expectb  = Math::Matrix.new([[-2, 1],[1.5, -0.5]]);
     my $matrixc  = Math::Matrix.new([[1,1,0],[0,1,1],[1,0,1]]);
     my $expectc  = Math::Matrix.new([[0.5,-.5,0.5],[0.5,.5,-0.5],[-0.5,0.5,0.5]]);
     my $expectd  = Math::Matrix.new([[1,0,0],[0,0.5,0],[0,0,1/3]]);
