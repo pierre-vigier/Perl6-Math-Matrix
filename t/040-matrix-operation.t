@@ -1,6 +1,6 @@
 use Test;
 use Math::Matrix;
-plan 7;
+plan 8;
 
 subtest {
     plan 2;
@@ -10,6 +10,26 @@ subtest {
     ok $matrix.T eq $expected, "Transposition result correct";
     ok $matrix.T.T eq $matrix, "Double tranposition does nothing";
 }, "Tranposition";
+
+subtest {
+    plan 7;
+    my $identity = Math::Matrix.identity(3);
+    my $diagonal = Math::Matrix.diagonal([1,2,3]);
+    my $matrixa  = Math::Matrix.new([[1,2,3],[2,4,6],[3,6,9]]);
+    my $matrixb  = Math::Matrix.new([[1,2],[3,4]]);
+    my $expectb  = Math::Matrix.new([[-2,1],[1.5,-.5]]);
+    my $matrixc  = Math::Matrix.new([[1,1,0],[0,1,1],[1,0,1]]);
+    my $expectc  = Math::Matrix.new([[0.5,-.5,.5],[0.5,.5,-.5],[-0.5,.5,.5]]);
+    my $expectd  = Math::Matrix.new([[1,0,0],[0,0.5,0],[0,0,1/3]]);
+ 
+    dies-ok Math::Matrix.zero(3,4),    "only square matrices can be inverted";
+    dies-ok $matrixa,                  "only none singular matrices can be inverted";
+    ok $matrixb.inverted eq $expectb,  "Inversion works correctly";
+    ok $matrixb.inverted.inverted eq $matrixb, "Double Inversion does nothing";
+    ok $identity.inverted eq $identity,"Inverted identity is identity";
+    ok $matrixc.inverted  eq $expectc, "Inversion works correctly";
+    ok $diagonal.inverted eq $expectd, "Inversion works correctly for diagonal";
+}, "Inversion";
 
 subtest {
     plan 5;

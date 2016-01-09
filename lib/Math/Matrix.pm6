@@ -24,7 +24,7 @@ method diagonal(Math::Matrix:U: @diag){
 method identity(Math::Matrix:U: Int $size) {
     my @identity;
     for ^$size X ^$size -> ($r, $c) {
-        @identity[$r][$c] = $r==$c??1!!0;
+        @identity[$r][$c] = ($r == $c ?? 1 !! 0);
     }
     self.bless( rows => @identity, row-count => $size, column-count => $size );
 }
@@ -93,7 +93,6 @@ method equal(Math::Matrix:D: Math::Matrix $b --> Bool) {
     self.rows ~~ $b.rows;
 }
 
-
 method is-zero(Math::Matrix:D: --> Bool) {
     for ^$.row-count X ^$.column-count -> ($r, $c) {
         return False unless @!rows[$r][$c] == 0;
@@ -110,7 +109,7 @@ method is-invertible(Math::Matrix:D: --> Bool) {
 }
 
 method is-identity(Math::Matrix:D: --> Bool) {
-    die "Number of columns is different from number of rows" unless self.is-square;
+    return False unless self.is-square;
     for ^$.row-count X ^$.row-count -> ($r, $c) {
         return False unless @!rows[$r][$c] == ($r == $c ?? 1 !! 0);
     }
@@ -118,7 +117,7 @@ method is-identity(Math::Matrix:D: --> Bool) {
 }
 
 method is-diagonal(Math::Matrix:D: --> Bool) {
-    die "Number of columns is different from number of rows" unless self.is-square;
+    return False unless self.is-square;
     for ^$.row-count X ^$.row-count -> ($r, $c) {
         return False if @!rows[$r][$c] != 0 and $r != $c;
     }
@@ -126,7 +125,7 @@ method is-diagonal(Math::Matrix:D: --> Bool) {
 }
 
 method is-upper-triangular(Math::Matrix:D: --> Bool) {
-    die "Number of columns is different from number of rows" unless self.is-square;
+    return False unless self.is-square;
     for ^$.row-count X ^$.row-count -> ($r, $c) {
         return False if @!rows[$r][$c] != 0 and $r > $c;
     }
@@ -134,7 +133,7 @@ method is-upper-triangular(Math::Matrix:D: --> Bool) {
 }
 
 method is-lower-triangular(Math::Matrix:D: --> Bool) {
-    die "Number of columns is different from number of rows" unless self.is-square;
+    return False unless self.is-square;
     for ^$.row-count X ^$.row-count -> ($r, $c) {
         return False if @!rows[$r][$c] != 0 and $r < $c;
     }
@@ -142,7 +141,7 @@ method is-lower-triangular(Math::Matrix:D: --> Bool) {
 }
 
 method is-symmetric(Math::Matrix:D: --> Bool) {
-    die "Number of columns is different from number of rows" unless self.is-square;
+    return False unless self.is-square;
     return True if $.row-count < 2;
     for ^($.row-count - 1) -> $r {
         for $r + 1 .. $.row-count - 1 -> $c {
@@ -153,15 +152,42 @@ method is-symmetric(Math::Matrix:D: --> Bool) {
 }
 
 method is-orthogonal(Math::Matrix:D: --> Bool) {
-    die "Number of columns is different from number of rows" unless self.is-square;
+    return False unless self.is-square;
     return self.dotProduct( self.T ) eqv Math::Matrix.identity( $.row-count );
 }
 
-
-method T(Math::Matrix:D: ) {
+method T(Math::Matrix:D: --> Math::Matrix:D  )         { self.transposed }
+method transposed(Math::Matrix:D: --> Math::Matrix:D ) {
     my @transposed;
-    for ^$!row-count X ^$!column-count -> ($x, $y) { @transposed[$y][$x] = @!rows[$x][$y] }
+    for ^$!row-count X ^$!column-count -> ($r, $c) { @transposed[$r][$c] = @!rows[$r][$c] }
     return Math::Matrix.new( @transposed );
+}
+
+method inverted(Math::Matrix:D: --> Math::Matrix:D) {
+    fail "Number of columns has to be same as number of rows" unless self.is-square;
+    fail "Matrix is not invertible, singular because defect (determinant = 0)" if self.determinant == 0;
+    my @clone = @!rows.clone;
+    my @inverted;
+    for ^$!row-count X ^$!column-count -> ($r, $c) { @inverted[$r][$c] = ($r == $c ?? 1 !! 0) }
+    for ^$!column-count -> $c {
+        my $swap_row_nr = $c;       # make sure that diagonal element != 0, later == 1
+        $swap_row_nr++ while @clone[$swap_row_nr][$c] == 0;
+        (@clone[$c], @clone[$swap_row_nr])       = (@clone[$swap_row_nr], @clone[$c]);
+        (@inverted[$c], @inverted[$swap_row_nr]) = (@inverted[$swap_row_nr], @inverted[$c]);
+        @inverted[$c] =  @inverted[$c] >>/>>  @clone[$c][$c];
+        @clone[$c]    =  @clone[$c]    >>/>>  @clone[$c][$c];
+        for $c + 1 ..^ $!row-count -> $r {
+            @inverted[$r] = @inverted[$r]  >>-<<  @clone[$r][$c] <<*<< @inverted[$c];
+            @clone[$r]    = @clone[$r]  >>-<<  @clone[$r][$c] <<*<< @clone[$c];
+        }
+    }
+    for reverse(1 ..^ $!column-count) -> $c {
+        for ^$c -> $r {
+            @inverted[$r] = @inverted[$r]  >>-<<  @clone[$r][$c] <<*<< @inverted[$c];
+            @clone[$r]    = @clone[$r]  >>-<<  @clone[$r][$c] <<*<< @clone[$c];
+        }
+    }
+    return Math::Matrix.new( @inverted );
 }
 
 multi method dotProduct(Math::Matrix:D: Math::Matrix $b ) {
@@ -212,7 +238,7 @@ multi method multiply(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b.
 }
 
 multi method determinant(Math::Matrix:D: --> Numeric) {
-    fail "Not square matrix" unless self.is-square;
+    fail "Number of columns has to be same as number of rows" unless self.is-square;
     return 1            if $!row-count == 0;
     return @!rows[0][0] if $!row-count == 1;
     if $!row-count == 2 {
@@ -391,6 +417,10 @@ use with consideration...
 =head2 method T
 
     return a new Matrix, which is the transposition of the current one
+
+=head2 method inverted
+
+    return a new Matrix, which is the inverted of the current one
 
 =head2 method dotProduct
 
