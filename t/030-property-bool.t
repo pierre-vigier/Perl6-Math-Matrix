@@ -1,6 +1,6 @@
 use Test;
 use Math::Matrix;
-plan 25;
+plan 26;
 
 my $matrixa = Math::Matrix.new([[1,2],[3,4]]);
 my $matrixc = Math::Matrix.new([[8,8],[8,8]]);
@@ -11,6 +11,10 @@ my $identity = Math::Matrix.identity(3);
 my $diagonal = Math::Matrix.diagonal([1,2,3]);
 my $ut = Math::Matrix.new([[1,2,3],[0,5,6],[0,0,6]]);
 my $lt = Math::Matrix.new([[1,0,0],[4,5,0],[4,5,6]]);
+my $symmetric = Math::Matrix.new([  [   1   ,   2   ,   3   ,   4   ],
+                                    [   2   ,   1   ,   5   ,   6   ],
+                                    [   3   ,   5   ,   1   ,   7   ],
+                                    [   4   ,   6   ,   7   ,   1   ]   ]   );
 
 
 ok $matrixa.is-square,    "Is a square matrix";
@@ -36,6 +40,7 @@ ok $identity.is-identity,  "Is a identity matrix";
 nok $diagonal.is-identity, "Is not a identity matrix";
 
 ok $diagonal.is-symmetric, "Is a symmetric matrix";
+ok $symmetric.is-symmetric,"Is a symmetric matrix";
 nok $matrixa.is-symmetric, "Is not a symmetric matrix";
 
 ok $identity.is-orthogonal, "Is a orthogonal matrix";

@@ -29,3 +29,5 @@ ok $identity eqv $expected, "Get identity matrix";
 my $diagonal = Math::Matrix.diagonal([1,2,3]);
 my $expectd   = Math::Matrix.new([[1,0,0],[0,2,0],[0,0,3]]);
 ok $diagonal eqv $expectd, "Get diagonal matrix";
+#TODO: reinstate test either in success or failure
+##my $diagonal2 = Math::Matrix.diagonal( 1, 2, 3 );
