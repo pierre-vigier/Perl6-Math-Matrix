@@ -301,6 +301,36 @@ multi method norm(Math::Matrix:D: Positive_Int $p = 2, Positive_Int $q = 1 --> N
     return $norm ** (1/$q);
 }
 
+multi method decopositionLUCrout(Math::Matrix:D: ) {
+    fail "Not square matrix" unless self.is-square;
+
+    my $sum;
+    my $size = self.row-count;
+    my $U = Math::Matrix.identity( $size );
+    my $L = Math::Matrix.zero( $size );
+
+    for 0 ..^$size -> $j {
+        for $j ..^$size -> $i {
+            $sum = 0;
+            for 0..^$j -> $k {
+                $sum += $L[$i][$k] * $U[$k][$j];
+            }
+            $L[$i][$j] = self[$i][$j] - $sum;
+        }
+        for $j ..^$size -> $i {
+            $sum = 0;
+            for 0..^$j -> $k {
+                $sum += $L[$j][$k] * $U[$k][$i]
+            }
+            if $L[$j][$j] == 0 {
+                fail "det(L) close to 0!\n Can't divide by 0...\n";
+            }
+            $U[$j][$i] = (self[$j][$i] - $sum) / $L[$j][$j];
+        }
+    }
+    return $L, $U;
+}
+
 multi sub infix:<⋅>( Math::Matrix $a, Math::Matrix $b where { $a.column-count == $b.row-count} --> Math::Matrix:D ) is export {
     $a.dotProduct( $b );
 }
