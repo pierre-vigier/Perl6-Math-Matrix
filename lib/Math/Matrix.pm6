@@ -350,11 +350,11 @@ multi sub infix:<->(Math::Matrix $a, Math::Matrix $b) is export {
     $a.subtract($b);
 }
 
-multi sub infix:<**>(Math::Matrix $a where { $a.is-square }, Int $e where * > -2) is export {
-    return $a.inverted                           if $e == -1;
+multi sub infix:<**>(Math::Matrix $a where { $a.is-square }, Int $e) is export {
     return Math::Matrix.identity( $a.row-count ) if $e ==  0;
     my $p = $a.clone;
-    $p = $p.dotProduct( $a ) while $e-- > 1;
+    $p = $p.dotProduct( $a ) for 2 .. abs $e;
+    $p = $p.inverted         if  $e < 0;
     return $p;
 }
 
