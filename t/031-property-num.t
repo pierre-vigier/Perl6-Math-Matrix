@@ -1,0 +1,91 @@
+use Test;
+use Math::Matrix;
+plan 7;
+
+
+subtest {
+    plan 2;
+    my $zero = Math::Matrix.zero(3,3);
+    my $matrixa = Math::Matrix.new([[1,2],[3,4]]);
+
+    ok $zero.size ==    (3,4),  "Right size";
+    ok $matrixa.size == (2,2),  "Right size too";
+}, "Size";
+
+subtest {
+    plan 5;
+    my $zero = Math::Matrix.zero(3,3);
+    my $identity = Math::Matrix.identity(3);
+    my $diagonal = Math::Matrix.diagonal([1,2,3]);
+    my $matrix = Math::Matrix.new([[1,2,5,4],[1,2,3,2],[9,8,4,1],[1,3,4,6]]);
+    my $matrix2 = Math::Matrix.new([[1,2,5,4],[1,2,3,2],[9,8,4,1]]);
+
+    dies-ok { $matrix2.determinant() } , "Non square matrix, no determinant";
+    ok $zero.determinant() == 0 , "Determinant of zero matrix is 0";
+    ok $identity.determinant() == 1 , "Determinant of identity matrix is 1";
+    ok $diagonal.determinant() == 6 , "det of diagonal matrix is product of diagonal elements";
+    ok $matrix.determinant() == -72 , "Determinant of a Matrix";
+}, "Determinant";
+
+subtest {
+    plan 2;
+    my $matrix = Math::Matrix.new([[1,2,5,4],[1,2,3,2],[9,8,4,1],[1,3,4,6]]);
+    ok $matrix.trace() == 13 , "Trace of a Matrix";
+    my $matrix2 = Math::Matrix.new([[1,2,5,4],[1,2,3,2],[9,8,4,1]]);
+    dies-ok { $matrix2.trace() } , "Non square matrix, no trace";
+}, "Trace";
+
+subtest {
+    plan 3;
+    my $zero = Math::Matrix.zero(3,4);
+    my $identity = Math::Matrix.identity(3);
+    my $matrix = Math::Matrix.new([[1,2,3],[2,4,6],[3,6,9]]);
+
+    ok $zero.density == 0         ,"Zero matrix has density of 0";
+    ok $identity.density == 1/3   ,"Identity matrix has density of 1/size";
+    ok $matrix.density == 1       ,"full matrix has density of 1";
+}, "Density";
+
+
+subtest {
+    plan 4;
+    my $zero = Math::Matrix.zero(3,4);
+    my $identity = Math::Matrix.identity(3);
+    my $diagonal = Math::Matrix.diagonal([1,2,3]);
+    my $matrix = Math::Matrix.new([[1,2,3],[2,4,6],[3,6,9]]);
+
+    ok $zero.rank == 0     ,"Rank of Zero Matrix";
+    ok $identity.rank == 3 ,"Identity has full rank";
+    ok $diagonal.rank == 3 ,"Diagonal has full rank";
+    ok $matrix.rank == 1   ,"Custom Matrinx with larger Kernel has lesser rank";
+}, "Rank";
+
+subtest {
+    plan 4;
+    my $zero = Math::Matrix.zero(3,4);
+    my $identity = Math::Matrix.identity(3);
+    my $diagonal = Math::Matrix.diagonal([1,2,3]);
+    my $matrix = Math::Matrix.new([[1,2,3],[2,4,6],[3,6,9]]);
+
+    ok $zero.kernel == 3     ,"Zero Matrix has full kernel";
+    ok $identity.kernel == 0 ,"Identity has no kernel";
+    ok $diagonal.kernel == 0 ,"Diagonal has no kernel";
+    ok $matrix.kernel == 2   ,"Custom Matrix with larger Kernel has lesser rank";
+}, "Kernel";
+
+subtest {
+    plan 8;
+    my $zero = Math::Matrix.zero(3,4);
+    my $identity = Math::Matrix.identity(3);
+    my $diagonal = Math::Matrix.diagonal([1,2,3]);
+    my $matrix = Math::Matrix.new([[1,2,3],[2,4,6],[3,6,9]]);
+
+    dies-ok { $zero.norm(0) }     ,"there is no 0 norm";
+    dies-ok { $zero.norm(1,0) }   ,"there is no n,0 norm";
+    dies-ok { $zero.norm(0.1) }   ,"only whole number norms";
+    dies-ok { $zero.norm(1,0.1) } ,"only whole number norms";
+    ok $zero.norm == 0            ,"Zero matrix is 0 in any norm";
+    ok $identity.norm == 3        ,"Identity matrix norm equals rank";
+    ok $diagonal.norm == 6        ,"Norm of diagonal matrix is equal trace in euclid space";
+    ok $matrix.norm(1,1) == 36    ,"1,1 norm is just sum of elements";
+}, "Norm";
