@@ -350,6 +350,15 @@ multi sub infix:<->(Math::Matrix $a, Math::Matrix $b) is export {
     $a.subtract($b);
 }
 
+multi sub infix:<**>(Math::Matrix $a where { $a.is-square }, Int $e where * > -2) is export {
+    return $a.inverted                           if $e == -1;
+    return Math::Matrix.identity( $a.row-count ) if $e ==  0;
+    my $p = $a.clone;
+    $p = $p.dotProduct( $a ) while $e-- > 1;
+    return $p;
+}
+
+
 =begin pod
 =head1 NAME
 Math::Matrix - Simple Matrix mathematics
@@ -476,6 +485,11 @@ use with consideration...
     my $tr = $matrix.trace( );
     Calculate the trace of a square matrix
 
+=head2 method density
+
+    my $dst = $matrix.density( );      #  number of none-zero values / all cells
+    useful to idenify sparse and full matrices
+
 =head2 method rank
 
     my $r = $matrix.rank( );
@@ -493,6 +507,5 @@ use with consideration...
     my $norm = $matrix.norm( );   # euclidian norm (L2, p = 2)
     my $norm = $matrix.norm(1);   # p-norm, L1 = sum of all cells
     my $norm = $matrix.norm(4,3); # p,q - norm, p = 4, q = 3   
-
 
 =end pod

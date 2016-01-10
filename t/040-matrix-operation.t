@@ -12,7 +12,7 @@ subtest {
 }, "Tranposition";
 
 subtest {
-    plan 7;
+    plan 8;
     my $identity = Math::Matrix.identity(3);
     my $diagonal = Math::Matrix.diagonal([1,2,3]);
     my $matrixa  = Math::Matrix.new([[1,2,3],[2,4,6],[3,6,9]]);
@@ -29,16 +29,21 @@ subtest {
     ok $identity.inverted eq $identity,"Inverted identity is identity";
     ok $matrixc.inverted  eq $expectc, "Inversion works correctly";
     ok $diagonal.inverted eq $expectd, "Inversion works correctly for diagonal";
+    ok $matrixb ** -1 eq $expectb,     "inverting by operator works too";
 }, "Inversion";
 
 subtest {
-    plan 5;
+    plan 7;
     my $a = Math::Matrix.new( [[1,2,3],[4,5,6]] );
     my $b = Math::Matrix.new( [[7,8],[9,10],[11,12]] );
+    my $matrix   = Math::Matrix.new([[1,2],[3,4]]);
 
     ok $a.dotProduct( $b ) eqv Math::Matrix.new([[58,64],[139,154]]), "Simple multiplication check";
-    ok ($a ⋅ $b) eqv Math::Matrix.new([[58,64],[139,154]]), "Simple multiplication check with ⋅ operator";
+    ok ($a ⋅ $b) eqv Math::Matrix.new([[58,64],[139,154]]),   "Simple multiplication check with ⋅ operator";
     ok ($a dot $b) eqv Math::Matrix.new([[58,64],[139,154]]), "Simple multiplication check with ⋅ operator, texas form";
+    ok $matrix ** 1 eq $matrix,                               "times one means no multiplication";
+    ok $matrix ** 2 eq $matrix dot $matrix,                   "power operator works too";
+    
 
     my $c = Math::Matrix.new( [[7,8],[9,10],[11,12],[13,14]] );
     dies-ok { $a ⋅ $c } , "Matrices can't be multiplied, first matrix column count should be equal to second matrix row count";
