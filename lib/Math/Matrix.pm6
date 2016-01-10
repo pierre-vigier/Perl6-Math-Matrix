@@ -275,10 +275,14 @@ multi method determinant(Math::Matrix:D: --> Numeric) {
 multi method trace(Math::Matrix:D: --> Numeric) {
     fail "Not square matrix" unless self.is-square;
     my $tr = 0;
-    for ^$!row-count -> $r {
-        $tr += @!rows[$r][$r];
-    }
+    for ^$!row-count -> $r { $tr += @!rows[$r][$r] }
     return $tr;
+}
+
+multi method density(Math::Matrix:D: --> Rat) {
+    my $valcount = 0;
+    for ^$.row-count X ^$.column-count -> ($r, $c) { $density++ if @!rows[$r][$c] != 0 }
+    return $valcount / ($.row-count * $.column-count);
 }
 
 multi method rank(Math::Matrix:D: --> Int) {
@@ -317,7 +321,6 @@ multi method norm(Math::Matrix:D: Pos_Int $p = 2, Pos_Int $q = 1 --> Numeric) {
     }
     return $norm ** (1/$q);   
 }
-
 
 multi sub infix:<⋅>( Math::Matrix $a, Math::Matrix $b where { $a.column-count == $b.row-count} ) is export {
     $a.dotProduct( $b );
