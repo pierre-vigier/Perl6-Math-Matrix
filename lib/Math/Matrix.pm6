@@ -281,7 +281,7 @@ multi method trace(Math::Matrix:D: --> Numeric) {
 
 multi method density(Math::Matrix:D: --> Rat) {
     my $valcount = 0;
-    for ^$.row-count X ^$.column-count -> ($r, $c) { $density++ if @!rows[$r][$c] != 0 }
+    for ^$.row-count X ^$.column-count -> ($r, $c) { $valcount++ if @!rows[$r][$c] != 0 }
     return $valcount / ($.row-count * $.column-count);
 }
 
