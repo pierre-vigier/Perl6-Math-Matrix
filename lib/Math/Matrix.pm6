@@ -12,7 +12,7 @@ method new( @r ) {
     self.bless( rows => @r , row-count => @r.elems, column-count => @r[0].elems );
 }
 
-method diagonal(Math::Matrix:U: @diag ){
+method diagonal(Math::Matrix:U: *@diag ){
     die "Expect an List of Number" unless @diag and [and] @diag >>~~>> Numeric;
     my @d;
     for ^+@diag X ^+@diag -> ($r, $c) {
@@ -392,7 +392,7 @@ use with consideration...
 
 =head2 method diagonal
 
-    my $matrix = Math::Matrix.diagonal([ 2, 4, 5 ]);
+    my $matrix = Math::Matrix.diagonal( 2, 4, 5 );
     This method is a constructor that returns an diagonal matrix of the size given 
     by count of the parameter.
     All the cells are set to 0 except the top/left to bottom/right diagonale, 
@@ -403,6 +403,12 @@ use with consideration...
     my $matrix = Math::Matrix.identity( 3 );
     This method is a constructor that returns an identity matrix of the size given in parameter
     All the cells are set to 0 except the top/left to bottom/right diagonale, set to 1
+
+=head2 method zero
+
+    my $matrix = Math::Matrix.zero( 3, 4 );
+    This method is a constructor that returns an zero matrix of the size given in parameter.
+    If only one parameter is given, the matrix is quadratic. All the cells are set to 0.
 
 =head2 method equal
 
