@@ -4,24 +4,24 @@ has @.rows is required;
 has Int $.row-count;
 has Int $.column-count;
 
-subset Pos_Int of Int where * > 0 ;
+subset Positive_Int of Int where * > 0 ;
 
-multi method new( @r ) {
+method new( @r ) {
     die "Expect an Array of Array" unless all @r ~~ Array;
     die "All Row must contains the same number of elements" unless @r[0] == all @r[*];
     self.bless( rows => @r , row-count => @r.elems, column-count => @r[0].elems );
 }
 
-method diagonal(Math::Matrix:U: @diag){
-    die "Expect an List of Number" unless +@diag > 0 and [and] @diag >>~~>> Numeric;
+method diagonal(Math::Matrix:U: @diag ){
+    die "Expect an List of Number" unless @diag and [and] @diag >>~~>> Numeric;
     my @d;
     for ^+@diag X ^+@diag -> ($r, $c) {
         @d[$r][$c] = $r==$c ?? @diag[$r] !! 0;
     }
-    self.bless( rows => @d, row-count => +@diag, column-count => +@diag );
+    self.bless( rows => @d, row-count => @diag.elems, column-count => @diag.elems );
 }
 
-method identity(Math::Matrix:U: Int $size) {
+method identity(Math::Matrix:U: Positive_Int $size ) {
     my @identity;
     for ^$size X ^$size -> ($r, $c) {
         @identity[$r][$c] = ($r == $c ?? 1 !! 0);
@@ -88,7 +88,6 @@ multi method size(Math::Matrix:D: ){
     return $.row-count, $.column-count;
 }
 
-
 method equal(Math::Matrix:D: Math::Matrix $b --> Bool) {
     self.rows ~~ $b.rows;
 }
@@ -144,7 +143,7 @@ method is-symmetric(Math::Matrix:D: --> Bool) {
     return False unless self.is-square;
     return True if $.row-count < 2;
     for ^($.row-count - 1) -> $r {
-        for $r + 1 .. $.row-count - 1 -> $c {
+        for $r ^..^ $.row-count -> $c {
             return False unless @!rows[$r][$c] == @!rows[$c][$r];
         }
     }
@@ -190,7 +189,7 @@ method inverted(Math::Matrix:D: --> Math::Matrix:D) {
     return Math::Matrix.new( @inverted );
 }
 
-multi method dotProduct(Math::Matrix:D: Math::Matrix $b ) {
+multi method dotProduct(Math::Matrix:D: Math::Matrix $b --> Math::Matrix:D ) {
     my @product;
     die "Number of columns of the second matrix is different from number of rows of the first operand" unless self.column-count == $b.row-count;
     for ^$.row-count X ^$b.column-count -> ($r, $c) {
@@ -199,21 +198,21 @@ multi method dotProduct(Math::Matrix:D: Math::Matrix $b ) {
     return Math::Matrix.new( @product );;
 }
 
-multi method multiply(Math::Matrix:D: Real $r ) {
+multi method multiply(Math::Matrix:D: Real $r --> Math::Matrix:D ) {
     self.apply( * * $r );
 }
 
-method apply(Math::Matrix:D: &coderef) {
+method apply(Math::Matrix:D: &coderef --> Math::Matrix:D ) {
     return Math::Matrix.new( [ @.rows.map: {
             [ $_.map( &coderef ) ]
     } ] );
 }
 
-method negative() {
+method negative(Math::Matrix:D: --> Math::Matrix:D ) {
     self.apply( - * );
 }
 
-method add(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b.row-count and $!column-count == $b.column-count } ) {
+method add(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b.row-count and $!column-count == $b.column-count } --> Math::Matrix:D ) {
     my @sum;
     for ^$!row-count X ^$b.column-count -> ($r, $c) {
         @sum[$r][$c] = @!rows[$r][$c] + $b.rows[$r][$c];
@@ -221,7 +220,7 @@ method add(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b.row-count a
     return Math::Matrix.new( @sum );
 }
 
-method subtract(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b.row-count and $!column-count == $b.column-count } ) {
+method subtract(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b.row-count and $!column-count == $b.column-count } --> Math::Matrix:D ) {
     my @subtract;
     for ^$!row-count X ^$b.column-count -> ($r, $c) {
         @subtract[$r][$c] = @!rows[$r][$c] - $b.rows[$r][$c];
@@ -229,7 +228,7 @@ method subtract(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b.row-co
     return Math::Matrix.new( @subtract );
 }
 
-multi method multiply(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b.row-count and $!column-count == $b.column-count } ) {
+multi method multiply(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b.row-count and $!column-count == $b.column-count } --> Math::Matrix:D ) {
     my @multiply;
     for ^$!row-count X ^$b.column-count -> ($r, $c) {
         @multiply[$r][$c] = @!rows[$r][$c] * $b.rows[$r][$c];
@@ -262,7 +261,7 @@ multi method determinant(Math::Matrix:D: --> Numeric) {
                 }
                 @intermediate.push( [@r] );
             }
-            if $x %% 2 { 
+            if $x %% 2 {
                 $det += @!rows[0][$x] * Math::Matrix.new( @intermediate ).determinant();
             } else {
                 $det -= @!rows[0][$x] * Math::Matrix.new( @intermediate ).determinant();
@@ -310,7 +309,7 @@ multi method kernel(Math::Matrix:D: --> Int) {
     return min(self.size) - self.rank;
 }
 
-multi method norm(Math::Matrix:D: Pos_Int $p = 2, Pos_Int $q = 1 --> Numeric) {
+multi method norm(Math::Matrix:D: Positive_Int $p = 2, Positive_Int $q = 1 --> Numeric) {
     my $norm = 0;
     for ^$!column-count -> $col {
         my $col_value = 0;
@@ -319,38 +318,38 @@ multi method norm(Math::Matrix:D: Pos_Int $p = 2, Pos_Int $q = 1 --> Numeric) {
         }
         $norm += $col_value ** ($q / $p);
     }
-    return $norm ** (1/$q);   
+    return $norm ** (1/$q);
 }
 
-multi sub infix:<⋅>( Math::Matrix $a, Math::Matrix $b where { $a.column-count == $b.row-count} ) is export {
+multi sub infix:<⋅>( Math::Matrix $a, Math::Matrix $b where { $a.column-count == $b.row-count} --> Math::Matrix:D ) is export {
     $a.dotProduct( $b );
 }
 
-multi sub infix:<dot>(Math::Matrix $a, Math::Matrix $b) is export {
+multi sub infix:<dot>(Math::Matrix $a, Math::Matrix $b --> Math::Matrix:D ) is export {
     $a ⋅ $b;
 }
 
-multi sub infix:<*>(Math::Matrix $a, Real $r) is export {
+multi sub infix:<*>(Math::Matrix $a, Real $r --> Math::Matrix:D ) is export {
     $a.multiply( $r );
 }
 
-multi sub infix:<*>(Real $r, Math::Matrix $a) is export {
+multi sub infix:<*>(Real $r, Math::Matrix $a --> Math::Matrix:D ) is export {
     $a.multiply( $r );
 }
 
-multi sub infix:<*>(Math::Matrix $a, Math::Matrix $b  where { $a.row-count == $b.row-count and $a.column-count == $b.column-count}) is export {
+multi sub infix:<*>(Math::Matrix $a, Math::Matrix $b  where { $a.row-count == $b.row-count and $a.column-count == $b.column-count} --> Math::Matrix:D ) is export {
     $a.multiply( $b );
 }
 
-multi sub infix:<+>(Math::Matrix $a, Math::Matrix $b) is export {
+multi sub infix:<+>(Math::Matrix $a, Math::Matrix $b --> Math::Matrix:D ) is export {
     $a.add($b);
 }
 
-multi sub infix:<->(Math::Matrix $a, Math::Matrix $b) is export {
+multi sub infix:<->(Math::Matrix $a, Math::Matrix $b --> Math::Matrix:D ) is export {
     $a.subtract($b);
 }
 
-multi sub infix:<**>(Math::Matrix $a where { $a.is-square }, Int $e) is export {
+multi sub infix:<**>(Math::Matrix $a where { $a.is-square }, Int $e --> Math::Matrix:D ) is export {
     return Math::Matrix.identity( $a.row-count ) if $e ==  0;
     my $p = $a.clone;
     $p = $p.dotProduct( $a ) for 2 .. abs $e;

@@ -4,12 +4,15 @@ plan 7;
 
 
 subtest {
-    plan 2;
+    plan 4;
     my $zero = Math::Matrix.zero(3,3);
     my $matrixa = Math::Matrix.new([[1,2],[3,4]]);
+    my $matrixb = Math::Matrix.new([[1,2],[3,4],[5,6]]);
 
-    ok $zero.size ==    (3,4),  "Right size";
-    ok $matrixa.size == (2,2),  "Right size too";
+    ok $zero.size eqv    (3,3),  "Right size";
+    ok $matrixa.size eqv (2,2),  "Right size too";
+    nok $matrixa.size eqv (5,5), "Wrong size";
+    ok $matrixb.size eqv (3,2),  "Non square matrix, right size";
 }, "Size";
 
 subtest {
