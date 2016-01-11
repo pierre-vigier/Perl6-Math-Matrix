@@ -49,7 +49,7 @@ method equal
 ------------
 
     if $matrixa.equal( $matrixb ) {
-    if $matrixa eqv $matrixb {
+    if $matrixa ~~ $matrixb {
 
     Checks two matrices for Equality
 
