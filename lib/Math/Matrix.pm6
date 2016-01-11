@@ -60,6 +60,10 @@ multi method perl(Math::Matrix:D: ) {
     self.WHAT.perl ~ ".new(" ~ @!rows.perl ~ ")";
 }
 
+method ACCEPTS(Math::Matrix $b --> Bool ) {
+    return self.equal( $b );
+}
+
 multi method size(Math::Matrix:D: ){
     return $.row-count, $.column-count;
 }
@@ -128,7 +132,7 @@ method is-symmetric(Math::Matrix:D: --> Bool) {
 
 method is-orthogonal(Math::Matrix:D: --> Bool) {
     return False unless self.is-square;
-    return self.dotProduct( self.T ) eqv Math::Matrix.identity( $.row-count );
+    return self.dotProduct( self.T ) ~~ Math::Matrix.identity( $.row-count );
 }
 
 method T(Math::Matrix:D: --> Math::Matrix:D  )         { self.transposed }
@@ -378,7 +382,7 @@ use with consideration...
 =head2 method equal
 
     if $matrixa.equal( $matrixb ) {
-    if $matrixa eqv $matrixb {
+    if $matrixa ~~ $matrixb {
 
     Checks two matrices for Equality
 
