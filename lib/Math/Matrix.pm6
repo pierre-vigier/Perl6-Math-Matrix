@@ -12,7 +12,7 @@ method new( @r ) {
     self.bless( rows => @r , row-count => @r.elems, column-count => @r[0].elems );
 }
 
-method diagonal(Math::Matrix:U: @diag ){
+method diagonal(Math::Matrix:U: *@diag ){
     die "Expect an List of Number" unless @diag and [and] @diag >>~~>> Numeric;
     my @d;
     for ^+@diag X ^+@diag -> ($r, $c) {
@@ -337,6 +337,11 @@ multi sub infix:<**>(Math::Matrix $a where { $a.is-square }, Int $e --> Math::Ma
     return $p;
 }
 
+multi sub circumfix:<|| ||>(Math::Matrix $a --> Numeric) is export {
+    return $a.norm();
+}
+
+
 
 =begin pod
 =head1 NAME
@@ -379,6 +384,12 @@ use with consideration...
     This method is a constructor that returns an identity matrix of the size given in parameter
     All the cells are set to 0 except the top/left to bottom/right diagonale, set to 1
 
+=head2 method zero
+
+    my $matrix = Math::Matrix.zero( 3, 4 );
+    This method is a constructor that returns an zero matrix of the size given in parameter.
+    If only one parameter is given, the matrix is quadratic. All the cells are set to 0.
+
 =head2 method equal
 
     if $matrixa.equal( $matrixb ) {
@@ -405,7 +416,7 @@ use with consideration...
     Is True if the matrix multiplied (dotProduct) with its transposed version (T)
     is an identity matrix.
 
-=head2 method T
+=head2 method transposed, alias T
 
     return a new Matrix, which is the transposition of the current one
 
@@ -420,6 +431,11 @@ use with consideration...
     Call be called throug operator ⋅ or dot , like following:
     my $c = $a ⋅ $b ;
     my $c = $a dot $b ;
+
+    A shortcut for multiplication is the power - operator **
+    my $c = $a **  3;      # same as $a dot $a dot $a
+    my $c = $a ** -3;      # same as ($a dot $a dot $a).inverted
+    my $c = $a **  0;      # created an right sized identity matrix
 
     Matrix can be multiplied by a Real as well, and with operator *
     my $c = $a.multiply( 2.5 );
@@ -484,6 +500,7 @@ use with consideration...
 =head2 method norm
 
     my $norm = $matrix.norm( );   # euclidian norm (L2, p = 2)
+    my $norm = ||$matrix||;       # operator shortcut to do the same
     my $norm = $matrix.norm(1);   # p-norm, L1 = sum of all cells
     my $norm = $matrix.norm(4,3); # p,q - norm, p = 4, q = 3   
 
