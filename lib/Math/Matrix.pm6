@@ -37,39 +37,15 @@ method zero(Math::Matrix:U: Int $rows, Int $cols = $rows) {
     self.bless( rows => @zero, row-count => $rows, column-count => $cols );
 }
 
-my class Row {
-    has $.cells;
-
-    multi method new( $c is rw ) {
-        self.bless( cells => $c );
-    }
-
-    multi method elems(Row:D:) {
-        $!cells.elems;
-    }
-
-    multi method AT-POS(Row:D: Int $index) {
-        $!cells.elems;
-        fail X::OutOfRange.new(
-            :what<Column index> , :got($index), :range("0..{$!cells.elems - 1}")
-        ) unless 0 <= $index < $!cells.elems;
-        return-rw $!cells[$index];
-    }
-
-    multi method EXISTS-POS( Row:D: $index ) {
-        return 0 <= $index < $!cells.elems;
-    }
-};
-
 multi method elems(Math::Matrix:D: ) {
-    @!rows.elems;
+    $!row-count * $!column-count;
 }
 
 multi method AT-POS( Math::Matrix:D: Int $index ) {
     fail X::OutOfRange.new(
         :what<Row index> , :got($index), :range("0..{$.row-count -1 }")
     ) unless 0 <= $index < $.row-count;
-    return Row.new( @!rows[$index] );
+    return @!rows[$index];
 }
 
 multi method EXISTS-POS( Math::Matrix:D: $index ) {
