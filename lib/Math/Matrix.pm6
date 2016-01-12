@@ -144,11 +144,11 @@ method transposed(Math::Matrix:D: --> Math::Matrix:D ) {
 
 method inverted(Math::Matrix:D: --> Math::Matrix:D) {
     fail "Number of columns has to be same as number of rows" unless self.is-square;
-    fail "Matrix is not invertible, singular because defect (determinant = 0)" if self.determinant == 0;
+    fail "Matrix is not invertible, or singular because defect (determinant = 0)" if self.determinant == 0;
     my @clone = @!rows.clone;
     my @inverted;
     for ^$!row-count X ^$!column-count -> ($r, $c) { @inverted[$r][$c] = ($r == $c ?? 1 !! 0) }
-    for ^$!column-count -> $c {
+    for ^$!row-count -> $c {
         my $swap_row_nr = $c;       # make sure that diagonal element != 0, later == 1
         $swap_row_nr++ while @clone[$swap_row_nr][$c] == 0;
         (@clone[$c], @clone[$swap_row_nr])       = (@clone[$swap_row_nr], @clone[$c]);
@@ -261,7 +261,7 @@ multi method trace(Math::Matrix:D: --> Numeric) {
 multi method density(Math::Matrix:D: --> Rat) {
     my $valcount = 0;
     for ^$.row-count X ^$.column-count -> ($r, $c) { $valcount++ if @!rows[$r][$c] != 0 }
-    return $valcount / ($.row-count * $.column-count);
+    return $valcount / self.elems;
 }
 
 multi method rank(Math::Matrix:D: --> Int) {
@@ -277,7 +277,7 @@ P:  while shift @nz -> $p {
             $cmp_col++ while $p[$cmp_col] == 0 and $cmp_row[$cmp_col] == 0;
             next          if $p[$cmp_col] == 0 or  $cmp_row[$cmp_col] == 0;
             my $q =          $p[$cmp_col]    /     $cmp_row[$cmp_col];
-            my $diff =       $p  >>-<<   ($q <<*<< $cmp_row);
+            my $diff =       $p   >>-<<   $q <<*<< $cmp_row;
             next P        if [and]($diff.flat X== 0);
         }
         $rank++;
