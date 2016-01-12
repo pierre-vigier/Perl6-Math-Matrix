@@ -42,8 +42,8 @@ method zero(Math::Matrix:U: Positive_Int $rows, Positive_Int $cols = $rows) {
     self.bless( rows => self!zero_array($rows, $cols), row-count => $rows, column-count => $cols );
 }
 
-#multi method elems(Math::Matrix:D: ) {
-    #$!row-count * $!column-count;
+#multi method elems(Math::Matrix:D: --> Int) {
+#    $!row-count * $!column-count;
 #}
 
 #my role immutable_list {
@@ -283,11 +283,7 @@ multi method trace(Math::Matrix:D: --> Numeric) {
 multi method density(Math::Matrix:D: --> Rat) {
     my $valcount = 0;
     for ^$.row-count X ^$.column-count -> ($r, $c) { $valcount++ if @!rows[$r][$c] != 0 }
-<<<<<<< HEAD
-    return $valcount / self.elems;
-=======
     $valcount / ($.row-count * $.column-count);
->>>>>>> 099a9e51230129ac57403ff45bf8f752bb4e48ea
 }
 
 multi method rank(Math::Matrix:D: --> Int) {
@@ -317,12 +313,12 @@ multi method kernel(Math::Matrix:D: --> Int) {
 
 multi method norm(Math::Matrix:D: Positive_Int $p = 2, Positive_Int $q = 1 --> Numeric) {
     my $norm = 0;
-    for ^$!column-count -> $col {
-        my $col_value = 0;
-        for ^$!row-count -> $row {
-            $col_value += abs(@!rows[$row][$col]) ** $p;
+    for ^$!column-count -> $c {
+        my $col_sum = 0;
+        for ^$!row-count -> $r {
+            $col_sum += abs(@!rows[$r][$c]) ** $p;
         }
-        $norm += $col_value ** ($q / $p);
+        $norm += $col_sum ** ($q / $p);
     }
     $norm ** (1/$q);
 }
@@ -332,11 +328,11 @@ multi method norm(Math::Matrix:D: Str $which where * eq 'rowsum' --> Numeric) {
 }
 
 multi method norm(Math::Matrix:D: Str $which where * eq 'columnsum' --> Numeric) {
-    max map {my $c = $_;[+] map {abs $_[$c]}, @!row}, ^$!column-count;
+    max map {my $c = $_; [+](map {abs $_[$c]}, @!rows) }, ^$!column-count;
 }
 
-multi method norm(Math::Matrix:D: Str $which where * eq 'columnsum' --> Numeric) {
-    max map {max map {abs $_},  @$_}, @!rows;;
+multi method norm(Math::Matrix:D: Str $which where * eq 'max' --> Numeric) {
+    max map {max map {abs $_},  @$_}, @!rows;
 }
 
 multi method decopositionLUCrout(Math::Matrix:D: ) {
@@ -567,9 +563,13 @@ use with consideration...
 
 =head2 method norm
 
-    my $norm = $matrix.norm( );   # euclidian norm (L2, p = 2)
-    my $norm = ||$matrix||;       # operator shortcut to do the same
-    my $norm = $matrix.norm(1);   # p-norm, L1 = sum of all cells
-    my $norm = $matrix.norm(4,3); # p,q - norm, p = 4, q = 3
+    my $norm = $matrix.norm( );    # euclidian norm (L2, p = 2)
+    my $norm = ||$matrix||;        # operator shortcut to do the same
+    my $norm = $matrix.norm(1);    # p-norm, L1 = sum of all cells
+    my $norm = $matrix.norm(4,3);  # p,q - norm, p = 4, q = 3
+    my $norm = $matrix.norm(2,2);  # Frobenius norm
+    my $norm = $matrix.norm('max');# max norm - biggest absolute value of a cell
+    $matrix.norm('rowsum');        # row sum norm - biggest abs. value-sum of a row
+    $matrix.norm('columnsum');     # column sum norm - same column wise
 
 =end pod
