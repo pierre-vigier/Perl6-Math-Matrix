@@ -301,6 +301,18 @@ multi method norm(Math::Matrix:D: Positive_Int $p = 2, Positive_Int $q = 1 --> N
     $norm ** (1/$q);
 }
 
+multi method norm(Math::Matrix:D: Str $which where * eq 'rowsum' --> Numeric) {
+    max map {[+] map {abs $_}, @$_}, @!rows;
+}
+
+multi method norm(Math::Matrix:D: Str $which where * eq 'columnsum' --> Numeric) {
+    max map {my $c = $_;[+] map {abs $_[$c]}, @!row}, ^$!column-count;
+}
+
+multi method norm(Math::Matrix:D: Str $which where * eq 'columnsum' --> Numeric) {
+    max map {max map {abs $_},  @$_}, @!rows;;
+}
+
 multi method decopositionLUCrout(Math::Matrix:D: ) {
     fail "Not square matrix" unless self.is-square;
 
