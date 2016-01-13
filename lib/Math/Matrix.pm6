@@ -289,7 +289,8 @@ multi method density(Math::Matrix:D: --> Rat) {
 multi method rank(Math::Matrix:D: --> Int) {
     my $rank = 0;
     my @clone =  @!rows.clone();
-    for ^$!column-count -> $c {
+    for ^$!column-count -> $c {            # make upper triangle via gauss elimination
+        last if $rank == $!row-count;      # rank cant get bigger thean dim
         my $swap_row_nr = $rank;
         $swap_row_nr++ while @clone[$swap_row_nr][$c] == 0 and $swap_row_nr < $!row-count;
         next if $swap_row_nr == $.row-count;
