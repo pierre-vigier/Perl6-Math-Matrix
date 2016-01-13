@@ -244,11 +244,11 @@ multi method determinant(Math::Matrix:D: --> Numeric) {
     return @!rows[0][0] if $!row-count == 1;
     my $det = 0;
     for (permutations +@!rows).kv ->  $nr, $perm {
-        my $product = (-1)**($nr + ($nr div 2 % 2) );
-        $product *= $a[$_][ $perm[$_] ] for ^+$perm;
+        my $product = ($nr + $nr div 2) %% 2 ?? 1 !! -1;   # signum
+        $product *= $rows[$_][ $perm[$_] ] for ^+$perm;
         $det += $product;
     }
-    return $det;
+    $det;
 }
 
 multi method trace(Math::Matrix:D: --> Numeric) {
