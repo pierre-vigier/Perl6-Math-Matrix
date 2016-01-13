@@ -309,7 +309,7 @@ multi method norm(Math::Matrix:D: Str $which where * eq 'columnsum' --> Numeric)
     max map {my $c = $_;[+] map {abs $_[$c]}, @!row}, ^$!column-count;
 }
 
-multi method norm(Math::Matrix:D: Str $which where * eq 'columnsum' --> Numeric) {
+multi method norm(Math::Matrix:D: Str $which where * eq 'max' --> Numeric) {
     max map {max map {abs $_},  @$_}, @!rows;;
 }
 
