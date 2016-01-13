@@ -36,8 +36,10 @@ ok $diagonal.is-lower-triangular, "Diagonal are lower triangular";
 nok $matrixc.is-lower-triangular, "Is not an lower diagonal matrix";
 nok $ut.is-lower-triangular,      "upper is no lower triangular matrix";
 
-ok $identity.is-identity,  "Is a identity matrix";
-nok $diagonal.is-identity, "Is not a identity matrix";
+my $almostidentity = Math::Matrix.new([ [ 1, 0, 0 ], [ 0, 1, 0 ] ]);
+ok $identity.is-identity,        "Is an identity matrix";
+nok $diagonal.is-identity,       "Is not an identity matrix";
+nok $almostidentity.is-identity, "Is not an identity matrix";
 
 ok $diagonal.is-symmetric, "Is a symmetric matrix";
 ok $symmetric.is-symmetric,"Is a symmetric matrix";
