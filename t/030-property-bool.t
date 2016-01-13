@@ -1,6 +1,6 @@
 use Test;
 use Math::Matrix;
-plan 26;
+plan 27;
 
 my $matrixa = Math::Matrix.new([[1,2],[3,4]]);
 my $matrixc = Math::Matrix.new([[8,8],[8,8]]);
