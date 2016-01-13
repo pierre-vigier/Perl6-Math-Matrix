@@ -288,19 +288,16 @@ multi method density(Math::Matrix:D: --> Rat) {
 
 multi method rank(Math::Matrix:D: --> Int) {
     my $rank = 0;
-    my @nz;  # none zero rows
-    for @!rows -> $r {
-        push @nz, $r unless [and]($r.flat X== 0);
-    }
-    return $rank unless @nz;
-P:  while shift @nz -> $p {
-        for @nz -> $cmp_row {
-            my $cmp_col = 0;
-            $cmp_col++ while $p[$cmp_col] == 0 and $cmp_row[$cmp_col] == 0;
-            next          if $p[$cmp_col] == 0 or  $cmp_row[$cmp_col] == 0;
-            my $q =          $p[$cmp_col]    /     $cmp_row[$cmp_col];
-            my $diff =       $p   >>-<<   $q <<*<< $cmp_row;
-            next P        if [and]($diff.flat X== 0);
+    my @clone =  @!rows.clone();
+    for ^$!column-count -> $c {
+        my $swap_row_nr = $rank;
+        $swap_row_nr++ while @clone[$swap_row_nr][$c] == 0 and $swap_row_nr < $!row-count;
+        next if $swap_row_nr == $.row-count;
+        (@clone[$rank], @clone[$swap_row_nr]) = (@clone[$swap_row_nr], @clone[$rank]);
+        for $rank + 1 ..^ $!row-count -> $r {
+            next if $clone[$r][$c] == 0;
+            my $q = $clone[$rank][$c] / $clone[$r][$c];
+            my $clone[$r] = $clone[$rank] >>-<< $q <<*<< $clone[$r];
         }
         $rank++;
     }
