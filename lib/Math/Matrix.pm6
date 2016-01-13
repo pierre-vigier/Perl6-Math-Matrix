@@ -292,7 +292,7 @@ multi method rank(Math::Matrix:D: --> Int) {
     for ^$!column-count -> $c {            # make upper triangle via gauss elimination
         last if $rank == $!row-count;      # rank cant get bigger thean dim
         my $swap_row_nr = $rank;
-        $swap_row_nr++ while @clone[$swap_row_nr][$c] == 0 and $swap_row_nr < $!row-count;
+        $swap_row_nr++ while $swap_row_nr < $!row-count and @clone[$swap_row_nr][$c] == 0;
         next if $swap_row_nr == $.row-count;
         (@clone[$rank], @clone[$swap_row_nr]) = (@clone[$swap_row_nr], @clone[$rank]);
         for $rank + 1 ..^ $!row-count -> $r {
