@@ -6,10 +6,11 @@ has Int $.column-count;
 
 subset Positive_Int of Int where * > 0 ;
 
-method new( @r ) {
-    die "Expect an Array of Array" unless all @r ~~ Array;
-    die "All Row must contains the same number of elements" unless @r[0] == all @r[*];
-    self.bless( rows => @r , row-count => @r.elems, column-count => @r[0].elems );
+method new( @m ) {
+    die "Expect an Array of Array" unless all @m ~~ Array;
+    die "All Row must contains the same number of elements" unless @m[0] == all @m[*];
+    die "All Row must contains only numeric values" unless all( @m[*;*] ) ~~ Numeric;
+    self.bless( rows => @m , row-count => @m.elems, column-count => @m[0].elems );
 }
 
 method diagonal(Math::Matrix:U: *@diag ){
@@ -21,35 +22,56 @@ method diagonal(Math::Matrix:U: *@diag ){
     self.bless( rows => @d, row-count => @diag.elems, column-count => @diag.elems );
 }
 
-method identity(Math::Matrix:U: Positive_Int $size ) {
+method !identity_array( Positive_Int $size ) {
     my @identity;
     for ^$size X ^$size -> ($r, $c) {
         @identity[$r][$c] = ($r == $c ?? 1 !! 0);
     }
-    self.bless( rows => @identity, row-count => $size, column-count => $size );
+    return @identity;
 }
 
-method zero(Math::Matrix:U: Int $rows, Int $cols = $rows) {
-    my @zero;
-    for ^$rows X ^$cols -> ($r, $c) {
-        @zero[$r][$c] = 0;
-    }
-    self.bless( rows => @zero, row-count => $rows, column-count => $cols );
+method identity(Math::Matrix:U: Positive_Int $size ) {
+    self.bless( rows => self!identity_array($size), row-count => $size, column-count => $size );
 }
 
-multi method elems(Math::Matrix:D: ) {
-    $!row-count * $!column-count;
+method !zero_array( Positive_Int $rows, Positive_Int $cols = $rows ) {
+    return [ [ 0 xx $cols ] xx $rows ];
 }
 
-multi method AT-POS( Math::Matrix:D: Int $index ) {
+method zero(Math::Matrix:U: Positive_Int $rows, Positive_Int $cols = $rows) {
+    self.bless( rows => self!zero_array($rows, $cols), row-count => $rows, column-count => $cols );
+}
+
+#multi method elems(Math::Matrix:D: --> Int) {
+#    $!row-count * $!column-count;
+#}
+
+#my role immutable_list {
+    #method ASSIGN-POS(|) { fail "immutable!" };
+#}
+
+#multi method AT-POS( Math::Matrix:D: Int $index ) {
+    #fail X::OutOfRange.new(
+        #:what<Row index> , :got($index), :range("0..{$.row-count -1 }")
+    #) unless 0 <= $index < $.row-count;
+    #my $row = @!rows[$index].List;
+    ##my $row = @!rows[$index];
+    ##$row does immutable_list;
+    #return $row;
+#}
+
+#multi method EXISTS-POS( Math::Matrix:D: $index ) {
+    #return 0 <= $index < $.row-count;
+#}
+
+multi method cell(Math::Matrix:D: Int $row, Int $column --> Numeric ) {
     fail X::OutOfRange.new(
-        :what<Row index> , :got($index), :range("0..{$.row-count -1 }")
-    ) unless 0 <= $index < $.row-count;
-    return @!rows[$index];
-}
-
-multi method EXISTS-POS( Math::Matrix:D: $index ) {
-    return 0 <= $index < $.row-count;
+        :what<Row index> , :got($row), :range("0..{$.row-count -1 }")
+    ) unless 0 <= $row < $.row-count;
+    fail X::OutOfRange.new(
+        :what<Column index> , :got($column), :range("0..{$.column-count -1 }")
+    ) unless 0 <= $column < $.column-count;
+    return @!rows[$row][$column];
 }
 
 multi method Str(Math::Matrix:D: ) {
@@ -144,11 +166,11 @@ method transposed(Math::Matrix:D: --> Math::Matrix:D ) {
 
 method inverted(Math::Matrix:D: --> Math::Matrix:D) {
     fail "Number of columns has to be same as number of rows" unless self.is-square;
-    fail "Matrix is not invertible, singular because defect (determinant = 0)" if self.determinant == 0;
+    fail "Matrix is not invertible, or singular because defect (determinant = 0)" if self.determinant == 0;
     my @clone = @!rows.clone;
     my @inverted;
     for ^$!row-count X ^$!column-count -> ($r, $c) { @inverted[$r][$c] = ($r == $c ?? 1 !! 0) }
-    for ^$!column-count -> $c {
+    for ^$!row-count -> $c {
         my $swap_row_nr = $c;       # make sure that diagonal element != 0, later == 1
         $swap_row_nr++ while @clone[$swap_row_nr][$c] == 0;
         (@clone[$c], @clone[$swap_row_nr])       = (@clone[$swap_row_nr], @clone[$c]);
@@ -221,7 +243,7 @@ multi method determinant(Math::Matrix:D: --> Numeric) {
     return 1            if $!row-count == 0;
     return @!rows[0][0] if $!row-count == 1;
     if $!row-count == 2 {
-        return @!rows[0][0] * @!rows[1][1] 
+        return @!rows[0][0] * @!rows[1][1]
              - @!rows[0][1] * @!rows[1][0];
     } elsif $!row-count == 3 {
         return @!rows[0][0] * @!rows[1][1] * @!rows[2][2]
@@ -291,12 +313,12 @@ multi method kernel(Math::Matrix:D: --> Int) {
 
 multi method norm(Math::Matrix:D: Positive_Int $p = 2, Positive_Int $q = 1 --> Numeric) {
     my $norm = 0;
-    for ^$!column-count -> $col {
-        my $col_value = 0;
-        for ^$!row-count -> $row {
-            $col_value += abs(@!rows[$row][$col]) ** $p;
+    for ^$!column-count -> $c {
+        my $col_sum = 0;
+        for ^$!row-count -> $r {
+            $col_sum += abs(@!rows[$r][$c]) ** $p;
         }
-        $norm += $col_value ** ($q / $p);
+        $norm += $col_sum ** ($q / $p);
     }
     $norm ** (1/$q);
 }
@@ -306,11 +328,11 @@ multi method norm(Math::Matrix:D: Str $which where * eq 'rowsum' --> Numeric) {
 }
 
 multi method norm(Math::Matrix:D: Str $which where * eq 'columnsum' --> Numeric) {
-    max map {my $c = $_;[+] map {abs $_[$c]}, @!row}, ^$!column-count;
+    max map {my $c = $_; [+](map {abs $_[$c]}, @!rows) }, ^$!column-count;
 }
 
 multi method norm(Math::Matrix:D: Str $which where * eq 'max' --> Numeric) {
-    max map {max map {abs $_},  @$_}, @!rows;;
+    max map {max map {abs $_},  @$_}, @!rows;
 }
 
 multi method decopositionLUCrout(Math::Matrix:D: ) {
@@ -318,8 +340,8 @@ multi method decopositionLUCrout(Math::Matrix:D: ) {
 
     my $sum;
     my $size = self.row-count;
-    my $U = Math::Matrix.identity( $size );
-    my $L = Math::Matrix.zero( $size );
+    my $U = self!identity_array( $size );
+    my $L = self!zero_array( $size );
 
     for 0 ..^$size -> $j {
         for $j ..^$size -> $i {
@@ -327,7 +349,7 @@ multi method decopositionLUCrout(Math::Matrix:D: ) {
             for 0..^$j -> $k {
                 $sum += $L[$i][$k] * $U[$k][$j];
             }
-            $L[$i][$j] = self[$i][$j] - $sum;
+            $L[$i][$j] = @!rows[$i][$j] - $sum;
         }
         for $j ..^$size -> $i {
             $sum = 0;
@@ -337,10 +359,10 @@ multi method decopositionLUCrout(Math::Matrix:D: ) {
             if $L[$j][$j] == 0 {
                 fail "det(L) close to 0!\n Can't divide by 0...\n";
             }
-            $U[$j][$i] = (self[$j][$i] - $sum) / $L[$j][$j];
+            $U[$j][$i] = (@!rows[$j][$i] - $sum) / $L[$j][$j];
         }
     }
-    return $L, $U;
+    return Math::Matrix.new($L), Math::Matrix.new($U);
 }
 
 multi sub infix:<⋅>( Math::Matrix $a, Math::Matrix $b where { $a.column-count == $b.row-count} --> Math::Matrix:D ) is export {
@@ -399,7 +421,7 @@ however, even hyper operators does not seem to be enough to do matrix calculatio
 Purpose of that library is to propose some tools for Matrix calculation.
 
 I should probably use shaped array for the implementation, but i am encountering
-some issues for now. Problem being it might break the syntax for creation of a Matrix, 
+some issues for now. Problem being it might break the syntax for creation of a Matrix,
 use with consideration...
 
 =head1 METHODS
@@ -415,9 +437,9 @@ use with consideration...
 =head2 method diagonal
 
     my $matrix = Math::Matrix.diagonal( 2, 4, 5 );
-    This method is a constructor that returns an diagonal matrix of the size given 
+    This method is a constructor that returns an diagonal matrix of the size given
     by count of the parameter.
-    All the cells are set to 0 except the top/left to bottom/right diagonale, 
+    All the cells are set to 0 except the top/left to bottom/right diagonal,
     set to given values.
 
 =head2 method identity
@@ -531,7 +553,7 @@ use with consideration...
 
     my $r = $matrix.rank( );
     rank is the number of independent row or column vectors
-    or als calles independent dimensions 
+    or als calles independent dimensions
     (thats why this command is sometimes calles dim)
 
 =head2 method kernel
@@ -541,9 +563,13 @@ use with consideration...
 
 =head2 method norm
 
-    my $norm = $matrix.norm( );   # euclidian norm (L2, p = 2)
-    my $norm = ||$matrix||;       # operator shortcut to do the same
-    my $norm = $matrix.norm(1);   # p-norm, L1 = sum of all cells
-    my $norm = $matrix.norm(4,3); # p,q - norm, p = 4, q = 3   
+    my $norm = $matrix.norm( );    # euclidian norm (L2, p = 2)
+    my $norm = ||$matrix||;        # operator shortcut to do the same
+    my $norm = $matrix.norm(1);    # p-norm, L1 = sum of all cells
+    my $norm = $matrix.norm(4,3);  # p,q - norm, p = 4, q = 3
+    my $norm = $matrix.norm(2,2);  # Frobenius norm
+    my $norm = $matrix.norm('max');# max norm - biggest absolute value of a cell
+    $matrix.norm('rowsum');        # row sum norm - biggest abs. value-sum of a row
+    $matrix.norm('columnsum');     # column sum norm - same column wise
 
 =end pod
