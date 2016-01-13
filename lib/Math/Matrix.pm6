@@ -110,7 +110,7 @@ method is-zero(Math::Matrix:D: --> Bool) {
 }
 
 method is-identity(Math::Matrix:D: --> Bool) {
-    False unless self.is-square;
+    return False unless self.is-square;
     for ^$.row-count X ^$.row-count -> ($r, $c) {
         return False unless @!rows[$r][$c] == ($r == $c ?? 1 !! 0);
     }
