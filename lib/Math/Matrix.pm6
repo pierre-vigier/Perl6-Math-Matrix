@@ -295,9 +295,9 @@ multi method rank(Math::Matrix:D: --> Int) {
         next if $swap_row_nr == $.row-count;
         (@clone[$rank], @clone[$swap_row_nr]) = (@clone[$swap_row_nr], @clone[$rank]);
         for $rank + 1 ..^ $!row-count -> $r {
-            next if $clone[$r][$c] == 0;
-            my $q = $clone[$rank][$c] / $clone[$r][$c];
-            my $clone[$r] = $clone[$rank] >>-<< $q <<*<< $clone[$r];
+            next if @clone[$r][$c] == 0;
+            my $q = @clone[$rank][$c] / $clone[$r][$c];
+            my $clone[$r] = @clone[$rank] >>-<< $q <<*<< @clone[$r];
         }
         $rank++;
     }
