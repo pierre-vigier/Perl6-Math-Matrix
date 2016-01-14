@@ -245,7 +245,11 @@ multi method multiply(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b!
     Math::Matrix.new( @multiply );
 }
 
+has Numeric $!deterninant;
+
 multi method determinant(Math::Matrix:D: --> Numeric) {
+    return $!deterninant if $!deterninant.defined;
+
     fail "Number of columns has to be same as number of rows" unless self.is-square;
     return 1            if $!row-count == 0;
     return @!rows[0][0] if $!row-count == 1;
@@ -255,7 +259,7 @@ multi method determinant(Math::Matrix:D: --> Numeric) {
         $product *= @!rows[$_][ $perm[$_] ] for ^+$perm;
         $det += $product;
     }
-    $det;
+    $!deterninant = $det;
 }
 
 multi method trace(Math::Matrix:D: --> Numeric) {
