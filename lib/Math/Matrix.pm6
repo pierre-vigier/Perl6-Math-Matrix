@@ -125,6 +125,21 @@ method is-diagonal(Math::Matrix:D: --> Bool) {
     True;
 }
 
+method is-diagonally-dominant(Math::Matrix:D: Bool $strict = False, Str $along where {$^orient eq any <column row both>} = 'column' --> Bool) {
+    return False unless self.is-square;
+    my $greater = $strict ?? &[>] !! &[>=];
+    my Bool $colwise;
+    if $along ~~ any <column both> {
+        $colwise = [and] map {my $c = $_; &$greater( @!rows[$c][$c] * 2, 
+                                                     [+](map {abs $_[$c]}, @!rows)) }, ^$!row-count;
+    }
+    return $colwise if $along eq 'column';
+    my Bool $rowwise = [and] map { &$greater(@!rows[$^r][$^r] * 2,
+                                            [+](map {abs $^c}, @!rows[$^r].flat)) }, ^$!row-count;
+    return $rowwise if $along eq 'row';
+    $colwise and $rowwise;
+}
+
 method is-upper-triangular(Math::Matrix:D: --> Bool) {
     return False unless self.is-square;
     for ^$.row-count X ^$.row-count -> ($r, $c) {
@@ -168,8 +183,7 @@ method inverted(Math::Matrix:D: --> Math::Matrix:D) {
     fail "Number of columns has to be same as number of rows" unless self.is-square;
     fail "Matrix is not invertible, or singular because defect (determinant = 0)" if self.determinant == 0;
     my @clone = @!rows.clone;
-    my @inverted;
-    for ^$!row-count X ^$!column-count -> ($r, $c) { @inverted[$r][$c] = ($r == $c ?? 1 !! 0) }
+    my @inverted = self!identity_array( $!row-count );
     for ^$!row-count -> $c {
         my $swap_row_nr = $c;       # make sure that diagonal element != 0, later == 1
         $swap_row_nr++ while @clone[$swap_row_nr][$c] == 0;
