@@ -23,7 +23,7 @@ subtest {
     my $matrix = Math::Matrix.new([[1,2,5,4],[1,2,3,2],[9,8,4,1],[1,3,4,6]]);
     my $matrix2 = Math::Matrix.new([[1,2,5,4],[1,2,3,2],[9,8,4,1]]);
 
-    dies-ok { $matrix2.determinant() } , "Non square matrix, no determinant";
+    dies-ok { $matrix2.determinant() } , "Non square matrix, has no determinant";
     ok $zero.determinant() == 0 , "Determinant of zero matrix is 0";
     ok $identity.determinant() == 1 , "Determinant of identity matrix is 1";
     ok $diagonal.determinant() == 6 , "det of diagonal matrix is product of diagonal elements";

@@ -293,7 +293,7 @@ multi method rank(Math::Matrix:D: --> Int) {
         last if $rank == $!row-count;      # rank cant get bigger thean dim
         my $swap_row_nr = $rank;
         $swap_row_nr++ while $swap_row_nr < $!row-count and @clone[$swap_row_nr][$c] == 0;
-        next if $swap_row_nr == $.row-count;
+        next if $swap_row_nr == $!row-count;
         (@clone[$rank], @clone[$swap_row_nr]) = (@clone[$swap_row_nr], @clone[$rank]);
         for $rank + 1 ..^ $!row-count -> $r {
             next if @clone[$r][$c] == 0;
