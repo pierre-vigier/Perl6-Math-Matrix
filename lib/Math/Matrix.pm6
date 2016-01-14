@@ -245,7 +245,7 @@ multi method determinant(Math::Matrix:D: --> Numeric) {
     my $det = 0;
     for (permutations +@!rows).kv ->  $nr, $perm {
         my $product = ($nr + $nr div 2) %% 2 ?? 1 !! -1;   # signum
-        $product *= $rows[$_][ $perm[$_] ] for ^+$perm;
+        $product *= $!rows[$_][ $perm[$_] ] for ^+$perm;
         $det += $product;
     }
     $det;
