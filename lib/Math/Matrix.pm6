@@ -249,35 +249,13 @@ multi method determinant(Math::Matrix:D: --> Numeric) {
     fail "Number of columns has to be same as number of rows" unless self.is-square;
     return 1            if $!row-count == 0;
     return @!rows[0][0] if $!row-count == 1;
-    if $!row-count == 2 {
-        return @!rows[0][0] * @!rows[1][1]
-             - @!rows[0][1] * @!rows[1][0];
-    } elsif $!row-count == 3 {
-        return @!rows[0][0] * @!rows[1][1] * @!rows[2][2]
-             + @!rows[0][1] * @!rows[1][2] * @!rows[2][0]
-             + @!rows[0][2] * @!rows[1][0] * @!rows[2][1]
-             - @!rows[0][2] * @!rows[1][1] * @!rows[2][0]
-             - @!rows[0][1] * @!rows[1][0] * @!rows[2][2]
-             - @!rows[0][0] * @!rows[1][2] * @!rows[2][1];
-    } else {
-        my $det = 0;
-        for ^$!column-count -> $x {
-            my @intermediate;
-            for 1..^$!row-count -> $r {
-                my @r;
-                for (0..^$x,$x^..^$!column-count).flat -> $c {
-                        @r.push( @!rows[$r][$c] );
-                }
-                @intermediate.push( [@r] );
-            }
-            if $x %% 2 {
-                $det += @!rows[0][$x] * Math::Matrix.new( @intermediate ).determinant();
-            } else {
-                $det -= @!rows[0][$x] * Math::Matrix.new( @intermediate ).determinant();
-            }
-        }
-        return $det;
+    my $det = 0;
+    for (permutations +@!rows).kv ->  $nr, $perm {
+        my $product = ($nr + $nr div 2) %% 2 ?? 1 !! -1;   # signum
+        $product *= @!rows[$_][ $perm[$_] ] for ^+$perm;
+        $det += $product;
     }
+    $det;
 }
 
 multi method trace(Math::Matrix:D: --> Numeric) {
