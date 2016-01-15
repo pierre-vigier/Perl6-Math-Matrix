@@ -1,6 +1,6 @@
 use Test;
 use Math::Matrix;
-plan 27;
+plan 37;
 
 my $matrixa = Math::Matrix.new([[1,2],[3,4]]);
 my $matrixc = Math::Matrix.new([[8,8],[8,8]]);
@@ -35,6 +35,17 @@ ok $lt.is-lower-triangular,       "Is an lower triangular matrix";
 ok $diagonal.is-lower-triangular, "Diagonal are lower triangular";
 nok $matrixc.is-lower-triangular, "Is not an lower diagonal matrix";
 nok $ut.is-lower-triangular,      "upper is no lower triangular matrix";
+
+nok $matrixa.is-diagonally-dominant, 'not diagonally dominant matrix';
+ok  $matrixb.is-diagonally-dominant, 'its diagonally dominant when all values are same';
+nok $matrixb.is-diagonally-dominant(:strict),   'not strictly diagonally dominant when all values are same';
+ok  $identity.is-diagonally-dominant(:!strict), 'identity is always diagonally dominant';
+ok  $identity.is-diagonally-dominant(:strict),  'I is always strictly diagonally dominant';
+ok  $diagonal.is-diagonally-dominant(:strict, :along<column>),'a diagonal matrix is col wise strictly diagonally dominant';
+ok  $diagonal.is-diagonally-dominant(:strict, :along<row>),   'a diagonal matrix is row wise strictly diagonally dominant';
+ok  $diagonal.is-diagonally-dominant(:strict, :along<both>),  'a diagonal matrix is always strictly diagonally dominant';
+ok  $lt.is-diagonally-dominant(:!strict, :along<row>), 'this lower triangular matrix is diagonally rowwise dominant';
+nok $ut.is-diagonally-dominant(:!strict, :along<row>), 'this upper triangular matrix is not diagonally rowwise dominant';
 
 my $almostidentity = Math::Matrix.new([ [ 1, 0, 0 ], [ 0, 1, 0 ] ]);
 ok $identity.is-identity,        "Is an identity matrix";
