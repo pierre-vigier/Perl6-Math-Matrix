@@ -1,8 +1,9 @@
 unit class Math::Matrix;
+use AttrX::PrivateAccessor;
 
-has @.rows is required;
-has Int $.row-count;
-has Int $.column-count;
+has @!rows is required is providing-private-accessor;
+has Int $!row-count is providing-private-accessor;
+has Int $!column-count is providing-private-accessor;
 
 subset Positive_Int of Int where * > 0 ;
 
@@ -10,7 +11,13 @@ method new( @m ) {
     die "Expect an Array of Array" unless all @m ~~ Array;
     die "All Row must contains the same number of elements" unless @m[0] == all @m[*];
     die "All Row must contains only numeric values" unless all( @m[*;*] ) ~~ Numeric;
-    self.bless( rows => @m , row-count => @m.elems, column-count => @m[0].elems );
+    self.bless( rows => @m );
+}
+
+submethod BUILD( :@rows ) {
+    @!rows = @rows;
+    $!row-count = @rows.elems;
+    $!column-count = @rows[0].elems;
 }
 
 method diagonal(Math::Matrix:U: *@diag ){
@@ -52,8 +59,8 @@ method zero(Math::Matrix:U: Positive_Int $rows, Positive_Int $cols = $rows) {
 
 #multi method AT-POS( Math::Matrix:D: Int $index ) {
     #fail X::OutOfRange.new(
-        #:what<Row index> , :got($index), :range("0..{$.row-count -1 }")
-    #) unless 0 <= $index < $.row-count;
+        #:what<Row index> , :got($index), :range("0..{$!row-count -1 }")
+    #) unless 0 <= $index < $!row-count;
     #my $row = @!rows[$index].List;
     ##my $row = @!rows[$index];
     ##$row does immutable_list;
@@ -61,21 +68,21 @@ method zero(Math::Matrix:U: Positive_Int $rows, Positive_Int $cols = $rows) {
 #}
 
 #multi method EXISTS-POS( Math::Matrix:D: $index ) {
-    #return 0 <= $index < $.row-count;
+    #return 0 <= $index < $!row-count;
 #}
 
 multi method cell(Math::Matrix:D: Int $row, Int $column --> Numeric ) {
     fail X::OutOfRange.new(
-        :what<Row index> , :got($row), :range("0..{$.row-count -1 }")
-    ) unless 0 <= $row < $.row-count;
+        :what<Row index> , :got($row), :range("0..{$!row-count -1 }")
+    ) unless 0 <= $row < $!row-count;
     fail X::OutOfRange.new(
-        :what<Column index> , :got($column), :range("0..{$.column-count -1 }")
-    ) unless 0 <= $column < $.column-count;
+        :what<Column index> , :got($column), :range("0..{$!column-count -1 }")
+    ) unless 0 <= $column < $!column-count;
     return @!rows[$row][$column];
 }
 
 multi method Str(Math::Matrix:D: ) {
-    @.rows;
+    @!rows;
 }
 
 multi method perl(Math::Matrix:D: ) {
@@ -87,15 +94,15 @@ method ACCEPTS(Math::Matrix $b --> Bool ) {
 }
 
 multi method size(Math::Matrix:D: ){
-    return $.row-count, $.column-count;
+    return $!row-count, $!column-count;
 }
 
 method equal(Math::Matrix:D: Math::Matrix $b --> Bool) {
-    self.rows ~~ $b.rows;
+    @!rows ~~ $b!rows;
 }
 
 method is-square(Math::Matrix:D: --> Bool) {
-    $.column-count == $.row-count;
+    $!column-count == $!row-count;
 }
 
 method is-invertible(Math::Matrix:D: --> Bool) {
@@ -103,7 +110,7 @@ method is-invertible(Math::Matrix:D: --> Bool) {
 }
 
 method is-zero(Math::Matrix:D: --> Bool) {
-    for ^$.row-count X ^$.column-count -> ($r, $c) {
+    for ^$!row-count X ^$!column-count -> ($r, $c) {
         return False unless @!rows[$r][$c] == 0;
     }
     True;
@@ -111,7 +118,7 @@ method is-zero(Math::Matrix:D: --> Bool) {
 
 method is-identity(Math::Matrix:D: --> Bool) {
     return False unless self.is-square;
-    for ^$.row-count X ^$.row-count -> ($r, $c) {
+    for ^$!row-count X ^$!row-count -> ($r, $c) {
         return False unless @!rows[$r][$c] == ($r == $c ?? 1 !! 0);
     }
     True;
@@ -119,7 +126,7 @@ method is-identity(Math::Matrix:D: --> Bool) {
 
 method is-diagonal(Math::Matrix:D: --> Bool) {
     return False unless self.is-square;
-    for ^$.row-count X ^$.row-count -> ($r, $c) {
+    for ^$!row-count X ^$!row-count -> ($r, $c) {
         return False if @!rows[$r][$c] != 0 and $r != $c;
     }
     True;
@@ -142,7 +149,7 @@ method is-diagonally-dominant(Math::Matrix:D: Bool $strict = False, Str $along w
 
 method is-upper-triangular(Math::Matrix:D: --> Bool) {
     return False unless self.is-square;
-    for ^$.row-count X ^$.row-count -> ($r, $c) {
+    for ^$!row-count X ^$!row-count -> ($r, $c) {
         return False if @!rows[$r][$c] != 0 and $r > $c;
     }
     True;
@@ -150,7 +157,7 @@ method is-upper-triangular(Math::Matrix:D: --> Bool) {
 
 method is-lower-triangular(Math::Matrix:D: --> Bool) {
     return False unless self.is-square;
-    for ^$.row-count X ^$.row-count -> ($r, $c) {
+    for ^$!row-count X ^$!row-count -> ($r, $c) {
         return False if @!rows[$r][$c] != 0 and $r < $c;
     }
     True;
@@ -158,9 +165,9 @@ method is-lower-triangular(Math::Matrix:D: --> Bool) {
 
 method is-symmetric(Math::Matrix:D: --> Bool) {
     return False unless self.is-square;
-    return True if $.row-count < 2;
-    for ^($.row-count - 1) -> $r {
-        for $r ^..^ $.row-count -> $c {
+    return True if $!row-count < 2;
+    for ^($!row-count - 1) -> $r {
+        for $r ^..^ $!row-count -> $c {
             return False unless @!rows[$r][$c] == @!rows[$c][$r];
         }
     }
@@ -169,7 +176,7 @@ method is-symmetric(Math::Matrix:D: --> Bool) {
 
 method is-orthogonal(Math::Matrix:D: --> Bool) {
     return False unless self.is-square;
-    self.dotProduct( self.T ) ~~ Math::Matrix.identity( $.row-count );
+    self.dotProduct( self.T ) ~~ Math::Matrix.identity( $!row-count );
 }
 
 method T(Math::Matrix:D: --> Math::Matrix:D  )         { self.transposed }
@@ -207,9 +214,9 @@ method inverted(Math::Matrix:D: --> Math::Matrix:D) {
 
 multi method dotProduct(Math::Matrix:D: Math::Matrix $b --> Math::Matrix:D ) {
     my @product;
-    die "Number of columns of the second matrix is different from number of rows of the first operand" unless self.column-count == $b.row-count;
-    for ^$.row-count X ^$b.column-count -> ($r, $c) {
-        @product[$r][$c] += @!rows[$r][$_] * $b.rows[$_][$c] for ^$b.row-count;
+    die "Number of columns of the second matrix is different from number of rows of the first operand" unless $!column-count == $b!row-count;
+    for ^$!row-count X ^$b!column-count -> ($r, $c) {
+        @product[$r][$c] += @!rows[$r][$_] * $b!rows[$_][$c] for ^$b!row-count;
     }
     Math::Matrix.new( @product );;
 }
@@ -219,7 +226,7 @@ multi method multiply(Math::Matrix:D: Real $r --> Math::Matrix:D ) {
 }
 
 method apply(Math::Matrix:D: &coderef --> Math::Matrix:D ) {
-    Math::Matrix.new( [ @.rows.map: {
+    Math::Matrix.new( [ @!rows.map: {
             [ $_.map( &coderef ) ]
     } ] );
 }
@@ -228,41 +235,45 @@ method negative(Math::Matrix:D: --> Math::Matrix:D ) {
     self.apply( - * );
 }
 
-method add(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b.row-count and $!column-count == $b.column-count } --> Math::Matrix:D ) {
+method add(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b!row-count and $!column-count == $b!column-count } --> Math::Matrix:D ) {
     my @sum;
-    for ^$!row-count X ^$b.column-count -> ($r, $c) {
-        @sum[$r][$c] = @!rows[$r][$c] + $b.rows[$r][$c];
+    for ^$!row-count X ^$!column-count -> ($r, $c) {
+        @sum[$r][$c] = @!rows[$r][$c] + $b!rows[$r][$c];
     }
     Math::Matrix.new( @sum );
 }
 
-method subtract(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b.row-count and $!column-count == $b.column-count } --> Math::Matrix:D ) {
+method subtract(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b!row-count and $!column-count == $b!column-count } --> Math::Matrix:D ) {
     my @subtract;
-    for ^$!row-count X ^$b.column-count -> ($r, $c) {
-        @subtract[$r][$c] = @!rows[$r][$c] - $b.rows[$r][$c];
+    for ^$!row-count X ^$!column-count -> ($r, $c) {
+        @subtract[$r][$c] = @!rows[$r][$c] - $b!rows[$r][$c];
     }
     Math::Matrix.new( @subtract );
 }
 
-multi method multiply(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b.row-count and $!column-count == $b.column-count } --> Math::Matrix:D ) {
+multi method multiply(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b!row-count and $!column-count == $b!column-count } --> Math::Matrix:D ) {
     my @multiply;
-    for ^$!row-count X ^$b.column-count -> ($r, $c) {
-        @multiply[$r][$c] = @!rows[$r][$c] * $b.rows[$r][$c];
+    for ^$!row-count X ^$!column-count -> ($r, $c) {
+        @multiply[$r][$c] = @!rows[$r][$c] * $b!rows[$r][$c];
     }
     Math::Matrix.new( @multiply );
 }
 
+has Numeric $!deterninant;
+
 multi method determinant(Math::Matrix:D: --> Numeric) {
+    return $!deterninant if $!deterninant.defined;
+
     fail "Number of columns has to be same as number of rows" unless self.is-square;
     return 1            if $!row-count == 0;
     return @!rows[0][0] if $!row-count == 1;
     my $det = 0;
-    for (permutations +@!rows).kv ->  $nr, $perm {
+    for (permutations $!row-count).kv ->  $nr, $perm {
         my $product = ($nr + $nr div 2) %% 2 ?? 1 !! -1;   # signum
         $product *= @!rows[$_][ $perm[$_] ] for ^+$perm;
         $det += $product;
     }
-    $det;
+    $!deterninant = $det;
 }
 
 multi method trace(Math::Matrix:D: --> Numeric) {
@@ -274,8 +285,8 @@ multi method trace(Math::Matrix:D: --> Numeric) {
 
 multi method density(Math::Matrix:D: --> Rat) {
     my $valcount = 0;
-    for ^$.row-count X ^$.column-count -> ($r, $c) { $valcount++ if @!rows[$r][$c] != 0 }
-    $valcount / ($.row-count * $.column-count);
+    for ^$!row-count X ^$!column-count -> ($r, $c) { $valcount++ if @!rows[$r][$c] != 0 }
+    $valcount / ($!row-count * $!column-count);
 }
 
 multi method rank(Math::Matrix:D: --> Int) {
@@ -329,7 +340,7 @@ multi method decopositionLUCrout(Math::Matrix:D: ) {
     fail "Not square matrix" unless self.is-square;
 
     my $sum;
-    my $size = self.row-count;
+    my $size = self!row-count;
     my $U = self!identity_array( $size );
     my $L = self!zero_array( $size );
 
@@ -355,7 +366,7 @@ multi method decopositionLUCrout(Math::Matrix:D: ) {
     return Math::Matrix.new($L), Math::Matrix.new($U);
 }
 
-multi sub infix:<⋅>( Math::Matrix $a, Math::Matrix $b where { $a.column-count == $b.row-count} --> Math::Matrix:D ) is export {
+multi sub infix:<⋅>( Math::Matrix $a, Math::Matrix $b where { $a!column-count == $b!row-count} --> Math::Matrix:D ) is export {
     $a.dotProduct( $b );
 }
 
@@ -371,7 +382,7 @@ multi sub infix:<*>(Real $r, Math::Matrix $a --> Math::Matrix:D ) is export {
     $a.multiply( $r );
 }
 
-multi sub infix:<*>(Math::Matrix $a, Math::Matrix $b  where { $a.row-count == $b.row-count and $a.column-count == $b.column-count} --> Math::Matrix:D ) is export {
+multi sub infix:<*>(Math::Matrix $a, Math::Matrix $b  where { $a!row-count == $b!row-count and $a!column-count == $b!column-count} --> Math::Matrix:D ) is export {
     $a.multiply( $b );
 }
 
@@ -384,7 +395,7 @@ multi sub infix:<->(Math::Matrix $a, Math::Matrix $b --> Math::Matrix:D ) is exp
 }
 
 multi sub infix:<**>(Math::Matrix $a where { $a.is-square }, Int $e --> Math::Matrix:D ) is export {
-    return Math::Matrix.identity( $a.row-count ) if $e ==  0;
+    return Math::Matrix.identity( $a!row-count ) if $e ==  0;
     my $p = $a.clone;
     $p = $p.dotProduct( $a ) for 2 .. abs $e;
     $p = $p.inverted         if  $e < 0;
@@ -422,7 +433,7 @@ use with consideration...
    A constructor, takes parameters like:
 =item rows : an array of row, each row being an array of cells
 
-   Number of cell per row must be identical
+   Number of cells per row must be identical
 
 =head2 method diagonal
 
@@ -543,7 +554,7 @@ use with consideration...
 
     my $r = $matrix.rank( );
     rank is the number of independent row or column vectors
-    or als calles independent dimensions
+    or also called independent dimensions
     (thats why this command is sometimes calles dim)
 
 =head2 method kernel

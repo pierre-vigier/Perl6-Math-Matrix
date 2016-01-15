@@ -3,7 +3,7 @@
     "version"       : "0.1.0",
     "author"        : "github:pierre-vigier",
     "description"   : "Math::Matrix",
-    "depends"       : [ ],
+    "depends"       : [ "AttrX::PrivateAccessor" ],
     "provides" : {
         "Math::Matrix"    : "lib/Math/Matrix.pm6"
     },
