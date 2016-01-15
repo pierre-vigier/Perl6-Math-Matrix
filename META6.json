@@ -1,7 +1,8 @@
 {
+    "perl"          : "6.c",
     "name"          : "Math::Matrix",
     "version"       : "0.1.0",
-    "author"        : "github:pierre-vigier",
+    "authors"       : [ "github:pierre-vigier" ],
     "description"   : "Math::Matrix",
     "depends"       : [ "AttrX::PrivateAccessor" ],
     "provides" : {
