@@ -419,7 +419,7 @@ use with consideration...
    A constructor, takes parameters like:
 =item rows : an array of row, each row being an array of cells
 
-   Number of cell per row must be identical
+   Number of cells per row must be identical
 
 =head2 method diagonal
 
@@ -540,7 +540,7 @@ use with consideration...
 
     my $r = $matrix.rank( );
     rank is the number of independent row or column vectors
-    or als calles independent dimensions
+    or also called independent dimensions
     (thats why this command is sometimes calles dim)
 
 =head2 method kernel

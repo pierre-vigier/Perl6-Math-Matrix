@@ -15,7 +15,7 @@ DESCRIPTION
 
 Perl6 already provide a lot of tools to work with array, shaped array, and so on, however, even hyper operators does not seem to be enough to do matrix calculation Purpose of that library is to propose some tools for Matrix calculation.
 
-I should probably use shaped array for the implementation, but i am encountering some issues for now. Problem being it might break the syntax for creation of a Matrix,  use with consideration...
+I should probably use shaped array for the implementation, but i am encountering some issues for now. Problem being it might break the syntax for creation of a Matrix, use with consideration...
 
 METHODS
 =======
@@ -27,15 +27,15 @@ method new method new( [[1,2],[3,4]])
 
   * rows : an array of row, each row being an array of cells
 
-    Number of cell per row must be identical
+    Number of cells per row must be identical
 
 method diagonal
 ---------------
 
     my $matrix = Math::Matrix.diagonal( 2, 4, 5 );
-    This method is a constructor that returns an diagonal matrix of the size given 
+    This method is a constructor that returns an diagonal matrix of the size given
     by count of the parameter.
-    All the cells are set to 0 except the top/left to bottom/right diagonale, 
+    All the cells are set to 0 except the top/left to bottom/right diagonal,
     set to given values.
 
 method identity
@@ -167,7 +167,7 @@ method rank
 
     my $r = $matrix.rank( );
     rank is the number of independent row or column vectors
-    or als calles independent dimensions 
+    or also called independent dimensions
     (thats why this command is sometimes calles dim)
 
 method kernel
@@ -179,7 +179,11 @@ method kernel
 method norm
 -----------
 
-    my $norm = $matrix.norm( );   # euclidian norm (L2, p = 2)
-    my $norm = ||$matrix||;       # operator shortcut to do the same
-    my $norm = $matrix.norm(1);   # p-norm, L1 = sum of all cells
-    my $norm = $matrix.norm(4,3); # p,q - norm, p = 4, q = 3
+    my $norm = $matrix.norm( );    # euclidian norm (L2, p = 2)
+    my $norm = ||$matrix||;        # operator shortcut to do the same
+    my $norm = $matrix.norm(1);    # p-norm, L1 = sum of all cells
+    my $norm = $matrix.norm(4,3);  # p,q - norm, p = 4, q = 3
+    my $norm = $matrix.norm(2,2);  # Frobenius norm
+    my $norm = $matrix.norm('max');# max norm - biggest absolute value of a cell
+    $matrix.norm('rowsum');        # row sum norm - biggest abs. value-sum of a row
+    $matrix.norm('columnsum');     # column sum norm - same column wise
