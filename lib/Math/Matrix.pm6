@@ -141,8 +141,8 @@ method is-diagonally-dominant(Math::Matrix:D: Bool :$strict = False, Str :$along
                                                      [+](map {abs $_[$c]}, @!rows)) }, ^$!row-count;
     }
     return $colwise if $along eq 'column';
-    my Bool $rowwise = [and] map { &$greater(@!rows[$^r][$^r] * 2,
-                                            [+](map {abs $^c}, @!rows[$^r].flat)) }, ^$!row-count;
+    my Bool $rowwise = [and] map { &$greater( @!rows[$^r][$^r] * 2, 
+                                              [+](map {abs $^c}, @!rows[$^r].flat)) }, ^$!row-count;
     return $rowwise if $along eq 'row';
     $colwise and $rowwise;
 }

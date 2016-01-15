@@ -52,7 +52,7 @@ ok  $identity.is-diagonally-dominant(:strict),  'I is always strictly diagonally
 ok  $diagonal.is-diagonally-dominant(:strict, :along<column>),'a diagonal matrix is col wise strictly diagonally dominant';
 ok  $diagonal.is-diagonally-dominant(:strict, :along<row>),   'a diagonal matrix is row wise strictly diagonally dominant';
 ok  $diagonal.is-diagonally-dominant(:strict, :along<both>),  'a diagonal matrix is always strictly diagonally dominant';
-ok  $lt.is-diagonally-dominant(:!strict, :along<row>), 'this lower triangular matrix is diagonally rowwise dominant';
+nok $lt.is-diagonally-dominant(:!strict, :along<row>), 'this lower triangular matrix is not diagonally rowwise dominant';
 nok $ut.is-diagonally-dominant(:!strict, :along<row>), 'this upper triangular matrix is not diagonally rowwise dominant';
 
 ok $diagonal.is-symmetric, "Is a symmetric matrix";
