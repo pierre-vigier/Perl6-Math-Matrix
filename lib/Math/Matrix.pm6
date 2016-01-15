@@ -483,14 +483,15 @@ use with consideration...
 
 =head2 method is-diagonally-dominant
 
-   True if cells on the diagonal have he biggest absolute value of their column.
+   True if cells on the diagonal have a bigger or equal absolute value than the
+   sum of the other absolute values in the column.
 
    if $matrix.is-diagonally-dominant {
    $matrix.is-diagonally-dominant(:!strict)   # same thing (default)
    $matrix.is-diagonally-dominant(:strict)    # diagonal elements (DE) are stricly greater (>)
    $matrix.is-diagonally-dominant(:!strict, :along<column>) # default
-   $matrix.is-diagonally-dominant(:strict,  :along<row>)    # DE biggest on their row
-   $matrix.is-diagonally-dominant(:!strict, :along<both>)   # DE biggest on row and column
+   $matrix.is-diagonally-dominant(:strict,  :along<row>)    # DE > sum of rest row
+   $matrix.is-diagonally-dominant(:!strict, :along<both>)   # DE >= sum of rest row and rest column
 
 =head2 method is-upper-triangular
 
