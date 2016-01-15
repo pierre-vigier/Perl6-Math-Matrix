@@ -132,7 +132,7 @@ method is-diagonal(Math::Matrix:D: --> Bool) {
     True;
 }
 
-method is-diagonally-dominant(Math::Matrix:D: Bool $strict = False, Str $along where {$^orient eq any <column row both>} = 'column' --> Bool) {
+method is-diagonally-dominant(Math::Matrix:D: Bool :$strict = False, Str :$along where {$^orient eq any <column row both>} = 'column' --> Bool) {
     return False unless self.is-square;
     my $greater = $strict ?? &[>] !! &[>=];
     my Bool $colwise;
