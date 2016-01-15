@@ -468,11 +468,43 @@ use with consideration...
 
     Tells if number of rows and colums are the same
 
+=head2 method is-zero
+
+   True if every cell has value of 0.
+
+=head2 method is-identity
+
+   True if every cell on the diagonal (where row index equals column index) is 1
+   and any other cell is 0.
+
+=head2 method is-diagonal
+
+   True if only cell on the diagonal differ from 0.
+
+=head2 method is-diagonally-dominant
+
+   True if cells on the diagonal have he biggest absolute value of their column.
+
+   if $matrix.is-diagonally-dominant {
+   $matrix.is-diagonally-dominant(:!strict)   # same thing (default)
+   $matrix.is-diagonally-dominant(:strict)    # diagonal elements (DE) are stricly greater (>)
+   $matrix.is-diagonally-dominant(:!strict, :along<column>) # default
+   $matrix.is-diagonally-dominant(:strict,  :along<row>)    # DE biggest on their row
+   $matrix.is-diagonally-dominant(:!strict, :along<both>)   # DE biggest on row and column
+
+=head2 method is-upper-triangular
+
+   True if every cell below the diagonal (where row index is greater than column index) is 0.
+
+=head2 method is-lower-triangular
+
+   True if every cell above the diagonal (where row index is smaller than column index) is 0.
+
 =head2 method is-symmetric
 
     if $matrix.is-symmetric {
 
-    Returns True if every cell with coordinates x y has same value as the cell on y x.
+    Is True if every cell with coordinates x y has same value as the cell on y x.
 
 =head2 method is-orthogonal
 
@@ -480,6 +512,10 @@ use with consideration...
 
     Is True if the matrix multiplied (dotProduct) with its transposed version (T)
     is an identity matrix.
+
+=head2 method is-invertible
+
+    Is True if number of rows and colums are the same and determinant is not zero.
 
 =head2 method transposed, alias T
 
