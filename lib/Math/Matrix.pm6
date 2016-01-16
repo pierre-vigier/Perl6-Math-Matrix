@@ -110,10 +110,7 @@ method is-invertible(Math::Matrix:D: --> Bool) {
 }
 
 method is-zero(Math::Matrix:D: --> Bool) {
-    for ^$!row-count X ^$!column-count -> ($r, $c) {
-        return False unless @!rows[$r][$c] == 0;
-    }
-    True;
+    self.density() == 0;
 }
 
 method is-identity(Math::Matrix:D: --> Bool) {
@@ -459,6 +456,19 @@ use with consideration...
     if $matrixa ~~ $matrixb {
 
     Checks two matrices for Equality
+
+=head2 method size
+
+    List of two values: number of rows and number of columns.
+
+    say $matrix.size();
+    my $dim = min $matrix.size();  
+
+=head2 method density
+
+    say 'this is a fully (occupied) matrix' if $matrix.density() == 1;
+
+    percentage of cells which hold a value different than 0
 
 =head2 method is-square
 
