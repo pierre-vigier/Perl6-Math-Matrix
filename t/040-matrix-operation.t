@@ -101,7 +101,7 @@ subtest {
     my $expectedL = Math::Matrix.new([[4,0,0],[2,1,0],[2,2,7/2]]);
     my $expectedU = Math::Matrix.new([[1,0,1/4],[0,1,-1/2],[0,0,1]]);
 
-    my ($L, $U) = $matrix.decopositionLUCrout();
+    my ($L, $U) = $matrix.decompositionLUCrout();
     ok ( $L ~~ $expectedL and $U ~~ $expectedU ) , "L and U are correct";
     ok ($L dot $U) ~~ $matrix, "LU is equal to original matrix";
 }, "Decompostition";
