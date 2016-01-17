@@ -339,7 +339,7 @@ multi method condition(Math::Matrix:D: --> Numeric) {
     self.norm() * self.inverted().norm();
 }
 
-multi method decopositionLUCrout(Math::Matrix:D: ) {
+multi method decompositionLUCrout(Math::Matrix:D: ) {
     fail "Not square matrix" unless self.is-square;
 
     my $sum;
@@ -370,15 +370,15 @@ multi method decopositionLUCrout(Math::Matrix:D: ) {
 }
 
 # psotive tester is missing
-#multi method decopositionCholeski(Math::Matrix:D: ) {
+#multi method decompositionCholeski(Math::Matrix:D: ) {
 #    fail "Not square matrix" unless self.is-square;
 #    my $D = self!rows.clone();
 #    for 0 ..^$!row-count -> $k {
-#        $D[$k][$k] - $D[$k][$_]**2 for 0 .. $k-1;
-#        $D[$k][$k] = sqrt $D[$k][$k];
+#        $D[$k][$k] -= $D[$k][$_]**2 for 0 .. $k-1;
+#        $D[$k][$k]  = sqrt $D[$k][$k];
 #        for $k+1 ..^ $!row-count -> $i {
-#            $D[$i][$k] - $D[$i][$_] * $D[$k][$_] for 0 ..^ $k ;
-#            $D[$i][$k] = $D[$i][$k] / $D[$k][$k];
+#            $D[$i][$k] -= $D[$i][$_] * $D[$k][$_] for 0 ..^ $k ;
+#            $D[$i][$k]  = $D[$i][$k] / $D[$k][$k];
 #        }
 #    }
 #    for ^$!row-count X ^$!row-count -> ($r, $c) { $D[$r][$c] = 0 if $r < $c }
