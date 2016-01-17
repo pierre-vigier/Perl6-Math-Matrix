@@ -3,6 +3,7 @@ unit class Math::Matrix;
 has @!rows is required;
 has Int $!row-count;
 has Int $!column-count;
+
 method !rows() { @!rows }
 method !row-count { $!row-count }
 method !column-count { $!column-count }
@@ -95,7 +96,7 @@ method ACCEPTS(Math::Matrix $b --> Bool ) {
     self.equal( $b );
 }
 
-multi method size(Math::Matrix:D: ){
+method size(Math::Matrix:D: ){
     return $!row-count, $!column-count;
 }
 
@@ -217,7 +218,7 @@ multi method dotProduct(Math::Matrix:D: Math::Matrix $b --> Math::Matrix:D ) {
     for ^$!row-count X ^$b!column-count -> ($r, $c) {
         @product[$r][$c] += @!rows[$r][$_] * $b!rows[$_][$c] for ^$b!row-count;
     }
-    Math::Matrix.new( @product );;
+    Math::Matrix.new( @product );
 }
 
 multi method multiply(Math::Matrix:D: Real $r --> Math::Matrix:D ) {
@@ -260,6 +261,7 @@ multi method multiply(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b!
 
 has Numeric $!deterninant;
 
+multi method det(Math::Matrix:D: --> Numeric )        { self.determinant }  # the usual short name
 multi method determinant(Math::Matrix:D: --> Numeric) {
     return $!deterninant if $!deterninant.defined;
 
@@ -366,6 +368,22 @@ multi method decopositionLUCrout(Math::Matrix:D: ) {
     }
     return Math::Matrix.new($L), Math::Matrix.new($U);
 }
+
+# psotive tester is missing
+#multi method decopositionCholeski(Math::Matrix:D: ) {
+#    fail "Not square matrix" unless self.is-square;
+#    my $D = self!rows.clone();
+#    for 0 ..^$!row-count -> $k {
+#        $D[$k][$k] - $D[$k][$_]**2 for 0 .. $k-1;
+#        $D[$k][$k] = sqrt $D[$k][$k];
+#        for $k+1 ..^ $!row-count -> $i {
+#            $D[$i][$k] - $D[$i][$_] * $D[$k][$_] for 0 ..^ $k ;
+#            $D[$i][$k] = $D[$i][$k] / $D[$k][$k];
+#        }
+#    }
+#    for ^$!row-count X ^$!row-count -> ($r, $c) { $D[$r][$c] = 0 if $r < $c }
+#    return Math::Matrix.new($D);
+#}
 
 multi sub infix:<⋅>( Math::Matrix $a, Math::Matrix $b where { $a!column-count == $b!row-count} --> Math::Matrix:D ) is looser(&infix:<*>) is export {
     $a.dotProduct( $b );
