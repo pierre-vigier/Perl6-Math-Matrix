@@ -365,11 +365,11 @@ multi method decopositionLUCrout(Math::Matrix:D: ) {
     return Math::Matrix.new($L), Math::Matrix.new($U);
 }
 
-multi sub infix:<⋅>( Math::Matrix $a, Math::Matrix $b where { $a!column-count == $b!row-count} --> Math::Matrix:D ) is looser(infix:<*>) is export {
+multi sub infix:<⋅>( Math::Matrix $a, Math::Matrix $b where { $a!column-count == $b!row-count} --> Math::Matrix:D ) is looser(&infix:<*>) is export {
     $a.dotProduct( $b );
 }
 
-multi sub infix:<dot>(Math::Matrix $a, Math::Matrix $b --> Math::Matrix:D ) is equiv(infix:<dot>) is export {
+multi sub infix:<dot>(Math::Matrix $a, Math::Matrix $b --> Math::Matrix:D ) is equiv(&infix:<dot>) is export {
     $a ⋅ $b;
 }
 
@@ -401,7 +401,7 @@ multi sub infix:<**>(Math::Matrix $a where { $a.is-square }, Int $e --> Math::Ma
     $p;
 }
 
-multi sub circumfix:<|| ||>(Math::Matrix $a --> Numeric) is equiv(prefix:<abs>) is export {
+multi sub circumfix:<|| ||>(Math::Matrix $a --> Numeric) is equiv(&prefix:<abs>) is export {
     $a.norm();
 }
 
