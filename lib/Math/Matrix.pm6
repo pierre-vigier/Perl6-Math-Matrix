@@ -1,9 +1,11 @@
 unit class Math::Matrix;
-use AttrX::PrivateAccessor;
 
-has @!rows is required is providing-private-accessor;
-has Int $!row-count is providing-private-accessor;
-has Int $!column-count is providing-private-accessor;
+has @!rows is required;
+has Int $!row-count;
+has Int $!column-count;
+method !rows() { @!rows }
+method !row-count { $!row-count }
+method !column-count { $!column-count }
 
 subset Positive_Int of Int where * > 0 ;
 
