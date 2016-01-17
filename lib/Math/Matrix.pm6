@@ -369,7 +369,7 @@ multi sub infix:<⋅>( Math::Matrix $a, Math::Matrix $b where { $a!column-count 
     $a.dotProduct( $b );
 }
 
-multi sub infix:<dot>(Math::Matrix $a, Math::Matrix $b --> Math::Matrix:D ) is equiv(&infix:<⋅>) is export {
+multi sub infix:<dot>(Math::Matrix $a, Math::Matrix $b --> Math::Matrix:D ) is looser(&infix:<*>) is export {
     $a ⋅ $b;
 }
 
