@@ -401,7 +401,7 @@ multi sub infix:<**>(Math::Matrix $a where { $a.is-square }, Int $e --> Math::Ma
     $p;
 }
 
-multi sub circumfix:<|| ||>(Math::Matrix $a --> Numeric) is equiv(&prefix:<abs>) is export {
+multi sub circumfix:<|| ||>(Math::Matrix $a --> Numeric) is equiv(&prefix:<!>) is export {
     $a.norm();
 }
 
