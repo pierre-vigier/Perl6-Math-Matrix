@@ -11,9 +11,9 @@ method !column-count { $!column-count }
 subset Positive_Int of Int where * > 0 ;
 
 method new( @m ) {
-    die "Expect an Array of Array" unless all @m ~~ Array;
-    die "All Row must contains the same number of elements" unless @m[0] == all @m[*];
-    die "All Row must contains only numeric values" unless all( @m[*;*] ) ~~ Numeric;
+    fail "Expect an Array of Array" unless all @m ~~ Array;
+    fail "All Row must contains the same number of elements" unless @m[0] == all @m[*];
+    fail "All Row must contains only numeric values" unless all( @m[*;*] ) ~~ Numeric;
     self.bless( rows => @m );
 }
 
@@ -24,7 +24,7 @@ submethod BUILD( :@rows ) {
 }
 
 method diagonal(Math::Matrix:U: *@diag ){
-    die "Expect an List of Number" unless @diag and [and] @diag >>~~>> Numeric;
+    fail "Expect an List of Number" unless @diag and [and] @diag >>~~>> Numeric;
     my @d;
     for ^+@diag X ^+@diag -> ($r, $c) {
         @d[$r][$c] = $r==$c ?? @diag[$r] !! 0;
