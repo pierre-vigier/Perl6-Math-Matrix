@@ -52,6 +52,15 @@ method zero(Math::Matrix:U: Positive_Int $rows, Positive_Int $cols = $rows) {
     self.bless( rows => self!zero_array($rows, $cols), row-count => $rows, column-count => $cols );
 }
 
+method submatrix(Math::Matrix:U: Int $row, Int $col --> Math::Matrix:D ){
+    fail "$row is not an existing row index" unless 0 <= $row < $!row-count;
+    fail "$col is not an existing column index" unless 0 <= $col < $!column-count;
+    my @clone = @!rows.clone;
+    @clone.splice($row,1);
+    @clone = map { $^r.splice($column,1); $^r }, @clone;
+    Math::Matrix.new( @clone );
+}
+
 #multi method elems(Math::Matrix:D: --> Int) {
 #    $!row-count * $!column-count;
 #}
