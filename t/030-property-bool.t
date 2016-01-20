@@ -6,9 +6,9 @@ my $matrixa = Math::Matrix.new([[1,2],[3,4]]);
 my $matrixc = Math::Matrix.new([[8,8],[8,8]]);
 my $matrixd = Math::Matrix.new([[1,2,3],[4,5,6]]);
 
-my $zero = Math::Matrix.zero(3,4);
-my $identity = Math::Matrix.identity(3);
-my $diagonal = Math::Matrix.diagonal(1,2,3);
+my $zero = Math::Matrix.new-zero(3,4);
+my $identity = Math::Matrix.new-identity(3);
+my $diagonal = Math::Matrix.new-diagonal(1,2,3);
 my $ut = Math::Matrix.new([[1,2,3],[0,5,6],[0,0,6]]);
 my $lt = Math::Matrix.new([[1,0,0],[4,5,0],[4,5,6]]);
 my $symmetric = Math::Matrix.new([  [   1   ,   2   ,   3   ,   4   ],

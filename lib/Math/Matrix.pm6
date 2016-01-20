@@ -32,7 +32,7 @@ submethod BUILD( :@rows ) {
 
 
 
-method diagonal(Math::Matrix:U: *@diag ){
+method new-diagonal(Math::Matrix:U: *@diag ){
     fail "Expect an List of Number" unless @diag and [and] @diag >>~~>> Numeric;
     my @d;
     for ^+@diag X ^+@diag -> ($r, $c) {
@@ -49,7 +49,7 @@ method !identity_array( Positive_Int $size ) {
     return @identity;
 }
 
-method identity(Math::Matrix:U: Positive_Int $size ) {
+method new-identity(Math::Matrix:U: Positive_Int $size ) {
     self.bless( rows => self!identity_array($size), row-count => $size, column-count => $size );
 }
 
@@ -57,7 +57,7 @@ method !zero_array( Positive_Int $rows, Positive_Int $cols = $rows ) {
     return [ [ 0 xx $cols ] xx $rows ];
 }
 
-method zero(Math::Matrix:U: Positive_Int $rows, Positive_Int $cols = $rows) {
+method new-zero(Math::Matrix:U: Positive_Int $rows, Positive_Int $cols = $rows) {
     self.bless( rows => self!zero_array($rows, $cols), row-count => $rows, column-count => $cols );
 }
 
@@ -203,9 +203,7 @@ method is-positive-definite (Math::Matrix:D: --> Bool) { # with Sylvester's crit
     return False unless self.determinant > 0;
     my $sub = Math::Matrix.new( @!rows );
     for $!row-count - 1 ... 1 -> $r {
-say "- @!rows[]    in iter $r";
         $sub = $sub.submatrix($r,$r);
-say "- @!rows[]";
         return False unless $sub.determinant > 0;
     }
     True;
@@ -306,7 +304,7 @@ multi method determinant(Math::Matrix:D: --> Numeric) {
         $product *= @!rows[$_][ $perm[$_] ] for ^+$perm;
         $det += $product;
     }
-#say "det";
+say "det";
     $!deterninant = $det;
 }
 
@@ -323,8 +321,9 @@ multi method density(Math::Matrix:D: --> Rat) {
     $valcount / ($!row-count * $!column-count);
 }
 
-multi method rank(Math::Matrix:D: --> Int) {
+multi method rank(Math::Matrix:D: --> Int) is cached {
     my $rank = 0;
+say "rank";
     my @clone =  @!rows.clone();
     for ^$!column-count -> $c {            # make upper triangle via gauss elimination
         last if $rank == $!row-count;      # rank cant get bigger thean dim

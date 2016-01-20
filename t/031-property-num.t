@@ -5,7 +5,7 @@ plan 7;
 
 subtest {
     plan 4;
-    my $zero = Math::Matrix.zero(3,3);
+    my $zero = Math::Matrix.new-zero(3,3);
     my $matrixa = Math::Matrix.new([[1,2],[3,4]]);
     my $matrixb = Math::Matrix.new([[1,2],[3,4],[5,6]]);
 
@@ -17,9 +17,9 @@ subtest {
 
 subtest {
     plan 5;
-    my $zero = Math::Matrix.zero(3,3);
-    my $identity = Math::Matrix.identity(3);
-    my $diagonal = Math::Matrix.diagonal([1,2,3]);
+    my $zero = Math::Matrix.new-zero(3,3);
+    my $identity = Math::Matrix.new-identity(3);
+    my $diagonal = Math::Matrix.new-diagonal([1,2,3]);
     my $matrix = Math::Matrix.new([[1,2,5,4],[1,2,3,2],[9,8,4,1],[1,3,4,6]]);
     my $matrix2 = Math::Matrix.new([[1,2,5,4],[1,2,3,2],[9,8,4,1]]);
 
@@ -40,8 +40,8 @@ subtest {
 
 subtest {
     plan 3;
-    my $zero = Math::Matrix.zero(3,4);
-    my $identity = Math::Matrix.identity(3);
+    my $zero = Math::Matrix.new-zero(3,4);
+    my $identity = Math::Matrix.new-identity(3);
     my $matrix = Math::Matrix.new([[1,2,3],[2,4,6],[3,6,9]]);
 
     ok $zero.density == 0         ,"Zero matrix has density of 0";
@@ -52,9 +52,9 @@ subtest {
 
 subtest {
     plan 4;
-    my $zero = Math::Matrix.zero(3,4);
-    my $identity = Math::Matrix.identity(3);
-    my $diagonal = Math::Matrix.diagonal([1,2,3]);
+    my $zero = Math::Matrix.new-zero(3,4);
+    my $identity = Math::Matrix.new-identity(3);
+    my $diagonal = Math::Matrix.new-diagonal([1,2,3]);
     my $matrix = Math::Matrix.new([[1,2,3],[2,4,6],[3,6,9]]);
 
     ok $zero.rank == 0     ,"Rank of Zero Matrix";
@@ -78,9 +78,9 @@ subtest {
 
 subtest {
     plan 22;
-    my $zero = Math::Matrix.zero(3,4);
-    my $identity = Math::Matrix.identity(3);
-    my $diagonal = Math::Matrix.diagonal([1,2,3]);
+    my $zero = Math::Matrix.new-zero(3,4);
+    my $identity = Math::Matrix.new-identity(3);
+    my $diagonal = Math::Matrix.new-diagonal([1,2,3]);
     my $matrix = Math::Matrix.new([[1,2,3],[2,4,6],[3,6,9]]);
 
     dies-ok { $zero.norm(0) }       ,"there is no 0 norm";

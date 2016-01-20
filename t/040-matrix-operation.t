@@ -13,8 +13,8 @@ subtest {
 
 subtest {
     plan 8;
-    my $identity = Math::Matrix.identity(3);
-    my $diagonal = Math::Matrix.diagonal([1,2,3]);
+    my $identity = Math::Matrix.new-identity(3);
+    my $diagonal = Math::Matrix.new-diagonal([1,2,3]);
     my $matrixa  = Math::Matrix.new([[1,2,3],[2,4,6],[3,6,9]]);
     my $matrixb  = Math::Matrix.new([[1,2],[3,4]]);
     my $expectb  = Math::Matrix.new([[-2, 1],[1.5, -0.5]]);
@@ -37,7 +37,7 @@ subtest {
     my $a = Math::Matrix.new( [[1,2,3],[4,5,6]] );
     my $b = Math::Matrix.new( [[7,8],[9,10],[11,12]] );
     my $matrix   = Math::Matrix.new([[1,2],[3,4]]);
-    my $identity = Math::Matrix.identity(2);
+    my $identity = Math::Matrix.new-identity(2);
 
     ok $a.dotProduct( $b ) eqv Math::Matrix.new([[58,64],[139,154]]), "Simple multiplication check";
     ok ($a ⋅ $b) eqv Math::Matrix.new([[58,64],[139,154]]),   "Simple multiplication check with ⋅ operator";
@@ -106,10 +106,10 @@ subtest {
     ok ($L dot $U) ~~ $matrix, "LU is equal to original matrix";
 
 
-    my $zero = Math::Matrix.zero(3,4);
-    my $identity = Math::Matrix.identity(3);
-    my $diagonal = Math::Matrix.diagonal([1,4,9]);
-    my $diagonalD = Math::Matrix.diagonal([1,2,3]);
+    my $zero = Math::Matrix.new-zero(3,4);
+    my $identity = Math::Matrix.new-identity(3);
+    my $diagonal = Math::Matrix.new-diagonal([1,4,9]);
+    my $diagonalD = Math::Matrix.new-diagonal([1,2,3]);
     my $simple = Math::Matrix.new([[1,0],[15,16]]);
     my $simpleD = Math::Matrix.new([[1,0],[3,4]]);
 
