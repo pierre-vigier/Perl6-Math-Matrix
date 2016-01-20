@@ -57,7 +57,7 @@ method submatrix(Math::Matrix:U: Int $row, Int $col --> Math::Matrix:D ){
     fail "$col is not an existing column index" unless 0 <= $col < $!column-count;
     my @clone = @!rows.clone;
     @clone.splice($row,1);
-    @clone = map { $^r.splice($column,1); $^r }, @clone;
+    @clone = map { $^r.splice($col, 1); $^r }, @clone;
     Math::Matrix.new( @clone );
 }
 
