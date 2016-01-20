@@ -560,6 +560,10 @@ use with consideration...
 
     Is True if every cell with coordinates x y has same value as the cell on y x.
 
+=head2 method is-positive-definite
+
+    True if all main minors are positive
+
 =head2 method is-orthogonal
 
     if $matrix.is-orthogonal {
@@ -635,11 +639,6 @@ use with consideration...
     my $tr = $matrix.trace( );
     Calculate the trace of a square matrix
 
-=head2 method density
-
-    my $dst = $matrix.density( );      #  number of none-zero values / all cells
-    useful to idenify sparse and full matrices
-
 =head2 method rank
 
     my $r = $matrix.rank( );
@@ -654,13 +653,13 @@ use with consideration...
 
 =head2 method norm
 
-    my $norm = $matrix.norm( );         # euclidian norm (L2, p = 2)
-    my $norm = ||$matrix||;             # operator shortcut to do the same
-    my $norm = $matrix.norm(1);         # p-norm, L1 = sum of all cells
+    my $norm = $matrix.norm( );          # euclidian norm (L2, p = 2)
+    my $norm = ||$matrix||;              # operator shortcut to do the same
+    my $norm = $matrix.norm(1);          # p-norm, L1 = sum of all cells
     my $norm = $matrix.norm(p:<4>,q:<3>);# p,q - norm, p = 4, q = 3
     my $norm = $matrix.norm(p:<2>,q:<2>);# Frobenius norm
-    my $norm = $matrix.norm('max');     # max norm - biggest absolute value of a cell
-    $matrix.norm('rowsum');             # row sum norm - biggest abs. value-sum of a row
-    $matrix.norm('columnsum');          # column sum norm - same column wise
+    my $norm = $matrix.norm('max');      # max norm - biggest absolute value of a cell
+    $matrix.norm('rowsum');              # row sum norm - biggest abs. value-sum of a row
+    $matrix.norm('columnsum');           # column sum norm - same column wise
 
 =end pod
