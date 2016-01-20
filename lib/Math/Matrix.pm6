@@ -105,12 +105,12 @@ method ACCEPTS(Math::Matrix $b --> Bool ) {
     self.equal( $b );
 }
 
-method size(Math::Matrix:D: ){
-    return $!row-count, $!column-count;
-}
-
 method equal(Math::Matrix:D: Math::Matrix $b --> Bool) {
     @!rows ~~ $b!rows;
+}
+
+method size(Math::Matrix:D: ){
+    return $!row-count, $!column-count;
 }
 
 method is-square(Math::Matrix:D: --> Bool) {
@@ -186,6 +186,18 @@ method is-symmetric(Math::Matrix:D: --> Bool) {
 method is-orthogonal(Math::Matrix:D: --> Bool) {
     return False unless self.is-square;
     self.dotProduct( self.T ) ~~ Math::Matrix.identity( $!row-count );
+}
+
+
+method is-positive-definite (Math::Matrix:D: --> Bool) { # with Sylvester's criterion
+    return False unless self.is-square or min self.size < 1;
+    return False unless self.determinant > 0;
+    my $sub = self.cone;
+    for 1 ..^ $!row-count -> $r {
+        $sub = $sub.submatrix($r,$r);
+        return False unless $sub.determinant > 0;
+    }
+    True;
 }
 
 method T(Math::Matrix:D: --> Math::Matrix:D  )         { self.transposed }
@@ -378,22 +390,21 @@ multi method decompositionLUCrout(Math::Matrix:D: ) {
     return Math::Matrix.new($L), Math::Matrix.new($U);
 }
 
-# postive tester is missing
-#multi method decompositionCholeski(Math::Matrix:D: ) {
-#    fail "Not symmetric matrix" unless self.is-symmetric;
-#    fail "Not positive definite" unless self.is-positive-definite;
-#    my $D = self!rows.clone();
-#    for 0 ..^$!row-count -> $k {
-#        $D[$k][$k] -= $D[$k][$_]**2 for 0 .. $k-1;
-#        $D[$k][$k]  = sqrt $D[$k][$k];
-#        for $k+1 ..^ $!row-count -> $i {
-#            $D[$i][$k] -= $D[$i][$_] * $D[$k][$_] for 0 ..^ $k ;
-#            $D[$i][$k]  = $D[$i][$k] / $D[$k][$k];
-#        }
-#    }
-#    for ^$!row-count X ^$!row-count -> ($r, $c) { $D[$r][$c] = 0 if $r < $c }
-#    return Math::Matrix.new($D);
-#}
+multi method decompositionCholeski(Math::Matrix:D: ) {
+    fail "Not symmetric matrix" unless self.is-symmetric;
+    fail "Not positive definite" unless self.is-positive-definite;
+    my $D = self!rows.clone();
+    for 0 ..^$!row-count -> $k {
+        $D[$k][$k] -= $D[$k][$_]**2 for 0 .. $k-1;
+        $D[$k][$k]  = sqrt $D[$k][$k];
+        for $k+1 ..^ $!row-count -> $i {
+            $D[$i][$k] -= $D[$i][$_] * $D[$k][$_] for 0 ..^ $k ;
+            $D[$i][$k]  = $D[$i][$k] / $D[$k][$k];
+        }
+    }
+    for ^$!row-count X ^$!row-count -> ($r, $c) { $D[$r][$c] = 0 if $r < $c }
+    return Math::Matrix.new($D);
+}
 
 multi sub infix:<⋅>( Math::Matrix $a, Math::Matrix $b where { $a!column-count == $b!row-count} --> Math::Matrix:D ) is looser(&infix:<*>) is export {
     $a.dotProduct( $b );
