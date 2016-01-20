@@ -4,24 +4,33 @@ has @!rows is required;
 has Int $!row-count;
 has Int $!column-count;
 
-method !rows() { @!rows }
-method !row-count { $!row-count }
+method !rows()    { @!rows }
+method !clone_rows { AoA_clone(@!rows) }
+method !row-count   { $!row-count }
 method !column-count { $!column-count }
 
 subset Positive_Int of Int where * > 0 ;
 
+
 method new( @m ) {
-    fail "Expect an Array of Array" unless all @m ~~ Array;
-    fail "All Row must contains the same number of elements" unless @m[0] == all @m[*];
-    fail "All Row must contains only numeric values" unless all( @m[*;*] ) ~~ Numeric;
-    self.bless( rows => @m );
+    die "Expect an Array of Array" unless all @m ~~ Array;
+    die "All Row must contains the same number of elements" unless @m[0] == all @m[*];
+    die "All Row must contains only numeric values" unless all( @m[*;*] ) ~~ Numeric;
+    self.bless( rows => AoA_clone(@m) );
 }
+method clone { 
+    self.bless( rows => self!clone_rows ) 
+}
+
+sub AoA_clone (@m)  {  map {[ map {$^cell.clone}, $^row.flat ]}, @m }
 
 submethod BUILD( :@rows ) {
     @!rows = @rows;
     $!row-count = @rows.elems;
     $!column-count = @rows[0].elems;
 }
+
+
 
 method diagonal(Math::Matrix:U: *@diag ){
     fail "Expect an List of Number" unless @diag and [and] @diag >>~~>> Numeric;
@@ -52,10 +61,10 @@ method zero(Math::Matrix:U: Positive_Int $rows, Positive_Int $cols = $rows) {
     self.bless( rows => self!zero_array($rows, $cols), row-count => $rows, column-count => $cols );
 }
 
-method submatrix(Math::Matrix:U: Int $row, Int $col --> Math::Matrix:D ){
-    fail "$row is not an existing row index" unless 0 <= $row < $!row-count;
-    fail "$col is not an existing column index" unless 0 <= $col < $!column-count;
-    my @clone = @!rows.clone;
+method submatrix(Math::Matrix:D: Int $row, Int $col --> Math::Matrix:D ){
+    fail "$row is not an existing row index" unless 0 < $row <= $!row-count;
+    fail "$col is not an existing column index" unless 0 < $col <= $!column-count;
+    my @clone = self!clone_rows();
     @clone.splice($row,1);
     @clone = map { $^r.splice($col, 1); $^r }, @clone;
     Math::Matrix.new( @clone );
@@ -190,11 +199,13 @@ method is-orthogonal(Math::Matrix:D: --> Bool) {
 
 
 method is-positive-definite (Math::Matrix:D: --> Bool) { # with Sylvester's criterion
-    return False unless self.is-square or min self.size < 1;
+    return False unless self.is-square;
     return False unless self.determinant > 0;
-    my $sub = self.cone;
-    for 1 ..^ $!row-count -> $r {
+    my $sub = Math::Matrix.new( @!rows );
+    for $!row-count - 1 ... 1 -> $r {
+say "- @!rows[]    in iter $r";
         $sub = $sub.submatrix($r,$r);
+say "- @!rows[]";
         return False unless $sub.determinant > 0;
     }
     True;
@@ -210,7 +221,7 @@ method transposed(Math::Matrix:D: --> Math::Matrix:D ) {
 method inverted(Math::Matrix:D: --> Math::Matrix:D) {
     fail "Number of columns has to be same as number of rows" unless self.is-square;
     fail "Matrix is not invertible, or singular because defect (determinant = 0)" if self.determinant == 0;
-    my @clone = @!rows.clone;
+    my @clone = self!clone_rows();
     my @inverted = self!identity_array( $!row-count );
     for ^$!row-count -> $c {
         my $swap_row_nr = $c;       # make sure that diagonal element != 0, later == 1
@@ -295,6 +306,7 @@ multi method determinant(Math::Matrix:D: --> Numeric) {
         $product *= @!rows[$_][ $perm[$_] ] for ^+$perm;
         $det += $product;
     }
+#say "det";
     $!deterninant = $det;
 }
 
@@ -390,20 +402,21 @@ multi method decompositionLUCrout(Math::Matrix:D: ) {
     return Math::Matrix.new($L), Math::Matrix.new($U);
 }
 
-multi method decompositionCholeski(Math::Matrix:D: ) {
+multi method decompositionCholeski(Math::Matrix:D: --> Math::Matrix:D) {
     fail "Not symmetric matrix" unless self.is-symmetric;
     fail "Not positive definite" unless self.is-positive-definite;
-    my $D = self!rows.clone();
+    my @D = self!clone_rows();
+
     for 0 ..^$!row-count -> $k {
-        $D[$k][$k] -= $D[$k][$_]**2 for 0 .. $k-1;
-        $D[$k][$k]  = sqrt $D[$k][$k];
+        @D[$k][$k] -= @D[$k][$_]**2 for 0 .. $k-1;
+        @D[$k][$k]  = sqrt @D[$k][$k];
         for $k+1 ..^ $!row-count -> $i {
-            $D[$i][$k] -= $D[$i][$_] * $D[$k][$_] for 0 ..^ $k ;
-            $D[$i][$k]  = $D[$i][$k] / $D[$k][$k];
+            @D[$i][$k] -= @D[$i][$_] * @D[$k][$_] for 0 ..^ $k ;
+            @D[$i][$k]  = @D[$i][$k] / @D[$k][$k];
         }
     }
-    for ^$!row-count X ^$!row-count -> ($r, $c) { $D[$r][$c] = 0 if $r < $c }
-    return Math::Matrix.new($D);
+    for ^$!row-count X ^$!row-count -> ($r, $c) { @D[$r][$c] = 0 if $r < $c }
+    return Math::Matrix.new(@D);
 }
 
 multi sub infix:<⋅>( Math::Matrix $a, Math::Matrix $b where { $a!column-count == $b!row-count} --> Math::Matrix:D ) is looser(&infix:<*>) is export {
