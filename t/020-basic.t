@@ -2,10 +2,10 @@ use Test;
 use Math::Matrix;
 plan 18;
 
-lives-ok{ my $matrix = Math::Matrix.new([[1,2],[3,4]]); }  , "Able to create a materix";
-dies-ok { my $matrix = Math::Matrix.new([[1,2],[1,2,3]]); }, "Different nuber of elements per line";
-dies-ok { my $matrix = Math::Matrix.new(); }               , "Constructor need params";
-dies-ok { my $matrix = Math::Matrix.new([[1,2],[3,"a"]]); }, "All elements have to be Numeric";
+lives-ok { my $matrix = Math::Matrix.new([[1,2],[3,4]]); }  , "Able to create a materix";
+dies-ok  { my $matrix = Math::Matrix.new([[1,2],[1,2,3]]); }, "Different nuber of elements per line";
+dies-ok  { my $matrix = Math::Matrix.new(); }               , "Constructor need params";
+dies-ok  { my $matrix = Math::Matrix.new([[1,2],[3,"a"]]); }, "All elements have to be Numeric";
 
 my $matrixa = Math::Matrix.new([[1,2],[3,4]]);
 my $matrixb = Math::Matrix.new([[1,2],[3,4]]);
