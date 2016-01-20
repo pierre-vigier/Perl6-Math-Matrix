@@ -304,7 +304,6 @@ multi method determinant(Math::Matrix:D: --> Numeric) {
         $product *= @!rows[$_][ $perm[$_] ] for ^+$perm;
         $det += $product;
     }
-say "det";
     $!deterninant = $det;
 }
 
@@ -321,9 +320,8 @@ multi method density(Math::Matrix:D: --> Rat) {
     $valcount / ($!row-count * $!column-count);
 }
 
-multi method rank(Math::Matrix:D: --> Int) is cached {
+multi method rank(Math::Matrix:D: --> Int) {
     my $rank = 0;
-say "rank";
     my @clone =  @!rows.clone();
     for ^$!column-count -> $c {            # make upper triangle via gauss elimination
         last if $rank == $!row-count;      # rank cant get bigger thean dim
