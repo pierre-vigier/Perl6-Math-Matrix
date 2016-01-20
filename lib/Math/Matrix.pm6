@@ -194,7 +194,7 @@ method is-symmetric(Math::Matrix:D: --> Bool) {
 
 method is-orthogonal(Math::Matrix:D: --> Bool) {
     return False unless self.is-square;
-    self.dotProduct( self.T ) ~~ Math::Matrix.identity( $!row-count );
+    self.dotProduct( self.T ) ~~ Math::Matrix.new_identity( $!row-count );
 }
 
 
