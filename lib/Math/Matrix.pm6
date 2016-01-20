@@ -378,9 +378,10 @@ multi method decompositionLUCrout(Math::Matrix:D: ) {
     return Math::Matrix.new($L), Math::Matrix.new($U);
 }
 
-# psotive tester is missing
+# postive tester is missing
 #multi method decompositionCholeski(Math::Matrix:D: ) {
-#    fail "Not square matrix" unless self.is-square;
+#    fail "Not symmetric matrix" unless self.is-symmetric;
+#    fail "Not positive definite" unless self.is-positive-definite;
 #    my $D = self!rows.clone();
 #    for 0 ..^$!row-count -> $k {
 #        $D[$k][$k] -= $D[$k][$_]**2 for 0 .. $k-1;
