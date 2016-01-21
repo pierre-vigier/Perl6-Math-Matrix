@@ -194,7 +194,7 @@ method is-symmetric(Math::Matrix:D: --> Bool) {
 
 method is-orthogonal(Math::Matrix:D: --> Bool) {
     return False unless self.is-square;
-    self.dotProduct( self.T ) ~~ Math::Matrix.new_identity( $!row-count );
+    self.dotProduct( self.T ) ~~ Math::Matrix.new-identity( $!row-count );
 }
 
 
@@ -371,7 +371,6 @@ multi method condition(Math::Matrix:D: --> Numeric) {
 
 multi method decompositionLUCrout(Math::Matrix:D: ) {
     fail "Not square matrix" unless self.is-square;
-
     my $sum;
     my $size = self!row-count;
     my $U = self!identity_array( $size );
@@ -402,8 +401,8 @@ multi method decompositionLUCrout(Math::Matrix:D: ) {
 multi method decompositionCholeski(Math::Matrix:D: --> Math::Matrix:D) {
     fail "Not symmetric matrix" unless self.is-symmetric;
     fail "Not positive definite" unless self.is-positive-definite;
-    my @D = self!clone_rows();
 
+    my @D = self!clone_rows();
     for 0 ..^$!row-count -> $k {
         @D[$k][$k] -= @D[$k][$_]**2 for 0 .. $k-1;
         @D[$k][$k]  = sqrt @D[$k][$k];
@@ -445,7 +444,7 @@ multi sub infix:<->(Math::Matrix $a, Math::Matrix $b --> Math::Matrix:D ) is exp
 }
 
 multi sub infix:<**>(Math::Matrix $a where { $a.is-square }, Int $e --> Math::Matrix:D ) is export {
-    return Math::Matrix.identity( $a!row-count ) if $e ==  0;
+    return Math::Matrix.new-identity( $a!row-count ) if $e ==  0;
     my $p = $a.clone;
     $p = $p.dotProduct( $a ) for 2 .. abs $e;
     $p = $p.inverted         if  $e < 0;

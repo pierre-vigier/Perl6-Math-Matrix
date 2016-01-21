@@ -65,9 +65,9 @@ subtest {
 
 subtest {
     plan 4;
-    my $zero = Math::Matrix.zero(3,4);
-    my $identity = Math::Matrix.identity(3);
-    my $diagonal = Math::Matrix.diagonal([1,2,3]);
+    my $zero = Math::Matrix.new-zero(3,4);
+    my $identity = Math::Matrix.new-identity(3);
+    my $diagonal = Math::Matrix.new-diagonal([1,2,3]);
     my $matrix = Math::Matrix.new([[1,2,3],[2,4,6],[3,6,9]]);
 
     ok $zero.kernel == 3     ,"Zero Matrix has full kernel";
