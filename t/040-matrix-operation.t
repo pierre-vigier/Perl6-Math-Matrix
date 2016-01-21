@@ -1,6 +1,6 @@
 use Test;
 use Math::Matrix;
-plan 9;
+plan 8;
 
 subtest {
     plan 2;
@@ -13,8 +13,8 @@ subtest {
 
 subtest {
     plan 8;
-    my $identity = Math::Matrix.identity(3);
-    my $diagonal = Math::Matrix.diagonal([1,2,3]);
+    my $identity = Math::Matrix.new-identity(3);
+    my $diagonal = Math::Matrix.new-diagonal([1,2,3]);
     my $matrixa  = Math::Matrix.new([[1,2,3],[2,4,6],[3,6,9]]);
     my $matrixb  = Math::Matrix.new([[1,2],[3,4]]);
     my $expectb  = Math::Matrix.new([[-2, 1],[1.5, -0.5]]);
@@ -37,7 +37,7 @@ subtest {
     my $a = Math::Matrix.new( [[1,2,3],[4,5,6]] );
     my $b = Math::Matrix.new( [[7,8],[9,10],[11,12]] );
     my $matrix   = Math::Matrix.new([[1,2],[3,4]]);
-    my $identity = Math::Matrix.identity(2);
+    my $identity = Math::Matrix.new-identity(2);
 
     ok $a.dotProduct( $b ) eqv Math::Matrix.new([[58,64],[139,154]]), "Simple multiplication check";
     ok ($a ⋅ $b) eqv Math::Matrix.new([[58,64],[139,154]]),   "Simple multiplication check with ⋅ operator";
@@ -94,14 +94,3 @@ subtest {
     ok $matrix * 2.2 eqv $expected, "multiplication with real working with operator *";
     ok 2.2 * $matrix eqv $expected, "multiplication with real working with operator *, reverse args";
 }, "Multiply Matrix with number";
-
-subtest {
-    plan 2;
-    my $matrix = Math::Matrix.new([[4,0,1],[2,1,0],[2,2,3]]);
-    my $expectedL = Math::Matrix.new([[4,0,0],[2,1,0],[2,2,7/2]]);
-    my $expectedU = Math::Matrix.new([[1,0,1/4],[0,1,-1/2],[0,0,1]]);
-
-    my ($L, $U) = $matrix.decopositionLUCrout();
-    ok ( $L ~~ $expectedL and $U ~~ $expectedU ) , "L and U are correct";
-    ok ($L dot $U) ~~ $matrix, "LU is equal to original matrix";
-}, "Decompostition";

@@ -3,11 +3,14 @@ unit class Math::Matrix;
 has @!rows is required;
 has Int $!row-count;
 has Int $!column-count;
-method !rows() { @!rows }
-method !row-count { $!row-count }
+
+method !rows()    { @!rows }
+method !clone_rows { AoA_clone(@!rows) }
+method !row-count   { $!row-count }
 method !column-count { $!column-count }
 
 subset Positive_Int of Int where * > 0 ;
+
 
 method new( @m ) {
     die "Expect an Array of Array" unless all @m ~~ Array;
@@ -15,41 +18,56 @@ method new( @m ) {
     die "All Row must contains only numeric values" unless all( @m[*;*] ) ~~ Numeric;
     self.bless( rows => @m );
 }
+method clone { self.bless( rows => @!rows ) }
 
-submethod BUILD( :@rows ) {
-    @!rows = @rows;
+sub AoA_clone (@m)  {  map {[ map {$^cell.clone}, $^row.flat ]}, @m }
+
+submethod BUILD( :@rows, :$det?, :$rank? ) {
+    @!rows = AoA_clone (@rows);
     $!row-count = @rows.elems;
     $!column-count = @rows[0].elems;
+    $!determinant = $det if $det.defined;
+    $!rank        = $rank if $rank.defined;
 }
 
-method diagonal(Math::Matrix:U: *@diag ){
-    die "Expect an List of Number" unless @diag and [and] @diag >>~~>> Numeric;
-    my @d;
-    for ^+@diag X ^+@diag -> ($r, $c) {
-        @d[$r][$c] = $r==$c ?? @diag[$r] !! 0;
-    }
-    self.bless( rows => @d, row-count => @diag.elems, column-count => @diag.elems );
-}
-
-method !identity_array( Positive_Int $size ) {
-    my @identity;
-    for ^$size X ^$size -> ($r, $c) {
-        @identity[$r][$c] = ($r == $c ?? 1 !! 0);
-    }
-    return @identity;
-}
-
-method identity(Math::Matrix:U: Positive_Int $size ) {
-    self.bless( rows => self!identity_array($size), row-count => $size, column-count => $size );
-}
 
 method !zero_array( Positive_Int $rows, Positive_Int $cols = $rows ) {
     return [ [ 0 xx $cols ] xx $rows ];
 }
 
-method zero(Math::Matrix:U: Positive_Int $rows, Positive_Int $cols = $rows) {
-    self.bless( rows => self!zero_array($rows, $cols), row-count => $rows, column-count => $cols );
+method new-zero(Math::Matrix:U: Positive_Int $rows, Positive_Int $cols = $rows) {
+    self.bless( rows => self!zero_array($rows, $cols), det => 0, rank => 0 );
 }
+
+method !identity_array( Positive_Int $size ) {
+    my @identity;
+    for ^$size X ^$size -> ($r, $c) { @identity[$r][$c] = ($r == $c ?? 1 !! 0) }
+    return @identity;
+}
+
+method new-identity(Math::Matrix:U: Positive_Int $size ) {
+    self.bless( rows => self!identity_array($size), det => 1, rank => $size );
+}
+
+method new-diagonal(Math::Matrix:U: *@diag ){
+    fail "Expect an List of Number" unless @diag and [and] @diag >>~~>> Numeric;
+    my @d;
+    for ^+@diag X ^+@diag -> ($r, $c) { @d[$r][$c] = $r==$c ?? @diag[$r] !! 0 }
+    self.bless( rows => @d, det => [*](@diag) , rank => +@diag );
+}
+
+# method new-vector-product (Math::Matrix:U: @column, @row ){}
+
+
+method submatrix(Math::Matrix:D: Int $row, Int $col --> Math::Matrix:D ){
+    fail "$row is not an existing row index" unless 0 < $row <= $!row-count;
+    fail "$col is not an existing column index" unless 0 < $col <= $!column-count;
+    my @clone = self!clone_rows();
+    @clone.splice($row,1);
+    @clone = map { $^r.splice($col, 1); $^r }, @clone;
+    Math::Matrix.new( @clone );
+}
+
 
 #multi method elems(Math::Matrix:D: --> Int) {
 #    $!row-count * $!column-count;
@@ -95,12 +113,12 @@ method ACCEPTS(Math::Matrix $b --> Bool ) {
     self.equal( $b );
 }
 
-multi method size(Math::Matrix:D: ){
-    return $!row-count, $!column-count;
-}
-
 method equal(Math::Matrix:D: Math::Matrix $b --> Bool) {
     @!rows ~~ $b!rows;
+}
+
+method size(Math::Matrix:D: ){
+    return $!row-count, $!column-count;
 }
 
 method is-square(Math::Matrix:D: --> Bool) {
@@ -112,10 +130,7 @@ method is-invertible(Math::Matrix:D: --> Bool) {
 }
 
 method is-zero(Math::Matrix:D: --> Bool) {
-    for ^$!row-count X ^$!column-count -> ($r, $c) {
-        return False unless @!rows[$r][$c] == 0;
-    }
-    True;
+    self.density() == 0;
 }
 
 method is-identity(Math::Matrix:D: --> Bool) {
@@ -178,7 +193,19 @@ method is-symmetric(Math::Matrix:D: --> Bool) {
 
 method is-orthogonal(Math::Matrix:D: --> Bool) {
     return False unless self.is-square;
-    self.dotProduct( self.T ) ~~ Math::Matrix.identity( $!row-count );
+    self.dotProduct( self.T ) ~~ Math::Matrix.new-identity( $!row-count );
+}
+
+
+method is-positive-definite (Math::Matrix:D: --> Bool) { # with Sylvester's criterion
+    return False unless self.is-square;
+    return False unless self.determinant > 0;
+    my $sub = Math::Matrix.new( @!rows );
+    for $!row-count - 1 ... 1 -> $r {
+        $sub = $sub.submatrix($r,$r);
+        return False unless $sub.determinant > 0;
+    }
+    True;
 }
 
 method T(Math::Matrix:D: --> Math::Matrix:D  )         { self.transposed }
@@ -191,7 +218,7 @@ method transposed(Math::Matrix:D: --> Math::Matrix:D ) {
 method inverted(Math::Matrix:D: --> Math::Matrix:D) {
     fail "Number of columns has to be same as number of rows" unless self.is-square;
     fail "Matrix is not invertible, or singular because defect (determinant = 0)" if self.determinant == 0;
-    my @clone = @!rows.clone;
+    my @clone = self!clone_rows();
     my @inverted = self!identity_array( $!row-count );
     for ^$!row-count -> $c {
         my $swap_row_nr = $c;       # make sure that diagonal element != 0, later == 1
@@ -220,7 +247,7 @@ multi method dotProduct(Math::Matrix:D: Math::Matrix $b --> Math::Matrix:D ) {
     for ^$!row-count X ^$b!column-count -> ($r, $c) {
         @product[$r][$c] += @!rows[$r][$_] * $b!rows[$_][$c] for ^$b!row-count;
     }
-    Math::Matrix.new( @product );;
+    Math::Matrix.new( @product );
 }
 
 multi method multiply(Math::Matrix:D: Real $r --> Math::Matrix:D ) {
@@ -261,10 +288,11 @@ multi method multiply(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b!
     Math::Matrix.new( @multiply );
 }
 
-has Numeric $!deterninant;
+has Numeric $!determinant;
 
+multi method det(Math::Matrix:D: --> Numeric )        { self.determinant }  # the usual short name
 multi method determinant(Math::Matrix:D: --> Numeric) {
-    return $!deterninant if $!deterninant.defined;
+    return $!determinant if $!determinant.defined;
 
     fail "Number of columns has to be same as number of rows" unless self.is-square;
     return 1            if $!row-count == 0;
@@ -275,7 +303,7 @@ multi method determinant(Math::Matrix:D: --> Numeric) {
         $product *= @!rows[$_][ $perm[$_] ] for ^+$perm;
         $det += $product;
     }
-    $!deterninant = $det;
+    $!determinant = $det;
 }
 
 multi method trace(Math::Matrix:D: --> Numeric) {
@@ -291,7 +319,10 @@ multi method density(Math::Matrix:D: --> Rat) {
     $valcount / ($!row-count * $!column-count);
 }
 
+has Numeric $!rank;
+
 multi method rank(Math::Matrix:D: --> Int) {
+    return $!rank if $!rank.defined;
     my $rank = 0;
     my @clone =  @!rows.clone();
     for ^$!column-count -> $c {            # make upper triangle via gauss elimination
@@ -314,13 +345,11 @@ multi method kernel(Math::Matrix:D: --> Int) {
     min(self.size) - self.rank;
 }
 
-multi method norm(Math::Matrix:D: Positive_Int $p = 2, Positive_Int $q = 1 --> Numeric) {
+multi method norm(Math::Matrix:D: Positive_Int :$p = 2, Positive_Int :$q = 1 --> Numeric) {
     my $norm = 0;
     for ^$!column-count -> $c {
         my $col_sum = 0;
-        for ^$!row-count -> $r {
-            $col_sum += abs(@!rows[$r][$c]) ** $p;
-        }
+        for ^$!row-count -> $r {  $col_sum += abs(@!rows[$r][$c]) ** $p }
         $norm += $col_sum ** ($q / $p);
     }
     $norm ** (1/$q);
@@ -338,9 +367,12 @@ multi method norm(Math::Matrix:D: Str $which where * eq 'max' --> Numeric) {
     max map {max map {abs $_},  @$_}, @!rows;
 }
 
-multi method decopositionLUCrout(Math::Matrix:D: ) {
-    fail "Not square matrix" unless self.is-square;
+multi method condition(Math::Matrix:D: --> Numeric) {
+    self.norm() * self.inverted().norm();
+}
 
+multi method decompositionLUCrout(Math::Matrix:D: ) {
+    fail "Not square matrix" unless self.is-square;
     my $sum;
     my $size = self!row-count;
     my $U = self!identity_array( $size );
@@ -368,11 +400,28 @@ multi method decopositionLUCrout(Math::Matrix:D: ) {
     return Math::Matrix.new($L), Math::Matrix.new($U);
 }
 
-multi sub infix:<⋅>( Math::Matrix $a, Math::Matrix $b where { $a!column-count == $b!row-count} --> Math::Matrix:D ) is export {
+multi method decompositionCholeski(Math::Matrix:D: --> Math::Matrix:D) {
+    fail "Not symmetric matrix" unless self.is-symmetric;
+    fail "Not positive definite" unless self.is-positive-definite;
+
+    my @D = self!clone_rows();
+    for 0 ..^$!row-count -> $k {
+        @D[$k][$k] -= @D[$k][$_]**2 for 0 .. $k-1;
+        @D[$k][$k]  = sqrt @D[$k][$k];
+        for $k+1 ..^ $!row-count -> $i {
+            @D[$i][$k] -= @D[$i][$_] * @D[$k][$_] for 0 ..^ $k ;
+            @D[$i][$k]  = @D[$i][$k] / @D[$k][$k];
+        }
+    }
+    for ^$!row-count X ^$!row-count -> ($r, $c) { @D[$r][$c] = 0 if $r < $c }
+    return Math::Matrix.new(@D);
+}
+
+multi sub infix:<⋅>( Math::Matrix $a, Math::Matrix $b where { $a!column-count == $b!row-count} --> Math::Matrix:D ) is looser(&infix:<*>) is export {
     $a.dotProduct( $b );
 }
 
-multi sub infix:<dot>(Math::Matrix $a, Math::Matrix $b --> Math::Matrix:D ) is export {
+multi sub infix:<dot>(Math::Matrix $a, Math::Matrix $b --> Math::Matrix:D ) is looser(&infix:<*>) is export {
     $a ⋅ $b;
 }
 
@@ -397,14 +446,14 @@ multi sub infix:<->(Math::Matrix $a, Math::Matrix $b --> Math::Matrix:D ) is exp
 }
 
 multi sub infix:<**>(Math::Matrix $a where { $a.is-square }, Int $e --> Math::Matrix:D ) is export {
-    return Math::Matrix.identity( $a!row-count ) if $e ==  0;
+    return Math::Matrix.new-identity( $a!row-count ) if $e ==  0;
     my $p = $a.clone;
     $p = $p.dotProduct( $a ) for 2 .. abs $e;
     $p = $p.inverted         if  $e < 0;
     $p;
 }
 
-multi sub circumfix:<|| ||>(Math::Matrix $a --> Numeric) is export {
+multi sub circumfix:<|| ||>(Math::Matrix $a --> Numeric) is equiv(&prefix:<!>) is export {
     $a.norm();
 }
 
@@ -464,6 +513,19 @@ use with consideration...
 
     Checks two matrices for Equality
 
+=head2 method size
+
+    List of two values: number of rows and number of columns.
+
+    say $matrix.size();
+    my $dim = min $matrix.size();  
+
+=head2 method density
+
+    say 'this is a fully (occupied) matrix' if $matrix.density() == 1;
+
+    percentage of cells which hold a value different than 0
+
 =head2 method is-square
 
     if $matrix.is-square {
@@ -485,14 +547,15 @@ use with consideration...
 
 =head2 method is-diagonally-dominant
 
-   True if cells on the diagonal have he biggest absolute value of their column.
+   True if cells on the diagonal have a bigger or equal absolute value than the
+   sum of the other absolute values in the column.
 
    if $matrix.is-diagonally-dominant {
    $matrix.is-diagonally-dominant(:!strict)   # same thing (default)
    $matrix.is-diagonally-dominant(:strict)    # diagonal elements (DE) are stricly greater (>)
    $matrix.is-diagonally-dominant(:!strict, :along<column>) # default
-   $matrix.is-diagonally-dominant(:strict,  :along<row>)    # DE biggest on their row
-   $matrix.is-diagonally-dominant(:!strict, :along<both>)   # DE biggest on row and column
+   $matrix.is-diagonally-dominant(:strict,  :along<row>)    # DE > sum of rest row
+   $matrix.is-diagonally-dominant(:!strict, :along<both>)   # DE >= sum of rest row and rest column
 
 =head2 method is-upper-triangular
 
@@ -507,6 +570,10 @@ use with consideration...
     if $matrix.is-symmetric {
 
     Is True if every cell with coordinates x y has same value as the cell on y x.
+
+=head2 method is-positive-definite
+
+    True if all main minors are positive
 
 =head2 method is-orthogonal
 
@@ -583,11 +650,6 @@ use with consideration...
     my $tr = $matrix.trace( );
     Calculate the trace of a square matrix
 
-=head2 method density
-
-    my $dst = $matrix.density( );      #  number of none-zero values / all cells
-    useful to idenify sparse and full matrices
-
 =head2 method rank
 
     my $r = $matrix.rank( );
@@ -602,13 +664,13 @@ use with consideration...
 
 =head2 method norm
 
-    my $norm = $matrix.norm( );    # euclidian norm (L2, p = 2)
-    my $norm = ||$matrix||;        # operator shortcut to do the same
-    my $norm = $matrix.norm(1);    # p-norm, L1 = sum of all cells
-    my $norm = $matrix.norm(4,3);  # p,q - norm, p = 4, q = 3
-    my $norm = $matrix.norm(2,2);  # Frobenius norm
-    my $norm = $matrix.norm('max');# max norm - biggest absolute value of a cell
-    $matrix.norm('rowsum');        # row sum norm - biggest abs. value-sum of a row
-    $matrix.norm('columnsum');     # column sum norm - same column wise
+    my $norm = $matrix.norm( );          # euclidian norm (L2, p = 2)
+    my $norm = ||$matrix||;              # operator shortcut to do the same
+    my $norm = $matrix.norm(1);          # p-norm, L1 = sum of all cells
+    my $norm = $matrix.norm(p:<4>,q:<3>);# p,q - norm, p = 4, q = 3
+    my $norm = $matrix.norm(p:<2>,q:<2>);# Frobenius norm
+    my $norm = $matrix.norm('max');      # max norm - biggest absolute value of a cell
+    $matrix.norm('rowsum');              # row sum norm - biggest abs. value-sum of a row
+    $matrix.norm('columnsum');           # column sum norm - same column wise
 
 =end pod
