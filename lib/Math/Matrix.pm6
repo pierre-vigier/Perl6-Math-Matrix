@@ -71,7 +71,7 @@ method diagonal(Math::Matrix:D: ){
     map { @!rows[$^r][$^r] }, ^$!row-count;
 }
 
-method submatrix(Math::Matrix:D: Int $row, Int $col --> Math::Matrix:D ){
+multi method submatrix(Math::Matrix:D: Int $row, Int $col --> Math::Matrix:D ){
     fail "$row is not an existing row index" unless 0 < $row <= $!row-count;
     fail "$col is not an existing column index" unless 0 < $col <= $!column-count;
     my @clone = self!clone_rows();
@@ -391,6 +391,7 @@ multi method condition(Math::Matrix:D: --> Numeric) {
 
 multi method decompositionLUCrout(Math::Matrix:D: ) {
     fail "Not square matrix" unless self.is-square;
+    fail "Matrix not inverable" unless self.is-inverable;
     my $sum;
     my $size = self!row-count;
     my $U = self!identity_array( $size );
