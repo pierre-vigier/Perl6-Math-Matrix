@@ -60,15 +60,27 @@ method new-diagonal(Math::Matrix:U: *@diag ){
 
 multi method submatrix(Math::Matrix:D: Int $row, Int $col --> Math::Matrix:D ){
     fail X::OutOfRange.new(
-        :what<Column index> , :got($col), :range("0..{$!column-count -1 }")
+        :what<Column index> , :got(!$col), :range("0..{$!column-count -1 }")
     ) unless 0 <= $col < $!column-count;
     fail X::OutOfRange.new(
-        :what<Column index> , :got($row), :range("0..{$!row-count -1 }")
+        :what<Column index> , :got(!$row), :range("0..{$!row-count -1 }")
     ) unless 0 <= $row < $!row-count;
     my @clone = self!clone_rows();
     @clone.splice($row,1);
     @clone = map { $^r.splice($col, 1); $^r }, @clone;
     Math::Matrix.new( @clone );
+}
+
+#TODO Iterable is probably what we want here, but it accepts Arrray, List, Range, will do as a first step
+multi method submatrix(Math::Matrix:D: Iterable $rows, Iterable $cols --> Math::Matrix:D ){
+    fail X::OutOfRange.new(
+        :what<Column index> , :got($cols), :range("0..{$!column-count -1 }")
+    ) unless 0 <= all($cols) < $!column-count;
+    fail X::OutOfRange.new(
+        :what<Column index> , :got($rows), :range("0..{$!row-count -1 }")
+    ) unless 0 <= all($rows) < $!row-count;
+
+    Math::Matrix.new([ $rows.map( { [ @!rows[$_][|$cols] ] } ) ]);
 }
 
 multi method cell(Math::Matrix:D: Int $row, Int $column --> Numeric ) {
