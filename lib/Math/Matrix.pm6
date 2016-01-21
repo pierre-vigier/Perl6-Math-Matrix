@@ -24,41 +24,38 @@ method clone {
 
 sub AoA_clone (@m)  {  map {[ map {$^cell.clone}, $^row.flat ]}, @m }
 
-submethod BUILD( :@rows ) {
+submethod BUILD( :@rows, :$det?, :$rank? ) {
     @!rows = @rows;
     $!row-count = @rows.elems;
     $!column-count = @rows[0].elems;
+    $!determinant = $det if $det.defined;
+    $!rank        = $rank if $rank.defined;
 }
 
-
-
-method new-diagonal(Math::Matrix:U: *@diag ){
-    fail "Expect an List of Number" unless @diag and [and] @diag >>~~>> Numeric;
-    my @d;
-    for ^+@diag X ^+@diag -> ($r, $c) {
-        @d[$r][$c] = $r==$c ?? @diag[$r] !! 0;
-    }
-    self.bless( rows => @d, row-count => @diag.elems, column-count => @diag.elems );
-}
-
-method !identity_array( Positive_Int $size ) {
-    my @identity;
-    for ^$size X ^$size -> ($r, $c) {
-        @identity[$r][$c] = ($r == $c ?? 1 !! 0);
-    }
-    return @identity;
-}
-
-method new-identity(Math::Matrix:U: Positive_Int $size ) {
-    self.bless( rows => self!identity_array($size), row-count => $size, column-count => $size );
-}
 
 method !zero_array( Positive_Int $rows, Positive_Int $cols = $rows ) {
     return [ [ 0 xx $cols ] xx $rows ];
 }
 
 method new-zero(Math::Matrix:U: Positive_Int $rows, Positive_Int $cols = $rows) {
-    self.bless( rows => self!zero_array($rows, $cols), row-count => $rows, column-count => $cols );
+    self.bless( rows => self!zero_array($rows, $cols), det => 0, rank => 0 );
+}
+
+method !identity_array( Positive_Int $size ) {
+    my @identity;
+    for ^$size X ^$size -> ($r, $c) { @identity[$r][$c] = ($r == $c ?? 1 !! 0) }
+    return @identity;
+}
+
+method new-identity(Math::Matrix:U: Positive_Int $size ) {
+    self.bless( rows => self!identity_array($size), det => 1, rank => $size );
+}
+
+method new-diagonal(Math::Matrix:U: *@diag ){
+    fail "Expect an List of Number" unless @diag and [and] @diag >>~~>> Numeric;
+    my @d;
+    for ^+@diag X ^+@diag -> ($r, $c) { @d[$r][$c] = $r==$c ?? @diag[$r] !! 0 }
+    self.bless( rows => @d, det => [*](@diag) , rank => +@diag );
 }
 
 method submatrix(Math::Matrix:D: Int $row, Int $col --> Math::Matrix:D ){
@@ -289,11 +286,11 @@ multi method multiply(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b!
     Math::Matrix.new( @multiply );
 }
 
-has Numeric $!deterninant;
+has Numeric $!determinant;
 
 multi method det(Math::Matrix:D: --> Numeric )        { self.determinant }  # the usual short name
 multi method determinant(Math::Matrix:D: --> Numeric) {
-    return $!deterninant if $!deterninant.defined;
+    return $!determinant if $!determinant.defined;
 
     fail "Number of columns has to be same as number of rows" unless self.is-square;
     return 1            if $!row-count == 0;
@@ -320,7 +317,10 @@ multi method density(Math::Matrix:D: --> Rat) {
     $valcount / ($!row-count * $!column-count);
 }
 
+has Numeric $!rank;
+
 multi method rank(Math::Matrix:D: --> Int) {
+    return $!rank if $!rank.defined;
     my $rank = 0;
     my @clone =  @!rows.clone();
     for ^$!column-count -> $c {            # make upper triangle via gauss elimination
