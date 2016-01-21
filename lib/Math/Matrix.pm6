@@ -58,38 +58,18 @@ method new-diagonal(Math::Matrix:U: *@diag ){
 
 # method new-vector-product (Math::Matrix:U: @column, @row ){}
 
-
-method submatrix(Math::Matrix:D: Int $row, Int $col --> Math::Matrix:D ){
-    fail "$row is not an existing row index" unless 0 < $row <= $!row-count;
-    fail "$col is not an existing column index" unless 0 < $col <= $!column-count;
+multi method submatrix(Math::Matrix:D: Int $row, Int $col --> Math::Matrix:D ){
+    fail X::OutOfRange.new(
+        :what<Column index> , :got($col), :range("0..{$!column-count -1 }")
+    ) unless 0 <= $col < $!column-count;
+    fail X::OutOfRange.new(
+        :what<Column index> , :got($row), :range("0..{$!row-count -1 }")
+    ) unless 0 <= $row < $!row-count;
     my @clone = self!clone_rows();
     @clone.splice($row,1);
     @clone = map { $^r.splice($col, 1); $^r }, @clone;
     Math::Matrix.new( @clone );
 }
-
-
-#multi method elems(Math::Matrix:D: --> Int) {
-#    $!row-count * $!column-count;
-#}
-
-#my role immutable_list {
-    #method ASSIGN-POS(|) { fail "immutable!" };
-#}
-
-#multi method AT-POS( Math::Matrix:D: Int $index ) {
-    #fail X::OutOfRange.new(
-        #:what<Row index> , :got($index), :range("0..{$!row-count -1 }")
-    #) unless 0 <= $index < $!row-count;
-    #my $row = @!rows[$index].List;
-    ##my $row = @!rows[$index];
-    ##$row does immutable_list;
-    #return $row;
-#}
-
-#multi method EXISTS-POS( Math::Matrix:D: $index ) {
-    #return 0 <= $index < $!row-count;
-#}
 
 multi method cell(Math::Matrix:D: Int $row, Int $column --> Numeric ) {
     fail X::OutOfRange.new(
@@ -102,7 +82,7 @@ multi method cell(Math::Matrix:D: Int $row, Int $column --> Numeric ) {
 }
 
 multi method Str(Math::Matrix:D: ) {
-    @!rows;
+    ~@!rows;
 }
 
 multi method perl(Math::Matrix:D: ) {
