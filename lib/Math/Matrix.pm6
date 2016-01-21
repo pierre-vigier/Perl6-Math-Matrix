@@ -391,7 +391,7 @@ multi method condition(Math::Matrix:D: --> Numeric) {
 
 multi method decompositionLUCrout(Math::Matrix:D: ) {
     fail "Not square matrix" unless self.is-square;
-    fail "Matrix not inverable" unless self.is-inverable;
+
     my $sum;
     my $size = self!row-count;
     my $U = self!identity_array( $size );
