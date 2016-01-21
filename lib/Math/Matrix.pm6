@@ -16,16 +16,14 @@ method new( @m ) {
     die "Expect an Array of Array" unless all @m ~~ Array;
     die "All Row must contains the same number of elements" unless @m[0] == all @m[*];
     die "All Row must contains only numeric values" unless all( @m[*;*] ) ~~ Numeric;
-    self.bless( rows => AoA_clone(@m) );
+    self.bless( rows => @m );
 }
-method clone { 
-    self.bless( rows => self!clone_rows ) 
-}
+method clone { self.bless( rows => @!rows ) }
 
 sub AoA_clone (@m)  {  map {[ map {$^cell.clone}, $^row.flat ]}, @m }
 
 submethod BUILD( :@rows, :$det?, :$rank? ) {
-    @!rows = @rows;
+    @!rows = AoA_clone (@rows);
     $!row-count = @rows.elems;
     $!column-count = @rows[0].elems;
     $!determinant = $det if $det.defined;
@@ -58,6 +56,9 @@ method new-diagonal(Math::Matrix:U: *@diag ){
     self.bless( rows => @d, det => [*](@diag) , rank => +@diag );
 }
 
+# method new-vector-product (Math::Matrix:U: @column, @row ){}
+
+
 method submatrix(Math::Matrix:D: Int $row, Int $col --> Math::Matrix:D ){
     fail "$row is not an existing row index" unless 0 < $row <= $!row-count;
     fail "$col is not an existing column index" unless 0 < $col <= $!column-count;
@@ -66,6 +67,7 @@ method submatrix(Math::Matrix:D: Int $row, Int $col --> Math::Matrix:D ){
     @clone = map { $^r.splice($col, 1); $^r }, @clone;
     Math::Matrix.new( @clone );
 }
+
 
 #multi method elems(Math::Matrix:D: --> Int) {
 #    $!row-count * $!column-count;
@@ -301,7 +303,7 @@ multi method determinant(Math::Matrix:D: --> Numeric) {
         $product *= @!rows[$_][ $perm[$_] ] for ^+$perm;
         $det += $product;
     }
-    $!deterninant = $det;
+    $!determinant = $det;
 }
 
 multi method trace(Math::Matrix:D: --> Numeric) {
