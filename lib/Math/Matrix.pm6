@@ -56,8 +56,20 @@ method new-diagonal(Math::Matrix:U: *@diag ){
     self.bless( rows => @d, det => [*](@diag) , rank => +@diag );
 }
 
-# method new-vector-product (Math::Matrix:U: @column, @row ){}
+method new-vector-product (Math::Matrix:U: @column_vector, @row_vector ){
+    fail "Expect two Lists of Number" unless [and](@column_vector >>~~>> Numeric) and [and](@row_vector >>~~>> Numeric);
+    my @p;
+    for ^+@column_vector X ^+@row_vector -> ($r, $c) { 
+        @p[$r][$c] = @column_vector[$r] * @row_vector[$c] 
+    }
+    self.bless( rows => @p, det => 0 , rank => 1 );
+}
 
+
+method diagonal(Math::Matrix:D: ){
+    fail "Number of columns has to be same as number of rows" unless self.is-square;
+    map { @!rows[$^r][$^r] }, ^$!row-count;
+}
 
 method submatrix(Math::Matrix:D: Int $row, Int $col --> Math::Matrix:D ){
     fail "$row is not an existing row index" unless 0 < $row <= $!row-count;
@@ -67,7 +79,6 @@ method submatrix(Math::Matrix:D: Int $row, Int $col --> Math::Matrix:D ){
     @clone = map { $^r.splice($col, 1); $^r }, @clone;
     Math::Matrix.new( @clone );
 }
-
 
 #multi method elems(Math::Matrix:D: --> Int) {
 #    $!row-count * $!column-count;
@@ -307,10 +318,7 @@ multi method determinant(Math::Matrix:D: --> Numeric) {
 }
 
 multi method trace(Math::Matrix:D: --> Numeric) {
-    fail "Not square matrix" unless self.is-square;
-    my $tr = 0;
-    for ^$!row-count -> $r { $tr += @!rows[$r][$r] }
-    $tr;
+    [+] self.diagonal;
 }
 
 multi method density(Math::Matrix:D: --> Rat) {
