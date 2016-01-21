@@ -4,7 +4,7 @@ has @!rows is required;
 has Int $!row-count;
 has Int $!column-count;
 
-method !rows()    { @!rows }
+method !rows      { @!rows }
 method !clone_rows { AoA_clone(@!rows) }
 method !row-count   { $!row-count }
 method !column-count { $!column-count }
