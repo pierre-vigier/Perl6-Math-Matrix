@@ -56,20 +56,8 @@ method new-diagonal(Math::Matrix:U: *@diag ){
     self.bless( rows => @d, det => [*](@diag) , rank => +@diag );
 }
 
-method new-vector-product (Math::Matrix:U: @column_vector, @row_vector ){
-    fail "Expect two Lists of Number" unless [and](@column_vector >>~~>> Numeric) and [and](@row_vector >>~~>> Numeric);
-    my @p;
-    for ^+@column_vector X ^+@row_vector -> ($r, $c) { 
-        @p[$r][$c] = @column_vector[$r] * @row_vector[$c] 
-    }
-    self.bless( rows => @p, det => 0 , rank => 1 );
-}
+# method new-vector-product (Math::Matrix:U: @column, @row ){}
 
-
-method diagonal(Math::Matrix:D: ){
-    fail "Number of columns has to be same as number of rows" unless self.is-square;
-    map { @!rows[$^r][$^r] }, ^$!row-count;
-}
 
 method submatrix(Math::Matrix:D: Int $row, Int $col --> Math::Matrix:D ){
     fail "$row is not an existing row index" unless 0 < $row <= $!row-count;
@@ -79,6 +67,7 @@ method submatrix(Math::Matrix:D: Int $row, Int $col --> Math::Matrix:D ){
     @clone = map { $^r.splice($col, 1); $^r }, @clone;
     Math::Matrix.new( @clone );
 }
+
 
 #multi method elems(Math::Matrix:D: --> Int) {
 #    $!row-count * $!column-count;
@@ -318,7 +307,10 @@ multi method determinant(Math::Matrix:D: --> Numeric) {
 }
 
 multi method trace(Math::Matrix:D: --> Numeric) {
-    [+] self.diagonal;
+    fail "Not square matrix" unless self.is-square;
+    my $tr = 0;
+    for ^$!row-count -> $r { $tr += @!rows[$r][$r] }
+    $tr;
 }
 
 multi method density(Math::Matrix:D: --> Rat) {
@@ -494,25 +486,25 @@ use with consideration...
 
    Number of cells per row must be identical
 
-=head2 method diagonal
+=head2 method new-identity
 
-    my $matrix = Math::Matrix.diagonal( 2, 4, 5 );
+    my $matrix = Math::Matrix.new-identity( 3 );
+    This method is a constructor that returns an identity matrix of the size given in parameter
+    All the cells are set to 0 except the top/left to bottom/right diagonale, set to 1
+
+=head2 method new-zero
+
+    my $matrix = Math::Matrix.new-zero( 3, 4 );
+    This method is a constructor that returns an zero matrix of the size given in parameter.
+    If only one parameter is given, the matrix is quadratic. All the cells are set to 0.
+
+=head2 method new-diagonal
+
+    my $matrix = Math::Matrix.new-diagonal( 2, 4, 5 );
     This method is a constructor that returns an diagonal matrix of the size given
     by count of the parameter.
     All the cells are set to 0 except the top/left to bottom/right diagonal,
     set to given values.
-
-=head2 method identity
-
-    my $matrix = Math::Matrix.identity( 3 );
-    This method is a constructor that returns an identity matrix of the size given in parameter
-    All the cells are set to 0 except the top/left to bottom/right diagonale, set to 1
-
-=head2 method zero
-
-    my $matrix = Math::Matrix.zero( 3, 4 );
-    This method is a constructor that returns an zero matrix of the size given in parameter.
-    If only one parameter is given, the matrix is quadratic. All the cells are set to 0.
 
 =head2 method equal
 
@@ -680,5 +672,22 @@ use with consideration...
     my $norm = $matrix.norm('max');      # max norm - biggest absolute value of a cell
     $matrix.norm('rowsum');              # row sum norm - biggest abs. value-sum of a row
     $matrix.norm('columnsum');           # column sum norm - same column wise
+
+=head2 method decompositionLUCrout
+
+    my ($L, $U) = $matrix.decompositionLUCrout( );
+    $L dot $U eq $matrix;                # True
+
+    $L is a left triangular matrix and $R is a right one
+    This decomposition works only on invertible matrices (square and full ranked).
+
+=head2 method decompositionCholeski
+
+    my $D = $matrix.decompositionCholeski( );
+    $D dot $D.T eq $matrix;              # True 
+
+    $D is a left triangular matrix
+    This decomposition works only on symmetric and definite positive matrices.
+
 
 =end pod
