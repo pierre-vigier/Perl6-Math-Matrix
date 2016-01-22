@@ -90,28 +90,6 @@ multi method submatrix(Math::Matrix:D: Iterable $rows, Iterable $cols --> Math::
     Math::Matrix.new([ $rows.map( { [ @!rows[$_][|$cols] ] } ) ]);
 }
 
-#multi method elems(Math::Matrix:D: --> Int) {
-#    $!row-count * $!column-count;
-#}
-
-#my role immutable_list {
-    #method ASSIGN-POS(|) { fail "immutable!" };
-#}
-
-#multi method AT-POS( Math::Matrix:D: Int $index ) {
-    #fail X::OutOfRange.new(
-        #:what<Row index> , :got($index), :range("0..{$!row-count -1 }")
-    #) unless 0 <= $index < $!row-count;
-    #my $row = @!rows[$index].List;
-    ##my $row = @!rows[$index];
-    ##$row does immutable_list;
-    #return $row;
-#}
-
-#multi method EXISTS-POS( Math::Matrix:D: $index ) {
-    #return 0 <= $index < $!row-count;
-#}
-
 multi method cell(Math::Matrix:D: Int $row, Int $column --> Numeric ) {
     fail X::OutOfRange.new(
         :what<Row index> , :got($row), :range("0..{$!row-count -1 }")
