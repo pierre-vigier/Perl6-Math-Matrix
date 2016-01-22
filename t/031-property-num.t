@@ -77,7 +77,7 @@ subtest {
 }, "Kernel";
 
 subtest {
-    plan 22;
+    plan 27;
     my $zero = Math::Matrix.new-zero(3,4);
     my $identity = Math::Matrix.new-identity(3);
     my $diagonal = Math::Matrix.new-diagonal([1,2,3]);
@@ -106,5 +106,11 @@ subtest {
     ok $zero.norm('columnsum') == 0 ,"column sum norm of zero == 0";
     ok $matrix.norm('columnsum') == 18,"column sum norm";
     ok ($matrix *3).norm('columnsum') == 18*3,"column sum norm is homogenic";
+
+    ok ($diagonal dot $matrix).norm <= $diagonal.norm * $matrix.norm, "Cauchy\x{2013}Schwarz inequality for L2 norm";
+    ok ($diagonal dot $matrix).norm(:p<2>,:q<3>) <= $diagonal.norm(:p<2>,:q<3>) * $matrix.norm(:p<2>,:q<3>), "Cauchy\x{2013}Schwarz inequality for 2,3 norm";
+    ok ($diagonal dot $matrix).norm('max') <= $diagonal.norm('max') * $matrix.norm('max'),  "Cauchy\x{2013}Schwarz inequality for maximum norm";
+    ok ($diagonal dot $matrix).norm('rowsum') <= $diagonal.norm('rowsum') * $matrix.norm('rowsum'),  "Cauchy\x{2013}Schwarz inequality for rowsum norm";
+    ok ($diagonal dot $matrix).norm('columnsum') <= $diagonal.norm('columnsum') * $matrix.norm('columnsum'),  "Cauchy\x{2013}Schwarz inequality for columnsum norm";
 
 }, "Norm";
