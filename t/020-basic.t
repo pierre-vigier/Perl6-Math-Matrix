@@ -1,6 +1,6 @@
 use Test;
 use Math::Matrix;
-plan 20;
+plan 21;
 
 lives-ok { my $matrix = Math::Matrix.new([[1,2],[3,4]]); }  , "Able to create a materix";
 dies-ok  { my $matrix = Math::Matrix.new([[1,2],[1,2,3]]); }, "Different nuber of elements per line";
@@ -45,3 +45,6 @@ ok  $diagonal2 ~~ $expectd, "Get diagonal matrix";
 
 ok $matrixa.Str().WHAT ~~ Str, "Method Str should return a String";
 is $matrixa.Str(), "[[1 2] [3 4]]", "Value is correct";
+
+my $from-perl = EVAL($matrixa.perl);
+ok $from-perl ~~ $matrixa, ".perl result can be evaled in a similar object";

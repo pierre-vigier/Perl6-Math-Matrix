@@ -104,7 +104,7 @@ multi method Str(Math::Matrix:D: --> Str) {
     @!rows.gist;
 }
 
-multi method perl(Math::Matrix:D: ) {
+multi method perl(Math::Matrix:D: --> Str) {
     self.WHAT.perl ~ ".new(" ~ @!rows.perl ~ ")";
 }
 
