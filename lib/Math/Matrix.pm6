@@ -66,6 +66,16 @@ method new-vector-product (Math::Matrix:U: @column_vector, @row_vector ){
 }
 
 
+multi method cell(Math::Matrix:D: Int $row, Int $column --> Numeric ) {
+    fail X::OutOfRange.new(
+        :what<Row index> , :got($row), :range("0..{$!row-count -1 }")
+    ) unless 0 <= $row < $!row-count;
+    fail X::OutOfRange.new(
+        :what<Column index> , :got($column), :range("0..{$!column-count -1 }")
+    ) unless 0 <= $column < $!column-count;
+    return @!rows[$row][$column];
+}
+
 method diagonal(Math::Matrix:D: ){
     fail "Number of columns has to be same as number of rows" unless self.is-square;
     map { @!rows[$^r][$^r] }, ^$!row-count;
@@ -90,18 +100,13 @@ multi method submatrix(Math::Matrix:D: Iterable $rows, Iterable $cols --> Math::
     Math::Matrix.new([ $rows.map( { [ @!rows[$_][|$cols] ] } ) ]);
 }
 
-multi method cell(Math::Matrix:D: Int $row, Int $column --> Numeric ) {
-    fail X::OutOfRange.new(
-        :what<Row index> , :got($row), :range("0..{$!row-count -1 }")
-    ) unless 0 <= $row < $!row-count;
-    fail X::OutOfRange.new(
-        :what<Column index> , :got($column), :range("0..{$!column-count -1 }")
-    ) unless 0 <= $column < $!column-count;
-    return @!rows[$row][$column];
-}
 
 multi method Str(Math::Matrix:D: --> Str) {
     @!rows.gist;
+}
+
+multi method Bool(Math::Matrix:D: --> Bool) {
+    self.is-zero;
 }
 
 multi method perl(Math::Matrix:D: --> Str) {
@@ -397,10 +402,13 @@ multi method decompositionLUCrout(Math::Matrix:D: ) {
     return Math::Matrix.new($L), Math::Matrix.new($U);
 }
 
+#multi method decompositionLUP(Math::Matrix:D: ) {
+#}
+
+
 multi method decompositionCholeski(Math::Matrix:D: --> Math::Matrix:D) {
     fail "Not symmetric matrix" unless self.is-symmetric;
     fail "Not positive definite" unless self.is-positive-definite;
-
     my @D = self!clone_rows();
     for 0 ..^$!row-count -> $k {
         @D[$k][$k] -= @D[$k][$_]**2 for 0 .. $k-1;

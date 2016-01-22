@@ -43,6 +43,10 @@ ok $diagonal ~~ $expectd, "Get diagonal matrix";
 my $diagonal2 = Math::Matrix.new-diagonal( 1, 2, 3 );
 ok  $diagonal2 ~~ $expectd, "Get diagonal matrix";
 
+my $product = Math::Matrix.new-vector-product([1,2,3],[2,3,4]);
+my $pexpect = Math::Matrix.new([[2,3,4],[4,6,8],[6,9,12]]);
+ok $product.equal( $pexpect ), "matrix construction by vector product";
+
 ok $matrixa.Str().WHAT ~~ Str, "Method Str should return a String";
 is $matrixa.Str(), "[[1 2] [3 4]]", "Value is correct";
 
