@@ -122,8 +122,8 @@ multi method cell(Math::Matrix:D: Int $row, Int $column --> Numeric ) {
     return @!rows[$row][$column];
 }
 
-multi method Str(Math::Matrix:D: ) {
-    @!rows;
+multi method Str(Math::Matrix:D: --> Str) {
+    @!rows.gist;
 }
 
 multi method perl(Math::Matrix:D: ) {

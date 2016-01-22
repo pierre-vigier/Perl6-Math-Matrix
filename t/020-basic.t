@@ -1,6 +1,6 @@
 use Test;
 use Math::Matrix;
-plan 18;
+plan 20;
 
 lives-ok { my $matrix = Math::Matrix.new([[1,2],[3,4]]); }  , "Able to create a materix";
 dies-ok  { my $matrix = Math::Matrix.new([[1,2],[1,2,3]]); }, "Different nuber of elements per line";
@@ -42,3 +42,6 @@ ok $diagonal ~~ $expectd, "Get diagonal matrix";
 #TODO: reinstate test either in success or failure
 my $diagonal2 = Math::Matrix.new-diagonal( 1, 2, 3 );
 ok  $diagonal2 ~~ $expectd, "Get diagonal matrix";
+
+ok $matrixa.Str().WHAT ~~ Str, "Method Str should return a String";
+is $matrixa.Str(), "[[1 2] [3 4]]", "Value is correct";
