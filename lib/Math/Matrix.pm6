@@ -4,7 +4,7 @@ has @!rows is required;
 has Int $!row-count;
 has Int $!column-count;
 
-method !rows()    { @!rows }
+method !rows      { @!rows }
 method !clone_rows { AoA_clone(@!rows) }
 method !row-count   { $!row-count }
 method !column-count { $!column-count }
@@ -56,22 +56,30 @@ method new-diagonal(Math::Matrix:U: *@diag ){
     self.bless( rows => @d, det => [*](@diag) , rank => +@diag );
 }
 
-# method new-vector-product (Math::Matrix:U: @column, @row ){}
+method new-vector-product (Math::Matrix:U: @column_vector, @row_vector ){
+    fail "Expect two Lists of Number" unless [and](@column_vector >>~~>> Numeric) and [and](@row_vector >>~~>> Numeric);
+    my @p;
+    for ^+@column_vector X ^+@row_vector -> ($r, $c) { 
+        @p[$r][$c] = @column_vector[$r] * @row_vector[$c] 
+    }
+    self.bless( rows => @p, det => 0 , rank => 1 );
+}
+
+
+method diagonal(Math::Matrix:D: ){
+    fail "Number of columns has to be same as number of rows" unless self.is-square;
+    map { @!rows[$^r][$^r] }, ^$!row-count;
+}
 
 multi method submatrix(Math::Matrix:D: Int $row, Int $col --> Math::Matrix:D ){
-    fail X::OutOfRange.new(
-        :what<Column index> , :got(!$col), :range("0..{$!column-count -1 }")
-    ) unless 0 <= $col < $!column-count;
-    fail X::OutOfRange.new(
-        :what<Column index> , :got(!$row), :range("0..{$!row-count -1 }")
-    ) unless 0 <= $row < $!row-count;
+    fail "$row is not an existing row index" unless 0 < $row <= $!row-count;
+    fail "$col is not an existing column index" unless 0 < $col <= $!column-count;
     my @clone = self!clone_rows();
     @clone.splice($row,1);
     @clone = map { $^r.splice($col, 1); $^r }, @clone;
     Math::Matrix.new( @clone );
 }
 
-#TODO Iterable is probably what we want here, but it accepts Arrray, List, Range, will do as a first step
 multi method submatrix(Math::Matrix:D: Iterable $rows, Iterable $cols --> Math::Matrix:D ){
     fail X::OutOfRange.new(
         :what<Column index> , :got($cols), :range("0..{$!column-count -1 }")
@@ -79,9 +87,30 @@ multi method submatrix(Math::Matrix:D: Iterable $rows, Iterable $cols --> Math::
     fail X::OutOfRange.new(
         :what<Column index> , :got($rows), :range("0..{$!row-count -1 }")
     ) unless 0 <= all($rows) < $!row-count;
-
     Math::Matrix.new([ $rows.map( { [ @!rows[$_][|$cols] ] } ) ]);
 }
+
+#multi method elems(Math::Matrix:D: --> Int) {
+#    $!row-count * $!column-count;
+#}
+
+#my role immutable_list {
+    #method ASSIGN-POS(|) { fail "immutable!" };
+#}
+
+#multi method AT-POS( Math::Matrix:D: Int $index ) {
+    #fail X::OutOfRange.new(
+        #:what<Row index> , :got($index), :range("0..{$!row-count -1 }")
+    #) unless 0 <= $index < $!row-count;
+    #my $row = @!rows[$index].List;
+    ##my $row = @!rows[$index];
+    ##$row does immutable_list;
+    #return $row;
+#}
+
+#multi method EXISTS-POS( Math::Matrix:D: $index ) {
+    #return 0 <= $index < $!row-count;
+#}
 
 multi method cell(Math::Matrix:D: Int $row, Int $column --> Numeric ) {
     fail X::OutOfRange.new(
@@ -94,7 +123,7 @@ multi method cell(Math::Matrix:D: Int $row, Int $column --> Numeric ) {
 }
 
 multi method Str(Math::Matrix:D: ) {
-    ~@!rows;
+    @!rows;
 }
 
 multi method perl(Math::Matrix:D: ) {
@@ -299,10 +328,7 @@ multi method determinant(Math::Matrix:D: --> Numeric) {
 }
 
 multi method trace(Math::Matrix:D: --> Numeric) {
-    fail "Not square matrix" unless self.is-square;
-    my $tr = 0;
-    for ^$!row-count -> $r { $tr += @!rows[$r][$r] }
-    $tr;
+    [+] self.diagonal;
 }
 
 multi method density(Math::Matrix:D: --> Rat) {
@@ -365,6 +391,7 @@ multi method condition(Math::Matrix:D: --> Numeric) {
 
 multi method decompositionLUCrout(Math::Matrix:D: ) {
     fail "Not square matrix" unless self.is-square;
+
     my $sum;
     my $size = self!row-count;
     my $U = self!identity_array( $size );
@@ -478,25 +505,25 @@ use with consideration...
 
    Number of cells per row must be identical
 
-=head2 method diagonal
+=head2 method new-identity
 
-    my $matrix = Math::Matrix.diagonal( 2, 4, 5 );
+    my $matrix = Math::Matrix.new-identity( 3 );
+    This method is a constructor that returns an identity matrix of the size given in parameter
+    All the cells are set to 0 except the top/left to bottom/right diagonale, set to 1
+
+=head2 method new-zero
+
+    my $matrix = Math::Matrix.new-zero( 3, 4 );
+    This method is a constructor that returns an zero matrix of the size given in parameter.
+    If only one parameter is given, the matrix is quadratic. All the cells are set to 0.
+
+=head2 method new-diagonal
+
+    my $matrix = Math::Matrix.new-diagonal( 2, 4, 5 );
     This method is a constructor that returns an diagonal matrix of the size given
     by count of the parameter.
     All the cells are set to 0 except the top/left to bottom/right diagonal,
     set to given values.
-
-=head2 method identity
-
-    my $matrix = Math::Matrix.identity( 3 );
-    This method is a constructor that returns an identity matrix of the size given in parameter
-    All the cells are set to 0 except the top/left to bottom/right diagonale, set to 1
-
-=head2 method zero
-
-    my $matrix = Math::Matrix.zero( 3, 4 );
-    This method is a constructor that returns an zero matrix of the size given in parameter.
-    If only one parameter is given, the matrix is quadratic. All the cells are set to 0.
 
 =head2 method equal
 
@@ -664,5 +691,21 @@ use with consideration...
     my $norm = $matrix.norm('max');      # max norm - biggest absolute value of a cell
     $matrix.norm('rowsum');              # row sum norm - biggest abs. value-sum of a row
     $matrix.norm('columnsum');           # column sum norm - same column wise
+
+=head2 method decompositionLUCrout
+
+    my ($L, $U) = $matrix.decompositionLUCrout( );
+    $L dot $U eq $matrix;                # True
+
+    $L is a left triangular matrix and $R is a right one
+    This decomposition works only on invertible matrices (square and full ranked).
+
+=head2 method decompositionCholeski
+
+    my $D = $matrix.decompositionCholeski( );
+    $D dot $D.T eq $matrix;              # True 
+
+    $D is a left triangular matrix
+    This decomposition works only on symmetric and definite positive matrices.
 
 =end pod
