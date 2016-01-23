@@ -1,6 +1,6 @@
 use Test;
 use Math::Matrix;
-plan 22;
+plan 23;
 
 lives-ok { my $matrix = Math::Matrix.new([[1,2],[3,4]]); }  , "Able to create a materix";
 dies-ok  { my $matrix = Math::Matrix.new([[1,2],[1,2,3]]); }, "Different nuber of elements per line";
