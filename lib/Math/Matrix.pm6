@@ -529,6 +529,15 @@ use with consideration...
     All the cells are set to 0 except the top/left to bottom/right diagonal,
     set to given values.
 
+=head2 method new-vector-product
+
+    my $matrixp = Math::Matrix.new-vector-product([1,2,3],[2,3,4]);
+    my $matrix = Math::Matrix.new([2,3,4],[4,6,8],[6,9,12]);       # same matrix
+
+    This method is a constructor that returns a matrix which is a result of 
+    the matrix product (method dotProduct, or operator dot) of a column vector
+    (first argument) and a row vector (second argument).
+
 =head2 method equal
 
     if $matrixa.equal( $matrixb ) {
