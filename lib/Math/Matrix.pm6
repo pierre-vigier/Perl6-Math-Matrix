@@ -80,14 +80,14 @@ multi method submatrix(Math::Matrix:D: Int $row, Int $col --> Math::Matrix:D ){
     Math::Matrix.new( @clone );
 }
 
-multi method submatrix(Math::Matrix:D: Iterable $rows, Iterable $cols --> Math::Matrix:D ){
+multi method submatrix(Math::Matrix:D: @rows, @cols --> Math::Matrix:D ){
     fail X::OutOfRange.new(
-        :what<Column index> , :got($cols), :range("0..{$!column-count -1 }")
-    ) unless 0 <= all($cols) < $!column-count;
+        :what<Column index> , :got(@cols), :range("0..{$!column-count -1 }")
+    ) unless 0 <= all(@cols) < $!column-count;
     fail X::OutOfRange.new(
-        :what<Column index> , :got($rows), :range("0..{$!row-count -1 }")
-    ) unless 0 <= all($rows) < $!row-count;
-    Math::Matrix.new([ $rows.map( { [ @!rows[$_][|$cols] ] } ) ]);
+        :what<Column index> , :got(@rows), :range("0..{$!row-count -1 }")
+    ) unless 0 <= all(@rows) < $!row-count;
+    Math::Matrix.new([ @rows.map( { [ @!rows[$_][|@cols] ] } ) ]);
 }
 
 multi method cell(Math::Matrix:D: Int $row, Int $column --> Numeric ) {
