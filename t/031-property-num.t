@@ -107,7 +107,7 @@ subtest {
     ok $matrix.norm('columnsum') == 18,"column sum norm";
     ok ($matrix *3).norm('columnsum') == 18*3,"column sum norm is homogenic";
 
-    ok ($diagonal dot $matrix).norm <= $diagonal.norm * $matrix.norm, "Cauchy\x{2013}Schwarz inequality for L2 norm";
+    ok ($diagonal dot $matrix).norm <= $diagonal.norm * $matrix.norm, "Cauchy-Schwarz inequality for L2 norm";
     ok ($diagonal dot $matrix).norm(:p<2>,:q<3>) <= $diagonal.norm(:p<2>,:q<3>) * $matrix.norm(:p<2>,:q<3>), "Cauchy-Schwarz inequality for 2,3 norm";
     ok ($diagonal dot $matrix).norm('max') <= $diagonal.norm('max') * $matrix.norm('max'),  "Cauchy-Schwarz inequality for maximum norm";
     ok ($diagonal dot $matrix).norm('rowsum') <= $diagonal.norm('rowsum') * $matrix.norm('rowsum'),  "Cauchy-Schwarz inequality for rowsum norm";
