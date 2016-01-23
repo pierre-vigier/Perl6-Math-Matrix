@@ -108,6 +108,23 @@ multi method perl(Math::Matrix:D: --> Str) {
     self.WHAT.perl ~ ".new(" ~ @!rows.perl ~ ")";
 }
 
+method gist(Math::Matrix:D: --> Str) {
+    my $max-char = max( @!rows[*;*] ).Int.chars;
+    my $fmt;
+    if all( @!rows[*;*] ) ~~ Int {
+        $fmt = " %{$max-char}d ";
+    } else {
+        my $max-decimal = max( @!rows[*;*].map( { ( .split(/\./)[1] // '' ).chars } ) );
+        $max-char += $max-decimal + 1;
+        $fmt = " \%{$max-char}.{$max-decimal}f ";
+    }
+    my $str;
+    for @!rows -> $r {
+        $str ~= ( [~] $r.map( { $_.fmt($fmt) } ) ) ~ "\n";
+    }
+    $str;
+}
+
 method ACCEPTS(Math::Matrix $b --> Bool ) {
     self.equal( $b );
 }
