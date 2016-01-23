@@ -400,28 +400,28 @@ multi method decompositionLUCrout(Math::Matrix:D: ) {
 
     for 0 ..^$size -> $j {
         for $j ..^$size -> $i {
-            $sum = 0;
-            for 0..^$j -> $k {
-                $sum += $L[$i][$k] * $U[$k][$j];
-            }
+            $sum = [+] map {$L[$i][$_] * $U[$_][$j]}, 0..^$j;
             $L[$i][$j] = @!rows[$i][$j] - $sum;
         }
+        if $L[$j][$j] == 0 { fail "det(L) close to 0!\n Can't divide by 0...\n" }
+
         for $j ..^$size -> $i {
-            $sum = 0;
-            for 0..^$j -> $k {
-                $sum += $L[$j][$k] * $U[$k][$i]
-            }
-            if $L[$j][$j] == 0 {
-                fail "det(L) close to 0!\n Can't divide by 0...\n";
-            }
+            $sum = [+] map {$L[$j][$_] * $U[$_][$i]}, 0..^$j;
             $U[$j][$i] = (@!rows[$j][$i] - $sum) / $L[$j][$j];
         }
     }
     return Math::Matrix.new($L), Math::Matrix.new($U);
 }
 
-#multi method decompositionLUP(Math::Matrix:D: ) {
-#}
+multi method decompositionLUP(Math::Matrix:D: Bool :full? = False ) {
+    fail "Not an invertible matrix" unless self.is-invertible;
+    my $sum;
+    my $size = self!row-count;
+    my $U = self!identity_array( $size );
+    my $L = self!zero_array( $size );
+
+}
+#multi method decompositionLDU(Math::Matrix:D: Bool :full? = False ) {
 
 
 multi method decompositionCholeski(Math::Matrix:D: --> Math::Matrix:D) {
