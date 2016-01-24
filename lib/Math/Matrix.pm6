@@ -458,19 +458,17 @@ multi method decompositionLU(Math::Matrix:D: Bool :$pivot = True, :$diagonal = F
         }
     }
 
-    if $diagonal{
+    if $diagonal {
         my @D;
         for 0 ..^ $size -> $c {
             push @D, @U[$c][$c];
             @U[$c][$c] = 1;
         }
-#        return $pivot
-#            ?? (Math::Matrix.new(@L), Math::Matrix.new-diagonal(@D), Math::Matrix.new(@U), Math::Matrix.new(@P))
-#            !! (Math::Matrix.new(@L), Math::Matrix.new-diagonal(@D), Math::Matrix.new(@U))
+        $pivot ?? (Math::Matrix.new(@L), Math::Matrix.new-diagonal(@D), Math::Matrix.new(@U), Math::Matrix.new(@P))
+               !! (Math::Matrix.new(@L), Math::Matrix.new-diagonal(@D), Math::Matrix.new(@U));
     }
-    return $pivot
-        ?? (Math::Matrix.new(@L), Math::Matrix.new(@U), Math::Matrix.new(@P))
-        !! (Math::Matrix.new(@L), Math::Matrix.new(@U))
+    $pivot ?? (Math::Matrix.new(@L), Math::Matrix.new(@U), Math::Matrix.new(@P))
+           !! (Math::Matrix.new(@L), Math::Matrix.new(@U));
 }
 
 method decompositionCholesky(Math::Matrix:D: --> Math::Matrix:D) {
