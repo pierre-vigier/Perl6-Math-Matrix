@@ -447,7 +447,7 @@ multi method decompositionLU(Math::Matrix:D: Bool :$pivot = True, :$diagonal = F
     for 0 .. $size-2 -> $c {
         if $pivot {
             my $maxrow = $c;
-            for $c+1 ..^$size -> $r { $maxrow = $c if @U[$maxrow][$c] < U[$r][$c] }
+            for $c+1 ..^$size -> $r { $maxrow = $c if @U[$maxrow][$c] < @U[$r][$c] }
             (@U[$maxrow], @U[$c]) = (@U[$c], @U[$maxrow]);
             (@P[$maxrow], @P[$c]) = (@P[$c], @P[$maxrow]);
         }
