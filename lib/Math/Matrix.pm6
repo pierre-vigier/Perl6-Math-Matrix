@@ -39,13 +39,15 @@ method clone { self.bless( rows => @!rows ) }
 
 sub AoA_clone (@m)  {  map {[ map {$^cell.clone}, $^row.flat ]}, @m }
 
-submethod BUILD( :@rows!, :$determinant, :$rank, :$diagonal ) {
+submethod BUILD( :@rows!, :$determinant, :$rank, :$diagonal, :$is-upper-triangular, :$is-lower-triangular ) {
     @!rows = AoA_clone (@rows);
     $!row-count = @rows.elems;
     $!column-count = @rows[0].elems;
     $!determinant = $determinant if $determinant.defined;
     $!rank = $rank if $rank.defined;
     $!diagonal = $diagonal if $diagonal.defined;
+    $!is-upper-triangular = $is-upper-triangular if $is-upper-triangular.defined;
+    $!is-lower-triangular = $is-lower-triangular if $is-lower-triangular.defined;
 }
 
 
@@ -72,6 +74,11 @@ method new-diagonal(Math::Matrix:U: *@diag ){
     my @d;
     for ^@diag.elems X ^@diag.elems -> ($r, $c) { @d[$r][$c] = $r==$c ?? @diag[$r] !! 0 }
     self.bless( rows => @d, determinant => [*](@diag) , rank => +@diag, diagonal => @diag );
+}
+
+method !new-lower-triangular(Math::Matrix:U: @m ) {
+    #don't want to trust outside of the class that a matrix is really triangular
+    self.bless( rows => @m, is-lower-triangular => True );
 }
 
 method new-vector-product (Math::Matrix:U: @column_vector, @row_vector ){
@@ -330,6 +337,15 @@ method !build_determinant(Math::Matrix:D: --> Numeric) {
     fail "Number of columns has to be same as number of rows" unless self.is-square;
     return 1            if $!row-count == 0;
     return @!rows[0][0] if $!row-count == 1;
+    if $!row-count > 4 {
+        #up to 4x4 naive method is fully usable
+        return [*]($.diagonal) if $.is-upper-triangular || $.is-lower-triangular;
+        #Try with Cholesky
+        try {
+            my $L = $.decompositionCholeski();
+            return $L.determinant ** 2;
+        }
+    }
     my $det = 0;
     for (permutations $!row-count).kv ->  $nr, $perm {
         my $product = ($nr + $nr div 2) %% 2 ?? 1 !! -1;   # signum
@@ -444,8 +460,9 @@ method decompositionCholeski(Math::Matrix:D: --> Math::Matrix:D) {
             @D[$i][$k]  = @D[$i][$k] / @D[$k][$k];
         }
     }
-    for ^$!row-count X ^$!row-count -> ($r, $c) { @D[$r][$c] = 0 if $r < $c }
-    return Math::Matrix.new(@D);
+    for ^$!row-count X ^$!column-count -> ($r, $c) { @D[$r][$c] = 0 if $r < $c }
+    #return Math::Matrix.BUILD( rows => @D, is-lower-triangular => True );
+    return Math::Matrix!new-lower-triangular( @D );
 }
 
 multi sub infix:<⋅>( Math::Matrix $a, Math::Matrix $b where { $a!column-count == $b!row-count} --> Math::Matrix:D ) is looser(&infix:<*>) is export {
