@@ -458,15 +458,15 @@ multi method decompositionLU(Math::Matrix:D: Bool :$pivot = True, :$diagonal = F
         }
     }
 
-    if ($diagonal){
-        my @D = self!identity_array( $size );
+    if $diagonal{
+        my @D;
         for 0 ..^ $size -> $c {
-            @D[$c][$c] = @U[$c][$c];
+            push @D, @U[$c][$c];
             @U[$c][$c] = 1;
         }
-        return $pivot
-            ?? (Math::Matrix.new(@L), Math::Matrix.new(@D), Math::Matrix.new(@U), Math::Matrix.new(@P))
-            !! (Math::Matrix.new(@L), Math::Matrix.new(@D), Math::Matrix.new(@U))
+#        return $pivot
+#            ?? (Math::Matrix.new(@L), Math::Matrix.new-diagonal(@D), Math::Matrix.new(@U), Math::Matrix.new(@P))
+#            !! (Math::Matrix.new(@L), Math::Matrix.new-diagonal(@D), Math::Matrix.new(@U))
     }
     return $pivot
         ?? (Math::Matrix.new(@L), Math::Matrix.new(@U), Math::Matrix.new(@P))
