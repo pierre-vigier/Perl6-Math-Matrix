@@ -8,6 +8,9 @@ has Numeric $!determinant is lazy;
 has $!is-square is lazy;
 has $!diagonal is lazy;
 has $!trace is lazy;
+has $!is-diagonal is lazy;
+has $!is-lower-triangular is lazy;
+has $!is-upper-triangular is lazy;
 
 method !rows      { @!rows }
 method !clone_rows { AoA_clone(@!rows) }
@@ -68,44 +71,8 @@ method new-vector-product (Math::Matrix:U: @column_vector, @row_vector ){
     for ^+@column_vector X ^+@row_vector -> ($r, $c) { 
         @p[$r][$c] = @column_vector[$r] * @row_vector[$c] 
     }
-    self.bless( rows => @p, det => 0 , rank => 1 );
+    self.bless( rows => @p, determinant => 0 , rank => 1 );
 }
-
-
-multi method cell(Math::Matrix:D: Int $row, Int $column --> Numeric ) {
-    fail X::OutOfRange.new(
-        :what<Row index> , :got($row), :range("0..{$!row-count -1 }")
-    ) unless 0 <= $row < $!row-count;
-    fail X::OutOfRange.new(
-        :what<Column index> , :got($column), :range("0..{$!column-count -1 }")
-    ) unless 0 <= $column < $!column-count;
-    return @!rows[$row][$column];
-}
-
-method !build_diagonal(Math::Matrix:D: ){
-    fail "Number of columns has to be same as number of rows" unless self.is-square;
-    gather for ^$!row-count -> $i { take @!rows[$i;$i] };
-}
-
-multi method submatrix(Math::Matrix:D: Int $row, Int $col --> Math::Matrix:D ){
-    fail "$row is not an existing row index" unless 0 < $row <= $!row-count;
-    fail "$col is not an existing column index" unless 0 < $col <= $!column-count;
-    my @clone = self!clone_rows();
-    @clone.splice($row,1);
-    @clone = map { $^r.splice($col, 1); $^r }, @clone;
-    Math::Matrix.new( @clone );
-}
-
-multi method submatrix(Math::Matrix:D: @rows, @cols --> Math::Matrix:D ){
-    fail X::OutOfRange.new(
-        :what<Column index> , :got(@cols), :range("0..{$!column-count -1 }")
-    ) unless 0 <= all(@cols) < $!column-count;
-    fail X::OutOfRange.new(
-        :what<Column index> , :got(@rows), :range("0..{$!row-count -1 }")
-    ) unless 0 <= all(@rows) < $!row-count;
-    Math::Matrix.new([ @rows.map( { [ @!rows[$_][|@cols] ] } ) ]);
-}
-
 
 method Str(Math::Matrix:D: --> Str) {
     @!rows.gist;
@@ -145,6 +112,40 @@ method ACCEPTS(Math::Matrix $b --> Bool ) {
     self.equal( $b );
 }
 
+multi method cell(Math::Matrix:D: Int $row, Int $column --> Numeric ) {
+    fail X::OutOfRange.new(
+        :what<Row index> , :got($row), :range("0..{$!row-count -1 }")
+    ) unless 0 <= $row < $!row-count;
+    fail X::OutOfRange.new(
+        :what<Column index> , :got($column), :range("0..{$!column-count -1 }")
+    ) unless 0 <= $column < $!column-count;
+    return @!rows[$row][$column];
+}
+
+method !build_diagonal(Math::Matrix:D: ){
+    fail "Number of columns has to be same as number of rows" unless self.is-square;
+    gather for ^$!row-count -> $i { take @!rows[$i;$i] };
+}
+
+multi method submatrix(Math::Matrix:D: Int $row, Int $col --> Math::Matrix:D ){
+    fail "$row is not an existing row index" unless 0 < $row <= $!row-count;
+    fail "$col is not an existing column index" unless 0 < $col <= $!column-count;
+    my @clone = self!clone_rows();
+    @clone.splice($row,1);
+    @clone = map { $^r.splice($col, 1); $^r }, @clone;
+    Math::Matrix.new( @clone );
+}
+
+multi method submatrix(Math::Matrix:D: @rows, @cols --> Math::Matrix:D ){
+    fail X::OutOfRange.new(
+        :what<Column index> , :got(@cols), :range("0..{$!column-count -1 }")
+    ) unless 0 <= all(@cols) < $!column-count;
+    fail X::OutOfRange.new(
+        :what<Column index> , :got(@rows), :range("0..{$!row-count -1 }")
+    ) unless 0 <= all(@rows) < $!row-count;
+    Math::Matrix.new([ @rows.map( { [ @!rows[$_][|@cols] ] } ) ]);
+}
+
 method equal(Math::Matrix:D: Math::Matrix $b --> Bool) {
     @!rows ~~ $b!rows;
 }
@@ -173,12 +174,23 @@ method is-identity(Math::Matrix:D: --> Bool) {
     True;
 }
 
-method is-diagonal(Math::Matrix:D: --> Bool) {
+method !build_is-upper-triangular(Math::Matrix:D: --> Bool) {
     return False unless self.is-square;
-    for ^$!row-count X ^$!row-count -> ($r, $c) {
-        return False if @!rows[$r][$c] != 0 and $r != $c;
+    for ^$!row-count X ^$!column-count -> ($r, $c) {
+        return False if @!rows[$r][$c] != 0 and $r > $c;
     }
     True;
+}
+
+method !build_is-lower-triangular(Math::Matrix:D: --> Bool) {
+    return False unless self.is-square;
+    for ^$!row-count X ^$!column-count -> ($r, $c) {
+        return False if @!rows[$r][$c] != 0 and $r < $c;
+    }
+    True;
+}
+method !build_is-diagonal(Math::Matrix:D: --> Bool) {
+    return $.is-upper-triangular && $.is-lower-triangular;
 }
 
 method is-diagonally-dominant(Math::Matrix:D: Bool :$strict = False, Str :$along where {$^orient eq any <column row both>} = 'column' --> Bool) {
@@ -194,22 +206,6 @@ method is-diagonally-dominant(Math::Matrix:D: Bool :$strict = False, Str :$along
                                               [+](map {abs $^c}, @!rows[$^r].flat)) }, ^$!row-count;
     return $rowwise if $along eq 'row';
     $colwise and $rowwise;
-}
-
-method is-upper-triangular(Math::Matrix:D: --> Bool) {
-    return False unless self.is-square;
-    for ^$!row-count X ^$!row-count -> ($r, $c) {
-        return False if @!rows[$r][$c] != 0 and $r > $c;
-    }
-    True;
-}
-
-method is-lower-triangular(Math::Matrix:D: --> Bool) {
-    return False unless self.is-square;
-    for ^$!row-count X ^$!row-count -> ($r, $c) {
-        return False if @!rows[$r][$c] != 0 and $r < $c;
-    }
-    True;
 }
 
 method is-symmetric(Math::Matrix:D: --> Bool) {
