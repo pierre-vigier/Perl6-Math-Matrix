@@ -4,19 +4,22 @@ use AttrX::Lazy;
 has @!rows is required;
 has Int $!row-count;
 has Int $!column-count;
-has Numeric $!determinant is lazy;
-has $!is-square is lazy;
 has $!diagonal is lazy;
-has $!trace is lazy;
-has $!is-diagonal is lazy;
-has $!is-lower-triangular is lazy;
-has $!is-upper-triangular is lazy;
-has $!is-invertible is lazy;
-has $!is-zero is lazy;
-has $!is-identity is lazy;
-has $!is-orthogonal is lazy;
-has $!is-positive-definite  is lazy;
-has $!is-symmetric is lazy;
+has Bool $!is-square is lazy;
+has Bool $!is-diagonal is lazy;
+has Bool $!is-lower-triangular is lazy;
+has Bool $!is-upper-triangular is lazy;
+has Bool $!is-invertible is lazy;
+has Bool $!is-zero is lazy;
+has Bool $!is-identity is lazy;
+has Bool $!is-orthogonal is lazy;
+has Bool $!is-positive-definite  is lazy;
+has Bool $!is-symmetric is lazy;
+has Numeric $!trace is lazy;
+has Numeric $!determinant is lazy;
+has Rat $!density is lazy;
+has Int $!rank is lazy;
+has Int $!kernel is lazy;
 
 method !rows      { @!rows }
 method !clone_rows { AoA_clone(@!rows) }
@@ -340,16 +343,13 @@ method !build_trace(Math::Matrix:D: --> Numeric) {
     [+] self.diagonal;
 }
 
-multi method density(Math::Matrix:D: --> Rat) {
+method !build_density(Math::Matrix:D: --> Rat) {
     my $valcount = 0;
     for ^$!row-count X ^$!column-count -> ($r, $c) { $valcount++ if @!rows[$r][$c] != 0 }
     $valcount / ($!row-count * $!column-count);
 }
 
-has Numeric $!rank;
-
-multi method rank(Math::Matrix:D: --> Int) {
-    return $!rank if $!rank.defined;
+method !build_rank(Math::Matrix:D: --> Int) {
     my $rank = 0;
     my @clone =  @!rows.clone();
     for ^$!column-count -> $c {            # make upper triangle via gauss elimination
@@ -368,7 +368,7 @@ multi method rank(Math::Matrix:D: --> Int) {
     $rank;
 }
 
-multi method kernel(Math::Matrix:D: --> Int) {
+method !build_kernel(Math::Matrix:D: --> Int) {
     min(self.size) - self.rank;
 }
 
@@ -398,7 +398,7 @@ multi method condition(Math::Matrix:D: --> Numeric) {
     self.norm() * self.inverted().norm();
 }
 
-multi method decompositionLUCrout(Math::Matrix:D: ) {
+method decompositionLUCrout(Math::Matrix:D: ) {
     fail "Not square matrix" unless self.is-square;
 
     my $sum;
@@ -432,7 +432,7 @@ multi method decompositionLUCrout(Math::Matrix:D: ) {
 #multi method decompositionLDU(Math::Matrix:D: Bool :full? = False ) {
 
 
-multi method decompositionCholeski(Math::Matrix:D: --> Math::Matrix:D) {
+method decompositionCholeski(Math::Matrix:D: --> Math::Matrix:D) {
     fail "Not symmetric matrix" unless self.is-symmetric;
     fail "Not positive definite" unless self.is-positive-definite;
     my @D = self!clone_rows();
