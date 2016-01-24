@@ -129,7 +129,7 @@ method gist(Math::Matrix:D: --> Str) {
     if all( @!rows[*;*] ) ~~ Int {
         $fmt = " %{$max-char}d ";
     } else {
-        my $max-decimal = max( @!rows[*;*].map( { ( .split(/\./)[1] // '' ).chars } ) );
+        my $max-decimal = max( @!rows[*;*].map( { ( .split(/\./)[1] // '' ).chars } ) ); #/
         $max-decimal = 5 if $max-decimal > 5; #more than that is not readable
         $max-char += $max-decimal + 1;
         $fmt = " \%{$max-char}.{$max-decimal}f ";
@@ -398,7 +398,6 @@ multi method condition(Math::Matrix:D: --> Numeric) {
 
 multi method decompositionLUCrout(Math::Matrix:D: ) {
     fail "Not square matrix" unless self.is-square;
-
     my $sum;
     my $size = self!row-count;
     my $U = self!identity_array( $size );
@@ -419,14 +418,15 @@ multi method decompositionLUCrout(Math::Matrix:D: ) {
     return Math::Matrix.new($L), Math::Matrix.new($U);
 }
 
-#multi method decompositionLUP(Math::Matrix:D: Bool :full = False ) {
-#    fail "Not an invertible matrix" unless self.is-invertible;
+multi method decompositionLUP(Math::Matrix:D: Bool :full = False ) {
+    fail "Not an invertible matrix" unless self.is-invertible;
 #    my $sum;
 #    my $size = self!row-count;
 #    my $U = self!identity_array( $size );
 #    my $L = self!zero_array( $size );
 #
-#}
+}
+
 #multi method decompositionLDU(Math::Matrix:D: Bool :full? = False ) {
 
 
