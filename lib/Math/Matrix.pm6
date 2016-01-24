@@ -5,6 +5,8 @@ has @!rows is required;
 has Int $!row-count;
 has Int $!column-count;
 has Numeric $!determinant is lazy;
+has $!is-square is lazy;
+has $!diagonal is lazy;
 
 method !rows      { @!rows }
 method !clone_rows { AoA_clone(@!rows) }
@@ -68,9 +70,9 @@ method new-vector-product (Math::Matrix:U: @column_vector, @row_vector ){
 }
 
 
-method diagonal(Math::Matrix:D: ){
+method !build_diagonal(Math::Matrix:D: ){
     fail "Number of columns has to be same as number of rows" unless self.is-square;
-    map { @!rows[$^r][$^r] }, ^$!row-count;
+    gather for ^$!row-count -> $i { take @!rows[$i;$i] };
 }
 
 multi method submatrix(Math::Matrix:D: Int $row, Int $col --> Math::Matrix:D ){
@@ -140,7 +142,7 @@ method size(Math::Matrix:D: ){
     return $!row-count, $!column-count;
 }
 
-method is-square(Math::Matrix:D: --> Bool) {
+method !build_is-square(Math::Matrix:D: --> Bool) {
     $!column-count == $!row-count;
 }
 
