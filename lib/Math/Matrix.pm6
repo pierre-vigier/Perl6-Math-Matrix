@@ -436,45 +436,42 @@ method decompositionLUCrout(Math::Matrix:D: ) {
     return Math::Matrix.new($L), Math::Matrix.new($U);
 }
 
-multi method decompositionLU(Math::Matrix:D: ) {
-    fail "Not an invertible matrix" unless self.is-invertible;
-    my $size = self!row-count;
-    my @L = self!identity_array( $size );
-    my @U = $!clone_rows( $size );
-    for 0 .. $size-2 -> $c {
-        if @U[$c][$c] == 0 { fail "With a 0 on diagonal there is no triangular L matrix \n" }}
-        for $c+1 ..^$size -> $r {
-            next if @U[$r][$c] == 0;
-            my $q = @L[$r][$c] = -(@U[$r][$c] / @U[$c][$c]);
-            @U[$r] = @U[$r] >>+<< $q <<*<< @U[$c];
-        }
-    }
-    return Math::Matrix.new(@L), Math::Matrix.new(@U);
-}
-
-
-multi method decompositionLUP(Math::Matrix:D: ) {
+# LU factorization with optional partial pivoting and optional diagonal matrix
+multi method decompositionLU(Math::Matrix:D: Bool :$pivot = True, :$diagonal = False) {
     fail "Not an square matrix" unless self.is-square;
+    fail "Has to be invertible when not using pivoting" if not $pivot and not self.is-invertible;
     my $size = self!row-count;
     my @L = self!identity_array( $size );
     my @U = $!clone_rows( $size );
     my @P = self!identity_array( $size );
     for 0 .. $size-2 -> $c {
-        my $maxrow = $c;
-        for $c+1 ..^$size -> $r { $maxrow = $c if @U[$maxrow][$c] < U[$r][$c] }
-        (@U[$maxrow], @U[$c]) = (@U[$c], @U[$maxrow]);
-        (@P[$maxrow], @P[$c]) = (@P[$c], @P[$maxrow]);
+        if $pivot {
+            my $maxrow = $c;
+            for $c+1 ..^$size -> $r { $maxrow = $c if @U[$maxrow][$c] < U[$r][$c] }
+            (@U[$maxrow], @U[$c]) = (@U[$c], @U[$maxrow]);
+            (@P[$maxrow], @P[$c]) = (@P[$c], @P[$maxrow]);
+        }
         for $c+1 ..^$size -> $r {
             next if @U[$r][$c] == 0;
             my $q = @L[$r][$c] = -(@U[$r][$c] / @U[$c][$c]);
             @U[$r] = @U[$r] >>+<< $q <<*<< @U[$c];
         }
     }
-    return Math::Matrix.new(@L), Math::Matrix.new(@U), Math::Matrix.new(@P);
+
+    if ($diagonal){
+        my @D = self!identity_array( $size );
+        for 0 ..^ $size -> $c {
+            @D[$c][$c] = @U[$c][$c];
+            @U[$c][$c] = 1;
+        }
+        return $pivot
+            ?? Math::Matrix.new(@L), Math::Matrix.new(@D), Math::Matrix.new(@U), Math::Matrix.new(@P)
+            !! Math::Matrix.new(@L), Math::Matrix.new(@D), Math::Matrix.new(@U)
+    }
+    return $pivot
+        ?? Math::Matrix.new(@L), Math::Matrix.new(@U), Math::Matrix.new(@P)
+        !! Math::Matrix.new(@L), Math::Matrix.new(@U)
 }
-
-#multi method decompositionLDU(Math::Matrix:D: Bool :full? = False ) {
-
 
 method decompositionCholesky(Math::Matrix:D: --> Math::Matrix:D) {
     fail "Not symmetric matrix" unless self.is-symmetric;
