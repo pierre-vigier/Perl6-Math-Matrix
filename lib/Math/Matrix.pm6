@@ -436,7 +436,7 @@ method decompositionLUCrout(Math::Matrix:D: ) {
     return Math::Matrix.new($L), Math::Matrix.new($U);
 }
 
-multi method decompositionLUP(Math::Matrix:D: Bool :full = False ) {
+multi method decompositionLUP(Math::Matrix:D: ) {
     fail "Not an invertible matrix" unless self.is-invertible;
 #    my $sum;
 #    my $size = self!row-count;
