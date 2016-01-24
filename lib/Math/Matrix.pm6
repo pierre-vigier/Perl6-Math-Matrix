@@ -52,7 +52,7 @@ method !identity_array( Positive_Int $size ) {
 }
 
 method new-identity(Math::Matrix:U: Positive_Int $size ) {
-    self.bless( rows => self!identity_array($size), determinant => 1, rank => $size );
+    self.bless( rows => self!identity_array($size), determinant => 1, rank => $size, diagonal => (1) xx $size );
 }
 
 method new-diagonal(Math::Matrix:U: *@diag ){
