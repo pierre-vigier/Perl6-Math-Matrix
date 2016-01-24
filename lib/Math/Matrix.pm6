@@ -7,6 +7,7 @@ has Int $!column-count;
 has Numeric $!determinant is lazy;
 has $!is-square is lazy;
 has $!diagonal is lazy;
+has $!trace is lazy;
 
 method !rows      { @!rows }
 method !clone_rows { AoA_clone(@!rows) }
@@ -26,12 +27,13 @@ method clone { self.bless( rows => @!rows ) }
 
 sub AoA_clone (@m)  {  map {[ map {$^cell.clone}, $^row.flat ]}, @m }
 
-submethod BUILD( :@rows, :$det?, :$rank? ) {
+submethod BUILD( :@rows!, :$determinant, :$rank, :$diagonal ) {
     @!rows = AoA_clone (@rows);
     $!row-count = @rows.elems;
     $!column-count = @rows[0].elems;
-    $!determinant = $det if $det.defined;
-    $!rank        = $rank if $rank.defined;
+    $!determinant = $determinant if $determinant.defined;
+    $!rank = $rank if $rank.defined;
+    $!diagonal = $diagonal if $diagonal.defined;
 }
 
 
@@ -40,7 +42,7 @@ method !zero_array( Positive_Int $rows, Positive_Int $cols = $rows ) {
 }
 
 method new-zero(Math::Matrix:U: Positive_Int $rows, Positive_Int $cols = $rows) {
-    self.bless( rows => self!zero_array($rows, $cols), det => 0, rank => 0 );
+    self.bless( rows => self!zero_array($rows, $cols), determinant => 0, rank => 0 );
 }
 
 method !identity_array( Positive_Int $size ) {
@@ -50,14 +52,14 @@ method !identity_array( Positive_Int $size ) {
 }
 
 method new-identity(Math::Matrix:U: Positive_Int $size ) {
-    self.bless( rows => self!identity_array($size), det => 1, rank => $size );
+    self.bless( rows => self!identity_array($size), determinant => 1, rank => $size );
 }
 
 method new-diagonal(Math::Matrix:U: *@diag ){
     fail "Expect an List of Number" unless @diag and [and] @diag >>~~>> Numeric;
     my @d;
-    for ^+@diag X ^+@diag -> ($r, $c) { @d[$r][$c] = $r==$c ?? @diag[$r] !! 0 }
-    self.bless( rows => @d, det => [*](@diag) , rank => +@diag );
+    for ^@diag.elems X ^@diag.elems -> ($r, $c) { @d[$r][$c] = $r==$c ?? @diag[$r] !! 0 }
+    self.bless( rows => @d, determinant => [*](@diag) , rank => +@diag, diagonal => @diag );
 }
 
 method new-vector-product (Math::Matrix:U: @column_vector, @row_vector ){
@@ -323,7 +325,7 @@ method !build_determinant(Math::Matrix:D: --> Numeric) {
     $!determinant = $det;
 }
 
-multi method trace(Math::Matrix:D: --> Numeric) {
+method !build_trace(Math::Matrix:D: --> Numeric) {
     [+] self.diagonal;
 }
 
