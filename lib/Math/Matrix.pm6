@@ -1,8 +1,13 @@
 unit class Math::Matrix;
+use AttrX::Lazy;
 
 has @!rows is required;
 has Int $!row-count;
 has Int $!column-count;
+has Numeric $!determinant is lazy;
+has $!is-square is lazy;
+has $!diagonal is lazy;
+has $!trace is lazy;
 
 method !rows      { @!rows }
 method !clone_rows { AoA_clone(@!rows) }
@@ -22,12 +27,13 @@ method clone { self.bless( rows => @!rows ) }
 
 sub AoA_clone (@m)  {  map {[ map {$^cell.clone}, $^row.flat ]}, @m }
 
-submethod BUILD( :@rows, :$det?, :$rank? ) {
+submethod BUILD( :@rows!, :$determinant, :$rank, :$diagonal ) {
     @!rows = AoA_clone (@rows);
     $!row-count = @rows.elems;
     $!column-count = @rows[0].elems;
-    $!determinant = $det if $det.defined;
-    $!rank        = $rank if $rank.defined;
+    $!determinant = $determinant if $determinant.defined;
+    $!rank = $rank if $rank.defined;
+    $!diagonal = $diagonal if $diagonal.defined;
 }
 
 
@@ -36,7 +42,7 @@ method !zero_array( Positive_Int $rows, Positive_Int $cols = $rows ) {
 }
 
 method new-zero(Math::Matrix:U: Positive_Int $rows, Positive_Int $cols = $rows) {
-    self.bless( rows => self!zero_array($rows, $cols), det => 0, rank => 0 );
+    self.bless( rows => self!zero_array($rows, $cols), determinant => 0, rank => 0 );
 }
 
 method !identity_array( Positive_Int $size ) {
@@ -46,14 +52,14 @@ method !identity_array( Positive_Int $size ) {
 }
 
 method new-identity(Math::Matrix:U: Positive_Int $size ) {
-    self.bless( rows => self!identity_array($size), det => 1, rank => $size );
+    self.bless( rows => self!identity_array($size), determinant => 1, rank => $size, diagonal => (1) xx $size );
 }
 
 method new-diagonal(Math::Matrix:U: *@diag ){
     fail "Expect an List of Number" unless @diag and [and] @diag >>~~>> Numeric;
     my @d;
-    for ^+@diag X ^+@diag -> ($r, $c) { @d[$r][$c] = $r==$c ?? @diag[$r] !! 0 }
-    self.bless( rows => @d, det => [*](@diag) , rank => +@diag );
+    for ^@diag.elems X ^@diag.elems -> ($r, $c) { @d[$r][$c] = $r==$c ?? @diag[$r] !! 0 }
+    self.bless( rows => @d, determinant => [*](@diag) , rank => +@diag, diagonal => @diag );
 }
 
 method new-vector-product (Math::Matrix:U: @column_vector, @row_vector ){
@@ -76,9 +82,9 @@ multi method cell(Math::Matrix:D: Int $row, Int $column --> Numeric ) {
     return @!rows[$row][$column];
 }
 
-method diagonal(Math::Matrix:D: ){
+method !build_diagonal(Math::Matrix:D: ){
     fail "Number of columns has to be same as number of rows" unless self.is-square;
-    map { @!rows[$^r][$^r] }, ^$!row-count;
+    gather for ^$!row-count -> $i { take @!rows[$i;$i] };
 }
 
 multi method submatrix(Math::Matrix:D: Int $row, Int $col --> Math::Matrix:D ){
@@ -101,12 +107,16 @@ multi method submatrix(Math::Matrix:D: @rows, @cols --> Math::Matrix:D ){
 }
 
 
-multi method Str(Math::Matrix:D: --> Str) {
+method Str(Math::Matrix:D: --> Str) {
     @!rows.gist;
 }
 
-multi method Bool(Math::Matrix:D: --> Bool) {
+method Bool(Math::Matrix:D: --> Bool) {
     self.is-zero;
+}
+
+method Int(Math::Matrix:D: --> Int) {
+    $!row-count * $!column-count;
 }
 
 multi method perl(Math::Matrix:D: --> Str) {
@@ -143,7 +153,7 @@ method size(Math::Matrix:D: ){
     return $!row-count, $!column-count;
 }
 
-method is-square(Math::Matrix:D: --> Bool) {
+method !build_is-square(Math::Matrix:D: --> Bool) {
     $!column-count == $!row-count;
 }
 
@@ -310,12 +320,8 @@ multi method multiply(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b!
     Math::Matrix.new( @multiply );
 }
 
-has Numeric $!determinant;
-
-multi method det(Math::Matrix:D: --> Numeric )        { self.determinant }  # the usual short name
-multi method determinant(Math::Matrix:D: --> Numeric) {
-    return $!determinant if $!determinant.defined;
-
+method det(Math::Matrix:D: --> Numeric )        { self.determinant }  # the usual short name
+method !build_determinant(Math::Matrix:D: --> Numeric) {
     fail "Number of columns has to be same as number of rows" unless self.is-square;
     return 1            if $!row-count == 0;
     return @!rows[0][0] if $!row-count == 1;
@@ -328,7 +334,7 @@ multi method determinant(Math::Matrix:D: --> Numeric) {
     $!determinant = $det;
 }
 
-multi method trace(Math::Matrix:D: --> Numeric) {
+method !build_trace(Math::Matrix:D: --> Numeric) {
     [+] self.diagonal;
 }
 
@@ -413,14 +419,14 @@ multi method decompositionLUCrout(Math::Matrix:D: ) {
     return Math::Matrix.new($L), Math::Matrix.new($U);
 }
 
-multi method decompositionLUP(Math::Matrix:D: Bool :full? = False ) {
-    fail "Not an invertible matrix" unless self.is-invertible;
-    my $sum;
-    my $size = self!row-count;
-    my $U = self!identity_array( $size );
-    my $L = self!zero_array( $size );
-
-}
+#multi method decompositionLUP(Math::Matrix:D: Bool :full = False ) {
+#    fail "Not an invertible matrix" unless self.is-invertible;
+#    my $sum;
+#    my $size = self!row-count;
+#    my $U = self!identity_array( $size );
+#    my $L = self!zero_array( $size );
+#
+#}
 #multi method decompositionLDU(Math::Matrix:D: Bool :full? = False ) {
 
 
