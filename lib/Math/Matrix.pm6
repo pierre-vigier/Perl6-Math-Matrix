@@ -144,8 +144,8 @@ method !build_diagonal(Math::Matrix:D: ){
 }
 
 multi method submatrix(Math::Matrix:D: Int $row, Int $col --> Math::Matrix:D ){
-    fail "$row is not an existing row index" unless 0 < $row <= $!row-count;
-    fail "$col is not an existing column index" unless 0 < $col <= $!column-count;
+    fail "$row is not an existing row index" unless 0 <= $row < $!row-count;
+    fail "$col is not an existing column index" unless 0 <= $col < $!column-count;
     my @clone = self!clone_rows();
     @clone.splice($row,1);
     @clone = map { $^r.splice($col, 1); $^r }, @clone;
