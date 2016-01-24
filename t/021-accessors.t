@@ -1,6 +1,16 @@
 use Test;
 use Math::Matrix;
-plan 1;
+plan 2;
+
+subtest {
+    plan 2;
+    my $matrix =   Math::Matrix.new([[4,0,1],[2,1,0],[2,2,3]]);
+    my $identity = Math::Matrix.new-identity(3);
+
+    ok $matrix.diagonal() ~~ (4,1,3), "custom diagonal";
+    ok $identity.diagonal() ~~ (1,1,1), "identity diagonal";
+}, "Diagonal";
+
 
 subtest {
     plan 1;

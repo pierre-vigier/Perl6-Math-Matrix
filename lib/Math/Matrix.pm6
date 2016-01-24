@@ -72,6 +72,16 @@ method new-vector-product (Math::Matrix:U: @column_vector, @row_vector ){
 }
 
 
+multi method cell(Math::Matrix:D: Int $row, Int $column --> Numeric ) {
+    fail X::OutOfRange.new(
+        :what<Row index> , :got($row), :range("0..{$!row-count -1 }")
+    ) unless 0 <= $row < $!row-count;
+    fail X::OutOfRange.new(
+        :what<Column index> , :got($column), :range("0..{$!column-count -1 }")
+    ) unless 0 <= $column < $!column-count;
+    return @!rows[$row][$column];
+}
+
 method !build_diagonal(Math::Matrix:D: ){
     fail "Number of columns has to be same as number of rows" unless self.is-square;
     gather for ^$!row-count -> $i { take @!rows[$i;$i] };
@@ -96,18 +106,17 @@ multi method submatrix(Math::Matrix:D: @rows, @cols --> Math::Matrix:D ){
     Math::Matrix.new([ @rows.map( { [ @!rows[$_][|@cols] ] } ) ]);
 }
 
-multi method cell(Math::Matrix:D: Int $row, Int $column --> Numeric ) {
-    fail X::OutOfRange.new(
-        :what<Row index> , :got($row), :range("0..{$!row-count -1 }")
-    ) unless 0 <= $row < $!row-count;
-    fail X::OutOfRange.new(
-        :what<Column index> , :got($column), :range("0..{$!column-count -1 }")
-    ) unless 0 <= $column < $!column-count;
-    return @!rows[$row][$column];
+
+method Str(Math::Matrix:D: --> Str) {
+    @!rows.gist;
 }
 
-multi method Str(Math::Matrix:D: --> Str) {
-    @!rows.gist;
+method Bool(Math::Matrix:D: --> Bool) {
+    self.is-zero;
+}
+
+method Int(Math::Matrix:D: --> Int) {
+    $!row-count * $!column-count;
 }
 
 multi method perl(Math::Matrix:D: --> Str) {
@@ -397,30 +406,33 @@ multi method decompositionLUCrout(Math::Matrix:D: ) {
 
     for 0 ..^$size -> $j {
         for $j ..^$size -> $i {
-            $sum = 0;
-            for 0..^$j -> $k {
-                $sum += $L[$i][$k] * $U[$k][$j];
-            }
+            $sum = [+] map {$L[$i][$_] * $U[$_][$j]}, 0..^$j;
             $L[$i][$j] = @!rows[$i][$j] - $sum;
         }
+        if $L[$j][$j] == 0 { fail "det(L) close to 0!\n Can't divide by 0...\n" }
+
         for $j ..^$size -> $i {
-            $sum = 0;
-            for 0..^$j -> $k {
-                $sum += $L[$j][$k] * $U[$k][$i]
-            }
-            if $L[$j][$j] == 0 {
-                fail "det(L) close to 0!\n Can't divide by 0...\n";
-            }
+            $sum = [+] map {$L[$j][$_] * $U[$_][$i]}, 0..^$j;
             $U[$j][$i] = (@!rows[$j][$i] - $sum) / $L[$j][$j];
         }
     }
     return Math::Matrix.new($L), Math::Matrix.new($U);
 }
 
+#multi method decompositionLUP(Math::Matrix:D: Bool :full = False ) {
+#    fail "Not an invertible matrix" unless self.is-invertible;
+#    my $sum;
+#    my $size = self!row-count;
+#    my $U = self!identity_array( $size );
+#    my $L = self!zero_array( $size );
+#
+#}
+#multi method decompositionLDU(Math::Matrix:D: Bool :full? = False ) {
+
+
 multi method decompositionCholeski(Math::Matrix:D: --> Math::Matrix:D) {
     fail "Not symmetric matrix" unless self.is-symmetric;
     fail "Not positive definite" unless self.is-positive-definite;
-
     my @D = self!clone_rows();
     for 0 ..^$!row-count -> $k {
         @D[$k][$k] -= @D[$k][$_]**2 for 0 .. $k-1;
@@ -522,6 +534,15 @@ use with consideration...
     by count of the parameter.
     All the cells are set to 0 except the top/left to bottom/right diagonal,
     set to given values.
+
+=head2 method new-vector-product
+
+    my $matrixp = Math::Matrix.new-vector-product([1,2,3],[2,3,4]);
+    my $matrix = Math::Matrix.new([2,3,4],[4,6,8],[6,9,12]);       # same matrix
+
+    This method is a constructor that returns a matrix which is a result of 
+    the matrix product (method dotProduct, or operator dot) of a column vector
+    (first argument) and a row vector (second argument).
 
 =head2 method equal
 
