@@ -11,6 +11,12 @@ has $!trace is lazy;
 has $!is-diagonal is lazy;
 has $!is-lower-triangular is lazy;
 has $!is-upper-triangular is lazy;
+has $!is-invertible is lazy;
+has $!is-zero is lazy;
+has $!is-identity is lazy;
+has $!is-orthogonal is lazy;
+has $!is-positive-definite  is lazy;
+has $!is-symmetric is lazy;
 
 method !rows      { @!rows }
 method !clone_rows { AoA_clone(@!rows) }
@@ -158,17 +164,17 @@ method !build_is-square(Math::Matrix:D: --> Bool) {
     $!column-count == $!row-count;
 }
 
-method is-invertible(Math::Matrix:D: --> Bool) {
+method !build_is-invertible(Math::Matrix:D: --> Bool) {
     self.is-square and self.determinant != 0;
 }
 
-method is-zero(Math::Matrix:D: --> Bool) {
+method !build_is-zero(Math::Matrix:D: --> Bool) {
     self.density() == 0;
 }
 
-method is-identity(Math::Matrix:D: --> Bool) {
+method !build_is-identity(Math::Matrix:D: --> Bool) {
     return False unless self.is-square;
-    for ^$!row-count X ^$!row-count -> ($r, $c) {
+    for ^$!row-count X ^$!column-count -> ($r, $c) {
         return False unless @!rows[$r][$c] == ($r == $c ?? 1 !! 0);
     }
     True;
@@ -208,7 +214,7 @@ method is-diagonally-dominant(Math::Matrix:D: Bool :$strict = False, Str :$along
     $colwise and $rowwise;
 }
 
-method is-symmetric(Math::Matrix:D: --> Bool) {
+method !build_is-symmetric(Math::Matrix:D: --> Bool) {
     return False unless self.is-square;
     return True if $!row-count < 2;
     for ^($!row-count - 1) -> $r {
@@ -219,13 +225,13 @@ method is-symmetric(Math::Matrix:D: --> Bool) {
     True;
 }
 
-method is-orthogonal(Math::Matrix:D: --> Bool) {
+method !build_is-orthogonal(Math::Matrix:D: --> Bool) {
     return False unless self.is-square;
     self.dotProduct( self.T ) ~~ Math::Matrix.new-identity( $!row-count );
 }
 
 
-method is-positive-definite (Math::Matrix:D: --> Bool) { # with Sylvester's criterion
+method !build_is-positive-definite (Math::Matrix:D: --> Bool) { # with Sylvester's criterion
     return False unless self.is-square;
     return False unless self.determinant > 0;
     my $sub = Math::Matrix.new( @!rows );
