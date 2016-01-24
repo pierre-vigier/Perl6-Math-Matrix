@@ -342,7 +342,7 @@ method !build_determinant(Math::Matrix:D: --> Numeric) {
         return [*]($.diagonal) if $.is-upper-triangular || $.is-lower-triangular;
         #Try with Cholesky
         try {
-            my $L = $.decompositionCholeski();
+            my $L = $.decompositionCholesky();
             return $L.determinant ** 2;
         }
     }
@@ -448,7 +448,7 @@ method decompositionLUCrout(Math::Matrix:D: ) {
 #multi method decompositionLDU(Math::Matrix:D: Bool :full? = False ) {
 
 
-method decompositionCholeski(Math::Matrix:D: --> Math::Matrix:D) {
+method decompositionCholesky(Math::Matrix:D: --> Math::Matrix:D) {
     fail "Not symmetric matrix" unless self.is-symmetric;
     fail "Not positive definite" unless self.is-positive-definite;
     my @D = self!clone_rows();
@@ -738,9 +738,9 @@ use with consideration...
     $L is a left triangular matrix and $R is a right one
     This decomposition works only on invertible matrices (square and full ranked).
 
-=head2 method decompositionCholeski
+=head2 method decompositionCholesky
 
-    my $D = $matrix.decompositionCholeski( );
+    my $D = $matrix.decompositionCholesky( );
     $D dot $D.T eq $matrix;              # True 
 
     $D is a left triangular matrix
