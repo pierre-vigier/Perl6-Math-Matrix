@@ -465,12 +465,12 @@ multi method decompositionLU(Math::Matrix:D: Bool :$pivot = True, :$diagonal = F
             @U[$c][$c] = 1;
         }
         return $pivot
-            ?? Math::Matrix.new(@L), Math::Matrix.new(@D), Math::Matrix.new(@U), Math::Matrix.new(@P)
-            !! Math::Matrix.new(@L), Math::Matrix.new(@D), Math::Matrix.new(@U)
+            ?? (Math::Matrix.new(@L), Math::Matrix.new(@D), Math::Matrix.new(@U), Math::Matrix.new(@P))
+            !! (Math::Matrix.new(@L), Math::Matrix.new(@D), Math::Matrix.new(@U))
     }
     return $pivot
-        ?? Math::Matrix.new(@L), Math::Matrix.new(@U), Math::Matrix.new(@P)
-        !! Math::Matrix.new(@L), Math::Matrix.new(@U)
+        ?? (Math::Matrix.new(@L), Math::Matrix.new(@U), Math::Matrix.new(@P))
+        !! (Math::Matrix.new(@L), Math::Matrix.new(@U))
 }
 
 method decompositionCholesky(Math::Matrix:D: --> Math::Matrix:D) {
