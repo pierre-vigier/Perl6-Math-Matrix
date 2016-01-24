@@ -442,7 +442,7 @@ multi method decompositionLU(Math::Matrix:D: Bool :$pivot = True, :$diagonal = F
     fail "Has to be invertible when not using pivoting" if not $pivot and not self.is-invertible;
     my $size = self!row-count;
     my @L = self!identity_array( $size );
-    my @U = $!clone_rows( $size );
+    my @U = self!clone_rows( $size );
     my @P = self!identity_array( $size );
     for 0 .. $size-2 -> $c {
         if $pivot {
