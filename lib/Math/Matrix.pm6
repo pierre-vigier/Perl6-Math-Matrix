@@ -1,8 +1,10 @@
 unit class Math::Matrix;
+use AttrX::Lazy;
 
 has @!rows is required;
 has Int $!row-count;
 has Int $!column-count;
+has Numeric $!determinant is lazy;
 
 method !rows      { @!rows }
 method !clone_rows { AoA_clone(@!rows) }
@@ -305,12 +307,8 @@ multi method multiply(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b!
     Math::Matrix.new( @multiply );
 }
 
-has Numeric $!determinant;
-
-multi method det(Math::Matrix:D: --> Numeric )        { self.determinant }  # the usual short name
-multi method determinant(Math::Matrix:D: --> Numeric) {
-    return $!determinant if $!determinant.defined;
-
+method det(Math::Matrix:D: --> Numeric )        { self.determinant }  # the usual short name
+method !build_determinant(Math::Matrix:D: --> Numeric) {
     fail "Number of columns has to be same as number of rows" unless self.is-square;
     return 1            if $!row-count == 0;
     return @!rows[0][0] if $!row-count == 1;
