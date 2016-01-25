@@ -453,8 +453,8 @@ multi method decompositionLU(Math::Matrix:D: Bool :$pivot = True, :$diagonal = F
         }
         for $c+1 ..^$size -> $r {
             next if @U[$r][$c] == 0;
-            my $q = @L[$r][$c] = -(@U[$r][$c] / @U[$c][$c]);
-            @U[$r] = @U[$r] >>+<< $q <<*<< @U[$c];
+            my $q = @L[$r][$c] = @U[$r][$c] / @U[$c][$c];
+            @U[$r] = @U[$r] >>-<< $q <<*<< @U[$c];
         }
     }
 
