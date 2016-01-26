@@ -112,7 +112,7 @@ method gist(Math::Matrix:D: --> Str) {
     if all( @!rows[*;*] ) ~~ Int {
         $fmt = " %{$max-char}d ";
     } else {
-        my $max-decimal = max( @!rows[*;*].map( { ( .split(/\./)[1] // '' ).chars } ) );
+        my $max-decimal = max( @!rows[*;*].map( { ( .split(/\./)[1] // '' ).chars } ) ); #/
         $max-decimal = 5 if $max-decimal > 5; #more than that is not readable
         $max-char += $max-decimal + 1;
         $fmt = " \%{$max-char}.{$max-decimal}f ";
@@ -144,8 +144,8 @@ method !build_diagonal(Math::Matrix:D: ){
 }
 
 multi method submatrix(Math::Matrix:D: Int $row, Int $col --> Math::Matrix:D ){
-    fail "$row is not an existing row index" unless 0 < $row <= $!row-count;
-    fail "$col is not an existing column index" unless 0 < $col <= $!column-count;
+    fail "$row is not an existing row index" unless 0 <= $row < $!row-count;
+    fail "$col is not an existing column index" unless 0 <= $col < $!column-count;
     my @clone = self!clone_rows();
     @clone.splice($row,1);
     @clone = map { $^r.splice($col, 1); $^r }, @clone;
@@ -416,7 +416,6 @@ multi method condition(Math::Matrix:D: --> Numeric) {
 
 method decompositionLUCrout(Math::Matrix:D: ) {
     fail "Not square matrix" unless self.is-square;
-
     my $sum;
     my $size = self!row-count;
     my $U = self!identity_array( $size );
@@ -437,16 +436,40 @@ method decompositionLUCrout(Math::Matrix:D: ) {
     return Math::Matrix.new($L), Math::Matrix.new($U);
 }
 
-#multi method decompositionLUP(Math::Matrix:D: Bool :full = False ) {
-#    fail "Not an invertible matrix" unless self.is-invertible;
-#    my $sum;
-#    my $size = self!row-count;
-#    my $U = self!identity_array( $size );
-#    my $L = self!zero_array( $size );
-#
-#}
-#multi method decompositionLDU(Math::Matrix:D: Bool :full? = False ) {
+# LU factorization with optional partial pivoting and optional diagonal matrix
+multi method decompositionLU(Math::Matrix:D: Bool :$pivot = True, :$diagonal = False) {
+    fail "Not an square matrix" unless self.is-square;
+    fail "Has to be invertible when not using pivoting" if not $pivot and not self.is-invertible;
+    my $size = self!row-count;
+    my @L = self!identity_array( $size );
+    my @U = self!clone_rows( $size );
+    my @P = self!identity_array( $size );
+    for 0 .. $size-2 -> $c {
+        if $pivot {
+            my $maxrow = $c;
+            for $c+1 ..^$size -> $r { $maxrow = $c if @U[$maxrow][$c] < @U[$r][$c] }
+            (@U[$maxrow], @U[$c]) = (@U[$c], @U[$maxrow]);
+            (@P[$maxrow], @P[$c]) = (@P[$c], @P[$maxrow]);
+        }
+        for $c+1 ..^$size -> $r {
+            next if @U[$r][$c] == 0;
+            my $q = @L[$r][$c] = @U[$r][$c] / @U[$c][$c];
+            @U[$r] = @U[$r] >>-<< $q <<*<< @U[$c];
+        }
+    }
 
+    if $diagonal {
+        my @D;
+        for 0 ..^ $size -> $c {
+            push @D, @U[$c][$c];
+            @U[$c][$c] = 1;
+        }
+        $pivot ?? (Math::Matrix.new(@L), Math::Matrix.new-diagonal(@D), Math::Matrix.new(@U), Math::Matrix.new(@P))
+               !! (Math::Matrix.new(@L), Math::Matrix.new-diagonal(@D), Math::Matrix.new(@U));
+    }
+    $pivot ?? (Math::Matrix.new(@L), Math::Matrix.new(@U), Math::Matrix.new(@P))
+           !! (Math::Matrix.new(@L), Math::Matrix.new(@U));
+}
 
 method decompositionCholesky(Math::Matrix:D: --> Math::Matrix:D) {
     fail "Not symmetric matrix" unless self.is-symmetric;
@@ -729,6 +752,21 @@ use with consideration...
     my $norm = $matrix.norm('max');      # max norm - biggest absolute value of a cell
     $matrix.norm('rowsum');              # row sum norm - biggest abs. value-sum of a row
     $matrix.norm('columnsum');           # column sum norm - same column wise
+
+=head2 method decompositionLU
+
+    my ($L, $U, $P) = $matrix.decompositionLU( );
+    $L dot $U eq $matrix dot $P;         # True
+    my ($L, $U) = $matrix.decompositionLUC(:!pivot);
+    $L dot $U eq $matrix;                # True
+
+    $L is a left triangular matrix and $R is a right one
+    Without pivotisation the marix has to be invertible (square and full ranked).
+    In case you whant two unipotent triangular matrices and a diagonal (D):
+    use the :diagonal option, which can be freely combined with :pivot.
+
+    my ($L, $D, $U, $P) = $matrix.decompositionLU( :diagonal );
+    $L dot $D dot $U eq $matrix dot $P;  # True
 
 =head2 method decompositionLUCrout
 
