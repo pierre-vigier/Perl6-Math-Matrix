@@ -112,7 +112,7 @@ method gist(Math::Matrix:D: --> Str) {
     if all( @!rows[*;*] ) ~~ Int {
         $fmt = " %{$max-char}d ";
     } else {
-        my $max-decimal = max( @!rows[*;*].map( { ( .split(/\./)[1] // '' ).chars } ) ); #/
+        my $max-decimal = max( @!rows[*;*].map( { ( .split(/\./)[1] // '' ).chars } ) );
         $max-decimal = 5 if $max-decimal > 5; #more than that is not readable
         $max-char += $max-decimal + 1;
         $fmt = " \%{$max-char}.{$max-decimal}f ";
