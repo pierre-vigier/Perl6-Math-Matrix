@@ -340,10 +340,9 @@ method !build_determinant(Math::Matrix:D: --> Numeric) {
     if $!row-count > 4 {
         #up to 4x4 naive method is fully usable
         return [*]($.diagonal) if $.is-upper-triangular || $.is-lower-triangular;
-        #Try with Cholesky
         try {
-            my $L = $.decompositionCholesky();
-            return $L.determinant ** 2;
+            my ($L, $U, $P) = $.decompositionLU();
+            return $P.inverted.det * $L.det * $U.det;
         }
     }
     my $det = 0;
@@ -353,6 +352,19 @@ method !build_determinant(Math::Matrix:D: --> Numeric) {
         $det += $product;
     }
     $!determinant = $det;
+}
+
+method determinant-naive(Math::Matrix:D: --> Numeric) {
+    fail "Number of columns has to be same as number of rows" unless self.is-square;
+    return 1            if $!row-count == 0;
+    return @!rows[0][0] if $!row-count == 1;
+    my $det = 0;
+    for (permutations $!row-count).kv ->  $nr, $perm {
+        my $product = ($nr + $nr div 2) %% 2 ?? 1 !! -1;   # signum
+        $product *= @!rows[$_][ $perm[$_] ] for ^+$perm;
+        $det += $product;
+    }
+    $det;
 }
 
 method !build_trace(Math::Matrix:D: --> Numeric) {
@@ -442,7 +454,7 @@ multi method decompositionLU(Math::Matrix:D: Bool :$pivot = True, :$diagonal = F
     fail "Has to be invertible when not using pivoting" if not $pivot and not self.is-invertible;
     my $size = self!row-count;
     my @L = self!identity_array( $size );
-    my @U = self!clone_rows( $size );
+    my @U = self!clone_rows( );
     my @P = self!identity_array( $size );
     for 0 .. $size-2 -> $c {
         if $pivot {

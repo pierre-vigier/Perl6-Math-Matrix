@@ -256,6 +256,22 @@ method norm
     $matrix.norm('rowsum');              # row sum norm - biggest abs. value-sum of a row
     $matrix.norm('columnsum');           # column sum norm - same column wise
 
+method decompositionLU
+----------------------
+
+    my ($L, $U, $P) = $matrix.decompositionLU( );
+    $L dot $U eq $matrix dot $P;         # True
+    my ($L, $U) = $matrix.decompositionLUC(:!pivot);
+    $L dot $U eq $matrix;                # True
+
+    $L is a left triangular matrix and $R is a right one
+    Without pivotisation the marix has to be invertible (square and full ranked).
+    In case you whant two unipotent triangular matrices and a diagonal (D):
+    use the :diagonal option, which can be freely combined with :pivot.
+
+    my ($L, $D, $U, $P) = $matrix.decompositionLU( :diagonal );
+    $L dot $D dot $U eq $matrix dot $P;  # True
+
 method decompositionLUCrout
 ---------------------------
 
