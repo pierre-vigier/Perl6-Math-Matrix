@@ -81,6 +81,11 @@ method !new-lower-triangular(Math::Matrix:U: @m ) {
     self.bless( rows => @m, is-lower-triangular => True );
 }
 
+method !new-upper-triangular(Math::Matrix:U: @m ) {
+    #don't want to trust outside of the class that a matrix is really triangular
+    self.bless( rows => @m, is-upper-triangular => True );
+}
+
 method new-vector-product (Math::Matrix:U: @column_vector, @row_vector ){
     fail "Expect two Lists of Number" unless [and](@column_vector >>~~>> Numeric) and [and](@row_vector >>~~>> Numeric);
     my @p;
@@ -346,9 +351,10 @@ method !build_determinant(Math::Matrix:D: --> Numeric) {
         }
     }
     my $det = 0;
-    for (permutations $!row-count).kv ->  $nr, $perm {
-        my $product = ($nr + $nr div 2) %% 2 ?? 1 !! -1;   # signum
-        $product *= @!rows[$_][ $perm[$_] ] for ^+$perm;
+    for ( σ_permutations([^$!row-count]) ) {
+        my $permutation = .key;
+        my $product = .value;
+        for $permutation.kv -> $i, $j { $product *= @!rows[$i][$j] };
         $det += $product;
     }
     $!determinant = $det;
@@ -359,12 +365,20 @@ method determinant-naive(Math::Matrix:D: --> Numeric) {
     return 1            if $!row-count == 0;
     return @!rows[0][0] if $!row-count == 1;
     my $det = 0;
-    for (permutations $!row-count).kv ->  $nr, $perm {
-        my $product = ($nr + $nr div 2) %% 2 ?? 1 !! -1;   # signum
-        $product *= @!rows[$_][ $perm[$_] ] for ^+$perm;
+    for ( σ_permutations([^$!row-count]) ) {
+        my $permutation = .key;
+        my $product = .value;
+        for $permutation.kv -> $i, $j { $product *= @!rows[$i][$j] };
         $det += $product;
     }
     $det;
+}
+
+sub insert ($x, @xs) { ([flat @xs[0 ..^ $_], $x, @xs[$_ .. *]] for 0 .. @xs) }
+sub order ($sg, @xs) { $sg > 0 ?? @xs !! @xs.reverse }
+multi σ_permutations ([]) { [] => 1 }
+multi σ_permutations ([$x, *@xs]) {
+    σ_permutations(@xs).map({ |order($_.value, insert($x, $_.key)) }) Z=> |(1,-1) xx *
 }
 
 method !build_trace(Math::Matrix:D: --> Numeric) {
@@ -476,11 +490,11 @@ multi method decompositionLU(Math::Matrix:D: Bool :$pivot = True, :$diagonal = F
             push @D, @U[$c][$c];
             @U[$c][$c] = 1;
         }
-        $pivot ?? (Math::Matrix.new(@L), Math::Matrix.new-diagonal(@D), Math::Matrix.new(@U), Math::Matrix.new(@P))
-               !! (Math::Matrix.new(@L), Math::Matrix.new-diagonal(@D), Math::Matrix.new(@U));
+        $pivot ?? (Math::Matrix!new-lower-triangular(@L), Math::Matrix.new-diagonal(@D), Math::Matrix!new-upper-triangular(@U), Math::Matrix.new(@P))
+               !! (Math::Matrix!new-lower-triangular(@L), Math::Matrix.new-diagonal(@D), Math::Matrix!new-upper-triangular(@U));
     }
-    $pivot ?? (Math::Matrix.new(@L), Math::Matrix.new(@U), Math::Matrix.new(@P))
-           !! (Math::Matrix.new(@L), Math::Matrix.new(@U));
+    $pivot ?? (Math::Matrix!new-lower-triangular(@L), Math::Matrix!new-upper-triangular(@U), Math::Matrix.new(@P))
+           !! (Math::Matrix!new-lower-triangular(@L), Math::Matrix!new-upper-triangular(@U));
 }
 
 method decompositionCholesky(Math::Matrix:D: --> Math::Matrix:D) {
