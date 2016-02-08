@@ -514,6 +514,35 @@ method decompositionCholesky(Math::Matrix:D: --> Math::Matrix:D) {
     return Math::Matrix!new-lower-triangular( @D );
 }
 
+method reduced-row-echelon-form(Math::Matrix:D: --> Math::Matrix:D) {
+    my @ref = self!clone_rows();
+    my $lead = 0;
+    MAIN: for ^$!row-count -> $r {
+        last MAIN if $lead >= $!column-count;
+        my $i = $r;
+        while @ref[$i][$lead] == 0 {
+            $i++;
+            if $!row-count == $i {
+                $i = $r;
+                $lead++;
+                last MAIN if $lead == $!column-count;
+            }
+        }
+        @ref[$i, $r] = @ref[$r, $i];
+        my $lead_value = @ref[$r][$lead];
+        @ref[$r] »/=» $lead_value;
+        for ^$!row-count -> $n {
+            next if $n == $r;
+            @ref[$n] »-=» @ref[$r] »*» @ref[$n][$lead];
+        }
+        $lead++;
+    }
+    return Math::Matrix.new( @ref );
+}
+method rref(Math::Matrix:D: --> Math::Matrix:D) {
+    self.reduced-row-echelon-form;
+}
+
 multi sub infix:<⋅>( Math::Matrix $a, Math::Matrix $b where { $a!column-count == $b!row-count} --> Math::Matrix:D ) is looser(&infix:<*>) is export {
     $a.dotProduct( $b );
 }
@@ -809,5 +838,12 @@ use with consideration...
 
     $D is a left triangular matrix
     This decomposition works only on symmetric and definite positive matrices.
+
+=head2 method reduced-row-echelon-form (shortcut rref)
+
+    my $rref = $matrix.reduced-row-echelon-form();
+    my $rref = $matrix.rref();
+
+    Return the reduced row echelon form of a matrix, a.k.a. row canonical form
 
 =end pod

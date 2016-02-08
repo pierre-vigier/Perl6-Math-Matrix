@@ -289,3 +289,11 @@ method decompositionCholesky
 
     $D is a left triangular matrix
     This decomposition works only on symmetric and definite positive matrices.
+
+method reduced-row-echelon-form (shortcut rref)
+-----------------------------------------------
+
+    my $rref = $matrix.reduced-row-echelon-form();
+    my $rref = $matrix.rref();
+
+    Return the reduced row echelon form of a matrix, a.k.a. row canonical form
