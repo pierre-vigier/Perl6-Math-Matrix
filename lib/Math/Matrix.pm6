@@ -514,7 +514,7 @@ method decompositionCholesky(Math::Matrix:D: --> Math::Matrix:D) {
     return Math::Matrix!new-lower-triangular( @D );
 }
 
-method row-echelon-form(Math::Matrix:D: --> Math::Matrix:D) {
+method reduced-row-echelon-form(Math::Matrix:D: --> Math::Matrix:D) {
     my @ref = self!clone_rows();
     my $lead = 0;
     MAIN: for ^$!row-count -> $r {
