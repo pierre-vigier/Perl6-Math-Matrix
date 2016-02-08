@@ -96,7 +96,7 @@ subtest {
 }, "Multiply Matrix with number";
 
 subtest {
-    plan 1;
+    plan 2;
     my $matrix = Math::Matrix.new(
         [[1, 2, -1, -4],
         [2, 3, -1, -11],
@@ -108,4 +108,5 @@ subtest {
         [0, 0, 1, -2]
     ]);
     ok $matrix.reduced-row-echelon-form() ~~ $expected, "Rref is correct";
+    ok $matrix.rref() ~~ $expected, "Rref is correct, using shortcut";
 }, "row echelon";

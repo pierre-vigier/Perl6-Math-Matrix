@@ -539,6 +539,9 @@ method reduced-row-echelon-form(Math::Matrix:D: --> Math::Matrix:D) {
     }
     return Math::Matrix.new( @ref );
 }
+method rref(Math::Matrix:D: --> Math::Matrix:D) {
+    self.reduced-row-echelon-form;
+}
 
 multi sub infix:<⋅>( Math::Matrix $a, Math::Matrix $b where { $a!column-count == $b!row-count} --> Math::Matrix:D ) is looser(&infix:<*>) is export {
     $a.dotProduct( $b );
