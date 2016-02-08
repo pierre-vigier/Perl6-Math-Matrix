@@ -522,22 +522,22 @@ method reduced-row-echelon-form(Math::Matrix:D: --> Math::Matrix:D) {
         my $i = $r;
         while @ref[$i][$lead] == 0 {
             $i++;
-            if ^$!row-count == $i {
+            if $!row-count == $i {
                 $i = $r;
                 $lead++;
                 last MAIN if $lead == $!column-count;
             }
-            @ref[$i, $r] = @ref[$r, $i];
-            my $lead_value = @ref[$r, $lead];
-            @ref[$r] >>/=>> $lead_value;
-            for ^$!row-count -> $n {
-                next if $n == $r;
-                @ref[$n] »-=» @ref[$r] »*» @ref[$n][$lead];
-            }
-            $lead++;
         }
-        return Math::Matrix.new( @ref );
+        @ref[$i, $r] = @ref[$r, $i];
+        my $lead_value = @ref[$r][$lead];
+        @ref[$r] »/=» $lead_value;
+        for ^$!row-count -> $n {
+            next if $n == $r;
+            @ref[$n] »-=» @ref[$r] »*» @ref[$n][$lead];
+        }
+        $lead++;
     }
+    return Math::Matrix.new( @ref );
 }
 
 multi sub infix:<⋅>( Math::Matrix $a, Math::Matrix $b where { $a!column-count == $b!row-count} --> Math::Matrix:D ) is looser(&infix:<*>) is export {
