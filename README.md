@@ -297,3 +297,18 @@ method reduced-row-echelon-form (shortcut rref)
     my $rref = $matrix.rref();
 
     Return the reduced row echelon form of a matrix, a.k.a. row canonical form
+
+Author
+======
+
+Pierre VIGIER
+
+Contributors
+============
+
+Herbert Breunung
+
+License
+=======
+
+Artistic License 2.0

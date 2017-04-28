@@ -30,7 +30,7 @@ subtest {
     ok $matrix.determinant() == -72 , "Determinant of a Matrix";
 
     my $a = Math::Matrix.new([[7, 3, 7, 1, 1, 4], [9, 7, 6, 1, 9, 1], [9, 6, 2, 5, 5, 6], [6, 0, 3, 5, 1, 3], [0, 5, 0, 0, 5, 7], [4, 2, 7, 6, 1, 9]]);
-    ok $a.det == -33618, "6x6 matrix determinant is correct (use Decomposition behind the scene";
+    ok $a.det == -33618, "6x6 matrix determinant is correct (use Decomposition behind the scene)";
 }, "Determinant";
 
 subtest {

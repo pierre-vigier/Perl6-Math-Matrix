@@ -73,7 +73,7 @@ method new-diagonal(Math::Matrix:U: *@diag ){
     fail "Expect an List of Number" unless @diag and [and] @diag >>~~>> Numeric;
     my @d;
     for ^@diag.elems X ^@diag.elems -> ($r, $c) { @d[$r][$c] = $r==$c ?? @diag[$r] !! 0 }
-    self.bless( rows => @d, determinant => [*](@diag) , rank => +@diag, diagonal => @diag );
+    self.bless( rows => @d, determinant => [*](@diag.flat) , rank => +@diag, diagonal => @diag );
 }
 
 method !new-lower-triangular(Math::Matrix:U: @m ) {
@@ -145,7 +145,7 @@ multi method cell(Math::Matrix:D: Int $row, Int $column --> Numeric ) {
 
 method !build_diagonal(Math::Matrix:D: ){
     fail "Number of columns has to be same as number of rows" unless self.is-square;
-    gather for ^$!row-count -> $i { take @!rows[$i;$i] };
+    ( gather for ^$!row-count -> $i { take @!rows[$i;$i] } ).list;
 }
 
 multi method submatrix(Math::Matrix:D: Int $row, Int $col --> Math::Matrix:D ){
@@ -344,7 +344,7 @@ method !build_determinant(Math::Matrix:D: --> Numeric) {
     return @!rows[0][0] if $!row-count == 1;
     if $!row-count > 4 {
         #up to 4x4 naive method is fully usable
-        return [*]($.diagonal) if $.is-upper-triangular || $.is-lower-triangular;
+        return [*] $.diagonal.flat if $.is-upper-triangular || $.is-lower-triangular;
         try {
             my ($L, $U, $P) = $.decompositionLU();
             return $P.inverted.det * $L.det * $U.det;
@@ -382,7 +382,7 @@ multi σ_permutations ([$x, *@xs]) {
 }
 
 method !build_trace(Math::Matrix:D: --> Numeric) {
-    [+] self.diagonal;
+    [+] self.diagonal.flat;
 }
 
 method !build_density(Math::Matrix:D: --> Rat) {
@@ -845,5 +845,17 @@ use with consideration...
     my $rref = $matrix.rref();
 
     Return the reduced row echelon form of a matrix, a.k.a. row canonical form
+
+=head1 Author
+
+Pierre VIGIER
+
+=head1 Contributors
+
+Herbert Breunung
+
+=head1 License
+
+Artistic License 2.0
 
 =end pod
