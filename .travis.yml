@@ -1,4 +1,4 @@
-xy---
+---
 sudo: false
 language: perl6
 perl6:
