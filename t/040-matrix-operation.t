@@ -1,6 +1,6 @@
 use Test;
 use Math::Matrix;
-plan 8;
+plan 9;
 
 subtest {
     plan 2;
@@ -21,7 +21,7 @@ subtest {
     my $matrixc  = Math::Matrix.new([[1,1,0],[0,1,1],[1,0,1]]);
     my $expectc  = Math::Matrix.new([[0.5,-.5,0.5],[0.5,.5,-0.5],[-0.5,0.5,0.5]]);
     my $expectd  = Math::Matrix.new([[1,0,0],[0,0.5,0],[0,0,1/3]]);
- 
+
     dies-ok {Math::Matrix.zero(3,4).inverted},   "only square matrices can be inverted";
     dies-ok {$matrixa.inverted},       "only none singular matrices can be inverted";
     ok $matrixb.inverted ~~ $expectb,  "Inversion works correctly";
@@ -94,3 +94,19 @@ subtest {
     ok $matrix * 2.2 ~~ $expected, "multiplication with real working with operator *";
     ok 2.2 * $matrix ~~ $expected, "multiplication with real working with operator *, reverse args";
 }, "Multiply Matrix with number";
+
+subtest {
+    plan 2;
+    my $matrix = Math::Matrix.new(
+        [[1, 2, -1, -4],
+        [2, 3, -1, -11],
+        [-2, 0, -3, 22]]
+    );
+    my $expected = Math::Matrix.new([
+        [1, 0, 0, -8],
+        [0, 1, 0,  1],
+        [0, 0, 1, -2]
+    ]);
+    ok $matrix.reduced-row-echelon-form() ~~ $expected, "Rref is correct";
+    ok $matrix.rref() ~~ $expected, "Rref is correct, using shortcut";
+}, "row echelon";

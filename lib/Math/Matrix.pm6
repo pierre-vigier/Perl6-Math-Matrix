@@ -73,12 +73,17 @@ method new-diagonal(Math::Matrix:U: *@diag ){
     fail "Expect an List of Number" unless @diag and [and] @diag >>~~>> Numeric;
     my @d;
     for ^@diag.elems X ^@diag.elems -> ($r, $c) { @d[$r][$c] = $r==$c ?? @diag[$r] !! 0 }
-    self.bless( rows => @d, determinant => [*](@diag) , rank => +@diag, diagonal => @diag );
+    self.bless( rows => @d, determinant => [*](@diag.flat) , rank => +@diag, diagonal => @diag );
 }
 
 method !new-lower-triangular(Math::Matrix:U: @m ) {
     #don't want to trust outside of the class that a matrix is really triangular
     self.bless( rows => @m, is-lower-triangular => True );
+}
+
+method !new-upper-triangular(Math::Matrix:U: @m ) {
+    #don't want to trust outside of the class that a matrix is really triangular
+    self.bless( rows => @m, is-upper-triangular => True );
 }
 
 method new-vector-product (Math::Matrix:U: @column_vector, @row_vector ){
@@ -112,7 +117,7 @@ method gist(Math::Matrix:D: --> Str) {
     if all( @!rows[*;*] ) ~~ Int {
         $fmt = " %{$max-char}d ";
     } else {
-        my $max-decimal = max( @!rows[*;*].map( { ( .split(/\./)[1] // '' ).chars } ) ); #/
+        my $max-decimal = max( @!rows[*;*].map( { ( .split(/\./)[1] // '' ).chars } ) );
         $max-decimal = 5 if $max-decimal > 5; #more than that is not readable
         $max-char += $max-decimal + 1;
         $fmt = " \%{$max-char}.{$max-decimal}f ";
@@ -140,7 +145,7 @@ multi method cell(Math::Matrix:D: Int $row, Int $column --> Numeric ) {
 
 method !build_diagonal(Math::Matrix:D: ){
     fail "Number of columns has to be same as number of rows" unless self.is-square;
-    gather for ^$!row-count -> $i { take @!rows[$i;$i] };
+    ( gather for ^$!row-count -> $i { take @!rows[$i;$i] } ).list;
 }
 
 multi method submatrix(Math::Matrix:D: Int $row, Int $col --> Math::Matrix:D ){
@@ -339,24 +344,45 @@ method !build_determinant(Math::Matrix:D: --> Numeric) {
     return @!rows[0][0] if $!row-count == 1;
     if $!row-count > 4 {
         #up to 4x4 naive method is fully usable
-        return [*]($.diagonal) if $.is-upper-triangular || $.is-lower-triangular;
-        #Try with Cholesky
+        return [*] $.diagonal.flat if $.is-upper-triangular || $.is-lower-triangular;
         try {
-            my $L = $.decompositionCholesky();
-            return $L.determinant ** 2;
+            my ($L, $U, $P) = $.decompositionLU();
+            return $P.inverted.det * $L.det * $U.det;
         }
     }
     my $det = 0;
-    for (permutations $!row-count).kv ->  $nr, $perm {
-        my $product = ($nr + $nr div 2) %% 2 ?? 1 !! -1;   # signum
-        $product *= @!rows[$_][ $perm[$_] ] for ^+$perm;
+    for ( σ_permutations([^$!row-count]) ) {
+        my $permutation = .key;
+        my $product = .value;
+        for $permutation.kv -> $i, $j { $product *= @!rows[$i][$j] };
         $det += $product;
     }
     $!determinant = $det;
 }
 
+method determinant-naive(Math::Matrix:D: --> Numeric) {
+    fail "Number of columns has to be same as number of rows" unless self.is-square;
+    return 1            if $!row-count == 0;
+    return @!rows[0][0] if $!row-count == 1;
+    my $det = 0;
+    for ( σ_permutations([^$!row-count]) ) {
+        my $permutation = .key;
+        my $product = .value;
+        for $permutation.kv -> $i, $j { $product *= @!rows[$i][$j] };
+        $det += $product;
+    }
+    $det;
+}
+
+sub insert ($x, @xs) { ([flat @xs[0 ..^ $_], $x, @xs[$_ .. *]] for 0 .. @xs) }
+sub order ($sg, @xs) { $sg > 0 ?? @xs !! @xs.reverse }
+multi σ_permutations ([]) { [] => 1 }
+multi σ_permutations ([$x, *@xs]) {
+    σ_permutations(@xs).map({ |order($_.value, insert($x, $_.key)) }) Z=> |(1,-1) xx *
+}
+
 method !build_trace(Math::Matrix:D: --> Numeric) {
-    [+] self.diagonal;
+    [+] self.diagonal.flat;
 }
 
 method !build_density(Math::Matrix:D: --> Rat) {
@@ -442,7 +468,7 @@ multi method decompositionLU(Math::Matrix:D: Bool :$pivot = True, :$diagonal = F
     fail "Has to be invertible when not using pivoting" if not $pivot and not self.is-invertible;
     my $size = self!row-count;
     my @L = self!identity_array( $size );
-    my @U = self!clone_rows( $size );
+    my @U = self!clone_rows( );
     my @P = self!identity_array( $size );
     for 0 .. $size-2 -> $c {
         if $pivot {
@@ -464,11 +490,11 @@ multi method decompositionLU(Math::Matrix:D: Bool :$pivot = True, :$diagonal = F
             push @D, @U[$c][$c];
             @U[$c][$c] = 1;
         }
-        $pivot ?? (Math::Matrix.new(@L), Math::Matrix.new-diagonal(@D), Math::Matrix.new(@U), Math::Matrix.new(@P))
-               !! (Math::Matrix.new(@L), Math::Matrix.new-diagonal(@D), Math::Matrix.new(@U));
+        $pivot ?? (Math::Matrix!new-lower-triangular(@L), Math::Matrix.new-diagonal(@D), Math::Matrix!new-upper-triangular(@U), Math::Matrix.new(@P))
+               !! (Math::Matrix!new-lower-triangular(@L), Math::Matrix.new-diagonal(@D), Math::Matrix!new-upper-triangular(@U));
     }
-    $pivot ?? (Math::Matrix.new(@L), Math::Matrix.new(@U), Math::Matrix.new(@P))
-           !! (Math::Matrix.new(@L), Math::Matrix.new(@U));
+    $pivot ?? (Math::Matrix!new-lower-triangular(@L), Math::Matrix!new-upper-triangular(@U), Math::Matrix.new(@P))
+           !! (Math::Matrix!new-lower-triangular(@L), Math::Matrix!new-upper-triangular(@U));
 }
 
 method decompositionCholesky(Math::Matrix:D: --> Math::Matrix:D) {
@@ -486,6 +512,35 @@ method decompositionCholesky(Math::Matrix:D: --> Math::Matrix:D) {
     for ^$!row-count X ^$!column-count -> ($r, $c) { @D[$r][$c] = 0 if $r < $c }
     #return Math::Matrix.BUILD( rows => @D, is-lower-triangular => True );
     return Math::Matrix!new-lower-triangular( @D );
+}
+
+method reduced-row-echelon-form(Math::Matrix:D: --> Math::Matrix:D) {
+    my @ref = self!clone_rows();
+    my $lead = 0;
+    MAIN: for ^$!row-count -> $r {
+        last MAIN if $lead >= $!column-count;
+        my $i = $r;
+        while @ref[$i][$lead] == 0 {
+            $i++;
+            if $!row-count == $i {
+                $i = $r;
+                $lead++;
+                last MAIN if $lead == $!column-count;
+            }
+        }
+        @ref[$i, $r] = @ref[$r, $i];
+        my $lead_value = @ref[$r][$lead];
+        @ref[$r] »/=» $lead_value;
+        for ^$!row-count -> $n {
+            next if $n == $r;
+            @ref[$n] »-=» @ref[$r] »*» @ref[$n][$lead];
+        }
+        $lead++;
+    }
+    return Math::Matrix.new( @ref );
+}
+method rref(Math::Matrix:D: --> Math::Matrix:D) {
+    self.reduced-row-echelon-form;
 }
 
 multi sub infix:<⋅>( Math::Matrix $a, Math::Matrix $b where { $a!column-count == $b!row-count} --> Math::Matrix:D ) is looser(&infix:<*>) is export {
@@ -783,5 +838,24 @@ use with consideration...
 
     $D is a left triangular matrix
     This decomposition works only on symmetric and definite positive matrices.
+
+=head2 method reduced-row-echelon-form (shortcut rref)
+
+    my $rref = $matrix.reduced-row-echelon-form();
+    my $rref = $matrix.rref();
+
+    Return the reduced row echelon form of a matrix, a.k.a. row canonical form
+
+=head1 Author
+
+Pierre VIGIER
+
+=head1 Contributors
+
+Herbert Breunung
+
+=head1 License
+
+Artistic License 2.0
 
 =end pod
