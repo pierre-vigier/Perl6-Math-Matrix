@@ -590,7 +590,7 @@ multi sub circumfix:<|| ||>(Math::Matrix $a --> Numeric) is equiv(&prefix:<!>) i
 Math::Matrix - Simple Matrix mathematics
 =head1 SYNOPSIS
 
-Matrix stuff, transposition, dot Product, and so on
+Matrices are 2D tables of numbers: create, transpose, invert, dot product, kernel, trace, norm and so on
 
 =head1 DESCRIPTION
 
