@@ -6,6 +6,7 @@
     "authors"       : [ "github:pierre-vigier", "github:lichtkind" ],
     "description"   : "Math::Matrix",
     "depends"       : [ "AttrX::Lazy" ],
+    "tags"          : [ "Math" ],
     "provides" : {
         "Math::Matrix"    : "lib/Math/Matrix.pm6"
     },
