@@ -4,7 +4,7 @@
     "license"       : "Artistic-2.0",
     "version"       : "0.1.0",
     "authors"       : [ "github:pierre-vigier", "github:lichtkind" ],
-    "description"   : "Math::Matrix",
+    "description"   : "create, compare, compute and measure matrices",
     "depends"       : [ "AttrX::Lazy" ],
     "tags"          : [ "Math" ],
     "provides" : {
