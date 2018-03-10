@@ -742,12 +742,8 @@ method subtract(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b!row-co
 =begin pod
 =head2 method multiply
 
-<<<<<<< HEAD
     my $product = $matrix.multiply( $matrix2 );  # cell wise multiplication of same size matrices
     my $p = $matrix * $matrix2;                  # works too
-=======
-Matrices are 2D tables of numbers: create, transpose, invert, dot product, kernel, trace, norm and so on
->>>>>>> c1583b2ee0ca595242687422a7482ad4581a186b
 
     my $product = $matrix.multiply( $number );   # multiply every cell with number
     my $p = $matrix * $number;                   # works too
