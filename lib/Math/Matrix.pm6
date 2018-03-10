@@ -708,7 +708,7 @@ multi method add(Math::Matrix:D: Real $r --> Math::Matrix:D ) {
     self.apply( * + $r );
 }
 
-method add(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b!row-count and $!column-count == $b!column-count } --> Math::Matrix:D ) {
+multi method add(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b!row-count and $!column-count == $b!column-count } --> Math::Matrix:D ) {
     my @sum;
     for ^$!row-count X ^$!column-count -> ($r, $c) {
         @sum[$r][$c] = @!rows[$r][$c] + $b!rows[$r][$c];
@@ -731,7 +731,7 @@ multi method subtract(Math::Matrix:D: Real $r --> Math::Matrix:D ) {
     self.apply( * - $r );
 }
 
-method subtract(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b!row-count and $!column-count == $b!column-count } --> Math::Matrix:D ) {
+multi method subtract(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b!row-count and $!column-count == $b!column-count } --> Math::Matrix:D ) {
     my @subtract;
     for ^$!row-count X ^$!column-count -> ($r, $c) {
         @subtract[$r][$c] = @!rows[$r][$c] - $b!rows[$r][$c];
