@@ -275,7 +275,13 @@ method !build_diagonal(Math::Matrix:D: ){
 =end pod
 
 multi method submatrix(Math::Matrix:D: Int:D $row, Int:D $col --> Math::Matrix:D ){
-say "---------------";
+    fail X::OutOfRange.new(
+        :what<Column index> , :got($row), :range("0..{$!column-count -1 }")
+    ) unless 0 <= $row < $!row-count;
+    fail X::OutOfRange.new(
+        :what<Column index> , :got($col), :range("0..{$!column-count -1 }")
+    ) unless 0 <= $col < $!column-count;
+
     self.submatrix(($row .. $!row-count - 1),($col .. $!column-count - 1));
 }
 

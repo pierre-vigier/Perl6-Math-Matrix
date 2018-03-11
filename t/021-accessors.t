@@ -42,7 +42,7 @@ subtest {
 
 
 subtest {
-    plan 6;
+    plan 7;
     my $matrix   = Math::Matrix.new([[1,2,3,4],[5,6,7,8],[9,10,11,12]]);
     my $expected = Math::Matrix.new([[6, 7, 8], [10, 11, 12]]);
 
@@ -51,6 +51,7 @@ subtest {
     ok $matrix.submatrix( (1,2) , (1...3) ) ~~ $expected, "Simple submatrix";
     dies-ok { $matrix.submatrix(10,1); }, "demanded rows are out of range";
     dies-ok { $matrix.submatrix(1,5); }, "demanded colums are out of range";
+    dies-ok { $matrix.submatrix(1,2,7,8); }, "demanded submatrix goes out of scope due second cell";
     dies-ok { $matrix.submatrix((2..4),(1..5)); }, "rows and colums are out of range";
 }, "Submatrix";
 
