@@ -52,10 +52,11 @@ subtest {
 }, "Dot Product";
 
 subtest {
-    plan 2;
+    plan 3;
     my $matrix = Math::Matrix.new([[1,2],[3,4]]);
-    ok $matrix.negative() ~~ Math::Matrix.new([[ -1 , -2 ],[ -3 , -4 ]]), "Negative of a matrix";
-    ok $matrix.negative().negative() ~~ $matrix, "Double negative does nothing";
+    ok $matrix.negated() ~~ Math::Matrix.new([[ -1 , -2 ],[ -3 , -4 ]]), "Negative of a matrix";
+    ok $matrix.negated().negated() ~~ $matrix, "Double negative does nothing";
+    ok - $matrix ~~ Math::Matrix.new([[ -1 , -2 ],[ -3 , -4 ]]), "negate by op";
 }, "Negative";
 
 subtest {
