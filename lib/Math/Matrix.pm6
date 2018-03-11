@@ -6,7 +6,9 @@ Math::Matrix - create, compare, compute and measure 2D matrices
 =head1 SYNOPSIS
 
 Matrices are tables with rows or columns of numbers: 
- new, transpose, invert, dot product, size, kernel, trace, norm, decompositions and so on
+
+ transpose, invert, negate, add, subtract, multiply, dot product, size, determinant, 
+ rank, kernel, trace, norm, decompositions and so on
 
 =head1 DESCRIPTION
 
