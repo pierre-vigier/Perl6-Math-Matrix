@@ -48,8 +48,15 @@ method new-identity
     This method is a constructor that returns an identity matrix of the size given in parameter
     All the cells are set to 0 except the top/left to bottom/right diagonale, set to 1
 
-method new-diagonal my $matrix = Math::Matrix.new-diagonal( 2, 4, 5 ); This method is a constructor that returns an diagonal matrix of the size given by count of the parameter. All the cells are set to 0 except the top/left to bottom/right diagonal, set to given values.
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+method new-diagonal
+-------------------
+
+    my $matrix = Math::Matrix.new-diagonal( 2, 4, 5 );
+
+    This method is a constructor that returns an diagonal matrix of the size given
+    by count of the parameter.
+    All the cells are set to 0 except the top/left to bottom/right diagonal,
+    set to given values.
 
 method new-vector-product
 -------------------------

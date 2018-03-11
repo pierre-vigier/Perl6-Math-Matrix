@@ -133,7 +133,9 @@ method new-identity(Math::Matrix:U: Positive_Int $size ) {
 
 =begin pod
 =head2 method new-diagonal
+
     my $matrix = Math::Matrix.new-diagonal( 2, 4, 5 );
+
     This method is a constructor that returns an diagonal matrix of the size given
     by count of the parameter.
     All the cells are set to 0 except the top/left to bottom/right diagonal,
