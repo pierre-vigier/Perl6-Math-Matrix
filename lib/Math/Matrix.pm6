@@ -250,7 +250,6 @@ multi method column(Math::Matrix:D: Int:D $column) {
 
 =end pod
 
-
 method !build_diagonal(Math::Matrix:D: ){
     fail "Number of columns has to be same as number of rows" unless self.is-square;
     ( gather for ^$!row-count -> $i { take @!rows[$i;$i] } ).list;
@@ -275,7 +274,8 @@ method !build_diagonal(Math::Matrix:D: ){
 
 =end pod
 
-multi method submatrix(Math::Matrix:D: Int $row, Int $col --> Math::Matrix:D ){
+multi method submatrix(Math::Matrix:D: Int:D $row, Int:D $col --> Math::Matrix:D ){
+say "---------------";
     self.submatrix(($row .. $!row-count - 1),($col .. $!column-count - 1));
 }
 
