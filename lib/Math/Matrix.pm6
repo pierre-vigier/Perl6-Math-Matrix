@@ -5,7 +5,7 @@ use v6.c;
 Math::Matrix - create, compare, compute and measure 2D matrices
 =head1 SYNOPSIS
 
-Matrices are tables with rows or columns of numbers: 
+Matrices are tables with rows (counting from 0) and columns of numbers: 
 
  transpose, invert, negate, add, subtract, multiply, dot product, size, determinant, 
  rank, kernel, trace, norm, decompositions and so on
@@ -59,9 +59,6 @@ method !row-count   { $!row-count }
 method !column-count { $!column-count }
 
 subset Positive_Int of Int where * > 0 ;
-
-=begin pod
-=end pod
 
 
 =begin pod
@@ -260,9 +257,9 @@ method !build_diagonal(Math::Matrix:D: ){
 
     Return a subset of a given matrix. 
     Given $matrix = Math::Matrix.new([[1,2,3][4,5,6],[7,8,9]]);
-    A submatrix from cell (2,2) on to left and down I get with:
+    A submatrix from origin to cell (1,2):
 
-    $matrix.submatrix(2,2);              # is [9]
+    $matrix.submatrix(1,2);              # is [[1,2]]
 
     A submatrix from cell (0,1) on to left and down till cell (1,2):
 
@@ -274,17 +271,9 @@ method !build_diagonal(Math::Matrix:D: ){
 
 =end pod
 
-multi method submatrix(Math::Matrix:D: Int:D $row, Int:D $col --> Math::Matrix:D ){
-    fail X::OutOfRange.new(
-        :what<Column index> , :got($row), :range("0..{$!column-count -1 }")
-    ) unless 0 <= $row < $!row-count;
-    fail X::OutOfRange.new(
-        :what<Column index> , :got($col), :range("0..{$!column-count -1 }")
-    ) unless 0 <= $col < $!column-count;
-
-    self.submatrix(($row .. $!row-count - 1),($col .. $!column-count - 1));
+multi method submatrix(Math::Matrix:D: Int $row, Int $col --> Math::Matrix:D ){
+    self.submatrix((0 .. $row-1),(0 .. $col-1));
 }
-
 multi method submatrix(Math::Matrix:D: Int:D $row-start, Int:D $col-start, Int:D $row-end, Int:D $col-end --> Math::Matrix:D ){
     self.submatrix(($row-start .. $row-end),($col-start .. $col-end));
 }
@@ -544,7 +533,7 @@ method !build_is-positive-definite (Math::Matrix:D: --> Bool) { # with Sylvester
     return False unless self.is-square;
     return False unless self.determinant > 0;
     my $sub = Math::Matrix.new( @!rows );
-    for $!row-count - 1 ... 1 -> $r {
+    for 1 .. $!row-count - 1 -> $r {
         $sub = $sub.submatrix($r,$r);
         return False unless $sub.determinant > 0;
     }
