@@ -8,7 +8,10 @@ NAME Math::Matrix - create, compare, compute and measure 2D matrices
 SYNOPSIS
 ========
 
-Matrices are tables with rows or columns of numbers: new, transpose, invert, dot product, size, kernel, trace, norm, decompositions and so on
+Matrices are tables with rows or columns of numbers: 
+
+    transpose, invert, negate, add, subtract, multiply, dot product, size, determinant, 
+    rank, kernel, trace, norm, decompositions and so on
 
 DESCRIPTION
 ===========
@@ -67,6 +70,54 @@ method new-vector-product
     This method is a constructor that returns a matrix which is a result of 
     the matrix product (method dotProduct, or operator dot) of a column vector
     (first argument) and a row vector (second argument).
+
+method cell
+-----------
+
+    my $value = $matrix.cell(2,3);
+
+    Gets value of element in third row and fourth column.
+
+method row
+----------
+
+    my @values = $matrix.row();
+
+    Gets values of diagonal elements.
+    That would be (1, 4) if matrix is [[1,2][3,4]].
+
+method column
+-------------
+
+    my @values = $matrix.row();
+
+    Gets values of diagonal elements.
+    That would be (1, 4) if matrix is [[1,2][3,4]].
+
+method diagonal
+---------------
+
+    my @values = $matrix.diagonal();
+
+    Gets values of diagonal elements.
+    That would be (1, 4) if matrix is [[1,2][3,4]].
+
+method submatrix
+----------------
+
+    Return a subset of a given matrix. 
+    Given $matrix = Math::Matrix.new([[1,2,3][4,5,6],[7,8,9]]);
+    A submatrix from cell (2,2) on to left and down I get with:
+
+    $matrix.submatrix(2,2);              # is [9]
+
+    A submatrix from cell (0,1) on to left and down till cell (1,2):
+
+    $matrix.submatrix(0,1,1,2);          # is [[2,3],[5,6]]
+
+    When I just want cells in row 0 and 2 and colum 1 and 2 I use:
+
+    $matrix.submatrix((0,2),(1..2));     # is [[2,3],[8,9]]
 
 method size
 -----------
@@ -165,11 +216,10 @@ method inverted
 
     return a new Matrix, which is the inverted of the current one
 
-method negated (negative)
--------------------------
+method negated
+--------------
 
     my $new = $matrix.negated();    # invert sign of all cells
-    my $new = $matrix.negative();   # alias
     my $neg = - $matrix;            # works too
 
 method decompositionLUCrout

@@ -187,6 +187,7 @@ method new-vector-product (Math::Matrix:U: @column_vector, @row_vector ){
 # end of constructor - start accessors
 ################################################################################
 
+=begin pod
 =head2 method cell
 
     my $value = $matrix.cell(2,3);
@@ -205,6 +206,7 @@ multi method cell(Math::Matrix:D: Int:D $row, Int:D $column --> Numeric ) {
     return @!rows[$row][$column];
 }
 
+=begin pod
 =head2 method row
 
     my @values = $matrix.row();
@@ -221,6 +223,7 @@ multi method row(Math::Matrix:D: Int:D $row) {
     return @!rows[$row];
 }
 
+=begin pod
 =head2 method column
 
     my @values = $matrix.row();
@@ -237,6 +240,7 @@ multi method column(Math::Matrix:D: Int:D $column) {
     ( gather for ^$!row-count -> $i { take @!rows[$i;$column] } ).list;
 }
 
+=begin pod
 =head2 method diagonal
 
     my @values = $matrix.diagonal();
@@ -252,6 +256,7 @@ method !build_diagonal(Math::Matrix:D: ){
     ( gather for ^$!row-count -> $i { take @!rows[$i;$i] } ).list;
 }
 
+=begin pod
 =head2 method submatrix
 
     Return a subset of a given matrix. 
@@ -271,29 +276,11 @@ method !build_diagonal(Math::Matrix:D: ){
 =end pod
 
 multi method submatrix(Math::Matrix:D: Int $row, Int $col --> Math::Matrix:D ){
-    fail X::OutOfRange.new(
-        :what<Row index> , :got($row), :range("0..{$!row-count -1 }")
-    ) unless 0 <= $row < $!row-count;
-    fail X::OutOfRange.new(
-        :what<Column index> , :got($column), :range("0..{$!column-count -1 }")
-    ) unless 0 <= $column < $!column-count;
-    my @clone = self!clone_rows();
-    @clone.splice($row,1);
-    @clone = map { $^r.splice($col, 1); $^r }, @clone;
-    Math::Matrix.new( @clone );
+    self.submatrix(($row .. $!row-count - 1),($col .. $!column-count - 1));
 }
 
-multi method submatrix(Math::Matrix:D: Int $row, Int $col --> Math::Matrix:D ){
-    fail X::OutOfRange.new(
-        :what<Row index> , :got($row), :range("0..{$!row-count -1 }")
-    ) unless 0 <= $row < $!row-count;
-    fail X::OutOfRange.new(
-        :what<Column index> , :got($column), :range("0..{$!column-count -1 }")
-    ) unless 0 <= $column < $!column-count;
-    my @clone = self!clone_rows();
-    @clone.splice($row,1);
-    @clone = map { $^r.splice($col, 1); $^r }, @clone;
-    Math::Matrix.new( @clone );
+multi method submatrix(Math::Matrix:D: Int:D $row-start, Int:D $col-start, Int:D $row-end, Int:D $col-end --> Math::Matrix:D ){
+    self.submatrix(($row-start .. $row-end),($col-start .. $col-end));
 }
 
 multi method submatrix(Math::Matrix:D: @rows, @cols --> Math::Matrix:D ){
