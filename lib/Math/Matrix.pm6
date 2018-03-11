@@ -526,16 +526,14 @@ method inverted(Math::Matrix:D: --> Math::Matrix:D) {
 
 
 =begin pod
-=head2 method negated (negative)
+=head2 method negated
 
     my $new = $matrix.negated();    # invert sign of all cells
-    my $new = $matrix.negative();   # alias
     my $neg = - $matrix;            # works too
 
 =end pod
 
-method negated(Math::Matrix:D: --> Math::Matrix:D )   { self.negative }  # the usual short name
-method negative(Math::Matrix:D: --> Math::Matrix:D ) {
+method negated(Math::Matrix:D: --> Math::Matrix:D ) {
     self.apply( - * );
 }
 
