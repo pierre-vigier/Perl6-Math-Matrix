@@ -257,7 +257,7 @@ method !build_diagonal(Math::Matrix:D: ){
 
     Return a subset of a given matrix. 
     Given $matrix = Math::Matrix.new([[1,2,3][4,5,6],[7,8,9]]);
-    A submatrix from origin to cell (1,2):
+    A submatrix with one row and two columns:
 
     $matrix.submatrix(1,2);              # is [[1,2]]
 
@@ -274,8 +274,10 @@ method !build_diagonal(Math::Matrix:D: ){
 multi method submatrix(Math::Matrix:D: Int $row, Int $col --> Math::Matrix:D ){
     self.submatrix((0 .. $row-1),(0 .. $col-1));
 }
-multi method submatrix(Math::Matrix:D: Int:D $row-start, Int:D $col-start, Int:D $row-end, Int:D $col-end --> Math::Matrix:D ){
-    self.submatrix(($row-start .. $row-end),($col-start .. $col-end));
+multi method submatrix(Math::Matrix:D: Int:D $row-min, Int:D $col-min, Int:D $row-max, Int:D $col-max --> Math::Matrix:D ){
+    fail "Minimum row has to be smaller than maximum row" if $row-min > $row-max;
+    fail "Minimum column has to be smaller than maximum column" if $column-min > $column-max;
+    self.submatrix(($row-min .. $row-max),($col-min .. $col-max));
 }
 
 multi method submatrix(Math::Matrix:D: @rows, @cols --> Math::Matrix:D ){
