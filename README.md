@@ -8,7 +8,7 @@ NAME Math::Matrix - create, compare, compute and measure 2D matrices
 SYNOPSIS
 ========
 
-Matrices are tables with rows or columns of numbers: 
+Matrices are tables with rows (counting from 0) and columns of numbers: 
 
     transpose, invert, negate, add, subtract, multiply, dot product, size, determinant, 
     rank, kernel, trace, norm, decompositions and so on
@@ -107,9 +107,9 @@ method submatrix
 
     Return a subset of a given matrix. 
     Given $matrix = Math::Matrix.new([[1,2,3][4,5,6],[7,8,9]]);
-    A submatrix from cell (2,2) on to left and down I get with:
+    A submatrix with one row and two columns:
 
-    $matrix.submatrix(2,2);              # is [9]
+    $matrix.submatrix(1,2);              # is [[1,2]]
 
     A submatrix from cell (0,1) on to left and down till cell (1,2):
 
