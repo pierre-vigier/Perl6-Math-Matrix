@@ -276,7 +276,7 @@ multi method submatrix(Math::Matrix:D: Int $row, Int $col --> Math::Matrix:D ){
 }
 multi method submatrix(Math::Matrix:D: Int:D $row-min, Int:D $col-min, Int:D $row-max, Int:D $col-max --> Math::Matrix:D ){
     fail "Minimum row has to be smaller than maximum row" if $row-min > $row-max;
-    fail "Minimum column has to be smaller than maximum column" if $column-min > $column-max;
+    fail "Minimum column has to be smaller than maximum column" if $col-min > $col-max;
     self.submatrix(($row-min .. $row-max),($col-min .. $col-max));
 }
 
