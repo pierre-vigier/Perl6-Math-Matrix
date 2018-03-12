@@ -23,7 +23,7 @@ use with consideration...
 =head1 Type Conversion
 
 In Str context you will see a tabular representation, in Int the number of cells
-and in Bool conect if the matrix is zero (all cells are zero as in is-zero).
+and in Bool context if the matrix is not zero (all cells are zero as in is-zero).
 
 =head1 METHODS
 
@@ -62,11 +62,14 @@ subset Positive_Int of Int where * > 0 ;
 
 
 =begin pod
-=head2 method new( [[1,2],[3,4]])
+=head2 method new([[1,2],[3,4]])
 
    The default constructor, takes arrays of arrays of numbers.
    Each second level array represents a row in the matrix.
-   That is why their length has to be the same.
+   That is why their length has to be the same. This examples creates:
+
+   1 2
+   3 4
 
 =end pod
 
@@ -297,7 +300,7 @@ method Str(Math::Matrix:D: --> Str) {
 }
 
 method Bool(Math::Matrix:D: --> Bool) {
-    self.is-zero;
+    !self.is-zero;
 }
 
 method Int(Math::Matrix:D: --> Int) {
