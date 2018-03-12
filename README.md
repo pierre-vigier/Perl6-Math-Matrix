@@ -2,8 +2,15 @@
 
 [![Build Status](https://travis-ci.org/pierre-vigier/Perl6-Math-Matrix.svg?branch=master)](https://travis-ci.org/pierre-vigier/Perl6-Math-Matrix)
 
-NAME Math::Matrix - create, compare, compute and measure 2D matrices
-====================================================================
+NAME
+====
+
+Math::Matrix - create, compare, compute and measure 2D matrices
+
+VERSION
+=======
+
+0.13
 
 SYNOPSIS
 ========
@@ -44,12 +51,13 @@ METHODS
 
   * matrix operations: add, subtract, multiply, dotProduct
 
-method new( [[1,2],[3,4]] )
----------------------------
+method new( [[...],...,[...]] )
+-------------------------------
 
     The default constructor, takes arrays of arrays of numbers.
     Each second level array represents a row in the matrix.
-    That is why their length has to be the same. This examples creates:
+    That is why their length has to be the same. 
+    .new( [[1,2],[3,4]] ) creates:
 
     1 2
     3 4
@@ -361,12 +369,6 @@ method multiply
 
     my $product = $matrix.multiply( $number );   # multiply every cell with number
     my $p = $matrix * $number;                   # works too
-
-method apply
-------------
-
-    my $new = $matrix.apply( * + 2 );
-    return a new matrix which is the current one with the function given in parameter applied to every cells
 
 method dotProduct
 -----------------

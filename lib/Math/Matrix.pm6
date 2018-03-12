@@ -2,7 +2,13 @@ use v6.c;
 
 =begin pod
 =head1 NAME
+
 Math::Matrix - create, compare, compute and measure 2D matrices
+
+=head1 VERSION
+
+0.13
+
 =head1 SYNOPSIS
 
 Matrices are tables with rows (counting from 0) and columns of numbers: 
