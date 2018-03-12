@@ -271,7 +271,7 @@ method !build_diagonal(Math::Matrix:D: ){
 
 =end pod
 
-multi method submatrix(Math::Matrix:D: Int $row, Int $col --> Math::Matrix:D ){
+multi method submatrix(Math::Matrix:D: Int:D $row, Int:D $col --> Math::Matrix:D ){
     self.submatrix((0 .. $row-1),(0 .. $col-1));
 }
 multi method submatrix(Math::Matrix:D: Int:D $row-min, Int:D $col-min, Int:D $row-max, Int:D $col-max --> Math::Matrix:D ){
@@ -535,7 +535,7 @@ method !build_is-positive-definite (Math::Matrix:D: --> Bool) { # with Sylvester
     return False unless self.is-square;
     return False unless self.determinant > 0;
     my $sub = Math::Matrix.new( @!rows );
-    for 1 .. $!row-count - 1 -> $r {
+    for $!row-count - 1 ... 1 -> $r {
         $sub = $sub.submatrix($r,$r);
         return False unless $sub.determinant > 0;
     }
