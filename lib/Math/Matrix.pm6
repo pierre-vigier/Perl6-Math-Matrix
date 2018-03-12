@@ -1026,13 +1026,6 @@ multi method multiply(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b!
     Math::Matrix.new( @multiply );
 }
 
-=begin pod
-=head2 method apply
-
-    my $new = $matrix.apply( * + 2 );
-    return a new matrix which is the current one with the function given in parameter applied to every cells
-=end pod
-
 
 method apply(Math::Matrix:D: &coderef --> Math::Matrix:D ) {
     Math::Matrix.new( [ @!rows.map: {
