@@ -28,14 +28,12 @@ In Str context you will see a tabular representation, in Int the number of cells
 METHODS
 =======
 
-method new method new( [[1,2],[3,4]])
--------------------------------------
+method new( [[1,2],[3,4]])
+--------------------------
 
-    A constructor, takes parameters like:
-
-  * rows : an array of row, each row being an array of cells
-
-    Number of cells per row must be identical
+    The default constructor, takes arrays of arrays of numbers.
+    Each second level array represents a row in the matrix.
+    That is why their length has to be the same.
 
 method new-zero
 ---------------

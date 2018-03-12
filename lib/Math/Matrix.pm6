@@ -62,14 +62,11 @@ subset Positive_Int of Int where * > 0 ;
 
 
 =begin pod
-=head2 method new
-    method new( [[1,2],[3,4]])
+=head2 method new( [[1,2],[3,4]])
 
-   A constructor, takes parameters like:
-
-=item rows : an array of row, each row being an array of cells
-
-   Number of cells per row must be identical
+   The default constructor, takes arrays of arrays of numbers.
+   Each second level array represents a row in the matrix.
+   That is why their length has to be the same.
 
 =end pod
 
