@@ -20,20 +20,39 @@ Perl6 already provide a lot of tools to work with array, shaped array, and so on
 
 I should probably use shaped array for the implementation, but i am encountering some issues for now. Problem being it might break the syntax for creation of a Matrix, use with consideration...
 
+Matrices are readonly - all operations and derivatives are new objects.
+
 Type Conversion
 ===============
 
-In Str context you will see a tabular representation, in Int the number of cells and in Bool conect if the matrix is zero (all cells are zero as in is-zero).
+In Str context you will see a tabular representation, in Int the number of cells and in Bool context if the matrix is not zero (all cells are zero as in is-zero).
 
 METHODS
 =======
 
-method new( [[1,2],[3,4]])
---------------------------
+  * constructors: new, new-zero, new-identity, new-diagonal, new-vector-product
+
+  * accessors: cell, row, column, diagonal, submatrix
+
+  * boolean properties: equal, is-square, is-invertible, is-zero, is-identity is-upper-triangular, is-lower-triangular, is-diagonal, is-diagonally-dominant is-symmetric, is-orthogonal, is-positive-definite
+
+  * numeric properties: size, determinant, rank, kernel, trace, density, norm, condition
+
+  * derivative matrices: transposed, negated, inverted, reduced-row-echelon-form
+
+  * decompositions: decompositionLUCrout, decompositionLU, decompositionCholesky
+
+  * matrix operations: add, subtract, multiply, dotProduct
+
+method new( [[1,2],[3,4]] )
+---------------------------
 
     The default constructor, takes arrays of arrays of numbers.
     Each second level array represents a row in the matrix.
-    That is why their length has to be the same.
+    That is why their length has to be the same. This examples creates:
+
+    1 2
+    3 4
 
 method new-zero
 ---------------
@@ -117,14 +136,6 @@ method submatrix
 
     $matrix.submatrix((0,2),(1..2));     # is [[2,3],[8,9]]
 
-method size
------------
-
-    List of two values: number of rows and number of columns.
-
-    say $matrix.size();
-    my $dim = min $matrix.size();
-
 method equal
 ------------
 
@@ -204,110 +215,13 @@ method is-positive-definite
 
     True if all main minors are positive
 
-method transposed, alias T
---------------------------
+method size
+-----------
 
-    return a new Matrix, which is the transposition of the current one
+    List of two values: number of rows and number of columns.
 
-method inverted
----------------
-
-    return a new Matrix, which is the inverted of the current one
-
-method negated
---------------
-
-    my $new = $matrix.negated();    # invert sign of all cells
-    my $neg = - $matrix;            # works too
-
-method decompositionLUCrout
----------------------------
-
-    my ($L, $U) = $matrix.decompositionLUCrout( );
-    $L dot $U eq $matrix;                # True
-
-    $L is a left triangular matrix and $R is a right one
-    This decomposition works only on invertible matrices (square and full ranked).
-
-method decompositionLU
-----------------------
-
-    my ($L, $U, $P) = $matrix.decompositionLU( );
-    $L dot $U eq $matrix dot $P;         # True
-    my ($L, $U) = $matrix.decompositionLUC(:!pivot);
-    $L dot $U eq $matrix;                # True
-
-    $L is a left triangular matrix and $R is a right one
-    Without pivotisation the marix has to be invertible (square and full ranked).
-    In case you whant two unipotent triangular matrices and a diagonal (D):
-    use the :diagonal option, which can be freely combined with :pivot.
-
-    my ($L, $D, $U, $P) = $matrix.decompositionLU( :diagonal );
-    $L dot $D dot $U eq $matrix dot $P;  # True
-
-method decompositionCholesky
-----------------------------
-
-    my $D = $matrix.decompositionCholesky( );
-    $D dot $D.T eq $matrix;              # True 
-
-    $D is a left triangular matrix
-    This decomposition works only on symmetric and definite positive matrices.
-
-method reduced-row-echelon-form (shortcut rref)
------------------------------------------------
-
-    my $rref = $matrix.reduced-row-echelon-form();
-    my $rref = $matrix.rref();
-
-    Return the reduced row echelon form of a matrix, a.k.a. row canonical form
-
-method add
-----------
-
-    my $sum = $matrix.add( $matrix2 );  # cell wise addition of 2 same sized matrices
-    my $s = $matrix + $matrix2;         # works too
-
-    my $sum = $matrix.add( $number );   # adds number from every cell 
-    my $s = $matrix + $number;          # works too
-
-method subtract
----------------
-
-    my $diff = $matrix.subtract( $matrix2 );  # cell wise subraction of 2 same sized matrices
-    my $d = $matrix - $matrix2;               # works too
-
-    my $diff = $matrix.subtract( $number );   # subtracts number from every cell 
-    my $sd = $matrix - $number;               # works too
-
-method multiply
----------------
-
-    my $product = $matrix.multiply( $matrix2 );  # cell wise multiplication of same size matrices
-    my $p = $matrix * $matrix2;                  # works too
-
-    my $product = $matrix.multiply( $number );   # multiply every cell with number
-    my $p = $matrix * $number;                   # works too
-
-method apply
-------------
-
-    my $new = $matrix.apply( * + 2 );
-    return a new matrix which is the current one with the function given in parameter applied to every cells
-
-method dotProduct
------------------
-
-    my $product = $matrix1.dotProduct( $matrix2 )
-    return a new Matrix, result of the dotProduct of the current matrix with matrix2
-    Call be called throug operator ⋅ or dot , like following:
-    my $c = $a ⋅ $b;
-    my $c = $a dot $b;
-
-    A shortcut for multiplication is the power - operator **
-    my $c = $a **  3;               # same as $a dot $a dot $a
-    my $c = $a ** -3;               # same as ($a dot $a dot $a).inverted
-    my $c = $a **  0;               # created an right sized identity matrix
+    say $matrix.size();
+    my $dim = min $matrix.size();
 
 method determinant (short det)
 ------------------------------
@@ -363,6 +277,110 @@ method condition
     my $c = $matrix.condition( );        
 
     Condition number of a matrix is L2 norm * L2 of inverted matrix.
+
+method transposed, alias T
+--------------------------
+
+    return a new Matrix, which is the transposition of the current one
+
+method inverted
+---------------
+
+    return a new Matrix, which is the inverted of the current one
+
+method negated
+--------------
+
+    my $new = $matrix.negated();    # invert sign of all cells
+    my $neg = - $matrix;            # works too
+
+method reduced-row-echelon-form (shortcut rref)
+-----------------------------------------------
+
+    my $rref = $matrix.reduced-row-echelon-form();
+    my $rref = $matrix.rref();
+
+    Return the reduced row echelon form of a matrix, a.k.a. row canonical form
+
+method decompositionLUCrout
+---------------------------
+
+    my ($L, $U) = $matrix.decompositionLUCrout( );
+    $L dot $U eq $matrix;                # True
+
+    $L is a left triangular matrix and $R is a right one
+    This decomposition works only on invertible matrices (square and full ranked).
+
+method decompositionLU
+----------------------
+
+    my ($L, $U, $P) = $matrix.decompositionLU( );
+    $L dot $U eq $matrix dot $P;         # True
+    my ($L, $U) = $matrix.decompositionLUC(:!pivot);
+    $L dot $U eq $matrix;                # True
+
+    $L is a left triangular matrix and $R is a right one
+    Without pivotisation the marix has to be invertible (square and full ranked).
+    In case you whant two unipotent triangular matrices and a diagonal (D):
+    use the :diagonal option, which can be freely combined with :pivot.
+
+    my ($L, $D, $U, $P) = $matrix.decompositionLU( :diagonal );
+    $L dot $D dot $U eq $matrix dot $P;  # True
+
+method decompositionCholesky
+----------------------------
+
+    my $D = $matrix.decompositionCholesky( );  # $D is a left triangular matrix
+    $D dot $D.T eq $matrix;                    # True 
+
+    This decomposition works only on symmetric and definite positive matrices.
+
+method add
+----------
+
+    my $sum = $matrix.add( $matrix2 );  # cell wise addition of 2 same sized matrices
+    my $s = $matrix + $matrix2;         # works too
+
+    my $sum = $matrix.add( $number );   # adds number from every cell 
+    my $s = $matrix + $number;          # works too
+
+method subtract
+---------------
+
+    my $diff = $matrix.subtract( $matrix2 );  # cell wise subraction of 2 same sized matrices
+    my $d = $matrix - $matrix2;               # works too
+
+    my $diff = $matrix.subtract( $number );   # subtracts number from every cell 
+    my $sd = $matrix - $number;               # works too
+
+method multiply
+---------------
+
+    my $product = $matrix.multiply( $matrix2 );  # cell wise multiplication of same size matrices
+    my $p = $matrix * $matrix2;                  # works too
+
+    my $product = $matrix.multiply( $number );   # multiply every cell with number
+    my $p = $matrix * $number;                   # works too
+
+method apply
+------------
+
+    my $new = $matrix.apply( * + 2 );
+    return a new matrix which is the current one with the function given in parameter applied to every cells
+
+method dotProduct
+-----------------
+
+    my $product = $matrix1.dotProduct( $matrix2 )
+    return a new Matrix, result of the dotProduct of the current matrix with matrix2
+    Call be called throug operator ⋅ or dot , like following:
+    my $c = $a ⋅ $b;
+    my $c = $a dot $b;
+
+    A shortcut for multiplication is the power - operator **
+    my $c = $a **  3;               # same as $a dot $a dot $a
+    my $c = $a ** -3;               # same as ($a dot $a dot $a).inverted
+    my $c = $a **  0;               # created an right sized identity matrix
 
 Author
 ======
