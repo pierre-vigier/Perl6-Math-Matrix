@@ -433,7 +433,7 @@ method !build_is-identity(Math::Matrix:D: --> Bool) {
 }
 
 =begin pod
-=head is-upper-triangular
+=head3 is-upper-triangular
 
    True if every cell below the diagonal (where row index is greater than column index) is 0.
 

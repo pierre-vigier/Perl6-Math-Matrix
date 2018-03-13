@@ -169,10 +169,7 @@ Boolean Properties
     True if every cell on the diagonal (where row index equals column index) is 1
     and any other cell is 0.
 
-head
-====
-
-is-upper-triangular
+### is-upper-triangular
 
     True if every cell below the diagonal (where row index is greater than column index) is 0.
 
