@@ -30,8 +30,9 @@ Matrices are readonly - all operations and derivatives are new objects.
 
 =head1 Type Conversion
 
-In Str context you will see a tabular representation, in Int the number of cells
-and in Bool context if the matrix is not zero (all cells are zero as in is-zero).
+In Str context you will see a tabular representation, 
+in Int context the number (count) of cells and 
+in Bool context a False if the matrix is zero (all cells are zero as in is-zero).
 
 =head1 METHODS
 
@@ -79,7 +80,8 @@ subset Positive_Int of Int where * > 0 ;
 
 
 =begin pod
-=head2 method new( [[...],...,[...]] )
+=head2 Constructors
+=head3 new( [[...],...,[...]] )
 
    The default constructor, takes arrays of arrays of numbers.
    Each second level array represents a row in the matrix.
@@ -121,7 +123,7 @@ method !zero_array( Positive_Int $rows, Positive_Int $cols = $rows ) {
 }
 
 =begin pod
-=head2 method new-zero
+=head3 new-zero
 
     my $matrix = Math::Matrix.new-zero( 3, 4 );
     This method is a constructor that returns an zero matrix of the size given in parameter.
@@ -139,7 +141,7 @@ method !identity_array( Positive_Int $size ) {
 }
 
 =begin pod
-=head2 method new-identity
+=head3 new-identity
 
     my $matrix = Math::Matrix.new-identity( 3 );
     This method is a constructor that returns an identity matrix of the size given in parameter
@@ -151,7 +153,7 @@ method new-identity(Math::Matrix:U: Positive_Int $size ) {
 }
 
 =begin pod
-=head2 method new-diagonal
+=head3 new-diagonal
 
     my $matrix = Math::Matrix.new-diagonal( 2, 4, 5 );
 
@@ -179,7 +181,7 @@ method !new-upper-triangular(Math::Matrix:U: @m ) {
 }
 
 =begin pod
-=head2 method new-vector-product
+=head3 new-vector-product
 
     my $matrixp = Math::Matrix.new-vector-product([1,2,3],[2,3,4]);
     my $matrix = Math::Matrix.new([2,3,4],[4,6,8],[6,9,12]);       # same matrix
@@ -203,7 +205,8 @@ method new-vector-product (Math::Matrix:U: @column_vector, @row_vector ){
 ################################################################################
 
 =begin pod
-=head2 method cell
+=head2 Accessors
+=head3 cell
 
     my $value = $matrix.cell(2,3);
 
@@ -222,7 +225,7 @@ multi method cell(Math::Matrix:D: Int:D $row, Int:D $column --> Numeric ) {
 }
 
 =begin pod
-=head2 method row
+=head3 row
 
     my @values = $matrix.row();
 
@@ -239,7 +242,7 @@ multi method row(Math::Matrix:D: Int:D $row) {
 }
 
 =begin pod
-=head2 method column
+=head3 column
 
     my @values = $matrix.row();
 
@@ -256,7 +259,7 @@ multi method column(Math::Matrix:D: Int:D $column) {
 }
 
 =begin pod
-=head2 method diagonal
+=head3 diagonal
 
     my @values = $matrix.diagonal();
 
@@ -271,7 +274,7 @@ method !build_diagonal(Math::Matrix:D: ){
 }
 
 =begin pod
-=head2 method submatrix
+=head3 submatrix
 
     Return a subset of a given matrix. 
     Given $matrix = Math::Matrix.new([[1,2,3][4,5,6],[7,8,9]]);
@@ -366,7 +369,8 @@ multi σ_permutations ([$x, *@xs]) {
 
 
 =begin pod
-=head2 method equal
+=head2 Boolean Properties
+=head3 equal
 
     if $matrixa.equal( $matrixb ) {
     if $matrixa ~~ $matrixb {
@@ -380,7 +384,7 @@ method equal(Math::Matrix:D: Math::Matrix $b --> Bool) {
 }
 
 =begin pod
-=head2 method is-square
+=head3 is-square
 
     if $matrix.is-square {
 
@@ -392,7 +396,7 @@ method !build_is-square(Math::Matrix:D: --> Bool) {
 }
 
 =begin pod
-=head2 method is-invertible
+=head3 is-invertible
 
     Is True if number of rows and colums are the same and determinant is not zero.
 =end pod
@@ -402,7 +406,7 @@ method !build_is-invertible(Math::Matrix:D: --> Bool) {
 }
 
 =begin pod
-=head2 method is-zero
+=head3 is-zero
 
    True if every cell has value of 0.
 =end pod
@@ -413,7 +417,7 @@ method !build_is-zero(Math::Matrix:D: --> Bool) {
 
 
 =begin pod
-=head2 method is-identity
+=head3 is-identity
 
    True if every cell on the diagonal (where row index equals column index) is 1
    and any other cell is 0.
@@ -429,7 +433,7 @@ method !build_is-identity(Math::Matrix:D: --> Bool) {
 }
 
 =begin pod
-=head2 method is-upper-triangular
+=head is-upper-triangular
 
    True if every cell below the diagonal (where row index is greater than column index) is 0.
 
@@ -444,7 +448,7 @@ method !build_is-upper-triangular(Math::Matrix:D: --> Bool) {
 }
 
 =begin pod
-=head2 method is-lower-triangular
+=head3 is-lower-triangular
 
    True if every cell above the diagonal (where row index is smaller than column index) is 0.
 =end pod
@@ -458,7 +462,7 @@ method !build_is-lower-triangular(Math::Matrix:D: --> Bool) {
 }
 
 =begin pod
-=head2 method is-diagonal
+=head3 is-diagonal
 
    True if only cell on the diagonal differ from 0.
 =end pod
@@ -468,7 +472,7 @@ method !build_is-diagonal(Math::Matrix:D: --> Bool) {
 }
 
 =begin pod
-=head2 method is-diagonally-dominant
+=head3 is-diagonally-dominant
 
    True if cells on the diagonal have a bigger or equal absolute value than the
    sum of the other absolute values in the column.
@@ -497,7 +501,7 @@ method is-diagonally-dominant(Math::Matrix:D: Bool :$strict = False, Str :$along
 }
 
 =begin pod
-=head2 method is-symmetric
+=head3 is-symmetric
 
     if $matrix.is-symmetric {
 
@@ -516,7 +520,7 @@ method !build_is-symmetric(Math::Matrix:D: --> Bool) {
 }
 
 =begin pod
-=head2 method is-orthogonal
+=head3 is-orthogonal
 
     if $matrix.is-orthogonal {
 
@@ -531,7 +535,7 @@ method !build_is-orthogonal(Math::Matrix:D: --> Bool) {
 
 
 =begin pod
-=head2 method is-positive-definite
+=head3 is-positive-definite
 
     True if all main minors are positive
 =end pod
@@ -552,7 +556,8 @@ method !build_is-positive-definite (Math::Matrix:D: --> Bool) { # with Sylvester
 ################################################################################
 
 =begin pod
-=head2 method size
+=head2 Numeric Properties
+=head3 size
 
     List of two values: number of rows and number of columns.
 
@@ -567,7 +572,7 @@ method size(Math::Matrix:D: ){
 
 
 =begin pod
-=head2 method determinant (short det)
+=head3 determinant (short det)
 
     my $det = $matrix.determinant( );
     my $d = $matrix.det( );     #    Calculate the determinant of a square matrix
@@ -613,7 +618,7 @@ method determinant-naive(Math::Matrix:D: --> Numeric) {
 
 
 =begin pod
-=head2 method trace
+=head3 trace
 
     my $tr = $matrix.trace( ); 
 
@@ -627,7 +632,7 @@ method !build_trace(Math::Matrix:D: --> Numeric) {
 }
 
 =begin pod
-=head2 method density
+=head3 density
 
     my $d = $matrix.density( );   
 
@@ -644,7 +649,7 @@ method !build_density(Math::Matrix:D: --> Rat) {
 
 
 =begin pod
-=head2 method rank
+=head3 rank
 
     my $r = $matrix.rank( );
 
@@ -676,7 +681,7 @@ method !build_rank(Math::Matrix:D: --> Int) {
 
 
 =begin pod
-=head2 method kernel
+=head3 kernel
 
     my $tr = $matrix.kernel( );
     kernel of matrix, number of dependent rows or columns
@@ -689,7 +694,7 @@ method !build_kernel(Math::Matrix:D: --> Int) {
 
 
 =begin pod
-=head2 method norm
+=head3 norm
 
     my $norm = $matrix.norm( );          # euclidian norm (L2, p = 2)
     my $norm = ||$matrix||;              # operator shortcut to do the same
@@ -726,7 +731,7 @@ multi method norm(Math::Matrix:D: Str $which where * eq 'max' --> Numeric) {
 
 
 =begin pod
-=head2 method condition
+=head3 condition
 
     my $c = $matrix.condition( );        
 
@@ -744,7 +749,8 @@ multi method condition(Math::Matrix:D: --> Numeric) {
 ################################################################################
 
 =begin pod
-=head2 method transposed, alias T
+=head2 Derivative Matrices
+=head3 transposed, alias T
 
     return a new Matrix, which is the transposition of the current one
 
@@ -759,7 +765,7 @@ method transposed(Math::Matrix:D: --> Math::Matrix:D ) {
 
 
 =begin pod
-=head2 method inverted
+=head3 inverted
 
     return a new Matrix, which is the inverted of the current one
 
@@ -793,7 +799,7 @@ method inverted(Math::Matrix:D: --> Math::Matrix:D) {
 
 
 =begin pod
-=head2 method negated
+=head3 negated
 
     my $new = $matrix.negated();    # invert sign of all cells
     my $neg = - $matrix;            # works too
@@ -806,7 +812,7 @@ method negated(Math::Matrix:D: --> Math::Matrix:D ) {
 
 
 =begin pod
-=head2 method reduced-row-echelon-form (shortcut rref)
+=head3 reduced-row-echelon-form (shortcut rref)
 
     my $rref = $matrix.reduced-row-echelon-form();
     my $rref = $matrix.rref();
@@ -845,7 +851,7 @@ method rref(Math::Matrix:D: --> Math::Matrix:D) {
 
 
 =begin pod
-=head2 method map
+=head3 map
 
     Like the built in map it iterates over all elements, running a code block.
     The results for a new matrix.
@@ -869,39 +875,9 @@ method map(Math::Matrix:D: &coderef --> Math::Matrix:D) {
 ################################################################################
 
 =begin pod
-=head2 method decompositionLUCrout
+=head2 Decompositions
 
-    my ($L, $U) = $matrix.decompositionLUCrout( );
-    $L dot $U eq $matrix;                # True
-
-    $L is a left triangular matrix and $R is a right one
-    This decomposition works only on invertible matrices (square and full ranked).
-=end pod
-
-method decompositionLUCrout(Math::Matrix:D: ) {
-    fail "Not square matrix" unless self.is-square;
-    my $sum;
-    my $size = self!row-count;
-    my $U = self!identity_array( $size );
-    my $L = self!zero_array( $size );
-
-    for 0 ..^$size -> $j {
-        for $j ..^$size -> $i {
-            $sum = [+] map {$L[$i][$_] * $U[$_][$j]}, 0..^$j;
-            $L[$i][$j] = @!rows[$i][$j] - $sum;
-        }
-        if $L[$j][$j] == 0 { fail "det(L) close to 0!\n Can't divide by 0...\n" }
-
-        for $j ..^$size -> $i {
-            $sum = [+] map {$L[$j][$_] * $U[$_][$i]}, 0..^$j;
-            $U[$j][$i] = (@!rows[$j][$i] - $sum) / $L[$j][$j];
-        }
-    }
-    return Math::Matrix.new($L), Math::Matrix.new($U);
-}
-
-=begin pod
-=head2 method decompositionLU
+=head3 decompositionLU
 
     my ($L, $U, $P) = $matrix.decompositionLU( );
     $L dot $U eq $matrix dot $P;         # True
@@ -953,8 +929,42 @@ multi method decompositionLU(Math::Matrix:D: Bool :$pivot = True, :$diagonal = F
            !! (Math::Matrix!new-lower-triangular(@L), Math::Matrix!new-upper-triangular(@U));
 }
 
+
 =begin pod
-=head2 method decompositionCholesky
+=head3 decompositionLUCrout
+
+    my ($L, $U) = $matrix.decompositionLUCrout( );
+    $L dot $U eq $matrix;                # True
+
+    $L is a left triangular matrix and $R is a right one
+    This decomposition works only on invertible matrices (square and full ranked).
+=end pod
+
+method decompositionLUCrout(Math::Matrix:D: ) {
+    fail "Not square matrix" unless self.is-square;
+    my $sum;
+    my $size = self!row-count;
+    my $U = self!identity_array( $size );
+    my $L = self!zero_array( $size );
+
+    for 0 ..^$size -> $j {
+        for $j ..^$size -> $i {
+            $sum = [+] map {$L[$i][$_] * $U[$_][$j]}, 0..^$j;
+            $L[$i][$j] = @!rows[$i][$j] - $sum;
+        }
+        if $L[$j][$j] == 0 { fail "det(L) close to 0!\n Can't divide by 0...\n" }
+
+        for $j ..^$size -> $i {
+            $sum = [+] map {$L[$j][$_] * $U[$_][$i]}, 0..^$j;
+            $U[$j][$i] = (@!rows[$j][$i] - $sum) / $L[$j][$j];
+        }
+    }
+    return Math::Matrix.new($L), Math::Matrix.new($U);
+}
+
+
+=begin pod
+=head3 decompositionCholesky
 
     my $D = $matrix.decompositionCholesky( );  # $D is a left triangular matrix
     $D dot $D.T eq $matrix;                    # True 
@@ -985,7 +995,8 @@ method decompositionCholesky(Math::Matrix:D: --> Math::Matrix:D) {
 ################################################################################
 
 =begin pod
-=head2 method add
+=head2 Matrix Operations
+=head3 add
 
     my $sum = $matrix.add( $matrix2 );  # cell wise addition of 2 same sized matrices
     my $s = $matrix + $matrix2;         # works too
@@ -1008,7 +1019,7 @@ multi method add(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b!row-c
 }
 
 =begin pod
-=head2 method subtract
+=head3 subtract
 
     my $diff = $matrix.subtract( $matrix2 );  # cell wise subraction of 2 same sized matrices
     my $d = $matrix - $matrix2;               # works too
@@ -1031,7 +1042,7 @@ multi method subtract(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b!
 }
 
 =begin pod
-=head2 method multiply
+=head3 multiply
 
     my $product = $matrix.multiply( $matrix2 );  # cell wise multiplication of same size matrices
     my $p = $matrix * $matrix2;                  # works too
@@ -1055,7 +1066,7 @@ multi method multiply(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b!
 
 
 =begin pod
-=head2 method dotProduct
+=head3 dotProduct
 
     my $product = $matrix1.dotProduct( $matrix2 )
     return a new Matrix, result of the dotProduct of the current matrix with matrix2
@@ -1084,6 +1095,23 @@ multi method dotProduct(Math::Matrix:D: Math::Matrix $b --> Math::Matrix:D ) {
 ################################################################################
 # end of matrix operations - start self made operators 
 ################################################################################
+
+#=begin pod
+#=head1 Operators
+
+#    my $product = $matrix1.dotProduct( $matrix2 )
+#    return a new Matrix, result of the dotProduct of the current matrix with matrix2
+#    Call be called throug operator ⋅ or dot , like following:
+#    my $c = $a ⋅ $b;
+#    my $c = $a dot $b;
+
+#    A shortcut for multiplication is the power - operator **
+#    my $c = $a **  3;               # same as $a dot $a dot $a
+#    my $c = $a ** -3;               # same as ($a dot $a dot $a).inverted
+#    my $c = $a **  0;               # created an right sized identity matrix
+
+#=end pod
+
 
 multi sub infix:<+>(Math::Matrix $a, Math::Matrix $b --> Math::Matrix:D ) is export {
     $a.add($b);

@@ -32,7 +32,7 @@ Matrices are readonly - all operations and derivatives are new objects.
 Type Conversion
 ===============
 
-In Str context you will see a tabular representation, in Int the number of cells and in Bool context if the matrix is not zero (all cells are zero as in is-zero).
+In Str context you will see a tabular representation, in Int context the number (count) of cells and in Bool context a False if the matrix is zero (all cells are zero as in is-zero).
 
 METHODS
 =======
@@ -51,8 +51,10 @@ METHODS
 
   * matrix operations: add, subtract, multiply, dotProduct
 
-method new( [[...],...,[...]] )
--------------------------------
+Constructors
+------------
+
+### new( [[...],...,[...]] )
 
     The default constructor, takes arrays of arrays of numbers.
     Each second level array represents a row in the matrix.
@@ -62,22 +64,19 @@ method new( [[...],...,[...]] )
     1 2
     3 4
 
-method new-zero
----------------
+### new-zero
 
     my $matrix = Math::Matrix.new-zero( 3, 4 );
     This method is a constructor that returns an zero matrix of the size given in parameter.
     If only one parameter is given, the matrix is quadratic. All the cells are set to 0.
 
-method new-identity
--------------------
+### new-identity
 
     my $matrix = Math::Matrix.new-identity( 3 );
     This method is a constructor that returns an identity matrix of the size given in parameter
     All the cells are set to 0 except the top/left to bottom/right diagonale, set to 1
 
-method new-diagonal
--------------------
+### new-diagonal
 
     my $matrix = Math::Matrix.new-diagonal( 2, 4, 5 );
 
@@ -86,8 +85,7 @@ method new-diagonal
     All the cells are set to 0 except the top/left to bottom/right diagonal,
     set to given values.
 
-method new-vector-product
--------------------------
+### new-vector-product
 
     my $matrixp = Math::Matrix.new-vector-product([1,2,3],[2,3,4]);
     my $matrix = Math::Matrix.new([2,3,4],[4,6,8],[6,9,12]);       # same matrix
@@ -96,39 +94,37 @@ method new-vector-product
     the matrix product (method dotProduct, or operator dot) of a column vector
     (first argument) and a row vector (second argument).
 
-method cell
------------
+Accessors
+---------
+
+### cell
 
     my $value = $matrix.cell(2,3);
 
     Gets value of element in third row and fourth column.
 
-method row
-----------
+### row
 
     my @values = $matrix.row();
 
     Gets values of diagonal elements.
     That would be (1, 4) if matrix is [[1,2][3,4]].
 
-method column
--------------
+### column
 
     my @values = $matrix.row();
 
     Gets values of diagonal elements.
     That would be (1, 4) if matrix is [[1,2][3,4]].
 
-method diagonal
----------------
+### diagonal
 
     my @values = $matrix.diagonal();
 
     Gets values of diagonal elements.
     That would be (1, 4) if matrix is [[1,2][3,4]].
 
-method submatrix
-----------------
+### submatrix
 
     Return a subset of a given matrix. 
     Given $matrix = Math::Matrix.new([[1,2,3][4,5,6],[7,8,9]]);
@@ -144,54 +140,51 @@ method submatrix
 
     $matrix.submatrix((0,2),(1..2));     # is [[2,3],[8,9]]
 
-method equal
-------------
+Boolean Properties
+------------------
+
+### equal
 
     if $matrixa.equal( $matrixb ) {
     if $matrixa ~~ $matrixb {
 
     Checks two matrices for Equality
 
-method is-square
-----------------
+### is-square
 
     if $matrix.is-square {
 
     True if number of rows and colums are the same
 
-method is-invertible
---------------------
+### is-invertible
 
     Is True if number of rows and colums are the same and determinant is not zero.
 
-method is-zero
---------------
+### is-zero
 
     True if every cell has value of 0.
 
-method is-identity
-------------------
+### is-identity
 
     True if every cell on the diagonal (where row index equals column index) is 1
     and any other cell is 0.
 
-method is-upper-triangular
---------------------------
+head
+====
+
+is-upper-triangular
 
     True if every cell below the diagonal (where row index is greater than column index) is 0.
 
-method is-lower-triangular
---------------------------
+### is-lower-triangular
 
     True if every cell above the diagonal (where row index is smaller than column index) is 0.
 
-method is-diagonal
-------------------
+### is-diagonal
 
     True if only cell on the diagonal differ from 0.
 
-method is-diagonally-dominant
------------------------------
+### is-diagonally-dominant
 
     True if cells on the diagonal have a bigger or equal absolute value than the
     sum of the other absolute values in the column.
@@ -203,57 +196,52 @@ method is-diagonally-dominant
     $matrix.is-diagonally-dominant(:strict,  :along<row>)    # DE > sum of rest row
     $matrix.is-diagonally-dominant(:!strict, :along<both>)   # DE >= sum of rest row and rest column
 
-method is-symmetric
--------------------
+### is-symmetric
 
     if $matrix.is-symmetric {
 
     Is True if every cell with coordinates x y has same value as the cell on y x.
 
-method is-orthogonal
---------------------
+### is-orthogonal
 
     if $matrix.is-orthogonal {
 
     Is True if the matrix multiplied (dotProduct) with its transposed version (T)
     is an identity matrix.
 
-method is-positive-definite
----------------------------
+### is-positive-definite
 
     True if all main minors are positive
 
-method size
------------
+Numeric Properties
+------------------
+
+### size
 
     List of two values: number of rows and number of columns.
 
     say $matrix.size();
     my $dim = min $matrix.size();
 
-method determinant (short det)
-------------------------------
+### determinant (short det)
 
     my $det = $matrix.determinant( );
     my $d = $matrix.det( );     #    Calculate the determinant of a square matrix
 
-method trace
-------------
+### trace
 
     my $tr = $matrix.trace( ); 
 
     The trace of a square matrix is the sum of the cells on the main diagonal.
     In other words: sum of cells which row and column value is identical.
 
-method density
---------------
+### density
 
     my $d = $matrix.density( );   
 
     Density is the percentage of cell which are not zero.
 
-method rank
------------
+### rank
 
     my $r = $matrix.rank( );
 
@@ -261,14 +249,12 @@ method rank
     or also called independent dimensions
     (thats why this command is sometimes calles dim)
 
-method kernel
--------------
+### kernel
 
     my $tr = $matrix.kernel( );
     kernel of matrix, number of dependent rows or columns
 
-method norm
------------
+### norm
 
     my $norm = $matrix.norm( );          # euclidian norm (L2, p = 2)
     my $norm = ||$matrix||;              # operator shortcut to do the same
@@ -279,39 +265,36 @@ method norm
     $matrix.norm('rowsum');              # row sum norm - biggest abs. value-sum of a row
     $matrix.norm('columnsum');           # column sum norm - same column wise
 
-method condition
-----------------
+### condition
 
     my $c = $matrix.condition( );        
 
     Condition number of a matrix is L2 norm * L2 of inverted matrix.
 
-method transposed, alias T
---------------------------
+Derivative Matrices
+-------------------
+
+### transposed, alias T
 
     return a new Matrix, which is the transposition of the current one
 
-method inverted
----------------
+### inverted
 
     return a new Matrix, which is the inverted of the current one
 
-method negated
---------------
+### negated
 
     my $new = $matrix.negated();    # invert sign of all cells
     my $neg = - $matrix;            # works too
 
-method reduced-row-echelon-form (shortcut rref)
------------------------------------------------
+### reduced-row-echelon-form (shortcut rref)
 
     my $rref = $matrix.reduced-row-echelon-form();
     my $rref = $matrix.rref();
 
     Return the reduced row echelon form of a matrix, a.k.a. row canonical form
 
-method map
-----------
+### map
 
     Like the built in map it iterates over all elements, running a code block.
     The results for a new matrix.
@@ -321,17 +304,10 @@ method map
     2 3
     4 5
 
-method decompositionLUCrout
----------------------------
+Decompositions
+--------------
 
-    my ($L, $U) = $matrix.decompositionLUCrout( );
-    $L dot $U eq $matrix;                # True
-
-    $L is a left triangular matrix and $R is a right one
-    This decomposition works only on invertible matrices (square and full ranked).
-
-method decompositionLU
-----------------------
+### decompositionLU
 
     my ($L, $U, $P) = $matrix.decompositionLU( );
     $L dot $U eq $matrix dot $P;         # True
@@ -346,16 +322,25 @@ method decompositionLU
     my ($L, $D, $U, $P) = $matrix.decompositionLU( :diagonal );
     $L dot $D dot $U eq $matrix dot $P;  # True
 
-method decompositionCholesky
-----------------------------
+### decompositionLUCrout
+
+    my ($L, $U) = $matrix.decompositionLUCrout( );
+    $L dot $U eq $matrix;                # True
+
+    $L is a left triangular matrix and $R is a right one
+    This decomposition works only on invertible matrices (square and full ranked).
+
+### decompositionCholesky
 
     my $D = $matrix.decompositionCholesky( );  # $D is a left triangular matrix
     $D dot $D.T eq $matrix;                    # True 
 
     This decomposition works only on symmetric and definite positive matrices.
 
-method add
-----------
+Matrix Operations
+-----------------
+
+### add
 
     my $sum = $matrix.add( $matrix2 );  # cell wise addition of 2 same sized matrices
     my $s = $matrix + $matrix2;         # works too
@@ -363,8 +348,7 @@ method add
     my $sum = $matrix.add( $number );   # adds number from every cell 
     my $s = $matrix + $number;          # works too
 
-method subtract
----------------
+### subtract
 
     my $diff = $matrix.subtract( $matrix2 );  # cell wise subraction of 2 same sized matrices
     my $d = $matrix - $matrix2;               # works too
@@ -372,8 +356,7 @@ method subtract
     my $diff = $matrix.subtract( $number );   # subtracts number from every cell 
     my $sd = $matrix - $number;               # works too
 
-method multiply
----------------
+### multiply
 
     my $product = $matrix.multiply( $matrix2 );  # cell wise multiplication of same size matrices
     my $p = $matrix * $matrix2;                  # works too
@@ -381,8 +364,7 @@ method multiply
     my $product = $matrix.multiply( $number );   # multiply every cell with number
     my $p = $matrix * $number;                   # works too
 
-method dotProduct
------------------
+### dotProduct
 
     my $product = $matrix1.dotProduct( $matrix2 )
     return a new Matrix, result of the dotProduct of the current matrix with matrix2
