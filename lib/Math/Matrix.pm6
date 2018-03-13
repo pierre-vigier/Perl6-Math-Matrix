@@ -7,7 +7,7 @@ Math::Matrix - create, compare, compute and measure 2D matrices
 
 =head1 VERSION
 
-0.13
+0.1.4
 
 =head1 SYNOPSIS
 
@@ -41,13 +41,13 @@ and in Bool context if the matrix is not zero (all cells are zero as in is-zero)
     is-upper-triangular, is-lower-triangular, is-diagonal, is-diagonally-dominant
     is-symmetric, is-orthogonal, is-positive-definite
 =item numeric properties: size, determinant, rank, kernel, trace, density, norm, condition
-=item derivative matrices: transposed, negated, inverted, reduced-row-echelon-form
+=item derivative matrices: transposed, negated, inverted, reduced-row-echelon-form map
 =item decompositions: decompositionLUCrout, decompositionLU, decompositionCholesky
 =item matrix operations: add, subtract, multiply, dotProduct
 =end pod
 
 
-unit class Math::Matrix:ver<0.1.3>:auth<github:pierre-vigier>;
+unit class Math::Matrix:ver<0.1.4>:auth<github:pierre-vigier>;
 use AttrX::Lazy;
 
 has @!rows is required;
@@ -84,7 +84,7 @@ subset Positive_Int of Int where * > 0 ;
    The default constructor, takes arrays of arrays of numbers.
    Each second level array represents a row in the matrix.
    That is why their length has to be the same. 
-   .new( [[1,2],[3,4]] ) creates:
+   Math::Matrix.new( [[1,2],[3,4]] ) creates:
 
    1 2
    3 4
@@ -347,7 +347,7 @@ method gist(Math::Matrix:D: --> Str) {
     $str;
 }
 
-method ACCEPTS(Math::Matrix $b --> Bool ) {
+method ACCEPTS(Math::Matrix $b --> Bool) {
     self.equal( $b );
 }
 
@@ -843,6 +843,28 @@ method rref(Math::Matrix:D: --> Math::Matrix:D) {
     self.reduced-row-echelon-form;
 }
 
+ed
+
+=begin pod
+=head2 method map
+
+    Like the built in map it iterates over all elements, running a code block.
+    The results for a new matrix.
+
+    say Math::Matrix.new( [[1,2],[3,4]] ).map(* + 1);    # prints
+
+    2 3
+    4 5
+
+=end pod
+
+method map(Math::Matrix:D: &coderef --> Math::Matrix:D) {
+    Math::Matrix.new( [ @!rows.map: {
+            [ $_.map( &coderef ) ]
+    } ] );
+}
+
+
 ################################################################################
 # end of derivative matrices - start decompositions
 ################################################################################
@@ -975,7 +997,7 @@ method decompositionCholesky(Math::Matrix:D: --> Math::Matrix:D) {
 =end pod
 
 multi method add(Math::Matrix:D: Real $r --> Math::Matrix:D ) {
-    self.apply( * + $r );
+    self.map( * + $r );
 }
 
 multi method add(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b!row-count and $!column-count == $b!column-count } --> Math::Matrix:D ) {
@@ -998,7 +1020,7 @@ multi method add(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b!row-c
 =end pod
 
 multi method subtract(Math::Matrix:D: Real $r --> Math::Matrix:D ) {
-    self.apply( * - $r );
+    self.map( * - $r );
 }
 
 multi method subtract(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b!row-count and $!column-count == $b!column-count } --> Math::Matrix:D ) {
@@ -1021,7 +1043,7 @@ multi method subtract(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b!
 =end pod
 
 multi method multiply(Math::Matrix:D: Real $r --> Math::Matrix:D ) {
-    self.apply( * * $r );
+    self.map( * * $r );
 }
 
 multi method multiply(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b!row-count and $!column-count == $b!column-count } --> Math::Matrix:D ) {
@@ -1032,12 +1054,6 @@ multi method multiply(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b!
     Math::Matrix.new( @multiply );
 }
 
-
-method apply(Math::Matrix:D: &coderef --> Math::Matrix:D ) {
-    Math::Matrix.new( [ @!rows.map: {
-            [ $_.map( &coderef ) ]
-    } ] );
-}
 
 =begin pod
 =head2 method dotProduct
