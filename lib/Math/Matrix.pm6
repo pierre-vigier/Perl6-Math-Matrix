@@ -843,7 +843,6 @@ method rref(Math::Matrix:D: --> Math::Matrix:D) {
     self.reduced-row-echelon-form;
 }
 
-ed
 
 =begin pod
 =head2 method map
