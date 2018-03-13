@@ -220,7 +220,7 @@ Numeric Properties
     say $matrix.size();
     my $dim = min $matrix.size();
 
-### determinant (short det)
+### determinant, alias det
 
     my $det = $matrix.determinant( );
     my $d = $matrix.det( );     #    Calculate the determinant of a square matrix
@@ -284,7 +284,7 @@ Derivative Matrices
     my $new = $matrix.negated();    # invert sign of all cells
     my $neg = - $matrix;            # works too
 
-### reduced-row-echelon-form (shortcut rref)
+### reduced-row-echelon-form, alias rref
 
     my $rref = $matrix.reduced-row-echelon-form();
     my $rref = $matrix.rref();

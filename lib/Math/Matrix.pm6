@@ -572,7 +572,7 @@ method size(Math::Matrix:D: ){
 
 
 =begin pod
-=head3 determinant (short det)
+=head3 determinant, alias det
 
     my $det = $matrix.determinant( );
     my $d = $matrix.det( );     #    Calculate the determinant of a square matrix
@@ -812,7 +812,7 @@ method negated(Math::Matrix:D: --> Math::Matrix:D ) {
 
 
 =begin pod
-=head3 reduced-row-echelon-form (shortcut rref)
+=head3 reduced-row-echelon-form, alias rref
 
     my $rref = $matrix.reduced-row-echelon-form();
     my $rref = $matrix.rref();
