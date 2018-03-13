@@ -801,7 +801,7 @@ method inverted(Math::Matrix:D: --> Math::Matrix:D) {
 =end pod
 
 method negated(Math::Matrix:D: --> Math::Matrix:D ) {
-    self.apply( - * );
+    self.map( - * );
 }
 
 
