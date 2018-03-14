@@ -231,9 +231,9 @@ method new-vector-product (Math::Matrix:U: @column_vector, @row_vector ){
 =head2 Accessors
 =head3 cell
 
-    my $value = $matrix.cell(2,3);
+    Gets value of element in third row and fourth column. (counting always from 0)
 
-    Gets value of element in third row and fourth column.
+    my $value = $matrix.cell(2,3);
 
 =end pod
 
@@ -250,10 +250,10 @@ multi method cell(Math::Matrix:D: Int:D $row, Int:D $column --> Numeric ) {
 =begin pod
 =head3 row
 
-    my @values = $matrix.row();
+    Gets values of specified row (first required parameter) as a list.
+    That would be (1, 2) if matrix is [[1,2][3,4]].
 
-    Gets values of diagonal elements.
-    That would be (1, 4) if matrix is [[1,2][3,4]].
+    my @values = $matrix.row(0);
 
 =end pod
 
@@ -267,10 +267,10 @@ multi method row(Math::Matrix:D: Int:D $row) {
 =begin pod
 =head3 column
 
-    my @values = $matrix.row();
-
-    Gets values of diagonal elements.
+    Gets values of specified column (first required parameter) as a list.
     That would be (1, 4) if matrix is [[1,2][3,4]].
+
+    my @values = $matrix.column(0);
 
 =end pod
 
@@ -283,11 +283,9 @@ multi method column(Math::Matrix:D: Int:D $column) {
 
 =begin pod
 =head3 diagonal
+    Gets values of diagonal elements. That would be (1, 4) if matrix is [[1,2][3,4]].
 
     my @values = $matrix.diagonal();
-
-    Gets values of diagonal elements.
-    That would be (1, 4) if matrix is [[1,2][3,4]].
 
 =end pod
 
