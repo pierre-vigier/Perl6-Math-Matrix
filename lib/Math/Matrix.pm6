@@ -36,15 +36,17 @@ in Bool context a False if the matrix is zero (all cells are zero as in is-zero)
 
 =head1 METHODS
 
-=item constructors: new, new-zero, new-identity, new-diagonal, new-vector-product
-=item accessors: cell, row, column, diagonal, submatrix
-=item boolean properties: equal, is-square, is-invertible, is-zero, is-identity
-    is-upper-triangular, is-lower-triangular, is-diagonal, is-diagonally-dominant
-    is-symmetric, is-orthogonal, is-positive-definite
-=item numeric properties: size, determinant, rank, kernel, trace, density, norm, condition
-=item derivative matrices: transposed, negated, inverted, reduced-row-echelon-form map
-=item decompositions: decompositionLUCrout, decompositionLU, decompositionCholesky
-=item matrix operations: add, subtract, multiply, dotProduct
+=item constructors: new new-zero new-identity new-diagonal new-vector-product
+=item accessors: cell row column diagonal submatrix
+=item boolean properties: equal is-square is-invertible is-zero, is-identity
+    is-upper-triangular is-lower-triangular is-diagonal is-diagonally-dominant
+    is-symmetric is-orthogonal is-positive-definite
+=item numeric properties: size determinant rank kernel trace density norm condition
+=item derivative matrices: transposed negated inverted reduced-row-echelon-form
+=item decompositions: decompositionLUCrout decompositionLU decompositionCholesky
+=item mathematical operations: add subtract multiply dotProduct map
+=item structural operations: reduce-rows reduce-colums
+=item operators:   +   -   *   **   ⋅   | |   || ||
 =end pod
 
 
@@ -321,7 +323,7 @@ method Str(Math::Matrix:D: --> Str) {
 }
 
 method Bool(Math::Matrix:D: --> Bool) {
-    !self.is-zero;
+    ! self.is-zero;
 }
 
 method Int(Math::Matrix:D: --> Int) {
@@ -1151,6 +1153,11 @@ multi sub infix:<**>(Math::Matrix $a where { $a.is-square }, Int $e --> Math::Ma
     $p = $p.dotProduct( $a ) for 2 .. abs $e;
     $p = $p.inverted         if  $e < 0;
     $p;
+}
+
+
+multi sub circumfix:<| |>(Math::Matrix $a --> Numeric) is equiv(&prefix:<!>) is export {
+    $a.determinant();
 }
 
 multi sub circumfix:<|| ||>(Math::Matrix $a --> Numeric) is equiv(&prefix:<!>) is export {
