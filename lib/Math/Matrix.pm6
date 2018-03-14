@@ -45,7 +45,7 @@ in Bool context a False if the matrix is zero (all cells are zero as in is-zero)
 =item derivative matrices: transposed, negated, inverted, reduced-row-echelon-form
 =item decompositions: decompositionLUCrout, decompositionLU, decompositionCholesky
 =item mathematical operations: add, subtract, multiply, dotProduct, map, reduce-rows, reduce-columns
-=item operators:   +,   -,   *,   **,   ⋅,   | |,   || ||
+=item operators:   +,   -,   *,   **,   ⋅,  dot,   | |,   || ||
 =end pod
 # =item structural operations: split join
 
@@ -283,6 +283,7 @@ multi method column(Math::Matrix:D: Int:D $column) {
 
 =begin pod
 =head3 diagonal
+
     Gets values of diagonal elements. That would be (1, 4) if matrix is [[1,2][3,4]].
 
     my @values = $matrix.diagonal();
@@ -310,7 +311,6 @@ method !build_diagonal(Math::Matrix:D: ){
     When I just want cells in row 0 and 2 and colum 1 and 2 I use:
 
     $matrix.submatrix((0,2),(1..2));     # is [[2,3],[8,9]]
-
 =end pod
 
 multi method submatrix(Math::Matrix:D: Int:D $row, Int:D $col --> Math::Matrix:D ){
@@ -393,10 +393,13 @@ multi σ_permutations ([$x, *@xs]) {
 =head2 Boolean Properties
 =head3 equal
 
+    Checks two matrices for equality. They have to be of same size and
+    every element of the first matrix on a particular position has to be equal
+    to the element (on the same position) of the second matrix.
+    
     if $matrixa.equal( $matrixb ) {
     if $matrixa ~~ $matrixb {
 
-    Checks two matrices for Equality
 =end pod
 
 
@@ -407,9 +410,9 @@ method equal(Math::Matrix:D: Math::Matrix $b --> Bool) {
 =begin pod
 =head3 is-square
 
-    if $matrix.is-square {
+    True if number of rows and colums are the same.
 
-    True if number of rows and colums are the same
+    if $matrix.is-square {
 =end pod
 
 method !build_is-square(Math::Matrix:D: --> Bool) {
@@ -419,7 +422,8 @@ method !build_is-square(Math::Matrix:D: --> Bool) {
 =begin pod
 =head3 is-invertible
 
-    Is True if number of rows and colums are the same and determinant is not zero.
+    Is True if number of rows and colums are the same (is-square)
+    and determinant is not zero.
 =end pod
 
 method !build_is-invertible(Math::Matrix:D: --> Bool) {
@@ -442,6 +446,10 @@ method !build_is-zero(Math::Matrix:D: --> Bool) {
 
    True if every cell on the diagonal (where row index equals column index) is 1
    and any other cell is 0.
+
+    Example:    1 0 0
+                0 1 0
+                0 0 1
 =end pod
 
 
@@ -458,6 +466,10 @@ method !build_is-identity(Math::Matrix:D: --> Bool) {
 
    True if every cell below the diagonal (where row index is greater than column index) is 0.
 
+    Example:    1 2 5
+                0 3 8
+                0 0 7
+
 =end pod
 
 method !build_is-upper-triangular(Math::Matrix:D: --> Bool) {
@@ -472,6 +484,11 @@ method !build_is-upper-triangular(Math::Matrix:D: --> Bool) {
 =head3 is-lower-triangular
 
    True if every cell above the diagonal (where row index is smaller than column index) is 0.
+
+    Example:    1 0 0
+                2 3 0
+                5 8 7
+
 =end pod
 
 method !build_is-lower-triangular(Math::Matrix:D: --> Bool) {
@@ -485,7 +502,11 @@ method !build_is-lower-triangular(Math::Matrix:D: --> Bool) {
 =begin pod
 =head3 is-diagonal
 
-   True if only cell on the diagonal differ from 0.
+   True if only cells on the diagonal differ from 0.
+
+    Example:    1 0 0
+                0 3 0
+                0 0 7
 =end pod
 
 method !build_is-diagonal(Math::Matrix:D: --> Bool) {
@@ -524,9 +545,15 @@ method is-diagonally-dominant(Math::Matrix:D: Bool :$strict = False, Str :$along
 =begin pod
 =head3 is-symmetric
 
+    Is True if every cell with coordinates x y has same value as the cell on y x.
+
+    Example:    1 2 3
+                2 5 4
+                3 4 7
+
     if $matrix.is-symmetric {
 
-    Is True if every cell with coordinates x y has same value as the cell on y x.
+    
 =end pod
 
 method !build_is-symmetric(Math::Matrix:D: --> Bool) {
@@ -1154,6 +1181,9 @@ method reduce-columns (Math::Matrix:D: &coderef){
 # end of math matrix operations - start structural matrix operations
 ################################################################################
 
+# method split{ }
+
+# method join{ }
 
 ################################################################################
 # end of structural matrix operations - start self made operators 

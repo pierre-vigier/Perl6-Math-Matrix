@@ -51,7 +51,7 @@ METHODS
 
   * mathematical operations: add, subtract, multiply, dotProduct, map, reduce-rows, reduce-columns
 
-  * operators: +, -, *, **, ⋅, | |, || ||
+  * operators: +, -, *, **, ⋅, dot, | |, || ||
 
 Constructors
 ------------
@@ -134,7 +134,9 @@ Accessors
 
     my @values = $matrix.column(0);
 
-### diagonal Gets values of diagonal elements. That would be (1, 4) if matrix is [[1,2][3,4]].
+### diagonal
+
+    Gets values of diagonal elements. That would be (1, 4) if matrix is [[1,2][3,4]].
 
     my @values = $matrix.diagonal();
 
@@ -159,20 +161,23 @@ Boolean Properties
 
 ### equal
 
+    Checks two matrices for equality. They have to be of same size and
+    every element of the first matrix on a particular position has to be equal
+    to the element (on the same position) of the second matrix.
+
     if $matrixa.equal( $matrixb ) {
     if $matrixa ~~ $matrixb {
 
-    Checks two matrices for Equality
-
 ### is-square
+
+    True if number of rows and colums are the same.
 
     if $matrix.is-square {
 
-    True if number of rows and colums are the same
-
 ### is-invertible
 
-    Is True if number of rows and colums are the same and determinant is not zero.
+    Is True if number of rows and colums are the same (is-square)
+    and determinant is not zero.
 
 ### is-zero
 
@@ -183,17 +188,33 @@ Boolean Properties
     True if every cell on the diagonal (where row index equals column index) is 1
     and any other cell is 0.
 
+     Example:    1 0 0
+                 0 1 0
+                 0 0 1
+
 ### is-upper-triangular
 
     True if every cell below the diagonal (where row index is greater than column index) is 0.
+
+     Example:    1 2 5
+                 0 3 8
+                 0 0 7
 
 ### is-lower-triangular
 
     True if every cell above the diagonal (where row index is smaller than column index) is 0.
 
+     Example:    1 0 0
+                 2 3 0
+                 5 8 7
+
 ### is-diagonal
 
-    True if only cell on the diagonal differ from 0.
+    True if only cells on the diagonal differ from 0.
+
+     Example:    1 0 0
+                 0 3 0
+                 0 0 7
 
 ### is-diagonally-dominant
 
@@ -209,9 +230,13 @@ Boolean Properties
 
 ### is-symmetric
 
-    if $matrix.is-symmetric {
-
     Is True if every cell with coordinates x y has same value as the cell on y x.
+
+    Example:    1 2 3
+                2 5 4
+                3 4 7
+
+    if $matrix.is-symmetric {
 
 ### is-orthogonal
 
