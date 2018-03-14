@@ -1113,10 +1113,10 @@ method reduce-rows (Math::Matrix:D: &coderef){
     };
 }
 
-method reduce-rows (Math::Matrix:D: &coderef){
+method reduce-columns (Math::Matrix:D: &coderef){
     (gather for ^$!column-count -> $i {
         take self.column($i).reduce( &coderef )
-     );
+    })
 }
 
 
