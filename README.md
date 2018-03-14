@@ -37,19 +37,21 @@ In Str context you will see a tabular representation, in Int context the number 
 METHODS
 =======
 
-  * constructors: new, new-zero, new-identity, new-diagonal, new-vector-product
+  * constructors: new new-zero new-identity new-diagonal new-vector-product
 
-  * accessors: cell, row, column, diagonal, submatrix
+  * accessors: cell row column diagonal submatrix
 
-  * boolean properties: equal, is-square, is-invertible, is-zero, is-identity is-upper-triangular, is-lower-triangular, is-diagonal, is-diagonally-dominant is-symmetric, is-orthogonal, is-positive-definite
+  * boolean properties: equal is-square is-invertible is-zero, is-identity is-upper-triangular is-lower-triangular is-diagonal is-diagonally-dominant is-symmetric is-orthogonal is-positive-definite
 
-  * numeric properties: size, determinant, rank, kernel, trace, density, norm, condition
+  * numeric properties: size determinant rank kernel trace density norm condition
 
-  * derivative matrices: transposed, negated, inverted, reduced-row-echelon-form map
+  * derivative matrices: transposed negated inverted reduced-row-echelon-form
 
-  * decompositions: decompositionLUCrout, decompositionLU, decompositionCholesky
+  * decompositions: decompositionLUCrout decompositionLU decompositionCholesky
 
-  * matrix operations: add, subtract, multiply, dotProduct
+  * mathematical operations: add subtract multiply dotProduct map reduce-rows reduce-colums # =item structural operations: split join
+
+  * operators: + - * ** ⋅ | | || ||
 
 Constructors
 ------------
@@ -291,16 +293,6 @@ Derivative Matrices
 
     Return the reduced row echelon form of a matrix, a.k.a. row canonical form
 
-### map
-
-    Like the built in map it iterates over all elements, running a code block.
-    The results for a new matrix.
-
-    say Math::Matrix.new( [[1,2],[3,4]] ).map(* + 1);    # prints
-
-    2 3
-    4 5
-
 Decompositions
 --------------
 
@@ -373,6 +365,23 @@ Matrix Operations
     my $c = $a **  3;               # same as $a dot $a dot $a
     my $c = $a ** -3;               # same as ($a dot $a dot $a).inverted
     my $c = $a **  0;               # created an right sized identity matrix
+
+### map
+
+    Like the built in map it iterates over all elements, running a code block.
+    The results for a new matrix.
+
+    say Math::Matrix.new( [[1,2],[3,4]] ).map(* + 1);    # prints
+
+    2 3
+    4 5
+
+### reduce-rows Like the built in reduce it iterates over all elements of a row and joining them into one value. The end result will be a list. In this example I want
+
+    say Math::Matrix.new( [[1,2],[3,4]] ).reduce-rows(&[+]);    # prints
+
+    2 3
+    4 5
 
 Author
 ======
