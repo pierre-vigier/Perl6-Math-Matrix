@@ -8,7 +8,7 @@ subtest {
     my $b = Math::Matrix.new( [[7,8],[9,10],[11,12]] );
 
     ok $a.map( * - 1 ) ~~ Math::Matrix.new([[0,1,2],[3,4,5]]),            "simple mapping";
-    ok $a.map( * %% 2 ?? 1 !! 0 ) ~~ Math::Matrix.new([[0,1,0],[1,0,1]]), "constructing binary map";
+    ok $a.map({$^v %% 2 ?? 1 !! 0}) ~~ Math::Matrix.new([[0,1,0],[1,0,1]]), "constructing binary map";
 }, "Map";
 
 subtest {
@@ -16,9 +16,9 @@ subtest {
     my $a = Math::Matrix.new( [[1,2,3],[4,5,6]] );
     my $i = Math::Matrix.new-identity( 3 );
 
-    ok $a.reduce-rows( &[+] ) ~~ (6,15)),            "simple row sum";
-    ok $a.reduce-columns( &[*] ) ~~ (4,10,18),       "simple column product";
-    ok $i.reduce-rows( &[>] ) ~~ (True False False), "question if row is sorted";
+    ok $a.reduce-rows( &[+] ) == (6,15),            "simple row sum";
+    ok $a.reduce-columns( &[*] ) == (4,10,18),       "simple column product";
+    ok $i.reduce-rows( &[>] ) == (True, False, False), "question if row is sorted";
 }, "Reduce";
 
 
@@ -65,7 +65,6 @@ subtest {
     my $matrix = Math::Matrix.new([[1,2],[3,4]]);
     my $matrix2 = Math::Matrix.new([[4,3],[2,1]]);
     my $expected = Math::Matrix.new([[ 4 , 6 ],[ 6 , 4 ]]);
-    say $matrix.multiply( $matrix2 );
     ok $matrix.multiply( $matrix2 ) ~~ $expected, "Multiplication of matrices (element by element)";
     ok $matrix * $matrix2 ~~ $expected, "Multiplication of matrices using * operator";
 }, "Multiplication of matrices";
