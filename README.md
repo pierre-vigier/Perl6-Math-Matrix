@@ -37,19 +37,19 @@ In Str context you will see a tabular representation, in Int context the number 
 METHODS
 =======
 
-  * constructors: new new-zero new-identity new-diagonal new-vector-product
+  * constructors: new, new-zero, new-identity, new-diagonal, new-vector-product
 
   * accessors: cell row column diagonal submatrix
 
-  * boolean properties: equal is-square is-invertible is-zero, is-identity is-upper-triangular is-lower-triangular is-diagonal is-diagonally-dominant is-symmetric is-orthogonal is-positive-definite
+  * boolean properties: equal, is-square, is-invertible, is-zero, is-identity, is-upper-triangular, is-lower-triangular, is-diagonal, is-diagonally-dominant, is-symmetric, is-orthogonal, is-positive-definite
 
-  * numeric properties: size determinant rank kernel trace density norm condition
+  * numeric properties: size, determinant, rank, kernel, trace, density, norm, condition
 
-  * derivative matrices: transposed negated inverted reduced-row-echelon-form
+  * derivative matrices: transposed, negated, inverted, reduced-row-echelon-form
 
-  * decompositions: decompositionLUCrout decompositionLU decompositionCholesky
+  * decompositions: decompositionLUCrout, decompositionLU, decompositionCholesky
 
-  * mathematical operations: add subtract multiply dotProduct map reduce-rows reduce-colums
+  * mathematical operations: add, subtract, multiply, dotProduct, map, reduce-rows, reduce-colums
 
   * operators: +, -, *, **, ⋅, | |, || ||
 

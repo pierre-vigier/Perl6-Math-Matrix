@@ -36,15 +36,15 @@ in Bool context a False if the matrix is zero (all cells are zero as in is-zero)
 
 =head1 METHODS
 
-=item constructors: new new-zero new-identity new-diagonal new-vector-product
+=item constructors: new, new-zero, new-identity, new-diagonal, new-vector-product
 =item accessors: cell row column diagonal submatrix
-=item boolean properties: equal is-square is-invertible is-zero, is-identity
-    is-upper-triangular is-lower-triangular is-diagonal is-diagonally-dominant
-    is-symmetric is-orthogonal is-positive-definite
-=item numeric properties: size determinant rank kernel trace density norm condition
-=item derivative matrices: transposed negated inverted reduced-row-echelon-form
-=item decompositions: decompositionLUCrout decompositionLU decompositionCholesky
-=item mathematical operations: add subtract multiply dotProduct map reduce-rows reduce-colums
+=item boolean properties: equal, is-square, is-invertible, is-zero, is-identity,
+    is-upper-triangular, is-lower-triangular, is-diagonal, is-diagonally-dominant,
+    is-symmetric, is-orthogonal, is-positive-definite
+=item numeric properties: size, determinant, rank, kernel, trace, density, norm, condition
+=item derivative matrices: transposed, negated, inverted, reduced-row-echelon-form
+=item decompositions: decompositionLUCrout, decompositionLU, decompositionCholesky
+=item mathematical operations: add, subtract, multiply, dotProduct, map, reduce-rows, reduce-colums
 =item operators:   +,   -,   *,   **,   ⋅,   | |,   || ||
 =end pod
 # =item structural operations: split join
