@@ -44,7 +44,7 @@ in Bool context a False if the matrix is zero (all cells are zero as in is-zero)
 =item numeric properties: size, determinant, rank, kernel, trace, density, norm, condition
 =item derivative matrices: transposed, negated, inverted, reduced-row-echelon-form
 =item decompositions: decompositionLUCrout, decompositionLU, decompositionCholesky
-=item mathematical operations: add, subtract, multiply, dotProduct, map, reduce-rows, reduce-colums
+=item mathematical operations: add, subtract, multiply, dotProduct, map, reduce-rows, reduce-columns
 =item operators:   +,   -,   *,   **,   ⋅,   | |,   || ||
 =end pod
 # =item structural operations: split join
@@ -1095,15 +1095,13 @@ method map(Math::Matrix:D: &coderef --> Math::Matrix:D) {
 =begin pod
 =head3 reduce-rows
 
-    Like the built in reduce it iterates over all elements of a row and 
-    joining them into one value. The end result will be a list.
+    Like the built in reduce method, it iterates over all elements of a row 
+    and joins them into one value, by applying the given operator or method
+    to the previous result and the next element. The end result will be a list.
+    Each element of that list is the result of reducing one row.
     In this example we calculate the sum of all elements in a row:
     
     say Math::Matrix.new( [[1,2],[3,4]] ).reduce-rows(&[+]);     # prints (3, 7)
-
-    in same manner is :
-
-    say Math::Matrix.new( [[1,2],[3,4]] ).reduce-columns(&[+]);  # prints (4, 6)
 
 =end pod
 
@@ -1113,10 +1111,21 @@ method reduce-rows (Math::Matrix:D: &coderef){
     };
 }
 
+
+=begin pod
+=head3 reduce-columns
+
+    Similarly to reduce-rows this method reduces each column to one value in the 
+    resulting list.:
+
+    say Math::Matrix.new( [[1,2],[3,4]] ).reduce-columns(&[*]);  # prints (3, 8)
+
+=end pod
+
 method reduce-columns (Math::Matrix:D: &coderef){
-    (gather for ^$!column-count -> $i {
+    gather for ^$!column-count -> $i {
         take self.column($i).reduce( &coderef )
-    })
+    }
 }
 
 

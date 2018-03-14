@@ -49,7 +49,7 @@ METHODS
 
   * decompositions: decompositionLUCrout, decompositionLU, decompositionCholesky
 
-  * mathematical operations: add, subtract, multiply, dotProduct, map, reduce-rows, reduce-colums
+  * mathematical operations: add, subtract, multiply, dotProduct, map, reduce-rows, reduce-columns
 
   * operators: +, -, *, **, ⋅, | |, || ||
 
@@ -378,15 +378,20 @@ Matrix Operations
 
 ### reduce-rows
 
-    Like the built in reduce it iterates over all elements of a row and 
-    joining them into one value. The end result will be a list.
+    Like the built in reduce method, it iterates over all elements of a row 
+    and joins them into one value, by applying the given operator or method
+    to the previous result and the next element. The end result will be a list.
+    Each element of that list is the result of reducing one row.
     In this example we calculate the sum of all elements in a row:
 
     say Math::Matrix.new( [[1,2],[3,4]] ).reduce-rows(&[+]);     # prints (3, 7)
 
-    in same manner is :
+### reduce-columns
 
-    say Math::Matrix.new( [[1,2],[3,4]] ).reduce-columns(&[+]);  # prints (4, 6)
+    Similarly to reduce-rows this method reduces each column to one value in the 
+    resulting list.:
+
+    say Math::Matrix.new( [[1,2],[3,4]] ).reduce-columns(&[*]);  # prints (3, 8)
 
 Author
 ======
