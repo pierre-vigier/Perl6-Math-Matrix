@@ -45,9 +45,9 @@ in Bool context a False if the matrix is zero (all cells are zero as in is-zero)
 =item derivative matrices: transposed negated inverted reduced-row-echelon-form
 =item decompositions: decompositionLUCrout decompositionLU decompositionCholesky
 =item mathematical operations: add subtract multiply dotProduct map reduce-rows reduce-colums
-# =item structural operations: split join
-=item operators:   +   -   *   **   ⋅   | |   || ||
+=item operators:   +,   -,   *,   **,   ⋅,   | |,   || ||
 =end pod
+# =item structural operations: split join
 
 
 unit class Math::Matrix:ver<0.1.5>:auth<github:pierre-vigier>;
@@ -1098,14 +1098,11 @@ method map(Math::Matrix:D: &coderef --> Math::Matrix:D) {
     joining them into one value. The end result will be a list.
     In this example I want
     
+    say Math::Matrix.new( [[1,2],[3,4]] ).reduce-rows(&[+]);    # prints (3, 7)
 
-    say Math::Matrix.new( [[1,2],[3,4]] ).reduce-rows(&[+]);    # prints
-
-    2 3
-    4 5
 =end pod
 
-method reduce-rows (Math::Matrix:D: &coderef --> Math::Matrix:D){
+method reduce-rows (Math::Matrix:D: &coderef){
     @!rows.map: { $_.reduce( &coderef ) };
 }
 

@@ -10,7 +10,7 @@ Math::Matrix - create, compare, compute and measure 2D matrices
 VERSION
 =======
 
-0.1.4
+0.1.5
 
 SYNOPSIS
 ========
@@ -49,9 +49,9 @@ METHODS
 
   * decompositions: decompositionLUCrout decompositionLU decompositionCholesky
 
-  * mathematical operations: add subtract multiply dotProduct map reduce-rows reduce-colums # =item structural operations: split join
+  * mathematical operations: add subtract multiply dotProduct map reduce-rows reduce-colums
 
-  * operators: + - * ** ⋅ | | || ||
+  * operators: +, -, *, **, ⋅, | |, || ||
 
 Constructors
 ------------
@@ -378,10 +378,7 @@ Matrix Operations
 
 ### reduce-rows Like the built in reduce it iterates over all elements of a row and joining them into one value. The end result will be a list. In this example I want
 
-    say Math::Matrix.new( [[1,2],[3,4]] ).reduce-rows(&[+]);    # prints
-
-    2 3
-    4 5
+    say Math::Matrix.new( [[1,2],[3,4]] ).reduce-rows(&[+]);    # prints (3, 7)
 
 Author
 ======
