@@ -7,7 +7,7 @@ Math::Matrix - create, compare, compute and measure 2D matrices
 
 =head1 VERSION
 
-0.1.4
+0.1.5
 
 =head1 SYNOPSIS
 
@@ -50,7 +50,7 @@ in Bool context a False if the matrix is zero (all cells are zero as in is-zero)
 =end pod
 
 
-unit class Math::Matrix:ver<0.1.4>:auth<github:pierre-vigier>;
+unit class Math::Matrix:ver<0.1.5>:auth<github:pierre-vigier>;
 use AttrX::Lazy;
 
 has @!rows is required;
