@@ -44,8 +44,8 @@ in Bool context a False if the matrix is zero (all cells are zero as in is-zero)
 =item numeric properties: size determinant rank kernel trace density norm condition
 =item derivative matrices: transposed negated inverted reduced-row-echelon-form
 =item decompositions: decompositionLUCrout decompositionLU decompositionCholesky
-=item mathematical operations: add subtract multiply dotProduct map
-=item structural operations: reduce-rows reduce-colums
+=item mathematical operations: add subtract multiply dotProduct map reduce-rows reduce-colums
+# =item structural operations: split join
 =item operators:   +   -   *   **   ⋅   | |   || ||
 =end pod
 
@@ -240,7 +240,7 @@ multi method row(Math::Matrix:D: Int:D $row) {
     fail X::OutOfRange.new(
         :what<Row index> , :got($row), :range("0..{$!row-count -1 }")
     ) unless 0 <= $row < $!row-count;
-    return @!rows[$row];
+    return @!rows[$row].list;
 }
 
 =begin pod
@@ -851,27 +851,6 @@ method rref(Math::Matrix:D: --> Math::Matrix:D) {
     self.reduced-row-echelon-form;
 }
 
-
-=begin pod
-=head3 map
-
-    Like the built in map it iterates over all elements, running a code block.
-    The results for a new matrix.
-
-    say Math::Matrix.new( [[1,2],[3,4]] ).map(* + 1);    # prints
-
-    2 3
-    4 5
-
-=end pod
-
-method map(Math::Matrix:D: &coderef --> Math::Matrix:D) {
-    Math::Matrix.new( [ @!rows.map: {
-            [ $_.map( &coderef ) ]
-    } ] );
-}
-
-
 ################################################################################
 # end of derivative matrices - start decompositions
 ################################################################################
@@ -1086,16 +1065,56 @@ multi method multiply(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b!
 
 multi method dotProduct(Math::Matrix:D: Math::Matrix $b --> Math::Matrix:D ) {
     my @product;
-    die "Number of columns of the second matrix is different from number of rows of the first operand" unless $!column-count == $b!row-count;
+    fail "Number of columns of the second matrix is different from number of rows of the first operand" unless $!column-count == $b!row-count;
     for ^$!row-count X ^$b!column-count -> ($r, $c) {
         @product[$r][$c] += @!rows[$r][$_] * $b!rows[$_][$c] for ^$b!row-count;
     }
     Math::Matrix.new( @product );
 }
 
+=begin pod
+=head3 map
+
+    Like the built in map it iterates over all elements, running a code block.
+    The results for a new matrix.
+
+    say Math::Matrix.new( [[1,2],[3,4]] ).map(* + 1);    # prints
+
+    2 3
+    4 5
+
+=end pod
+
+method map(Math::Matrix:D: &coderef --> Math::Matrix:D) {
+    Math::Matrix.new( [ @!rows.map: {
+            [ $_.map( &coderef ) ]
+    } ] );
+}
+
+
+=begin pod
+=head3 reduce-rows
+    Like the built in reduce it iterates over all elements of a row and 
+    joining them into one value. The end result will be a list.
+    In this example I want
+    
+
+    say Math::Matrix.new( [[1,2],[3,4]] ).reduce-rows(&[+]);    # prints
+
+    2 3
+    4 5
+=end pod
+
+method reduce-rows
+
 
 ################################################################################
-# end of matrix operations - start self made operators 
+# end of math matrix operations - start structural matrix operations
+################################################################################
+
+
+################################################################################
+# end of structural matrix operations - start self made operators 
 ################################################################################
 
 #=begin pod
@@ -1154,7 +1173,6 @@ multi sub infix:<**>(Math::Matrix $a where { $a.is-square }, Int $e --> Math::Ma
     $p = $p.inverted         if  $e < 0;
     $p;
 }
-
 
 multi sub circumfix:<| |>(Math::Matrix $a --> Numeric) is equiv(&prefix:<!>) is export {
     $a.determinant();
