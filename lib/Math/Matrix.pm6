@@ -1102,11 +1102,14 @@ method map(Math::Matrix:D: &coderef --> Math::Matrix:D) {
 
 =end pod
 
-method reduce-rows (Math::Matrix:D: ){
+method reduce-rows (Math::Matrix:D: &coderef){
     (@!rows.map: {
         $_.flat.reduce( &coderef )
     });
 }
+
+# method reduce-columns (Math::Matrix:D: &coderef){ }
+
 
 
 ################################################################################
