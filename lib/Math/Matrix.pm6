@@ -335,7 +335,7 @@ multi method submatrix(Math::Matrix:D: @rows, @cols --> Math::Matrix:D ){
 =head2 Type Conversion And Output Flavour
 =head3 Bool
 
-    Conversion into Bool context. Returns False is matrix is zero
+    Conversion into Bool context. Returns False if matrix is zero
     (all cells equal zero as in is-zero), otherwise True.
     
     $matrix.Bool
@@ -352,6 +352,8 @@ method Bool(Math::Matrix:D: --> Bool) {
 =head3 Numeric
 
     Conversion into Numeric context. Returns number (amount) of cells.
+    Please note, only prefix a prefix + (as in: + $matrix) will call this Method.
+    A infix (as in $matrix + $number) calls: .add($number).
     
     $matrix.Numeric   or      + $matrix
 =end pod

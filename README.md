@@ -158,7 +158,7 @@ Type Conversion And Output Flavour
 
 ### Bool
 
-    Conversion into Bool context. Returns False is matrix is zero
+    Conversion into Bool context. Returns False if matrix is zero
     (all cells equal zero as in is-zero), otherwise True.
 
     $matrix.Bool
@@ -168,6 +168,8 @@ Type Conversion And Output Flavour
 ### Numeric
 
     Conversion into Numeric context. Returns number (amount) of cells.
+    Please note, only prefix a prefix + (as in: + $matrix) will call this Method.
+    A infix (as in $matrix + $number) calls: .add($number).
 
     $matrix.Numeric   or      + $matrix
 
