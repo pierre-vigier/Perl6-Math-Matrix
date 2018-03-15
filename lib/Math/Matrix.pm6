@@ -30,11 +30,10 @@ Matrices are readonly - all operations and derivatives are new objects.
 
 =head1 Type Conversion and Output
 
-=item In Bool context it's False if matrix is zero (as in is-zero): ? $matrix 
-=item in Numeric context the number (count) of cells:  + $matrix
-=item In Str context you will see a tabular representation: ~ $matrix;
+=item In Bool context it's False if matrix is zero (as in is-zero), otherwise True: say ? $matrix 
+=item in Numeric context you get the number (count) of cells:  say + $matrix
+=item In Str context you will see a full tabular representation: say ~ $matrix;
 =item .gist will show only a part of (~ $matrix) that fits shell output: say $matrix
-=item use .pretty for a complete tabular representation: say $matrix.pretty
 =item .perl is supported too : say Math::Matrix.new($matrix.perl)
 
 =head1 METHODS
