@@ -345,7 +345,7 @@ method Bool(Math::Matrix:D: --> Bool) {
     ! self.is-zero;
 }
 
-method Int(Math::Matrix:D: --> Int) {
+method Numeric (Math::Matrix:D: --> Int) {
     $!row-count * $!column-count;
 }
 

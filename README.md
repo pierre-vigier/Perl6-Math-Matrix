@@ -261,8 +261,13 @@ Numeric Properties
 
 ### determinant, alias det
 
+    If you see the columns as vectors, that describe the edges of a solid,
+    the determinant of a square matrix tells you the volume of that solid.
+    So if the solid is just in one dimension flat, the determinant is zero too.
+
     my $det = $matrix.determinant( );
-    my $d = $matrix.det( );     #    Calculate the determinant of a square matrix
+    my $d = $matrix.det( );             # same thing
+    my $d = |$matrix|;                  # operator shortcut
 
 ### trace
 
@@ -292,14 +297,14 @@ Numeric Properties
 
 ### norm
 
-    my $norm = $matrix.norm( );          # euclidian norm (L2, p = 2)
-    my $norm = ||$matrix||;              # operator shortcut to do the same
-    my $norm = $matrix.norm(1);          # p-norm, L1 = sum of all cells
-    my $norm = $matrix.norm(p:<4>,q:<3>);# p,q - norm, p = 4, q = 3
-    my $norm = $matrix.norm(p:<2>,q:<2>);# Frobenius norm
-    my $norm = $matrix.norm('max');      # max norm - biggest absolute value of a cell
-    $matrix.norm('rowsum');              # row sum norm - biggest abs. value-sum of a row
-    $matrix.norm('columnsum');           # column sum norm - same column wise
+    my $norm = $matrix.norm( );           # euclidian norm (L2, p = 2)
+    my $norm = ||$matrix||;               # operator shortcut to do the same
+    my $norm = $matrix.norm(1);           # p-norm, L1 = sum of all cells
+    my $norm = $matrix.norm(p:<4>,q:<3>); # p,q - norm, p = 4, q = 3
+    my $norm = $matrix.norm(p:<2>,q:<2>); # Frobenius norm
+    my $norm = $matrix.norm('max');       # max norm - biggest absolute value of a cell
+    $matrix.norm('rowsum');               # row sum norm - biggest abs. value-sum of a row
+    $matrix.norm('columnsum');            # column sum norm - same column wise
 
 ### condition
 
