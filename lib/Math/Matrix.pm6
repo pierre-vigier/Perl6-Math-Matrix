@@ -28,11 +28,14 @@ use with consideration...
 
 Matrices are readonly - all operations and derivatives are new objects.
 
-=head1 Type Conversion
+=head1 Type Conversion and Output
 
-In Str context you will see a tabular representation, 
-in Int context the number (count) of cells and 
-in Bool context a False if the matrix is zero (all cells are zero as in is-zero).
+=item In Bool context it's False if matrix is zero (as in is-zero): ? $matrix 
+=item in Numeric context the number (count) of cells:  + $matrix
+=item In Str context you will see a tabular representation: ~ $matrix;
+=item .gist will show only a part of (~ $matrix) that fits shell output: say $matrix
+=item use .pretty for a complete tabular representation: say $matrix.pretty
+=item .perl is supported too : say Math::Matrix.new($matrix.perl)
 
 =head1 METHODS
 
@@ -48,7 +51,7 @@ in Bool context a False if the matrix is zero (all cells are zero as in is-zero)
 =item operators:   +,   -,   *,   **,   ⋅,  dot,   | |,   || ||
 =end pod
 # =item structural operations: split join
-
+# ⊗
 
 unit class Math::Matrix:ver<0.1.5>:auth<github:pierre-vigier>;
 use AttrX::Lazy;
@@ -338,15 +341,29 @@ multi method submatrix(Math::Matrix:D: @rows, @cols --> Math::Matrix:D ){
 
 
 method Str(Math::Matrix:D: --> Str) {
-    @!rows.gist;
-}
-
-method Bool(Math::Matrix:D: --> Bool) {
-    ! self.is-zero;
+    my $max-char = max( @!rows[*;*] ).Int.chars;
+    my $fmt;
+    if all( @!rows[*;*] ) ~~ Int {
+        $fmt = " %{$max-char}d ";
+    } else {
+        my $max-decimal = max( @!rows[*;*].map( { ( .split(/\./)[1] // '' ).chars } ) );
+        $max-decimal = 5 if $max-decimal > 5; #more than that is not readable
+        $max-char += $max-decimal + 1;
+        $fmt = " \%{$max-char}.{$max-decimal}f ";
+    }
+    my $str;
+    for @!rows -> $r {
+        $str ~= ( [~] $r.map( { $_.fmt($fmt) } ) ) ~ "\n";
+    }
+    $str;
 }
 
 method Numeric (Math::Matrix:D: --> Int) {
     $!row-count * $!column-count;
+}
+
+method Bool(Math::Matrix:D: --> Bool) {
+    ! self.is-zero;
 }
 
 multi method perl(Math::Matrix:D: --> Str) {
@@ -371,9 +388,6 @@ method gist(Math::Matrix:D: --> Str) {
     $str;
 }
 
-method ACCEPTS(Math::Matrix $b --> Bool) {
-    self.equal( $b );
-}
 
 sub insert ($x, @xs) { ([flat @xs[0 ..^ $_], $x, @xs[$_ .. *]] for 0 .. @xs) }
 
@@ -405,6 +419,10 @@ multi σ_permutations ([$x, *@xs]) {
 
 method equal(Math::Matrix:D: Math::Matrix $b --> Bool) {
     @!rows ~~ $b!rows;
+}
+
+method ACCEPTS(Math::Matrix $b --> Bool) {
+    self.equal( $b );
 }
 
 =begin pod

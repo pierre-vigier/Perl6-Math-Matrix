@@ -29,10 +29,20 @@ I should probably use shaped array for the implementation, but i am encountering
 
 Matrices are readonly - all operations and derivatives are new objects.
 
-Type Conversion
-===============
+Type Conversion and Output
+==========================
 
-In Str context you will see a tabular representation, in Int context the number (count) of cells and in Bool context a False if the matrix is zero (all cells are zero as in is-zero).
+  * In Bool context it's False if matrix is zero (as in is-zero): ? $matrix 
+
+  * in Numeric context the number (count) of cells: + $matrix
+
+  * In Str context you will see a tabular representation: ~ $matrix;
+
+  * .gist will show only a part of (~ $matrix) that fits shell output: say $matrix
+
+  * use .pretty for a complete tabular representation: say $matrix.pretty
+
+  * .perl is supported too : say Math::Matrix.new($matrix.perl)
 
 METHODS
 =======
