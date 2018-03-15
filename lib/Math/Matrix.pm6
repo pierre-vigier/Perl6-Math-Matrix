@@ -27,27 +27,6 @@ some issues for now. Problem being it might break the syntax for creation of a M
 use with consideration...
 
 Matrices are readonly - all operations and derivatives are new objects.
-
-=head1 Type Conversion and Output
-
-=item In Bool context it's False if matrix is zero (as in is-zero), otherwise True: say ? $matrix 
-=item in Numeric context you get the number (count) of cells:  say + $matrix
-=item In Str context you will see a full tabular representation: say ~ $matrix;
-=item .gist will show only a part of (~ $matrix) that fits shell output: say $matrix
-=item .perl is supported too : say Math::Matrix.new($matrix.perl)
-
-=head1 METHODS
-
-=item constructors: new, new-zero, new-identity, new-diagonal, new-vector-product
-=item accessors: cell row column diagonal submatrix
-=item boolean properties: equal, is-square, is-invertible, is-zero, is-identity,
-    is-upper-triangular, is-lower-triangular, is-diagonal, is-diagonally-dominant,
-    is-symmetric, is-orthogonal, is-positive-definite
-=item numeric properties: size, determinant, rank, kernel, trace, density, norm, condition
-=item derivative matrices: transposed, negated, inverted, reduced-row-echelon-form
-=item decompositions: decompositionLUCrout, decompositionLU, decompositionCholesky
-=item mathematical operations: add, subtract, multiply, dotProduct, map, reduce-rows, reduce-columns
-=item operators:   +,   -,   *,   **,   ⋅,  dot,   | |,   || ||
 =end pod
 # =item structural operations: split join
 # ⊗
@@ -82,6 +61,30 @@ method !column-count { $!column-count }
 
 subset Positive_Int of Int where * > 0 ;
 
+=begin pod
+
+=head1 Type Conversion and Output flavours
+
+=item In Bool context it's False if matrix is zero (as in is-zero), otherwise True: say ? $matrix 
+=item in Numeric context you get the number (count) of cells:  say + $matrix
+=item In Str context you will see a data based representation ([[..],..]): say ~ $matrix or put $matrix
+=item .gist will show a part of a tabular view, that fits a page of shell output: say $matrix
+=item .pretty forces a full tabular view: say $matrix.pretty
+=item .perl for marshaling purposes is supported too : my $copy = eval $matrix.perl;
+
+=head1 METHODS
+
+=item constructors: new, new-zero, new-identity, new-diagonal, new-vector-product
+=item accessors: cell row column diagonal submatrix
+=item boolean properties: equal, is-square, is-invertible, is-zero, is-identity,
+    is-upper-triangular, is-lower-triangular, is-diagonal, is-diagonally-dominant,
+    is-symmetric, is-orthogonal, is-positive-definite
+=item numeric properties: size, determinant, rank, kernel, trace, density, norm, condition
+=item derivative matrices: transposed, negated, inverted, reduced-row-echelon-form
+=item decompositions: decompositionLUCrout, decompositionLU, decompositionCholesky
+=item mathematical operations: add, subtract, multiply, dotProduct, map, reduce-rows, reduce-columns
+=item operators:   +,   -,   *,   **,   ⋅,  dot,   | |,   || ||
+=end pod
 
 ################################################################################
 # start constructors
@@ -338,8 +341,23 @@ multi method submatrix(Math::Matrix:D: @rows, @cols --> Math::Matrix:D ){
 # end of accessors - start with type conversion and handy shortcuts
 ################################################################################
 
-
 method Str(Math::Matrix:D: --> Str) {
+    @!rows.gist;
+}
+
+method Numeric (Math::Matrix:D: --> Int) {
+    $!row-count * $!column-count;
+}
+
+method Bool(Math::Matrix:D: --> Bool) {
+    ! self.is-zero;
+}
+
+multi method perl(Math::Matrix:D: --> Str) {
+    self.WHAT.perl ~ ".new(" ~ @!rows.perl ~ ")";
+}
+
+method gist(Math::Matrix:D: --> Str) {
     my $max-char = max( @!rows[*;*] ).Int.chars;
     my $fmt;
     if all( @!rows[*;*] ) ~~ Int {
@@ -357,19 +375,7 @@ method Str(Math::Matrix:D: --> Str) {
     $str;
 }
 
-method Numeric (Math::Matrix:D: --> Int) {
-    $!row-count * $!column-count;
-}
-
-method Bool(Math::Matrix:D: --> Bool) {
-    ! self.is-zero;
-}
-
-multi method perl(Math::Matrix:D: --> Str) {
-    self.WHAT.perl ~ ".new(" ~ @!rows.perl ~ ")";
-}
-
-method gist(Math::Matrix:D: --> Str) {
+method pretty (Math::Matrix:D: --> Str) {
     my $max-char = max( @!rows[*;*] ).Int.chars;
     my $fmt;
     if all( @!rows[*;*] ) ~~ Int {

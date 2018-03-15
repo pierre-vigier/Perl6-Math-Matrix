@@ -46,6 +46,7 @@ ok $identity ~~ $expected, "Get identity matrix";
 my $diagonal = Math::Matrix.new-diagonal([1,2,3]);
 my $expectd   = Math::Matrix.new([[1,0,0],[0,2,0],[0,0,3]]);
 ok $diagonal ~~ $expectd, "Get diagonal matrix";
+
 #TODO: reinstate test either in success or failure
 my $diagonal2 = Math::Matrix.new-diagonal( 1, 2, 3 );
 ok  $diagonal2 ~~ $expectd, "Get diagonal matrix";
