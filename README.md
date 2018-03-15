@@ -182,7 +182,7 @@ Type Conversion And Output Flavour
     ? $matrix           # alias
     if $matrix          # Bool context too
 
-### Bool
+### Numeric
 
     Conversion into Numeric context. Returns number (amount) of cells.
 

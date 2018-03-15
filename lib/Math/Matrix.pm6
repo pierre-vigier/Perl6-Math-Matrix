@@ -408,7 +408,7 @@ method Bool(Math::Matrix:D: --> Bool) {
 }
 
 =begin pod
-=head3 Bool
+=head3 Numeric
 
     Conversion into Numeric context. Returns number (amount) of cells.
     
