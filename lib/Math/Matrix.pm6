@@ -62,20 +62,10 @@ method !column-count { $!column-count }
 subset Positive_Int of Int where * > 0 ;
 
 =begin pod
-
-=head1 Type Conversion and Output flavours
-
-=item In Bool context it's False if matrix is zero (as in is-zero), otherwise True: say ? $matrix 
-=item in Numeric context you get the number (count) of cells:  say + $matrix
-=item In Str context you will see a data based representation ([[..],..]): say ~ $matrix or put $matrix
-=item .gist will show a part of a tabular view, that fits a page of shell output: say $matrix
-=item .full forces a full tabular view: say $matrix.full
-=item .perl for marshaling purposes is supported too : my $copy = eval $matrix.perl;
-
 =head1 METHODS
-
 =item constructors: new, new-zero, new-identity, new-diagonal, new-vector-product
-=item accessors: cell row column diagonal submatrix
+=item accessors: cell, row, column, diagonal, submatrix
+=item conversion: gist, full, Bool, Numeric, Str, perl
 =item boolean properties: equal, is-square, is-invertible, is-zero, is-identity,
     is-upper-triangular, is-lower-triangular, is-diagonal, is-diagonally-dominant,
     is-symmetric, is-orthogonal, is-positive-definite
@@ -341,21 +331,20 @@ multi method submatrix(Math::Matrix:D: @rows, @cols --> Math::Matrix:D ){
 # end of accessors - start with type conversion and handy shortcuts
 ################################################################################
 
-method Str(Math::Matrix:D: --> Str) {
-    @!rows.gist;
-}
+=begin pod
+=head2 Type Conversion And Output Flavour
+=head3 gist
 
-method Numeric (Math::Matrix:D: --> Int) {
-    $!row-count * $!column-count;
-}
+    Limited tabular view for the shell output. Just cuts off excessive
+    rows and columns. Implicitly called while:
+    
+    say $matrix;      # output when matrix has more than 100 cells
 
-method Bool(Math::Matrix:D: --> Bool) {
-    ! self.is-zero;
-}
+    1 2 3 4 5 ...
+    3 4 5 6 7 ...
+    ...
 
-multi method perl(Math::Matrix:D: --> Str) {
-    self.WHAT.perl ~ ".new(" ~ @!rows.perl ~ ")";
-}
+=end pod
 
 method gist(Math::Matrix:D: --> Str) {
     my $max-char = max( @!rows[*;*] ).Int.chars;
@@ -375,6 +364,15 @@ method gist(Math::Matrix:D: --> Str) {
     $str;
 }
 
+=begin pod
+=head3 full
+
+    Full tabular view (all rows and columns) for the shell or file output.
+    
+    say $matrix.full;
+
+=end pod
+
 method full (Math::Matrix:D: --> Str) {
     my $max-char = max( @!rows[*;*] ).Int.chars;
     my $fmt;
@@ -393,6 +391,59 @@ method full (Math::Matrix:D: --> Str) {
     $str;
 }
 
+=begin pod
+=head3 Bool
+
+    Conversion into Bool context. Returns False is matrix is zero
+    (all cells equal zero as in is-zero), otherwise True.
+    
+    $matrix.Bool
+    ? $matrix           # alias
+    if $matrix          # Bool context too
+
+=end pod
+
+method Bool(Math::Matrix:D: --> Bool) {
+    ! self.is-zero;
+}
+
+=begin pod
+=head3 Bool
+
+    Conversion into Numeric context. Returns number (amount) of cells.
+    
+    $matrix.Numeric   or      + $matrix
+=end pod
+
+method Numeric (Math::Matrix:D: --> Int) {
+    $!row-count * $!column-count;
+}
+
+=begin pod
+=head3 Str
+
+    Conversion into String context. Returns content of all cells in the
+    data structure form like "[[..,..,...],[...],...]"
+    
+    put $matrix     or      print $matrix
+=end pod
+
+method Str(Math::Matrix:D: --> Str) {
+    @!rows.gist;
+}
+
+=begin pod
+=head3 perl
+
+    Conversion into String like context that can reevaluated into the same
+    object later. ( "Math::Matrix.new([[..,..,...],[...],...])" )
+    
+    my $clone = eval $matrix.perl;
+=end pod
+
+multi method perl(Math::Matrix:D: --> Str) {
+    self.WHAT.perl ~ ".new(" ~ @!rows.perl ~ ")";
+}
 
 sub insert ($x, @xs) { ([flat @xs[0 ..^ $_], $x, @xs[$_ .. *]] for 0 .. @xs) }
 
@@ -1202,36 +1253,46 @@ method reduce-columns (Math::Matrix:D: &coderef){
     }
 }
 
-
-
-
 ################################################################################
 # end of math matrix operations - start structural matrix operations
 ################################################################################
 
-# method split{ }
+#method split (){ 
+#}
 
-# method join{ }
+# method join (){ 
+#}
 
 ################################################################################
 # end of structural matrix operations - start self made operators 
 ################################################################################
 
-#=begin pod
-#=head1 Operators
+=begin pod
+=head1 Operators
 
-#    my $product = $matrix1.dotProduct( $matrix2 )
-#    return a new Matrix, result of the dotProduct of the current matrix with matrix2
-#    Call be called throug operator ⋅ or dot , like following:
-#    my $c = $a ⋅ $b;
-#    my $c = $a dot $b;
+    The Module overloads a range of well and less known ops.
 
-#    A shortcut for multiplication is the power - operator **
-#    my $c = $a **  3;               # same as $a dot $a dot $a
-#    my $c = $a ** -3;               # same as ($a dot $a dot $a).inverted
-#    my $c = $a **  0;               # created an right sized identity matrix
+    my $sum = $matrixa + $matrixb;  # cell wise sum of two same sized matrices
+    my $sum = $matrix  + $number;   # add number to every cell
 
-#=end pod
+    my $dif = $matrixa - $matrixb;  # cell wise difference of two same sized matrices
+    my $dif = $matrix  - $number;   # subtract number from every cell
+    my $neg = -$matrix              # negate value of every cell
+
+    my $p   = $matrixa * $matrixb;  # cell wise product of two same sized matrices
+    my $sp  = $matrix  * $number;   # multiply number to every cell
+
+    my $dp = $a dot $b;             # dot product of two fitting matrices
+    my $dp = $a ⋅ $b;
+
+    my $c = $a **  3;               # same as $a dot $a dot $a
+    my $c = $a ** -3;               # same as ($a dot $a dot $a).inverted
+    my $c = $a **  0;               # created an right sized identity matrix
+
+     | $matrix |                    # determinant
+    || $matrix ||                   # Euclidean (L2) norm
+
+=end pod
 
 
 multi sub infix:<+>(Math::Matrix $a, Math::Matrix $b --> Math::Matrix:D ) is export {
