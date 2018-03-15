@@ -7,7 +7,7 @@ Math::Matrix - create, compare, compute and measure 2D matrices
 
 =head1 VERSION
 
-0.1.5
+0.1.6
 
 =head1 SYNOPSIS
 
@@ -31,7 +31,7 @@ Matrices are readonly - all operations and derivatives are new objects.
 # =item structural operations: split join
 # ⊗
 
-unit class Math::Matrix:ver<0.1.5>:auth<github:pierre-vigier>;
+unit class Math::Matrix:ver<0.1.6>:auth<github:pierre-vigier>;
 use AttrX::Lazy;
 
 has @!rows is required;
@@ -69,7 +69,7 @@ subset Positive_Int of Int where * > 0 ;
 =item in Numeric context you get the number (count) of cells:  say + $matrix
 =item In Str context you will see a data based representation ([[..],..]): say ~ $matrix or put $matrix
 =item .gist will show a part of a tabular view, that fits a page of shell output: say $matrix
-=item .pretty forces a full tabular view: say $matrix.pretty
+=item .full forces a full tabular view: say $matrix.full
 =item .perl for marshaling purposes is supported too : my $copy = eval $matrix.perl;
 
 =head1 METHODS
@@ -375,7 +375,7 @@ method gist(Math::Matrix:D: --> Str) {
     $str;
 }
 
-method pretty (Math::Matrix:D: --> Str) {
+method full (Math::Matrix:D: --> Str) {
     my $max-char = max( @!rows[*;*] ).Int.chars;
     my $fmt;
     if all( @!rows[*;*] ) ~~ Int {

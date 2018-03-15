@@ -2,7 +2,7 @@
     "perl"          : "6.c",
     "name"          : "Math::Matrix",
     "license"       : "Artistic-2.0",
-    "version"       : "0.1.5",
+    "version"       : "0.1.6",
     "authors"       : [ "github:pierre-vigier", "github:lichtkind" ],
     "description"   : "create, compare, compute and measure matrices",
     "depends"       : [ "AttrX::Lazy" ],
