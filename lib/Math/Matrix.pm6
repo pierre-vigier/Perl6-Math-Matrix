@@ -65,7 +65,7 @@ subset Positive_Int of Int where * > 0 ;
 =head1 METHODS
 =item constructors: new, new-zero, new-identity, new-diagonal, new-vector-product
 =item accessors: cell, row, column, diagonal, submatrix
-=item conversion: gist, full, Bool, Numeric, Str, perl
+=item conversion: Bool, Numeric, Str, perl, gist, full
 =item boolean properties: equal, is-square, is-invertible, is-zero, is-identity,
     is-upper-triangular, is-lower-triangular, is-diagonal, is-diagonally-dominant,
     is-symmetric, is-orthogonal, is-positive-definite
@@ -333,6 +333,61 @@ multi method submatrix(Math::Matrix:D: @rows, @cols --> Math::Matrix:D ){
 
 =begin pod
 =head2 Type Conversion And Output Flavour
+=head3 Bool
+
+    Conversion into Bool context. Returns False is matrix is zero
+    (all cells equal zero as in is-zero), otherwise True.
+    
+    $matrix.Bool
+    ? $matrix           # alias
+    if $matrix          # Bool context too
+
+=end pod
+
+method Bool(Math::Matrix:D: --> Bool) {
+    ! self.is-zero;
+}
+
+=begin pod
+=head3 Numeric
+
+    Conversion into Numeric context. Returns number (amount) of cells.
+    
+    $matrix.Numeric   or      + $matrix
+=end pod
+
+method Numeric (Math::Matrix:D: --> Int) {
+    $!row-count * $!column-count;
+}
+
+=begin pod
+=head3 Str
+
+    Conversion into String context. Returns content of all cells in the
+    data structure form like "[[..,..,...],[...],...]"
+    
+    put $matrix     or      print $matrix
+=end pod
+
+method Str(Math::Matrix:D: --> Str) {
+    @!rows.gist;
+}
+
+=begin pod
+=head3 perl
+
+    Conversion into String like context that can reevaluated into the same
+    object later. ( "Math::Matrix.new([[..,..,...],[...],...])" )
+    
+    my $clone = eval $matrix.perl;
+=end pod
+
+multi method perl(Math::Matrix:D: --> Str) {
+    self.WHAT.perl ~ ".new(" ~ @!rows.perl ~ ")";
+}
+
+
+=begin pod
 =head3 gist
 
     Limited tabular view for the shell output. Just cuts off excessive
@@ -391,59 +446,6 @@ method full (Math::Matrix:D: --> Str) {
     $str;
 }
 
-=begin pod
-=head3 Bool
-
-    Conversion into Bool context. Returns False is matrix is zero
-    (all cells equal zero as in is-zero), otherwise True.
-    
-    $matrix.Bool
-    ? $matrix           # alias
-    if $matrix          # Bool context too
-
-=end pod
-
-method Bool(Math::Matrix:D: --> Bool) {
-    ! self.is-zero;
-}
-
-=begin pod
-=head3 Numeric
-
-    Conversion into Numeric context. Returns number (amount) of cells.
-    
-    $matrix.Numeric   or      + $matrix
-=end pod
-
-method Numeric (Math::Matrix:D: --> Int) {
-    $!row-count * $!column-count;
-}
-
-=begin pod
-=head3 Str
-
-    Conversion into String context. Returns content of all cells in the
-    data structure form like "[[..,..,...],[...],...]"
-    
-    put $matrix     or      print $matrix
-=end pod
-
-method Str(Math::Matrix:D: --> Str) {
-    @!rows.gist;
-}
-
-=begin pod
-=head3 perl
-
-    Conversion into String like context that can reevaluated into the same
-    object later. ( "Math::Matrix.new([[..,..,...],[...],...])" )
-    
-    my $clone = eval $matrix.perl;
-=end pod
-
-multi method perl(Math::Matrix:D: --> Str) {
-    self.WHAT.perl ~ ".new(" ~ @!rows.perl ~ ")";
-}
 
 sub insert ($x, @xs) { ([flat @xs[0 ..^ $_], $x, @xs[$_ .. *]] for 0 .. @xs) }
 

@@ -36,7 +36,7 @@ METHODS
 
   * accessors: cell, row, column, diagonal, submatrix
 
-  * conversion: gist, full, Bool, Numeric, Str, perl
+  * conversion: Bool, Numeric, Str, perl, gist, full
 
   * boolean properties: equal, is-square, is-invertible, is-zero, is-identity, is-upper-triangular, is-lower-triangular, is-diagonal, is-diagonally-dominant, is-symmetric, is-orthogonal, is-positive-definite
 
@@ -156,23 +156,6 @@ Accessors
 Type Conversion And Output Flavour
 ----------------------------------
 
-### gist
-
-    Limited tabular view for the shell output. Just cuts off excessive
-    rows and columns. Implicitly called while:
-
-    say $matrix;      # output when matrix has more than 100 cells
-
-    1 2 3 4 5 ...
-    3 4 5 6 7 ...
-    ...
-
-### full
-
-    Full tabular view (all rows and columns) for the shell or file output.
-
-    say $matrix.full;
-
 ### Bool
 
     Conversion into Bool context. Returns False is matrix is zero
@@ -201,6 +184,23 @@ Type Conversion And Output Flavour
     object later. ( "Math::Matrix.new([[..,..,...],[...],...])" )
 
     my $clone = eval $matrix.perl;
+
+### gist
+
+    Limited tabular view for the shell output. Just cuts off excessive
+    rows and columns. Implicitly called while:
+
+    say $matrix;      # output when matrix has more than 100 cells
+
+    1 2 3 4 5 ...
+    3 4 5 6 7 ...
+    ...
+
+### full
+
+    Full tabular view (all rows and columns) for the shell or file output.
+
+    say $matrix.full;
 
 Boolean Properties
 ------------------
