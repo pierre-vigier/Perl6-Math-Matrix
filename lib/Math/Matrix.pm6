@@ -1276,31 +1276,39 @@ method reduce-columns (Math::Matrix:D: &coderef){
 
     The Module overloads a range of well and less known ops.
 
-    my $sum = $matrixa + $matrixb;  # cell wise sum of two same sized matrices
-    my $sum = $matrix  + $number;   # add number to every cell
+    my $a   = +$matrix               # Num context, amount of cells (rows * columns)
+    my $b   = ?$matrix               # Bool context, True if any cell has a none zero value
+    my $str = ~$matrix               # String context, matrix content as data structure
 
-    my $dif = $matrixa - $matrixb;  # cell wise difference of two same sized matrices
-    my $dif = $matrix  - $number;   # subtract number from every cell
-    my $neg = -$matrix              # negate value of every cell
+    my $sum =  $matrixa + $matrixb;  # cell wise sum of two same sized matrices
+    my $sum =  $matrix  + $number;   # add number to every cell
 
-    my $p   = $matrixa * $matrixb;  # cell wise product of two same sized matrices
-    my $sp  = $matrix  * $number;   # multiply number to every cell
+    my $dif =  $matrixa - $matrixb;  # cell wise difference of two same sized matrices
+    my $dif =  $matrix  - $number;   # subtract number from every cell
+    my $neg = -$matrix               # negate value of every cell
 
-    my $dp = $a dot $b;             # dot product of two fitting matrices
-    my $dp = $a ⋅ $b;
+    my $p   =  $matrixa * $matrixb;  # cell wise product of two same sized matrices
+    my $sp  =  $matrix  * $number;   # multiply number to every cell
 
-    my $c = $a **  3;               # same as $a dot $a dot $a
-    my $c = $a ** -3;               # same as ($a dot $a dot $a).inverted
-    my $c = $a **  0;               # created an right sized identity matrix
+    my $dp  =  $a dot $b;            # dot product of two fitting matrices
+    my $dp  =  $a ⋅ $b;
 
-     | $matrix |                    # determinant
-    || $matrix ||                   # Euclidean (L2) norm
+    my $c   =  $a **  3;             # same as $a dot $a dot $a
+    my $c   =  $a ** -3;             # same as ($a dot $a dot $a).inverted
+    my $c   =  $a **  0;             # created an right sized identity matrix
+
+     | $matrix |                     # determinant
+    || $matrix ||                    # Euclidean (L2) norm
 
 =end pod
 
 
 multi sub infix:<+>(Math::Matrix $a, Math::Matrix $b --> Math::Matrix:D ) is export {
     $a.add($b);
+}
+
+multi sub infix:<+>(Math::Matrix $a, Real $r --> Math::Matrix:D ) is export {
+    $a.add( $r );
 }
 
 multi sub infix:<->(Math::Matrix $a, Math::Matrix $b --> Math::Matrix:D ) is export {
