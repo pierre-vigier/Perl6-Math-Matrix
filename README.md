@@ -486,7 +486,7 @@ Matrix Operations
 Operators
 =========
 
-    The Module overloads a range of well and less known ops.
+    The Module overloads a range of well and less known ops. +, -, * are commutative.
 
     my $a   = +$matrix               # Num context, amount of cells (rows * columns)
     my $b   = ?$matrix               # Bool context, True if any cell has a none zero value

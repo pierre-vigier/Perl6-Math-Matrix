@@ -1274,7 +1274,7 @@ method reduce-columns (Math::Matrix:D: &coderef){
 =begin pod
 =head1 Operators
 
-    The Module overloads a range of well and less known ops.
+    The Module overloads a range of well and less known ops. +, -, * are commutative.
 
     my $a   = +$matrix               # Num context, amount of cells (rows * columns)
     my $b   = ?$matrix               # Bool context, True if any cell has a none zero value
@@ -1310,9 +1310,18 @@ multi sub infix:<+>(Math::Matrix $a, Math::Matrix $b --> Math::Matrix:D ) is exp
 multi sub infix:<+>(Math::Matrix $a, Real $r --> Math::Matrix:D ) is export {
     $a.add( $r );
 }
+multi sub infix:<+>(Real $r, Math::Matrix $a --> Math::Matrix:D ) is export {
+    $a.add( $r );
+}
 
 multi sub infix:<->(Math::Matrix $a, Math::Matrix $b --> Math::Matrix:D ) is export {
     $a.subtract($b);
+}
+multi sub infix:<->(Math::Matrix $a, Real $r --> Math::Matrix:D ) is export {
+    $a.add( -$r );
+}
+multi sub infix:<->(Real $r, Math::Matrix $a --> Math::Matrix:D ) is export {
+    $a.negated.add( $r );
 }
 
 multi sub prefix:<->(Math::Matrix $a --> Math::Matrix:D ) is export {
