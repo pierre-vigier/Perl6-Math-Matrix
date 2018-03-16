@@ -1229,6 +1229,9 @@ method map(Math::Matrix:D: &coderef --> Math::Matrix:D) {
     } ] );
 }
 
+method reduce(Math::Matrix:D: &coderef ) {
+    ( @!rows.map: {$_.flat}).flat.reduce( &coderef );
+}
 
 =begin pod
 =head3 reduce-rows
