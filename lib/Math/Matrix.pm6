@@ -405,28 +405,28 @@ multi method perl(Math::Matrix:D: --> Str) {
 
 method gist(Math::Matrix:D: --> Str) {
     my $max-rows = 20;
-    my $max-cols = 80;
-    my $max-char = max( @!rows[*;*] ).Int.chars;
+    my $max-chars = 80;
+    my $max-nr-char = max( @!rows[*;*] ).Int.chars;  # maximal pre digit char in cell
+    my $cell_with;
     my $fmt;
-    my $char_with;
     if all( @!rows[*;*] ) ~~ Int {
-        $fmt = " %{$max-char}d ";
-        $char_with = $max-char + 2;
+        $fmt = " %{$max-nr-char}d ";
+        $cell_with = $max-nr-char + 2;
     } else {
         my $max-decimal = max( @!rows[*;*].map( { ( .split(/\./)[1] // '' ).chars } ) );
         $max-decimal = 5 if $max-decimal > 5; #more than that is not readable
-        $max-char += $max-decimal + 1;
-        $fmt = " \%{$max-char}.{$max-decimal}f ";
-        $char_with = $max-char + 3 + $max-decimal;
+        $max-nr-char += $max-decimal + 1;
+        $fmt = " \%{$max-nr-char}.{$max-decimal}f ";
+        $cell_with = $max-nr-char + 3 + $max-decimal;
     }
-    my $rows = min $max-rows, $!row-count;
-    my $cols = min $max-cols, $!column-count;
-    my $row-addon = $!column-count > $max-cols ?? '..' !! '';
+    my $rows = min $!row-count, $max-rows;
+    my $cols = min $!column-count, $max-chars div $cell_with;
+    my $row-addon = $!column-count > $cols ?? ' ...' !! '';
     my $str;
     for @!rows[0 .. $rows-1] -> $r {
         $str ~= ( [~] $r.[0..$cols-1].map( { $_.fmt($fmt) } ) ) ~ "$row-addon\n";
     }
-    $str ~= "..\n" if $!row-count > $max-rows;
+    $str ~= " ...\n" if $!row-count > $max-rows;
     $str;
 }
 
