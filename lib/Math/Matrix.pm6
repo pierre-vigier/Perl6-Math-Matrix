@@ -423,8 +423,8 @@ method gist(Math::Matrix:D: --> Str) {
     my $cols = min $max-cols, $!column-count;
     my $row-addon = $!column-count > $max-cols ?? '..' !! '';
     my $str;
-    for @!rows[0 .. $rows] -> $r {
-        $str ~= ( [~] $r.[0..$cols].map( { $_.fmt($fmt) } ) ) ~ "$row-addon\n";
+    for @!rows[0 .. $rows-1] -> $r {
+        $str ~= ( [~] $r.[0..$cols-1].map( { $_.fmt($fmt) } ) ) ~ "$row-addon\n";
     }
     $str ~= "..\n" if $!row-count > $max-rows;
     $str;
