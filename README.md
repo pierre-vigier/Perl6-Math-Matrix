@@ -486,11 +486,14 @@ Matrix Operations
 Operators
 =========
 
-    The Module overloads a range of well and less known ops. +, -, * are commutative.
+    The Module overloads or uses a range of well and less known ops.
+    +, -, * are commutative.
 
     my $a   = +$matrix               # Num context, amount of cells (rows * columns)
     my $b   = ?$matrix               # Bool context, True if any cell has a none zero value
     my $str = ~$matrix               # String context, matrix content as data structure
+
+    $matrixa ~~ $matrixb             # check if both have same size and they are cell wise equal
 
     my $sum =  $matrixa + $matrixb;  # cell wise sum of two same sized matrices
     my $sum =  $matrix  + $number;   # add number to every cell
@@ -502,12 +505,12 @@ Operators
     my $p   =  $matrixa * $matrixb;  # cell wise product of two same sized matrices
     my $sp  =  $matrix  * $number;   # multiply number to every cell
 
-    my $dp  =  $a dot $b;            # dot product of two fitting matrices
+    my $dp  =  $a dot $b;            # dot product of two fitting matrices (cols a = rows b)
     my $dp  =  $a ⋅ $b;
 
-    my $c   =  $a **  3;             # same as $a dot $a dot $a
-    my $c   =  $a ** -3;             # same as ($a dot $a dot $a).inverted
-    my $c   =  $a **  0;             # created an right sized identity matrix
+    my $c   =  $a **  3;             # $a to the power of 3, same as $a dot $a dot $a
+    my $c   =  $a ** -3;             # alias to ($a dot $a dot $a).inverted
+    my $c   =  $a **  0;             # creats an right sized identity matrix
 
      | $matrix |                     # determinant
     || $matrix ||                    # Euclidean (L2) norm
