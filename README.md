@@ -36,7 +36,7 @@ METHODS
 
   * accessors: cell, row, column, diagonal, submatrix
 
-  * conversion: Bool, Numeric, Str, perl, gist, full
+  * conversion: Bool, Numeric, Str, perl, flat, gist, full
 
   * boolean properties: equal, is-square, is-invertible, is-zero, is-identity, is-upper-triangular, is-lower-triangular, is-diagonal, is-diagonally-dominant, is-symmetric, is-orthogonal, is-positive-definite
 
@@ -46,7 +46,7 @@ METHODS
 
   * decompositions: decompositionLUCrout, decompositionLU, decompositionCholesky
 
-  * mathematical operations: add, subtract, multiply, dotProduct, map, reduce, reduce-rows, reduce-columns
+  * matrix math ops: add, subtract, multiply, dotProduct, map, reduce, reduce-rows, reduce-columns
 
   * operators: +, -, *, **, ⋅, dot, | |, || ||
 
@@ -167,9 +167,9 @@ Type Conversion And Output Flavour
 
 ### Numeric
 
-    Conversion into Numeric context. Returns number (amount) of cells.
+    Conversion into Numeric context. Returns number (amount) of cells (as .elems).
     Please note, only prefix a prefix + (as in: + $matrix) will call this Method.
-    A infix (as in $matrix + $number) calls: .add($number).
+    A infix (as in $matrix + $number) calls .add($number).
 
     $matrix.Numeric   or      + $matrix
 
@@ -187,6 +187,12 @@ Type Conversion And Output Flavour
 
     my $clone = eval $matrix.perl;
 
+### flat
+
+    Flat list with (row-wise) content of all cells (elements):
+
+    Math::Matrix.new( [[1,2],[3,4]] ).flat == (1 2 3 4)    # True
+
 ### gist
 
     Limited tabular view for the shell output. Just cuts off excessive
@@ -194,8 +200,8 @@ Type Conversion And Output Flavour
 
     say $matrix;      # output when matrix has more than 100 cells
 
-    1 2 3 4 5 ...
-    3 4 5 6 7 ...
+    1 2 3 4 5 ..
+    3 4 5 6 7 ..
     ...
 
 ### full

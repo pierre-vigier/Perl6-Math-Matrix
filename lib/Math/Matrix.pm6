@@ -65,14 +65,14 @@ subset Positive_Int of Int where * > 0 ;
 =head1 METHODS
 =item constructors: new, new-zero, new-identity, new-diagonal, new-vector-product
 =item accessors: cell, row, column, diagonal, submatrix
-=item conversion: Bool, Numeric, Str, perl, gist, full
+=item conversion: Bool, Numeric, Str, perl, flat, gist, full
 =item boolean properties: equal, is-square, is-invertible, is-zero, is-identity,
     is-upper-triangular, is-lower-triangular, is-diagonal, is-diagonally-dominant,
     is-symmetric, is-orthogonal, is-positive-definite
 =item numeric properties: size, elems, determinant, rank, kernel, trace, density, norm, condition
 =item derivative matrices: transposed, negated, inverted, reduced-row-echelon-form
 =item decompositions: decompositionLUCrout, decompositionLU, decompositionCholesky
-=item mathematical operations: add, subtract, multiply, dotProduct, map, reduce, reduce-rows, reduce-columns
+=item matrix math ops: add, subtract, multiply, dotProduct, map, reduce, reduce-rows, reduce-columns
 =item operators:   +,   -,   *,   **,   ⋅,  dot,   | |,   || ||
 =end pod
 
@@ -349,9 +349,9 @@ method Bool(Math::Matrix:D: --> Bool)    {   ! self.is-zero   }
 =begin pod
 =head3 Numeric
 
-    Conversion into Numeric context. Returns number (amount) of cells.
+    Conversion into Numeric context. Returns number (amount) of cells (as .elems).
     Please note, only prefix a prefix + (as in: + $matrix) will call this Method.
-    A infix (as in $matrix + $number) calls: .add($number).
+    A infix (as in $matrix + $number) calls .add($number).
     
     $matrix.Numeric   or      + $matrix
 =end pod
@@ -384,6 +384,18 @@ multi method perl(Math::Matrix:D: --> Str) {
 
 
 =begin pod
+=head3 flat
+
+    Flat list with (row-wise) content of all cells (elements):
+    
+    Math::Matrix.new( [[1,2],[3,4]] ).flat == (1 2 3 4)    # True
+=end pod
+multi method flat(Math::Matrix:D: --> List) {
+    self.WHAT.perl ~ ".new(" ~ @!rows.perl ~ ")";
+}
+
+
+=begin pod
 =head3 gist
 
     Limited tabular view for the shell output. Just cuts off excessive
@@ -391,8 +403,8 @@ multi method perl(Math::Matrix:D: --> Str) {
     
     say $matrix;      # output when matrix has more than 100 cells
 
-    1 2 3 4 5 ...
-    3 4 5 6 7 ...
+    1 2 3 4 5 ..
+    3 4 5 6 7 ..
     ...
 
 =end pod
