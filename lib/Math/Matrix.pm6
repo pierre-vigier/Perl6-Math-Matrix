@@ -72,7 +72,7 @@ subset Positive_Int of Int where * > 0 ;
 =item numeric properties: size, determinant, rank, kernel, trace, density, norm, condition
 =item derivative matrices: transposed, negated, inverted, reduced-row-echelon-form
 =item decompositions: decompositionLUCrout, decompositionLU, decompositionCholesky
-=item mathematical operations: add, subtract, multiply, dotProduct, map, reduce-rows, reduce-columns
+=item mathematical operations: add, subtract, multiply, dotProduct, map, reduce, reduce-rows, reduce-columns
 =item operators:   +,   -,   *,   **,   ⋅,  dot,   | |,   || ||
 =end pod
 
@@ -1229,6 +1229,20 @@ method map(Math::Matrix:D: &coderef --> Math::Matrix:D) {
     } ] );
 }
 
+=begin pod
+=head3 reduce
+
+    Like the built in reduce method, it iterates over all elements and joins
+    them into one value, by applying the given operator or method
+    to the previous result and the next element. I starts with the cell [0][0]
+    and moving from left to right in the first row and continue with the first
+    cell of the next row.
+    
+    Math::Matrix.new( [[1,2],[3,4]] ).reduce(&[+]);      # 10
+    Math::Matrix.new( [[1,2],[3,4]] ).reduce(&[*]);      # 10
+
+=end pod
+
 method reduce(Math::Matrix:D: &coderef ) {
     ( @!rows.map: {$_.flat}).flat.reduce( &coderef );
 }
@@ -1236,14 +1250,10 @@ method reduce(Math::Matrix:D: &coderef ) {
 =begin pod
 =head3 reduce-rows
 
-    Like the built in reduce method, it iterates over all elements of a row 
-    and joins them into one value, by applying the given operator or method
-    to the previous result and the next element. The end result will be a list.
-    Each element of that list is the result of reducing one row.
-    In this example we calculate the sum of all elements in a row:
+    Reduces (as described above) every row into one value, so the overall result
+    will be a list. In this example we calculate the sum of all cells in a row:
     
     say Math::Matrix.new( [[1,2],[3,4]] ).reduce-rows(&[+]);     # prints (3, 7)
-
 =end pod
 
 method reduce-rows (Math::Matrix:D: &coderef){
@@ -1256,8 +1266,8 @@ method reduce-rows (Math::Matrix:D: &coderef){
 =begin pod
 =head3 reduce-columns
 
-    Similarly to reduce-rows this method reduces each column to one value in the 
-    resulting list.:
+    Similar to reduce-rows, this method reduces each column to one value in the 
+    resulting list:
 
     say Math::Matrix.new( [[1,2],[3,4]] ).reduce-columns(&[*]);  # prints (3, 8)
 
@@ -1289,11 +1299,12 @@ method reduce-columns (Math::Matrix:D: &coderef){
     The Module overloads or uses a range of well and less known ops.
     +, -, * are commutative.
 
-    my $a   = +$matrix               # Num context, amount of cells (rows * columns)
+    my $a   = +$matrix               # Num context, size: list with numers or rows and columns
     my $b   = ?$matrix               # Bool context, True if any cell has a none zero value
     my $str = ~$matrix               # String context, matrix content as data structure
 
-    $matrixa ~~ $matrixb             # check if both have same size and they are cell wise equal
+     $matrixa ~~  $matrixb           # check if both have same size and they are cell wise equal
+    +$matrixa ~~ +$matrixb           # check if both have same size
 
     my $sum =  $matrixa + $matrixb;  # cell wise sum of two same sized matrices
     my $sum =  $matrix  + $number;   # add number to every cell
