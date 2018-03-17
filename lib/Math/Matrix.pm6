@@ -391,7 +391,7 @@ multi method perl(Math::Matrix:D: --> Str) {
     Math::Matrix.new( [[1,2],[3,4]] ).flat == (1 2 3 4)    # True
 =end pod
 multi method flat(Math::Matrix:D: --> List) {
-    self.WHAT.perl ~ ".new(" ~ @!rows.perl ~ ")";
+    (@!rows.map: {$_.list}).list;
 }
 
 
