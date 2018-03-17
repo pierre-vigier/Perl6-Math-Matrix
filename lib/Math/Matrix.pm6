@@ -65,7 +65,7 @@ subset Positive_Int of Int where * > 0 ;
 =head1 METHODS
 =item constructors: new, new-zero, new-identity, new-diagonal, new-vector-product
 =item accessors: cell, row, column, diagonal, submatrix
-=item conversion: Bool, Numeric, Str, perl, flat, gist, full
+=item conversion: Bool, Numeric, Str, perl, list, gist, full
 =item boolean properties: equal, is-square, is-invertible, is-zero, is-identity,
     is-upper-triangular, is-lower-triangular, is-diagonal, is-diagonally-dominant,
     is-symmetric, is-orthogonal, is-positive-definite
@@ -384,13 +384,13 @@ multi method perl(Math::Matrix:D: --> Str) {
 
 
 =begin pod
-=head3 flat
+=head3 list
 
-    Flat list with (row-wise) content of all cells (elements):
+    Returns a list of lists, reflecting the row-wise content of the matrix.
     
-    Math::Matrix.new( [[1,2],[3,4]] ).flat == (1 2 3 4)    # True
+    Math::Matrix.new( [[1,2],[3,4]] ).list ~~ ((1 2) (3 4))    # True
 =end pod
-multi method flat(Math::Matrix:D: --> List) {
+multi method list(Math::Matrix:D: --> List) {
     (@!rows.map: {$_.flat}).list;
 }
 
