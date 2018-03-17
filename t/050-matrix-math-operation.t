@@ -43,12 +43,14 @@ subtest {
 
 
 subtest {
-    plan 2;
+    plan 4;
     my $matrix = Math::Matrix.new([[1,2],[3,4]]);
     my $matrix2 = Math::Matrix.new([[4,3],[2,1]]);
     my $expected = Math::Matrix.new([[5,5],[5,5]]);
     ok $matrix.add( $matrix2 ) ~~ $expected, "Sum of matrices";
+    ok $matrix2.add( $matrix ) ~~ $expected, "Sum of matrices reversed";
     ok $matrix + $matrix2 ~~ $expected, "Sum of matrices using + operator";
+    ok $matrix2 + $matrix ~~ $expected, "Sum of matrices using + operator reversed";
 }, "Sum of matrices";
 
 subtest {
