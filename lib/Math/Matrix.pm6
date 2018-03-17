@@ -69,7 +69,7 @@ subset Positive_Int of Int where * > 0 ;
 =item boolean properties: equal, is-square, is-invertible, is-zero, is-identity,
     is-upper-triangular, is-lower-triangular, is-diagonal, is-diagonally-dominant,
     is-symmetric, is-orthogonal, is-positive-definite
-=item numeric properties: size, determinant, rank, kernel, trace, density, norm, condition
+=item numeric properties: size, elems, determinant, rank, kernel, trace, density, norm, condition
 =item derivative matrices: transposed, negated, inverted, reduced-row-echelon-form
 =item decompositions: decompositionLUCrout, decompositionLU, decompositionCholesky
 =item mathematical operations: add, subtract, multiply, dotProduct, map, reduce, reduce-rows, reduce-columns
@@ -344,9 +344,7 @@ multi method submatrix(Math::Matrix:D: @rows, @cols --> Math::Matrix:D ){
 
 =end pod
 
-method Bool(Math::Matrix:D: --> Bool) {
-    ! self.is-zero;
-}
+method Bool(Math::Matrix:D: --> Bool)    {   ! self.is-zero   }
 
 =begin pod
 =head3 Numeric
@@ -358,9 +356,7 @@ method Bool(Math::Matrix:D: --> Bool) {
     $matrix.Numeric   or      + $matrix
 =end pod
 
-method Numeric (Math::Matrix:D: --> Int) {
-    $!row-count * $!column-count;
-}
+method Numeric (Math::Matrix:D: --> Int) {   self.elems   }
 
 =begin pod
 =head3 Str
@@ -371,9 +367,7 @@ method Numeric (Math::Matrix:D: --> Int) {
     put $matrix     or      print $matrix
 =end pod
 
-method Str(Math::Matrix:D: --> Str) {
-    @!rows.gist;
-}
+method Str(Math::Matrix:D: --> Str)      {   @!rows.gist   }
 
 =begin pod
 =head3 perl
@@ -702,6 +696,20 @@ method !build_is-positive-definite (Math::Matrix:D: --> Bool) { # with Sylvester
 
 method size(Math::Matrix:D: ){
     return $!row-count, $!column-count;
+}
+
+
+=begin pod
+=head3 elems
+
+    Number (count) of elements.
+
+    say $matrix.elems();
+    say +$matrix;                       # same thing
+=end pod
+
+method elems (Math::Matrix:D: --> Int) {
+    $!row-count * $!column-count;
 }
 
 
@@ -1299,12 +1307,11 @@ method reduce-columns (Math::Matrix:D: &coderef){
     The Module overloads or uses a range of well and less known ops.
     +, -, * are commutative.
 
-    my $a   = +$matrix               # Num context, size: list with numers or rows and columns
+    my $a   = +$matrix               # Num context, amount (count) of cells
     my $b   = ?$matrix               # Bool context, True if any cell has a none zero value
     my $str = ~$matrix               # String context, matrix content as data structure
 
-     $matrixa ~~  $matrixb           # check if both have same size and they are cell wise equal
-    +$matrixa ~~ +$matrixb           # check if both have same size
+    $matrixa ~~ $matrixb             # check if both have same size and they are cell wise equal
 
     my $sum =  $matrixa + $matrixb;  # cell wise sum of two same sized matrices
     my $sum =  $matrix  + $number;   # add number to every cell

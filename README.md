@@ -40,7 +40,7 @@ METHODS
 
   * boolean properties: equal, is-square, is-invertible, is-zero, is-identity, is-upper-triangular, is-lower-triangular, is-diagonal, is-diagonally-dominant, is-symmetric, is-orthogonal, is-positive-definite
 
-  * numeric properties: size, determinant, rank, kernel, trace, density, norm, condition
+  * numeric properties: size, elems, determinant, rank, kernel, trace, density, norm, condition
 
   * derivative matrices: transposed, negated, inverted, reduced-row-echelon-form
 
@@ -307,6 +307,13 @@ Numeric Properties
     say $matrix.size();
     my $dim = min $matrix.size();
 
+### elems
+
+    Number (count) of elements.
+
+    say $matrix.elems();
+    say +$matrix;                       # same thing
+
 ### determinant, alias det
 
     If you see the columns as vectors, that describe the edges of a solid,
@@ -497,12 +504,11 @@ Operators
     The Module overloads or uses a range of well and less known ops.
     +, -, * are commutative.
 
-    my $a   = +$matrix               # Num context, size: list with numers or rows and columns
+    my $a   = +$matrix               # Num context, amount (count) of cells
     my $b   = ?$matrix               # Bool context, True if any cell has a none zero value
     my $str = ~$matrix               # String context, matrix content as data structure
 
-     $matrixa ~~  $matrixb           # check if both have same size and they are cell wise equal
-    +$matrixa ~~ +$matrixb           # check if both have same size
+    $matrixa ~~ $matrixb             # check if both have same size and they are cell wise equal
 
     my $sum =  $matrixa + $matrixb;  # cell wise sum of two same sized matrices
     my $sum =  $matrix  + $number;   # add number to every cell
