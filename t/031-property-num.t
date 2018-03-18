@@ -113,7 +113,7 @@ subtest {
     ok ($diagonal dot $matrix).norm <= $diagonal.norm * $matrix.norm, "Cauchy-Schwarz inequality for L2 norm";
     ok ($diagonal dot $matrix).norm(:p<2>,:q<3>) <= $diagonal.norm(:p<2>,:q<3>) * $matrix.norm(:p<2>,:q<3>), "Cauchy-Schwarz inequality for 2,3 norm";
     ok ($diagonal dot $matrix).norm('max') <= $diagonal.norm('max') * $matrix.norm('max'),  "Cauchy-Schwarz inequality for maximum norm";
-    ok ($diagonal dot $matrix).norm('rowsum') <= $diagonal.norm('row-sum') * $matrix.norm('row-sum'),  "Cauchy-Schwarz inequality for rowsum norm";
-    ok ($diagonal dot $matrix).norm('columnsum') <= $diagonal.norm('column-sum') * $matrix.norm('column-sum'),  "Cauchy-Schwarz inequality for columnsum norm";
+    ok ($diagonal dot $matrix).norm('row-sum') <= $diagonal.norm('row-sum') * $matrix.norm('row-sum'),  "Cauchy-Schwarz inequality for rowsum norm";
+    ok ($diagonal dot $matrix).norm('column-sum') <= $diagonal.norm('column-sum') * $matrix.norm('column-sum'),  "Cauchy-Schwarz inequality for columnsum norm";
 
 }, "Norm";
