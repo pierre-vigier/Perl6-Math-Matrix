@@ -363,9 +363,9 @@ Numeric Properties
     my $norm = $matrix.norm(1);           # p-norm, L1 = sum of all cells
     my $norm = $matrix.norm(p:<4>,q:<3>); # p,q - norm, p = 4, q = 3
     my $norm = $matrix.norm(p:<2>,q:<2>); # Frobenius norm
-    my $norm = $matrix.norm('max');       # max norm - biggest absolute value of a cell
-    $matrix.norm('rowsum');               # row sum norm - biggest abs. value-sum of a row
-    $matrix.norm('columnsum');            # column sum norm - same column wise
+    my $norm = $matrix.norm('max');       # maximum norm - biggest absolute value of a cell
+    $matrix.norm('row-sum');              # row sum norm - biggest abs. value-sum of a row
+    $matrix.norm('column-sum');           # column sum norm - same column wise
 
 ### condition
 
