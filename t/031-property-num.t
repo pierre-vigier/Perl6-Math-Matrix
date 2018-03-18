@@ -100,20 +100,20 @@ subtest {
     ok $zero.norm(:p<2>,:q<2>) == 0 ,"Zero matrix is 0 in 2,2 norm too";
     ok $diagonal.norm(:p<2>,:q<2>) == sqrt(14),"Frobenius norm";
 
-    ok $zero.norm('max') == 0       ,"max norm of zero == 0";
-    ok $matrix.norm('max') == 9     ,"max norm";
-    ok ($matrix *3).norm('max')== 9*3,"max norm is homogenic";
-    ok $zero.norm('rowsum') == 0    ,"row sum norm of zero == 0";
-    ok $matrix.norm('rowsum') == 18 ,"row sum norm";
-    ok ($matrix *3).norm('rowsum') == 18*3,"row sum norm is homogenic";
-    ok $zero.norm('columnsum') == 0 ,"column sum norm of zero == 0";
-    ok $matrix.norm('columnsum') == 18,"column sum norm";
-    ok ($matrix *3).norm('columnsum') == 18*3,"column sum norm is homogenic";
+    ok $zero.norm('max') == 0         ,"max norm of zero == 0";
+    ok $matrix.norm('max') == 9       ,"max norm";
+    ok ($matrix *3).norm('max')== 9*3 ,"max norm is homogenic";
+    ok $zero.norm('row-sum') == 0     ,"row sum norm of zero == 0";
+    ok $matrix.norm('row-sum') == 18  ,"row sum norm";
+    ok ($matrix *3).norm('row-sum') == 18*3,"row sum norm is homogenic";
+    ok $zero.norm('columnsum') == 0   ,"column sum norm of zero == 0";
+    ok $matrix.norm('column-sum') == 18,"column sum norm";
+    ok ($matrix *3).norm('column-sum') == 18*3,"column sum norm is homogenic";
 
     ok ($diagonal dot $matrix).norm <= $diagonal.norm * $matrix.norm, "Cauchy-Schwarz inequality for L2 norm";
     ok ($diagonal dot $matrix).norm(:p<2>,:q<3>) <= $diagonal.norm(:p<2>,:q<3>) * $matrix.norm(:p<2>,:q<3>), "Cauchy-Schwarz inequality for 2,3 norm";
     ok ($diagonal dot $matrix).norm('max') <= $diagonal.norm('max') * $matrix.norm('max'),  "Cauchy-Schwarz inequality for maximum norm";
-    ok ($diagonal dot $matrix).norm('rowsum') <= $diagonal.norm('rowsum') * $matrix.norm('rowsum'),  "Cauchy-Schwarz inequality for rowsum norm";
-    ok ($diagonal dot $matrix).norm('columnsum') <= $diagonal.norm('columnsum') * $matrix.norm('columnsum'),  "Cauchy-Schwarz inequality for columnsum norm";
+    ok ($diagonal dot $matrix).norm('rowsum') <= $diagonal.norm('row-sum') * $matrix.norm('row-sum'),  "Cauchy-Schwarz inequality for rowsum norm";
+    ok ($diagonal dot $matrix).norm('columnsum') <= $diagonal.norm('column-sum') * $matrix.norm('column-sum'),  "Cauchy-Schwarz inequality for columnsum norm";
 
 }, "Norm";
