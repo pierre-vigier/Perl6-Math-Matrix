@@ -7,7 +7,7 @@ Math::Matrix - create, compare, compute and measure 2D matrices
 
 =head1 VERSION
 
-0.1.6
+0.1.7
 
 =head1 SYNOPSIS
 
@@ -31,7 +31,7 @@ Matrices are readonly - all operations and derivatives are new objects.
 # =item structural operations: split join
 # ⊗
 
-unit class Math::Matrix:ver<0.1.6>:auth<github:pierre-vigier>;
+unit class Math::Matrix:ver<0.1.7>:auth<github:pierre-vigier>;
 use AttrX::Lazy;
 
 has @!rows is required;

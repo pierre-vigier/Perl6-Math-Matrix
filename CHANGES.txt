@@ -1,0 +1,22 @@
+ 0.1.5:
+    - 2018.3.14
+    - accessors column and row now return consistently lists (like diagonal)
+    - expanded power of submatrix accessor
+    - added ops: |.| as alias for determinant, and prefix - as alias for negated
+    - renamed apply method to map
+    - renamed negate method to negated (consistency, transposed and inverted)
+    - added and clarified docs
+
+ 0.1.6:
+    - 2018.3.15
+    - added methods: reduce-rows and reduce-columns, 
+    - added and clarified docs
+
+ 0.1.7:
+    - 2018.3.18
+    - added methods: elems, list-rows and list-columns, full
+    - documented, but forgot to implement: commutative + and - op
+    - limit gist for optimal shell output
+    - change norm names rowsum => row-sum, columnsum => column-sum
+    - added docs, operator got own section
+    - started changelog
