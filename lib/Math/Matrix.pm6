@@ -69,7 +69,7 @@ subset Positive_Int of Int where * > 0 ;
 =item boolean properties: equal, is-square, is-invertible, is-zero, is-identity,
     is-upper-triangular, is-lower-triangular, is-diagonal, is-diagonally-dominant,
     is-symmetric, is-orthogonal, is-positive-definite
-=item numeric properties: size, elems, determinant, rank, kernel, trace, density, norm, condition
+=item numeric properties: size, elems, density, trace, determinant, rank, kernel, norm, condition
 =item derivative matrices: transposed, negated, inverted, reduced-row-echelon-form
 =item decompositions: decompositionLUCrout, decompositionLU, decompositionCholesky
 =item matrix math ops: add, subtract, multiply, dotProduct, map, reduce, reduce-rows, reduce-columns
@@ -724,7 +724,36 @@ method elems (Math::Matrix:D: --> Int) {
     $!row-count * $!column-count;
 }
 
+=begin pod
+=head3 density
 
+    my $d = $matrix.density( );   
+
+    Density is the percentage of cell which are not zero.
+
+=end pod
+
+
+method !build_density(Math::Matrix:D: --> Rat) {
+    my $valcount = 0;
+    for ^$!row-count X ^$!column-count -> ($r, $c) { $valcount++ if @!rows[$r][$c] != 0 }
+    $valcount / ($!row-count * $!column-count);
+}
+
+
+=begin pod
+=head3 trace
+
+    my $tr = $matrix.trace( ); 
+
+    The trace of a square matrix is the sum of the cells on the main diagonal.
+    In other words: sum of cells which row and column value is identical.
+
+=end pod
+
+method !build_trace(Math::Matrix:D: --> Numeric) {
+    self.diagonal.sum;
+}
 
 =begin pod
 =head3 determinant, alias det
@@ -775,38 +804,6 @@ method determinant-naive(Math::Matrix:D: --> Numeric) {
     }
     $det;
 }
-
-
-=begin pod
-=head3 trace
-
-    my $tr = $matrix.trace( ); 
-
-    The trace of a square matrix is the sum of the cells on the main diagonal.
-    In other words: sum of cells which row and column value is identical.
-
-=end pod
-
-method !build_trace(Math::Matrix:D: --> Numeric) {
-    [+] self.diagonal.flat;
-}
-
-=begin pod
-=head3 density
-
-    my $d = $matrix.density( );   
-
-    Density is the percentage of cell which are not zero.
-
-=end pod
-
-
-method !build_density(Math::Matrix:D: --> Rat) {
-    my $valcount = 0;
-    for ^$!row-count X ^$!column-count -> ($r, $c) { $valcount++ if @!rows[$r][$c] != 0 }
-    $valcount / ($!row-count * $!column-count);
-}
-
 
 =begin pod
 =head3 rank

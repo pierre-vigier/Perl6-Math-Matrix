@@ -40,7 +40,7 @@ METHODS
 
   * boolean properties: equal, is-square, is-invertible, is-zero, is-identity, is-upper-triangular, is-lower-triangular, is-diagonal, is-diagonally-dominant, is-symmetric, is-orthogonal, is-positive-definite
 
-  * numeric properties: size, elems, determinant, rank, kernel, trace, density, norm, condition
+  * numeric properties: size, elems, density, trace, determinant, rank, kernel, norm, condition
 
   * derivative matrices: transposed, negated, inverted, reduced-row-echelon-form
 
@@ -320,6 +320,19 @@ Numeric Properties
     say $matrix.elems();
     say +$matrix;                       # same thing
 
+### density
+
+    my $d = $matrix.density( );   
+
+    Density is the percentage of cell which are not zero.
+
+### trace
+
+    my $tr = $matrix.trace( ); 
+
+    The trace of a square matrix is the sum of the cells on the main diagonal.
+    In other words: sum of cells which row and column value is identical.
+
 ### determinant, alias det
 
     If you see the columns as vectors, that describe the edges of a solid,
@@ -329,19 +342,6 @@ Numeric Properties
     my $det = $matrix.determinant( );
     my $d = $matrix.det( );             # same thing
     my $d = |$matrix|;                  # operator shortcut
-
-### trace
-
-    my $tr = $matrix.trace( ); 
-
-    The trace of a square matrix is the sum of the cells on the main diagonal.
-    In other words: sum of cells which row and column value is identical.
-
-### density
-
-    my $d = $matrix.density( );   
-
-    Density is the percentage of cell which are not zero.
 
 ### rank
 
