@@ -105,10 +105,10 @@ subtest {
     ok ($matrix *3).norm('max')== 9*3 ,"max norm is homogenic";
     ok $zero.norm('row-sum') == 0     ,"row sum norm of zero == 0";
     ok $matrix.norm('row-sum') == 18  ,"row sum norm";
-    ok ($matrix *3).norm('row-sum') == 18*3,"row sum norm is homogenic";
-    ok $zero.norm('columnsum') == 0   ,"column sum norm of zero == 0";
+    ok ($matrix *3).norm('row-sum') == 54,"row sum norm is homogenic";
+    ok $zero.norm('column-sum') == 0  ,"column sum norm of zero == 0";
     ok $matrix.norm('column-sum') == 18,"column sum norm";
-    ok ($matrix *3).norm('column-sum') == 18*3,"column sum norm is homogenic";
+    ok ($matrix *3).norm('column-sum') == 54,"column sum norm is homogenic";
 
     ok ($diagonal dot $matrix).norm <= $diagonal.norm * $matrix.norm, "Cauchy-Schwarz inequality for L2 norm";
     ok ($diagonal dot $matrix).norm(:p<2>,:q<3>) <= $diagonal.norm(:p<2>,:q<3>) * $matrix.norm(:p<2>,:q<3>), "Cauchy-Schwarz inequality for 2,3 norm";

@@ -394,6 +394,10 @@ multi method list(Math::Matrix:D: --> List) {
     (@!rows.map: {$_.flat}).list;
 }
 
+multi method list-columns(Math::Matrix:D: --> List) {
+    ((0 .. $!column-count - 1).map: {self.column($_)}).list;
+}
+
 
 =begin pod
 =head3 gist
