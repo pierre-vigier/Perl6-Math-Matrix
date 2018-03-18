@@ -65,7 +65,7 @@ subset Positive_Int of Int where * > 0 ;
 =head1 METHODS
 =item constructors: new, new-zero, new-identity, new-diagonal, new-vector-product
 =item accessors: cell, row, column, diagonal, submatrix
-=item conversion: Bool, Numeric, Str, perl, list, gist, full
+=item conversion: Bool, Numeric, Str, perl, list-rows, list-columns, gist, full
 =item boolean properties: equal, is-square, is-invertible, is-zero, is-identity,
     is-upper-triangular, is-lower-triangular, is-diagonal, is-diagonally-dominant,
     is-symmetric, is-orthogonal, is-positive-definite
@@ -252,7 +252,7 @@ multi method cell(Math::Matrix:D: Int:D $row, Int:D $column --> Numeric ) {
 
 =end pod
 
-multi method row(Math::Matrix:D: Int:D $row) {
+multi method row(Math::Matrix:D: Int:D $row  --> List) {
     fail X::OutOfRange.new(
         :what<Row index> , :got($row), :range("0..{$!row-count -1 }")
     ) unless 0 <= $row < $!row-count;
@@ -269,7 +269,7 @@ multi method row(Math::Matrix:D: Int:D $row) {
 
 =end pod
 
-multi method column(Math::Matrix:D: Int:D $column) {
+multi method column(Math::Matrix:D: Int:D $column --> List) {
     fail X::OutOfRange.new(
         :what<Column index> , :got($column), :range("0..{$!column-count -1 }")
     ) unless 0 <= $column < $!column-count;
@@ -285,7 +285,7 @@ multi method column(Math::Matrix:D: Int:D $column) {
 
 =end pod
 
-method !build_diagonal(Math::Matrix:D: ){
+method !build_diagonal(Math::Matrix:D: --> List){
     fail "Number of columns has to be same as number of rows" unless self.is-square;
     ( gather for ^$!row-count -> $i { take @!rows[$i;$i] } ).list;
 }
@@ -384,16 +384,23 @@ multi method perl(Math::Matrix:D: --> Str) {
 
 
 =begin pod
-=head3 list
+=head3 list-rows
 
     Returns a list of lists, reflecting the row-wise content of the matrix.
     
-    Math::Matrix.new( [[1,2],[3,4]] ).list ~~ ((1 2) (3 4))    # True
+    Math::Matrix.new( [[1,2],[3,4]] ).list-rows ~~ ((1 2) (3 4))     # True
 =end pod
-multi method list(Math::Matrix:D: --> List) {
+multi method list-rows(Math::Matrix:D: --> List) {
     (@!rows.map: {$_.flat}).list;
 }
 
+=begin pod
+=head3 list-columns
+
+    Returns a list of lists, reflecting the row-wise content of the matrix.
+    
+    Math::Matrix.new( [[1,2],[3,4]] ).list-columns ~~ ((1 3) (2 4)) # True
+=end pod
 multi method list-columns(Math::Matrix:D: --> List) {
     ((0 .. $!column-count - 1).map: {self.column($_)}).list;
 }
