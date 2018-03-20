@@ -190,7 +190,7 @@ method new-diagonal(Math::Matrix:U: *@diag ){
     for ^@diag.elems X ^@diag.elems -> ($r, $c) { @d[$r][$c] = $r==$c ?? @diag[$r] !! 0 }
 
     self.bless( rows => @d, diagonal => @diag,
-                determinant => [*](@diag.flat), trace => [+] (@diag.flat)
+                determinant => [*](@diag.flat), trace => [+] (@diag.flat),
                 is-diagonal => True, is-symmetric => True  );
 
 #    my @d = self!zero_array(+@diag, +@diag);
