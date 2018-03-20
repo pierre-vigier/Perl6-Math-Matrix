@@ -1336,13 +1336,13 @@ multi method tensorProduct(Math::Matrix:D: Math::Matrix $b ) { # --> Math::Matri
 #    }
 
 #    Math::Matrix.new( 
-    [@!rows.map: {
+    [(@!rows.map: {
         my $arow = $_;
         $b!rows.map: {
             my $brow = $_;
             [ ($arow.list.map: { $brow.flat >>*>> $_ }).flat ];
         }
-    }]; 
+    }).list]; 
 
 #    );
 }
@@ -1491,12 +1491,16 @@ multi sub prefix:<->(Math::Matrix $a --> Math::Matrix:D ) is export {
     $a.negated();
 }
 
+multi sub infix:<x>( Math::Matrix $a, Math::Matrix $b is looser(&infix:<*>) is export {
+    $a.tensorProduct( $b );
+}
+
 multi sub infix:<⋅>( Math::Matrix $a, Math::Matrix $b where { $a!column-count == $b!row-count} --> Math::Matrix:D ) is looser(&infix:<*>) is export {
     $a.dotProduct( $b );
 }
 
 multi sub infix:<dot>(Math::Matrix $a, Math::Matrix $b --> Math::Matrix:D ) is looser(&infix:<*>) is export {
-    $a ⋅ $b;
+    $a.dotProduct( $b );
 }
 
 multi sub infix:<*>(Math::Matrix $a, Real $r --> Math::Matrix:D ) is export {
