@@ -1336,13 +1336,13 @@ multi method tensorProduct(Math::Matrix:D: Math::Matrix $b ) { # --> Math::Matri
 #    }
 
 #    Math::Matrix.new( 
-    [(@!rows.map: {
+    [@!rows.map: {
         my $arow = $_;
         $b!rows.map: {
             my $brow = $_;
             [ ($arow.list.map: { $brow.flat >>*>> $_ }).flat ];
         }
-    }).flat ]; 
+    }]; 
 
 #    );
 }
