@@ -137,7 +137,7 @@ method !zero_array( Positive_Int $rows, Positive_Int $cols = $rows ) {
 method new-zero(Math::Matrix:U: Positive_Int $rows, Positive_Int $cols = $rows) {
     self.bless( rows => self!zero_array($rows, $cols),
         determinant => 0, rank => 0, kernel => min($rows, $cols), density => 0, trace => 0,
-        is-zero => True, is-identity => False  );
+        is-zero => True, is-identity => False, is-diagonal => ($cols == $rows),  );
 }
 
 =begin pod
@@ -164,7 +164,7 @@ method !identity_array( Positive_Int $size ) {
 method new-identity(Math::Matrix:U: Positive_Int $size ) {
     self.bless( rows => self!identity_array($size), diagonal => (1) xx $size, 
                 determinant => 1, rank => $size, kernel => 0, density => 1/$size, trace => $size,
-                is-zero => False, is-identity => True, is-symmetric => True );
+                is-zero => False, is-identity => True, is-diagonal => True, is-symmetric => True );
 }
 
 =begin pod
@@ -186,11 +186,12 @@ method new-identity(Math::Matrix:U: Positive_Int $size ) {
 
 method new-diagonal(Math::Matrix:U: *@diag ){
     fail "Expect an List of Number" unless @diag and [and] @diag >>~~>> Numeric;
-    my @d;
+    my $size = +@diag;
+    my @d = self!zero_array($size, $size);
     for ^@diag.elems X ^@diag.elems -> ($r, $c) { @d[$r][$c] = $r==$c ?? @diag[$r] !! 0 }
-    self.bless( rows => @d, determinant => [*](@diag.flat), diagonal => @diag,
-                determinant => [*] @diag, rank => +@diag, kernel => 0, density => 1/+@diag, trace => [+] @diag, 
-                is-zero => False, is-symmetric => True );
+    self.bless( rows => @d, diagonal => @diag,
+                determinant => [*] @diag.flat, rank => +@diag, kernel => 0, density => 1/$size, trace => [+] @diag.flat, 
+                is-zero => False, is-diagonal => True, is-symmetric => True );
 }
 
 method !new-lower-triangular(Math::Matrix:U: @m ) {
