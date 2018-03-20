@@ -1328,23 +1328,20 @@ multi method dotProduct(Math::Matrix:D: Math::Matrix $b --> Math::Matrix:D ) {
 
 =end pod
 
-multi method tensorProduct(Math::Matrix:D: Math::Matrix $b ) { # --> Math::Matrix:D
-
-
+multi method tensorProduct(Math::Matrix:D: Math::Matrix $b  --> Math::Matrix:D) {
 #    for ^$!row-count X ^$b!column-count -> ($r, $c) {
 #        @product[$r][$c] += @!rows[$r][$_] * $b!rows[$_][$c] for ^$b!row-count;
 #    }
 
-#    Math::Matrix.new( 
-    [(@!rows.map: {
-        my $arow = $_;
-        $b!rows.map: {
-            my $brow = $_;
-            [ ($arow.list.map: { $brow.flat >>*>> $_ }).flat ];
-        }
-    }).list]; 
-
-#    );
+    Math::Matrix.new( 
+        [(@!rows.map: {
+            my $arow = $_;
+            $b!rows.map: {
+                my $brow = $_;
+                [ ($arow.list.map: { $brow.flat >>*>> $_ }).flat ];
+            }
+        }).list]; 
+    );
 }
 
 
@@ -1491,7 +1488,7 @@ multi sub prefix:<->(Math::Matrix $a --> Math::Matrix:D ) is export {
     $a.negated();
 }
 
-multi sub infix:<x>( Math::Matrix $a, Math::Matrix $b is looser(&infix:<*>) is export {
+multi sub infix:<x>( Math::Matrix $a, Math::Matrix $b  --> Math::Matrix:D ) is looser(&infix:<*>) is export {
     $a.tensorProduct( $b );
 }
 
