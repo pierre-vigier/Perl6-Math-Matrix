@@ -38,16 +38,18 @@ has @!rows is required;
 has Int $!row-count;
 has Int $!column-count;
 has $!diagonal is lazy;
-has Bool $!is-square is lazy;
+has Bool $!is-zero is lazy;
+has Bool $!is-identity is lazy;
 has Bool $!is-diagonal is lazy;
 has Bool $!is-lower-triangular is lazy;
 has Bool $!is-upper-triangular is lazy;
-has Bool $!is-invertible is lazy;
-has Bool $!is-zero is lazy;
-has Bool $!is-identity is lazy;
-has Bool $!is-orthogonal is lazy;
-has Bool $!is-positive-definite  is lazy;
+has Bool $!is-square is lazy;
 has Bool $!is-symmetric is lazy;
+has Bool $!is-self-adjoint is lazy;
+has Bool $!is-unitary is lazy;
+has Bool $!is-orthogonal is lazy;
+has Bool $!is-invertible is lazy;
+has Bool $!is-positive-definite is lazy;
 has Numeric $!trace is lazy;
 has Numeric $!determinant is lazy;
 has Rat $!density is lazy;
@@ -66,11 +68,11 @@ subset Positive_Int of Int where * > 0 ;
 =item constructors: new, new-zero, new-identity, new-diagonal, new-vector-product
 =item accessors: cell, row, column, diagonal, submatrix
 =item conversion: Bool, Numeric, Str, perl, list-rows, list-columns, gist, full
-=item boolean properties: equal, is-square, is-invertible, is-zero, is-identity,
+=item boolean properties: equal, is-zero, is-identity, is-square, is-invertible,
     is-upper-triangular, is-lower-triangular, is-diagonal, is-diagonally-dominant,
-    is-symmetric, is-orthogonal, is-positive-definite
+    is-symmetric, is-unitary, is-self-adjoint, is-orthogonal, is-positive-definite
 =item numeric properties: size, elems, density, trace, determinant, rank, kernel, norm, condition
-=item derivative matrices: transposed, negated, inverted, reduced-row-echelon-form
+=item derivative matrices: transposed, negated, conjugated, inverted, reduced-row-echelon-form
 =item decompositions: decompositionLUCrout, decompositionLU, decompositionCholesky
 =item matrix math ops: add, subtract, multiply, dotProduct, map, reduce, reduce-rows, reduce-columns
 =item operators:   +,   -,   *,   **,   ⋅,  dot,   | |,   || ||
@@ -988,6 +990,21 @@ method inverted(Math::Matrix:D: --> Math::Matrix:D) {
 method negated(Math::Matrix:D: --> Math::Matrix:D ) {
     self.map( - * );
 }
+
+
+=begin pod
+=head3 conjugated, alias conj
+
+    my $c = $matrix.conjugated();    # change every value to its complex conjugated
+    my $c = $matrix.conj();          # work too
+
+=end pod
+method conj(Math::Matrix:D: --> Math::Matrix:D  )         { self.conjugated }
+method conjugated(Math::Matrix:D: --> Math::Matrix:D ) {
+    self.map( { $_.conj} );
+}
+
+
 
 
 =begin pod
