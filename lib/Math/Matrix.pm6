@@ -136,7 +136,7 @@ method !zero_array( Positive_Int $rows, Positive_Int $cols = $rows ) {
 
 method new-zero(Math::Matrix:U: Positive_Int $rows, Positive_Int $cols = $rows) {
     self.bless( rows => self!zero_array($rows, $cols),
-        determinant => 0, rank => 0, kernel => $size, density => 0, trace => 0,
+        determinant => 0, rank => 0, kernel => min($rows, $cols), density => 0, trace => 0,
         is-zero => True, is-identity => False  );
 }
 
