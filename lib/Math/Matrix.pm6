@@ -187,12 +187,15 @@ method new-identity(Math::Matrix:U: Positive_Int $size ) {
 method new-diagonal(Math::Matrix:U: *@diag ){
     fail "Expect an List of Number" unless @diag and [and] @diag >>~~>> Numeric;
     my $size = +@diag;
-    my @d = self!zero_array($size, $size);
-    (^$size).map: { @d[$_][$_] = @diag[$_] };
+    for ^@diag.elems X ^@diag.elems -> ($r, $c) { @d[$r][$c] = $r==$c ?? @diag[$r] !! 0 }
 
-    self.bless( rows => @d, diagonal => @diag,   determinant => [*] (@diag.flat),
-                rank => +@diag, kernel => 0, density => 1/$size, trace => [+] (@diag.flat), 
-                is-zero => False, is-diagonal => True, is-symmetric => True );
+    self.bless( rows => @d, , diagonal => @diag,
+                determinant => [*](@diag.flat), trace => [+] (@diag.flat)
+                is-diagonal => True, is-symmetric => True  );
+
+#    my @d = self!zero_array($size, $size);
+#    (^$size).map: { @d[$_][$_] = @diag[$_] };
+
 }
 
 method !new-lower-triangular(Math::Matrix:U: @m ) {
