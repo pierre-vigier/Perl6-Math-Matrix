@@ -46,7 +46,7 @@ has Bool $!is-upper-triangular is lazy;
 has Bool $!is-square is lazy;
 has Bool $!is-symmetric is lazy;
 has Bool $!is-self-adjoint is lazy;
-#has Bool $!is-unitary is lazy;
+has Bool $!is-unitary is lazy;
 has Bool $!is-orthogonal is lazy;
 has Bool $!is-invertible is lazy;
 has Bool $!is-positive-definite is lazy;
@@ -686,11 +686,23 @@ method !build_is-self-adjoint(Math::Matrix:D: --> Bool) {
 }
 
 
+=begin pod
+=head3 is-unitary
+
+    An unitery matrix multiplied (dotProduct) with its concjugate transposed version (.conj.T)
+    is an identity matrix.
+=end pod
+
+method !build_is-unitary(Math::Matrix:D: --> Bool) {
+    return False unless self.is-square;
+    self.dotProduct( self.T.conj ) ~~ Math::Matrix.new-identity( $!row-count );
+}
+
 
 =begin pod
 =head3 is-orthogonal
 
-    Is True if the matrix multiplied (dotProduct) with its transposed version (T)
+    An orthogonal matrix multiplied (dotProduct) with its transposed version (T)
     is an identity matrix.
 =end pod
 
