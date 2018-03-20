@@ -38,7 +38,7 @@ METHODS
 
   * conversion: Bool, Numeric, Str, perl, list-rows, list-columns, gist, full
 
-  * boolean properties: equal, is-zero, is-identity, is-square, is-invertible, is-upper-triangular, is-lower-triangular, is-diagonal, is-diagonally-dominant, is-symmetric, is-unitary, is-self-adjoint, is-orthogonal, is-positive-definite
+  * boolean properties: equal, is-zero, is-identity, is-square, is-diagonal, is-diagonally-dominant, is-upper-triangular, is-lower-triangular, is-invertible, is-symmetric, is-unitary, is-self-adjoint, is-orthogonal, is-positive-definite
 
   * numeric properties: size, elems, density, trace, determinant, rank, kernel, norm, condition
 
@@ -234,11 +234,6 @@ Boolean Properties
 
     if $matrix.is-square {
 
-### is-invertible
-
-    Is True if number of rows and colums are the same (is-square)
-    and determinant is not zero.
-
 ### is-zero
 
     True if every cell has value of 0.
@@ -298,12 +293,19 @@ Boolean Properties
 
     if $matrix.is-symmetric {
 
-### is-orthogonal
+### is-self-adjoint
 
-    if $matrix.is-orthogonal {
+    A Hermitian or self-adjoint matrix is equal to its transposed and conjugated.
+
+### is-orthogonal
 
     Is True if the matrix multiplied (dotProduct) with its transposed version (T)
     is an identity matrix.
+
+### is-invertible
+
+    Is True if number of rows and colums are the same (is-square)
+    and determinant is not zero.
 
 ### is-positive-definite
 
@@ -398,7 +400,7 @@ Derivative Matrices
 ### conjugated, alias conj
 
     my $c = $matrix.conjugated();    # change every value to its complex conjugated
-    my $c = $matrix.conj();          # work too
+    my $c = $matrix.conj();          # works too (official Perl 6 name)
 
 ### reduced-row-echelon-form, alias rref
 

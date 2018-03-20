@@ -1,4 +1,5 @@
  0.1.8:
+    - added method: conjugated
     - more property setting optimization in constructors 
 
  0.1.7:

@@ -45,7 +45,7 @@ has Bool $!is-lower-triangular is lazy;
 has Bool $!is-upper-triangular is lazy;
 has Bool $!is-square is lazy;
 has Bool $!is-symmetric is lazy;
-#has Bool $!is-self-adjoint is lazy;
+has Bool $!is-self-adjoint is lazy;
 #has Bool $!is-unitary is lazy;
 has Bool $!is-orthogonal is lazy;
 has Bool $!is-invertible is lazy;
@@ -512,9 +512,7 @@ multi σ_permutations ([$x, *@xs]) {
     
     if $matrixa.equal( $matrixb ) {
     if $matrixa ~~ $matrixb {
-
 =end pod
-
 
 method equal(Math::Matrix:D: Math::Matrix $b --> Bool) {
     @!rows ~~ $b!rows;
@@ -523,6 +521,7 @@ method equal(Math::Matrix:D: Math::Matrix $b --> Bool) {
 method ACCEPTS(Math::Matrix $b --> Bool) {
     self.equal( $b );
 }
+
 
 =begin pod
 =head3 is-square
@@ -536,16 +535,6 @@ method !build_is-square(Math::Matrix:D: --> Bool) {
     $!column-count == $!row-count;
 }
 
-=begin pod
-=head3 is-invertible
-
-    Is True if number of rows and colums are the same (is-square)
-    and determinant is not zero.
-=end pod
-
-method !build_is-invertible(Math::Matrix:D: --> Bool) {
-    self.is-square and self.determinant != 0;
-}
 
 =begin pod
 =head3 is-zero
@@ -684,10 +673,22 @@ method !build_is-symmetric(Math::Matrix:D: --> Bool) {
     True;
 }
 
+
+=begin pod
+=head3 is-self-adjoint
+
+    A Hermitian or self-adjoint matrix is equal to its transposed and conjugated.
+=end pod
+
+method !build_is-self-adjoint(Math::Matrix:D: --> Bool) {
+    return False unless self.is-square;
+    self.T.conj ~~ self;
+}
+
+
+
 =begin pod
 =head3 is-orthogonal
-
-    if $matrix.is-orthogonal {
 
     Is True if the matrix multiplied (dotProduct) with its transposed version (T)
     is an identity matrix.
@@ -696,6 +697,18 @@ method !build_is-symmetric(Math::Matrix:D: --> Bool) {
 method !build_is-orthogonal(Math::Matrix:D: --> Bool) {
     return False unless self.is-square;
     self.dotProduct( self.T ) ~~ Math::Matrix.new-identity( $!row-count );
+}
+
+
+=begin pod
+=head3 is-invertible
+
+    Is True if number of rows and colums are the same (is-square)
+    and determinant is not zero.
+=end pod
+
+method !build_is-invertible(Math::Matrix:D: --> Bool) {
+    self.is-square and self.determinant != 0;
 }
 
 
@@ -996,14 +1009,13 @@ method negated(Math::Matrix:D: --> Math::Matrix:D ) {
 =head3 conjugated, alias conj
 
     my $c = $matrix.conjugated();    # change every value to its complex conjugated
-    my $c = $matrix.conj();          # work too
+    my $c = $matrix.conj();          # works too (official Perl 6 name)
 
 =end pod
 method conj(Math::Matrix:D: --> Math::Matrix:D  )         { self.conjugated }
 method conjugated(Math::Matrix:D: --> Math::Matrix:D ) {
     self.map( { $_.conj} );
 }
-
 
 
 

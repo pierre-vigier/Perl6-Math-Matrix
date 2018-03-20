@@ -1,10 +1,12 @@
 use Test;
 use Math::Matrix;
-plan 40;
+plan 43;
 
 my $matrixa = Math::Matrix.new([[1,2],[3,4]]);
 my $matrixc = Math::Matrix.new([[8,8],[8,8]]);
 my $matrixd = Math::Matrix.new([[1,2,3],[4,5,6]]);
+
+my $matrixh = Math::Matrix.new([[1,2+1],[2-1,4]]);
 
 my $zero = Math::Matrix.new-zero(3,4);
 my $identity = Math::Matrix.new-identity(3);
@@ -67,3 +69,7 @@ ok $diagonal.is-invertible, "Diagonal matrix is invertible";
 ok $diagonal.is-invertible, "A full ranked square matrix is invertible";
 nok $zero.is-invertible,    "Zero matrix is not invertible";
 nok $matrixd.is-invertible, "Matrix with defect Is not invertible";
+
+ok $diagonal.is-self-adjoint, "diagonal matrix is also hermetian";
+ok $matrixh.is-self-adjoint,  "this special matrix is hermetian";
+nok $ut.is-self-adjoint,      "a triangular matrix can not be hermetian";
