@@ -38,11 +38,11 @@ METHODS
 
   * conversion: Bool, Numeric, Str, perl, list-rows, list-columns, gist, full
 
-  * boolean properties: equal, is-square, is-invertible, is-zero, is-identity, is-upper-triangular, is-lower-triangular, is-diagonal, is-diagonally-dominant, is-symmetric, is-orthogonal, is-positive-definite
+  * boolean properties: equal, is-zero, is-identity, is-square, is-invertible, is-upper-triangular, is-lower-triangular, is-diagonal, is-diagonally-dominant, is-symmetric, is-unitary, is-self-adjoint, is-orthogonal, is-positive-definite
 
   * numeric properties: size, elems, density, trace, determinant, rank, kernel, norm, condition
 
-  * derivative matrices: transposed, negated, inverted, reduced-row-echelon-form
+  * derivative matrices: transposed, negated, conjugated, inverted, reduced-row-echelon-form
 
   * decompositions: decompositionLUCrout, decompositionLU, decompositionCholesky
 
@@ -394,6 +394,11 @@ Derivative Matrices
 
     my $new = $matrix.negated();    # invert sign of all cells
     my $neg = - $matrix;            # works too
+
+### conjugated, alias conj
+
+    my $c = $matrix.conjugated();    # change every value to its complex conjugated
+    my $c = $matrix.conj();          # work too
 
 ### reduced-row-echelon-form, alias rref
 
