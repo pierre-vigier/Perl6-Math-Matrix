@@ -190,8 +190,8 @@ method new-diagonal(Math::Matrix:U: *@diag ){
     my @d = self!zero_array($size, $size);
     (^$size).map: { @d[$_][$_] = @diag[$_] };
 
-    self.bless( rows => @d, diagonal => @diag,   determinant => [*] @diag.flat,
-                rank => +@diag, kernel => 0, density => 1/$size, trace => [+] @diag.flat, 
+    self.bless( rows => @d, diagonal => @diag,   determinant => [*] (@diag.flat),
+                rank => +@diag, kernel => 0, density => 1/$size, trace => [+] (@diag.flat), 
                 is-zero => False, is-diagonal => True, is-symmetric => True );
 }
 
