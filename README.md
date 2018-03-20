@@ -38,7 +38,7 @@ METHODS
 
   * conversion: Bool, Numeric, Str, perl, list-rows, list-columns, gist, full
 
-  * boolean properties: equal, is-zero, is-identity, is-square, is-diagonal, is-diagonally-dominant, is-upper-triangular, is-lower-triangular, is-invertible, is-symmetric, is-unitary, is-self-adjoint, is-orthogonal, is-positive-definite
+  * boolean properties: equal, is-zero, is-identity, is-square, is-diagonal, is-diagonally-dominant, is-upper-triangular, is-lower-triangular, is-invertible, is-symmetric, is-unitary, is-self-adjoint, is-orthogonal, is-positive-definite, is-positive-semidefinite
 
   * numeric properties: size, elems, density, trace, determinant, rank, kernel, norm, condition
 
@@ -299,22 +299,23 @@ Boolean Properties
 
 ### is-unitary
 
-    An unitery matrix multiplied (dotProduct) with its concjugate transposed version (.conj.T)
-    is an identity matrix.
+    An unitery matrix multiplied (dotProduct) with its concjugate transposed version (.conj.T) is an identity matrix.
 
 ### is-orthogonal
 
-    An orthogonal matrix multiplied (dotProduct) with its transposed version (T)
-    is an identity matrix.
+    An orthogonal matrix multiplied (dotProduct) with its transposed version (T) is an identity matrix.
 
 ### is-invertible
 
-    Is True if number of rows and colums are the same (is-square)
-    and determinant is not zero.
+    Is True if number of rows and colums are the same (is-square) and determinant is not zero.
 
 ### is-positive-definite
 
-    True if all main minors are positive
+    True if all main minors or all Eigenvalues are strictly greater zero.
+
+### is-positive-semidefinite
+
+    True if all main minors or all Eigenvalues are greater equal zero.
 
 Numeric Properties
 ------------------

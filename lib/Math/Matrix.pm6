@@ -35,9 +35,11 @@ unit class Math::Matrix:ver<0.1.7>:auth<github:pierre-vigier>;
 use AttrX::Lazy;
 
 has @!rows is required;
+has $!diagonal is lazy;
+
 has Int $!row-count;
 has Int $!column-count;
-has $!diagonal is lazy;
+
 has Bool $!is-zero is lazy;
 has Bool $!is-identity is lazy;
 has Bool $!is-diagonal is lazy;
@@ -50,16 +52,18 @@ has Bool $!is-unitary is lazy;
 has Bool $!is-orthogonal is lazy;
 has Bool $!is-invertible is lazy;
 has Bool $!is-positive-definite is lazy;
+has Bool $!is-positive-semidefinite is lazy;
+
 has Numeric $!trace is lazy;
 has Numeric $!determinant is lazy;
 has Rat $!density is lazy;
 has Int $!rank is lazy;
 has Int $!kernel is lazy;
 
-method !rows      { @!rows }
-method !clone_rows { AoA_clone(@!rows) }
-method !row-count   { $!row-count }
-method !column-count { $!column-count }
+method !rows       { @!rows }
+method !clone_rows  { AoA_clone(@!rows) }
+method !row-count    { $!row-count }
+method !column-count  { $!column-count }
 
 subset Positive_Int of Int where * > 0 ;
 
@@ -70,7 +74,8 @@ subset Positive_Int of Int where * > 0 ;
 =item conversion: Bool, Numeric, Str, perl, list-rows, list-columns, gist, full
 =item boolean properties: equal, is-zero, is-identity, is-square, is-diagonal,
     is-diagonally-dominant, is-upper-triangular, is-lower-triangular, is-invertible,
-    is-symmetric, is-unitary, is-self-adjoint, is-orthogonal, is-positive-definite
+    is-symmetric, is-unitary, is-self-adjoint, is-orthogonal,
+    is-positive-definite, is-positive-semidefinite
 =item numeric properties: size, elems, density, trace, determinant, rank, kernel, norm, condition
 =item derivative matrices: transposed, negated, conjugated, inverted, reduced-row-echelon-form
 =item decompositions: decompositionLUCrout, decompositionLU, decompositionCholesky
@@ -188,16 +193,13 @@ method new-identity(Math::Matrix:U: Positive_Int $size ) {
 
 method new-diagonal(Math::Matrix:U: *@diag ){
     fail "Expect an List of Number" unless @diag and [and] @diag >>~~>> Numeric;
-    my @d;
-    for ^@diag.elems X ^@diag.elems -> ($r, $c) { @d[$r][$c] = $r==$c ?? @diag[$r] !! 0 }
+    my Int $size = +@diag;
+    my @d = self!zero_array($size, $size);
+    (^$size).map: { @d[$_][$_] = @diag[$_] };
 
     self.bless( rows => @d, diagonal => @diag,
                 determinant => [*](@diag.flat), trace => [+] (@diag.flat),
                 is-diagonal => True, is-symmetric => True  );
-
-#    my @d = self!zero_array(+@diag, +@diag);
-#    (^$size).map: { @d[$_][$_] = @diag[$_] };
-
 }
 
 method !new-lower-triangular(Math::Matrix:U: @m ) {
@@ -689,8 +691,7 @@ method !build_is-self-adjoint(Math::Matrix:D: --> Bool) {
 =begin pod
 =head3 is-unitary
 
-    An unitery matrix multiplied (dotProduct) with its concjugate transposed version (.conj.T)
-    is an identity matrix.
+    An unitery matrix multiplied (dotProduct) with its concjugate transposed version (.conj.T) is an identity matrix.
 =end pod
 
 method !build_is-unitary(Math::Matrix:D: --> Bool) {
@@ -702,8 +703,7 @@ method !build_is-unitary(Math::Matrix:D: --> Bool) {
 =begin pod
 =head3 is-orthogonal
 
-    An orthogonal matrix multiplied (dotProduct) with its transposed version (T)
-    is an identity matrix.
+    An orthogonal matrix multiplied (dotProduct) with its transposed version (T) is an identity matrix.
 =end pod
 
 method !build_is-orthogonal(Math::Matrix:D: --> Bool) {
@@ -715,8 +715,7 @@ method !build_is-orthogonal(Math::Matrix:D: --> Bool) {
 =begin pod
 =head3 is-invertible
 
-    Is True if number of rows and colums are the same (is-square)
-    and determinant is not zero.
+    Is True if number of rows and colums are the same (is-square) and determinant is not zero.
 =end pod
 
 method !build_is-invertible(Math::Matrix:D: --> Bool) {
@@ -727,7 +726,7 @@ method !build_is-invertible(Math::Matrix:D: --> Bool) {
 =begin pod
 =head3 is-positive-definite
 
-    True if all main minors are positive
+    True if all main minors or all Eigenvalues are strictly greater zero.
 =end pod
 
 method !build_is-positive-definite (Math::Matrix:D: --> Bool) { # with Sylvester's criterion
@@ -741,6 +740,22 @@ method !build_is-positive-definite (Math::Matrix:D: --> Bool) { # with Sylvester
     True;
 }
 
+=begin pod
+=head3 is-positive-semidefinite
+
+    True if all main minors or all Eigenvalues are greater equal zero.
+=end pod
+
+method !build_is-positive-semidefinite (Math::Matrix:D: --> Bool) { # with Sylvester's criterion
+    return False unless self.is-square;
+    return False unless self.determinant >= 0;
+    my $sub = Math::Matrix.new( @!rows );
+    for $!row-count - 1 ... 1 -> $r {
+        $sub = $sub.submatrix($r,$r);
+        return False unless $sub.determinant >= 0;
+    }
+    True;
+}
 ################################################################################
 # end of boolean matrix properties - start numeric matrix properties
 ################################################################################
