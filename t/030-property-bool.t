@@ -6,7 +6,7 @@ my $matrixa = Math::Matrix.new([[1,2],[3,4]]);
 my $matrixc = Math::Matrix.new([[8,8],[8,8]]);
 my $matrixd = Math::Matrix.new([[1,2,3],[4,5,6]]);
 
-my $matrixh = Math::Matrix.new([[1,2+1],[2-1,4]]);
+my $matrixh = Math::Matrix.new([[1,2+i],[2-i,4]]);
 
 my $zero = Math::Matrix.new-zero(3,4);
 my $identity = Math::Matrix.new-identity(3);
