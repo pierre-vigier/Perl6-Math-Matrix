@@ -1336,15 +1336,13 @@ multi method tensorProduct(Math::Matrix:D: Math::Matrix $b ) { # --> Math::Matri
 #    }
 
 #    Math::Matrix.new( 
-    @!rows.map: {
+    [@!rows.map: {
         my $arow = $_;
-        $b!rows.map: {
+        [$b!rows.map: {
             my $brow = $_;
-            $arow.list.map: {
-                $_;
-            }
-        }
-    }; 
+            ($arow.list.map: { $brow.flat >>+>> $_ }).flat;
+        }]
+    }]; 
 
 #    );
 }
@@ -1384,7 +1382,7 @@ method map(Math::Matrix:D: &coderef --> Math::Matrix:D) {
 =end pod
 
 method reduce(Math::Matrix:D: &coderef ) {
-    ( @!rows.map: {$_.flat}).flat.reduce( &coderef );
+    (@!rows.map: {$_.flat}).flat.reduce( &coderef );
 }
 
 =begin pod
