@@ -143,7 +143,13 @@ method !zero_array( Positive_Int $rows, Positive_Int $cols = $rows ) {
     return [ [ 0 xx $cols ] xx $rows ];
 }
 
-method new-zero(Math::Matrix:U: Positive_Int $rows, Positive_Int $cols = $rows) {
+multi method new-zero(Math::Matrix:U: Positive_Int $size) {
+    self.bless( rows => self!zero_array($size, $size),
+        determinant => 0, rank => 0, kernel => $size, density => 0, trace => 0,
+        is-zero => True, is-identity => False, is-diagonal => True, 
+        is-square => True, is-symmetric => True  );
+}
+multi method new-zero(Math::Matrix:U: Positive_Int $rows, Positive_Int $cols) {
     self.bless( rows => self!zero_array($rows, $cols),
         determinant => 0, rank => 0, kernel => min($rows, $cols), density => 0, trace => 0,
         is-zero => True, is-identity => False, is-diagonal => ($cols == $rows),  );
@@ -173,7 +179,8 @@ method !identity_array( Positive_Int $size ) {
 method new-identity(Math::Matrix:U: Positive_Int $size ) {
     self.bless( rows => self!identity_array($size), diagonal => (1) xx $size, 
                 determinant => 1, rank => $size, kernel => 0, density => 1/$size, trace => $size,
-                is-zero => False, is-identity => True, is-diagonal => True, is-symmetric => True );
+                is-zero => False, is-identity => True, 
+                is-square => True, is-diagonal => True, is-symmetric => True );
 }
 
 =begin pod
@@ -201,7 +208,7 @@ method new-diagonal(Math::Matrix:U: *@diag ){
 
     self.bless( rows => @d, diagonal => @diag,
                 determinant => [*](@diag.flat), trace => [+] (@diag.flat),
-                is-diagonal => True, is-symmetric => True  );
+                is-square => True, is-diagonal => True, is-symmetric => True  );
 }
 
 method !new-lower-triangular(Math::Matrix:U: @m ) {
@@ -656,14 +663,12 @@ method is-diagonally-dominant(Math::Matrix:D: Bool :$strict = False, Str :$along
 =head3 is-symmetric
 
     Is True if every cell with coordinates x y has same value as the cell on y x.
+    In other words: $matrix and $matrix.transposed (alias T) are the same.
 
     Example:    1 2 3
                 2 5 4
                 3 4 7
 
-    if $matrix.is-symmetric {
-
-    
 =end pod
 
 method !build_is-symmetric(Math::Matrix:D: --> Bool) {
@@ -694,7 +699,8 @@ method !build_is-self-adjoint(Math::Matrix:D: --> Bool) {
 =head3 is-unitary
 
     An unitery matrix multiplied (dotProduct) with its concjugate transposed 
-    derivative (.conj.T) is an identity matrix.
+    derivative (.conj.T) is an identity matrix or said differently the 
+    concjugate transposed matrix equals the inversed matrix.
 =end pod
 
 method !build_is-unitary(Math::Matrix:D: --> Bool) {
@@ -707,7 +713,7 @@ method !build_is-unitary(Math::Matrix:D: --> Bool) {
 =head3 is-orthogonal
 
     An orthogonal matrix multiplied (dotProduct) with its transposed derivative (T)
-    is an identity matrix.
+    is an identity matrix or in other words transosed and inverted matrices are equal.
 =end pod
 
 method !build_is-orthogonal(Math::Matrix:D: --> Bool) {
@@ -720,6 +726,7 @@ method !build_is-orthogonal(Math::Matrix:D: --> Bool) {
 =head3 is-invertible
 
     Is True if number of rows and colums are the same (is-square) and determinant is not zero.
+    All rows or colums have to be Independent vectors.
 =end pod
 
 method !build_is-invertible(Math::Matrix:D: --> Bool) {
@@ -1287,9 +1294,7 @@ multi method multiply(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b!
 =head3 dotProduct
 
     my $product = $matrix1.dotProduct( $matrix2 )
-    return a new Matrix, result of the dotProduct of the current matrix with matrix2
-    Call be called throug operator ⋅ or dot , like following:
-    my $c = $a ⋅ $b;
+    my $c = $a ⋅ $b;                # works too as operator alias
     my $c = $a dot $b;
 
     A shortcut for multiplication is the power - operator **
@@ -1298,7 +1303,6 @@ multi method multiply(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b!
     my $c = $a **  0;               # created an right sized identity matrix
 
 =end pod
- 
 
 multi method dotProduct(Math::Matrix:D: Math::Matrix $b --> Math::Matrix:D ) {
     my @product;
@@ -1308,6 +1312,43 @@ multi method dotProduct(Math::Matrix:D: Math::Matrix $b --> Math::Matrix:D ) {
     }
     Math::Matrix.new( @product );
 }
+
+=begin pod
+=head3 tensorProduct
+
+    The tensor product between a matrix a of size (m,n) and a matrix b of size
+    (p,q) is a matrix c of size (a*m,b*n). The maybe simplest description of c
+    is a concatination of all matrices you get by multiplication of an element
+    of a with the complete matrix b as in $a.multiply($b.cell(..,..)).
+    Just replace in a each cell with this product and you will get c.
+    
+    my $c = $matrixa.tensorProduct( $matrixb );
+    my $c = $a x $b;                            # works too as operator alias
+
+
+=end pod
+
+multi method tensorProduct(Math::Matrix:D: Math::Matrix $b ) { # --> Math::Matrix:D
+
+
+#    for ^$!row-count X ^$b!column-count -> ($r, $c) {
+#        @product[$r][$c] += @!rows[$r][$_] * $b!rows[$_][$c] for ^$b!row-count;
+#    }
+
+#    Math::Matrix.new( 
+    @!rows.map: {
+        my $arow = $_;
+        $b!rows.map: {
+            my $brow = $_;
+            $arow.list.map: {
+                $_;
+            }
+        }
+    }; 
+
+#    );
+}
+
 
 =begin pod
 =head3 map

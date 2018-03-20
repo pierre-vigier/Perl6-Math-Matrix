@@ -286,12 +286,11 @@ Boolean Properties
 ### is-symmetric
 
     Is True if every cell with coordinates x y has same value as the cell on y x.
+    In other words: $matrix and $matrix.transposed (alias T) are the same.
 
     Example:    1 2 3
                 2 5 4
                 3 4 7
-
-    if $matrix.is-symmetric {
 
 ### is-self-adjoint
 
@@ -300,16 +299,18 @@ Boolean Properties
 ### is-unitary
 
     An unitery matrix multiplied (dotProduct) with its concjugate transposed 
-    derivative (.conj.T) is an identity matrix.
+    derivative (.conj.T) is an identity matrix or said differently the 
+    concjugate transposed matrix equals the inversed matrix.
 
 ### is-orthogonal
 
     An orthogonal matrix multiplied (dotProduct) with its transposed derivative (T)
-    is an identity matrix.
+    is an identity matrix or in other words transosed and inverted matrices are equal.
 
 ### is-invertible
 
     Is True if number of rows and colums are the same (is-square) and determinant is not zero.
+    All rows or colums have to be Independent vectors.
 
 ### is-positive-definite
 
@@ -480,15 +481,24 @@ Matrix Operations
 ### dotProduct
 
     my $product = $matrix1.dotProduct( $matrix2 )
-    return a new Matrix, result of the dotProduct of the current matrix with matrix2
-    Call be called throug operator ⋅ or dot , like following:
-    my $c = $a ⋅ $b;
+    my $c = $a ⋅ $b;                # works too as operator alias
     my $c = $a dot $b;
 
     A shortcut for multiplication is the power - operator **
     my $c = $a **  3;               # same as $a dot $a dot $a
     my $c = $a ** -3;               # same as ($a dot $a dot $a).inverted
     my $c = $a **  0;               # created an right sized identity matrix
+
+### tensorProduct
+
+    The tensor product between a matrix a of size (m,n) and a matrix b of size
+    (p,q) is a matrix c of size (a*m,b*n). The maybe simplest description of c
+    is a concatination of all matrices you get by multiplication of an element
+    of a with the complete matrix b as in $a.multiply($b.cell(..,..)).
+    Just replace in a each cell with this product and you will get c.
+
+    my $c = $matrixa.tensorProduct( $matrixb );
+    my $c = $a x $b;                            # works too as operator alias
 
 ### map
 

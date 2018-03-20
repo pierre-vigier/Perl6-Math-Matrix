@@ -1,5 +1,6 @@
  0.1.8:
-    - 2018.3.2
+    - 2018.3.20
+    - added method: tensorProduct 
     - added method: conjugated, is-self-adjoint, is-unitary, is-positive-semidefinite
     - more property setting optimization in constructors 
 
