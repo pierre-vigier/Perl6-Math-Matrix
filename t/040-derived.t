@@ -15,7 +15,7 @@ subtest {
     my $matrix = Math::Matrix.new([[1,2],[3,4]]);
     my $cmatrix = Math::Matrix.new([[1+i,2],[3-2i,4]]);
     my $ccmatrix = Math::Matrix.new([[1-i,2],[3+2i,4]]);
-    ok $matrix.conjugated() ~~ $matrix), "conjugation on Int matrix is identity";
+    ok $matrix.conjugated() ~~ $matrix, "conjugation on Int matrix is identity";
     ok $cmatrix.conj().conj() ~~ $cmatrix, "Double conjugation is identity";
     ok $cmatrix.conjugated() ~~ $ccmatrix, "does conjugation right";
 }, "Conjugation";

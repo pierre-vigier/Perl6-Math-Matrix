@@ -68,8 +68,8 @@ subset Positive_Int of Int where * > 0 ;
 =item constructors: new, new-zero, new-identity, new-diagonal, new-vector-product
 =item accessors: cell, row, column, diagonal, submatrix
 =item conversion: Bool, Numeric, Str, perl, list-rows, list-columns, gist, full
-=item boolean properties: equal, is-zero, is-identity, is-square, is-invertible,
-    is-upper-triangular, is-lower-triangular, is-diagonal, is-diagonally-dominant,
+=item boolean properties: equal, is-zero, is-identity, is-square, is-diagonal,
+    is-diagonally-dominant, is-upper-triangular, is-lower-triangular, is-invertible,
     is-symmetric, is-unitary, is-self-adjoint, is-orthogonal, is-positive-definite
 =item numeric properties: size, elems, density, trace, determinant, rank, kernel, norm, condition
 =item derivative matrices: transposed, negated, conjugated, inverted, reduced-row-echelon-form
