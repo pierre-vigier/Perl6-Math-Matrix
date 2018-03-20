@@ -188,9 +188,10 @@ method new-diagonal(Math::Matrix:U: *@diag ){
     fail "Expect an List of Number" unless @diag and [and] @diag >>~~>> Numeric;
     my $size = +@diag;
     my @d = self!zero_array($size, $size);
-    for ^@diag.elems X ^@diag.elems -> ($r, $c) { @d[$r][$c] = $r==$c ?? @diag[$r] !! 0 }
-    self.bless( rows => @d, diagonal => @diag,
-                determinant => [*] @diag.flat, rank => +@diag, kernel => 0, density => 1/$size, trace => [+] @diag.flat, 
+    (^$size).map: { @d[$_][$_] = @diag[$_] };
+
+    self.bless( rows => @d, diagonal => @diag,   determinant => [*] @diag.flat,
+                rank => +@diag, kernel => 0, density => 1/$size, trace => [+] @diag.flat, 
                 is-zero => False, is-diagonal => True, is-symmetric => True );
 }
 
