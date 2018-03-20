@@ -42,7 +42,7 @@ METHODS
 
   * numeric properties: size, elems, density, trace, determinant, rank, kernel, norm, condition
 
-  * derivative matrices: transposed, negated, conjugated, inverted, reduced-row-echelon-form
+  * derived matrices: transposed, negated, conjugated, inverted, reduced-row-echelon-form
 
   * decompositions: decompositionLUCrout, decompositionLU, decompositionCholesky
 
@@ -299,11 +299,13 @@ Boolean Properties
 
 ### is-unitary
 
-    An unitery matrix multiplied (dotProduct) with its concjugate transposed version (.conj.T) is an identity matrix.
+    An unitery matrix multiplied (dotProduct) with its concjugate transposed 
+    derivative (.conj.T) is an identity matrix.
 
 ### is-orthogonal
 
-    An orthogonal matrix multiplied (dotProduct) with its transposed version (T) is an identity matrix.
+    An orthogonal matrix multiplied (dotProduct) with its transposed derivative (T)
+    is an identity matrix.
 
 ### is-invertible
 

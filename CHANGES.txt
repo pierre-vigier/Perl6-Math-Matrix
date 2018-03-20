@@ -1,5 +1,6 @@
  0.1.8:
-    - added method: conjugated, is-self-adjoint, is-unitary
+    - 2018.3.2
+    - added method: conjugated, is-self-adjoint, is-unitary, is-positive-semidefinite
     - more property setting optimization in constructors 
 
  0.1.7:

@@ -28,8 +28,7 @@ use with consideration...
 
 Matrices are readonly - all operations and derivatives are new objects.
 =end pod
-# =item structural operations: split join
-# ⊗
+
 
 unit class Math::Matrix:ver<0.1.7>:auth<github:pierre-vigier>;
 use AttrX::Lazy;
@@ -67,6 +66,7 @@ method !column-count  { $!column-count }
 
 subset Positive_Int of Int where * > 0 ;
 
+
 =begin pod
 =head1 METHODS
 =item constructors: new, new-zero, new-identity, new-diagonal, new-vector-product
@@ -77,11 +77,13 @@ subset Positive_Int of Int where * > 0 ;
     is-symmetric, is-unitary, is-self-adjoint, is-orthogonal,
     is-positive-definite, is-positive-semidefinite
 =item numeric properties: size, elems, density, trace, determinant, rank, kernel, norm, condition
-=item derivative matrices: transposed, negated, conjugated, inverted, reduced-row-echelon-form
+=item derived matrices: transposed, negated, conjugated, inverted, reduced-row-echelon-form
 =item decompositions: decompositionLUCrout, decompositionLU, decompositionCholesky
 =item matrix math ops: add, subtract, multiply, dotProduct, map, reduce, reduce-rows, reduce-columns
 =item operators:   +,   -,   *,   **,   ⋅,  dot,   | |,   || ||
 =end pod
+# =item structural operations: split join
+# ⊗
 
 ################################################################################
 # start constructors
@@ -691,7 +693,8 @@ method !build_is-self-adjoint(Math::Matrix:D: --> Bool) {
 =begin pod
 =head3 is-unitary
 
-    An unitery matrix multiplied (dotProduct) with its concjugate transposed version (.conj.T) is an identity matrix.
+    An unitery matrix multiplied (dotProduct) with its concjugate transposed 
+    derivative (.conj.T) is an identity matrix.
 =end pod
 
 method !build_is-unitary(Math::Matrix:D: --> Bool) {
@@ -703,7 +706,8 @@ method !build_is-unitary(Math::Matrix:D: --> Bool) {
 =begin pod
 =head3 is-orthogonal
 
-    An orthogonal matrix multiplied (dotProduct) with its transposed version (T) is an identity matrix.
+    An orthogonal matrix multiplied (dotProduct) with its transposed derivative (T)
+    is an identity matrix.
 =end pod
 
 method !build_is-orthogonal(Math::Matrix:D: --> Bool) {
