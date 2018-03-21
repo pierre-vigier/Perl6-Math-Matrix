@@ -80,7 +80,7 @@ subset Positive_Int of Int where * > 0 ;
 =item numeric properties: size, elems, density, trace, determinant, rank, kernel, norm, condition
 =item derived matrices: transposed, negated, conjugated, inverted, reduced-row-echelon-form
 =item decompositions: decompositionLUCrout, decompositionLU, decompositionCholesky
-=item matrix math ops: add, subtract, multiply, dotProduct, tensorProduct
+=item matrix math ops: add, subtract, add-row, add-column, multiply, dotProduct, tensorProduct
 =item structural ops: map, reduce, reduce-rows, reduce-columns
 =item operators:   +,   -,   *,   **,   ⋅,  dot,  ⊗,  x,  | |,   || ||
 =end pod
@@ -363,11 +363,11 @@ multi method submatrix(Math::Matrix:D: Int:D $row-min, Int:D $col-min, Int:D $ro
 
 multi method submatrix(Math::Matrix:D: @rows where .all ~~ Int, @cols where .all ~~ Int --> Math::Matrix:D ){
     fail X::OutOfRange.new(
+        :what<Row index> , :got(@rows), :range("0..{$!row-count -1 }")
+    ) unless 0 <= all(@rows) < $!row-count;
+    fail X::OutOfRange.new(
         :what<Column index> , :got(@cols), :range("0..{$!column-count -1 }")
     ) unless 0 <= all(@cols) < $!column-count;
-    fail X::OutOfRange.new(
-        :what<Column index> , :got(@rows), :range("0..{$!row-count -1 }")
-    ) unless 0 <= all(@rows) < $!row-count;
     Math::Matrix.new([ @rows.map( { [ @!rows[$_][|@cols] ] } ) ]);
 }
 
@@ -1304,6 +1304,21 @@ multi method subtract(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b!
     }
     Math::Matrix.new( @subtract );
 }
+
+multi method add-row(Math::Matrix:D: Int $row, @row where {.all ~~ Numeric} --> Math::Matrix:D } --> Math::Matrix:D ) {
+    fail X::OutOfRange.new(
+        :what<Row index> , :got($row), :range("0..{$!row-count -1 }")
+    ) unless 0 <= $row < $!row-count;
+    fail "Matrix has $!column-count columns, but got only "~ +@row ~ "elements." unless $!column-count == +@row;
+    my @m = @!rows;
+@m[0][0] = 0;
+#    my @sum;
+#    for ^$!row-count X ^$!column-count -> ($r, $c) {
+#        @sum[$r][$c] = @!rows[$r][$c] + $b!rows[$r][$c];
+#    }
+    Math::Matrix.new( @m );
+}
+
 
 =begin pod
 =head3 multiply
