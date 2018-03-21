@@ -1489,7 +1489,7 @@ method reduce-rows (Math::Matrix:D: &coderef){
 =end pod
 
 method reduce-columns (Math::Matrix:D: &coderef){
-    ^$!column-count.map: { self.column($_).reduce( &coderef ) }
+    (^$!column-count).map: { self.column($_).reduce( &coderef ) }
 }
 
 
