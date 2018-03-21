@@ -318,13 +318,23 @@ method !build_diagonal(Math::Matrix:D: --> List){
 =begin pod
 =head3 submatrix
 
-    Return a subset of cells of a given matrix by deleting rows and/or columns. 
-    Given $matrix = Math::Matrix.new([[1,2,3][4,5,6],[7,8,9]]);
-    A submatrix with one row and two columns:
+    Subset of cells of a given matrix by deleting rows and/or columns. 
 
-    $matrix.submatrix(1,2);              # is [[1,2]]
+    The first and simplest usage is by choosing a cell (by coordinates).
+    Row and column of that cell will be removed.
 
-    A submatrix from cell (0,1) on to left and down till cell (1,2):
+    my $m = Math::Matrix.new([[1,2,3,4][2,3,4,5],[3,4,5,6]]);     # 1 2 3 4
+                                                                    2 3 4 5
+    say $m.submatrix(1,2);  # 1 2 4                                 3 4 5 6
+                              3 4 6                            
+
+    If you provide two pairs of coordinates, these will be counted as left upper
+    and right lower corner of and area inside the original matrix, which will
+    the resulting submatrix.
+
+    say $m.submatrix(1,1,2,2);  # 1 3                             7 8 9
+                              7 9                             
+
 
     $matrix.submatrix(0,1,1,2);          # is [[2,3],[5,6]]
 
@@ -334,8 +344,19 @@ method !build_diagonal(Math::Matrix:D: --> List){
 =end pod
 
 multi method submatrix(Math::Matrix:D: Int:D $row, Int:D $col --> Math::Matrix:D ){
-    self.submatrix((0 .. $row-1).list,(0 .. $col-1).list);
+    fail X::OutOfRange.new(
+        :what<Row index> , :got($row), :range("0..{$!row-count -1 }")
+    ) unless 0 <= $row < $!row-count;
+    fail X::OutOfRange.new(
+        :what<Column index> , :got($col), :range("0..{$!column-count -1 }")
+    ) unless 0 <= $col < $!column-count;
+    my @rows = ^$!row-count;
+    @rows.splice($row,1);
+    my @cols = ^$!column-count;
+    @cols.splice($col,1);
+    self.submatrix(@rows ,@cols);
 }
+
 multi method submatrix(Math::Matrix:D: Int:D $row-min, Int:D $col-min, Int:D $row-max, Int:D $col-max --> Math::Matrix:D ){
     fail "Minimum row has to be smaller than maximum row" if $row-min > $row-max;
     fail "Minimum column has to be smaller than maximum column" if $col-min > $col-max;
@@ -746,7 +767,7 @@ method !build_is-positive-definite (Math::Matrix:D: --> Bool) { # with Sylvester
     return False unless self.determinant > 0;
     my $sub = Math::Matrix.new( @!rows );
     for $!row-count - 1 ... 1 -> $r {
-        $sub = $sub.submatrix($r,$r);
+        $sub = $sub.submatrix(0,0,$r,$r);
         return False unless $sub.determinant > 0;
     }
     True;
@@ -763,7 +784,7 @@ method !build_is-positive-semidefinite (Math::Matrix:D: --> Bool) { # with Sylve
     return False unless self.determinant >= 0;
     my $sub = Math::Matrix.new( @!rows );
     for $!row-count - 1 ... 1 -> $r {
-        $sub = $sub.submatrix($r,$r);
+        $sub = $sub.submatrix(0,0,$r,$r);
         return False unless $sub.determinant >= 0;
     }
     True;
