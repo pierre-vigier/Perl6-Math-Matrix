@@ -1329,16 +1329,17 @@ multi method dotProduct(Math::Matrix:D: Math::Matrix $b --> Math::Matrix:D ) {
 =end pod
 
 multi method tensorProduct(Math::Matrix:D: Math::Matrix $b  --> Math::Matrix:D) {
-    my @p;
+    my @product;
     @!rows.map: {
         my $arow = $_;
+say "-",$arow;
         $b!rows.map: {
             my $brow = $_;
-            @p.push([ ($arow.list.map: { $brow.flat >>*>> $_ }).flat ]);
+say "=",$brow;
+            @product.push([ ($arow.list.map: { $brow.flat >>*>> $_ }).flat ]);
         }
     };
-say @p;
-    Math::Matrix.new( @p );
+    Math::Matrix.new( @product );
 }
 
 ################################################################################
