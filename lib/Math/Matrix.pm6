@@ -1332,7 +1332,7 @@ multi method tensorProduct(Math::Matrix:D: Math::Matrix $b  --> Math::Matrix:D) 
     my @product;
     for @!rows -> $arow {
         for $b!rows -> $brow {
-            @product.push([ $arow.list.map: { $brow.flat >>*>> $_ } ]);
+            @product.push([ ($arow.list.map: { $brow.flat >>*>> $_ }).flat ]);
         }
     }
     Math::Matrix.new( @product );
