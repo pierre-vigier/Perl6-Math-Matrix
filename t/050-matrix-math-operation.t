@@ -1,45 +1,6 @@
 use Test;
 use Math::Matrix;
-plan 7;
-
-subtest {
-    plan 2;
-    my $a = Math::Matrix.new( [[1,2,3],[4,5,6]] );
-    my $b = Math::Matrix.new( [[7,8],[9,10],[11,12]] );
-
-    ok $a.map( * - 1 ) ~~ Math::Matrix.new([[0,1,2],[3,4,5]]),            "simple mapping";
-    ok $a.map({$^v %% 2 ?? 1 !! 0}) ~~ Math::Matrix.new([[0,1,0],[1,0,1]]), "constructing binary map";
-}, "Map";
-
-subtest {
-    plan 3;
-    my $a = Math::Matrix.new( [[1,2,3],[4,5,6]] );
-    my $i = Math::Matrix.new-identity( 3 );
-
-    ok $a.reduce-rows( &[+] ) == (6,15),            "simple row sum";
-    ok $a.reduce-columns( &[*] ) == (4,10,18),       "simple column product";
-    ok $i.reduce-rows( &[>] ) == (True, False, False), "question if row is sorted";
-}, "Reduce";
-
-
-subtest {
-    plan 8;
-    my $a = Math::Matrix.new( [[1,2,3],[4,5,6]] );
-    my $b = Math::Matrix.new( [[7,8],[9,10],[11,12]] );
-    my $matrix   = Math::Matrix.new([[1,2],[3,4]]);
-    my $identity = Math::Matrix.new-identity(2);
-
-    ok $a.dotProduct( $b ) ~~ Math::Matrix.new([[58,64],[139,154]]), "Simple multiplication check";
-    ok ($a ⋅ $b) ~~ Math::Matrix.new([[58,64],[139,154]]),   "Simple multiplication check with ⋅ operator";
-    ok ($a dot $b) ~~ Math::Matrix.new([[58,64],[139,154]]), "Simple multiplication check with ⋅ operator, texas form";
-    ok $matrix ** 0 ~~ $identity,                             "times one means no multiplication";
-    ok $matrix ** 1 ~~ $matrix,                               "times one means no multiplication";
-    ok $matrix ** 2 ~~ $matrix dot $matrix,                   "power operator works too";
-
-    my $c = Math::Matrix.new( [[7,8],[9,10],[11,12],[13,14]] );
-    dies-ok { $a ⋅ $c } , "Matrices can't be multiplied, first matrix column count should be equal to second matrix row count";
-    dies-ok { $a.dotProduct( $c ) } , "Matrices can't be multiplied, first matrix column count should be equal to second matrix row count";
-}, "Dot Product";
+plan 6;
 
 
 subtest {
@@ -79,4 +40,42 @@ subtest {
     ok $matrix * 2.2 ~~ $expected, "multiplication with real working with operator *";
     ok 2.2 * $matrix ~~ $expected, "multiplication with real working with operator *, reverse args";
 }, "Multiply Matrix with number";
+
+subtest {
+    plan 8;
+    my $a = Math::Matrix.new( [[1,2,3],[4,5,6]] );
+    my $b = Math::Matrix.new( [[7,8],[9,10],[11,12]] );
+    my $p = Math::Matrix.new([[58,64],[139,154]]);
+    my $matrix   = Math::Matrix.new([[1,2],[3,4]]);
+    my $identity = Math::Matrix.new-identity(2);
+
+    ok $a.dotProduct( $b ) ~~ $p,            "Simple multiplication check";
+    ok ($a ⋅ $b) ~~ $p,                      "Simple multiplication check with ⋅ operator";
+    ok ($a dot $b) ~~ $p,                    "Simple multiplication check with ⋅ operator, texas form";
+    ok $matrix ** 0 ~~ $identity,            "times one means no multiplication";
+    ok $matrix ** 1 ~~ $matrix,              "times one means no multiplication";
+    ok $matrix ** 2 ~~ $matrix dot $matrix,  "power operator works too";
+
+    my $c = Math::Matrix.new( [[7,8],[9,10],[11,12],[13,14]] );
+    dies-ok { $a ⋅ $c } , "Matrices can't be multiplied, first matrix column count should be equal to second matrix row count";
+    dies-ok { $a.dotProduct( $c ) } , "Matrices can't be multiplied, first matrix column count should be equal to second matrix row count";
+}, "Dot Product";
+
+subtest {
+    plan 3;
+    my $a = Math::Matrix.new( [[1,2],[3,4]] );
+    my $b = Math::Matrix.new( [[5,6],[7,8]] );
+    my $p = Math::Matrix.new( [[5,6,10,12],[7,8,14,16],[15,18,20,24],[21,24,28,32]] );
+    my $i = Math::Matrix.new( [[1]] );
+    my $z3 = Math::Matrix.new-zero(3);
+    my $z12 = Math::Matrix.new-zero(12);
+
+    ok $i.tensorProduct( $i ) ~~ $i,     "Trivial multiplication check";
+    ok $a.tensorProduct( $b ) ~~ $p,     "Simple multiplication check";
+    ok $z3.tensorProduct( $a ) ~~ $z12,  "check for richt dimension expansion on larger matrix";
+    ok ($a x $b) ~~ $p,                  "Simple multiplication check with x operator";
+}, "Tensor Product";
+
+
+
 

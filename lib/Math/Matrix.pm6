@@ -1331,19 +1331,10 @@ multi method dotProduct(Math::Matrix:D: Math::Matrix $b --> Math::Matrix:D ) {
 multi method tensorProduct(Math::Matrix:D: Math::Matrix $b  --> Math::Matrix:D) {
     my @product;
     for @!rows -> $arow {
-say "-",$arow;
         for $b!rows -> $brow {
-say "=",$brow;
-            @product.push([ ($arow.list.map: { $brow.flat >>*>> $_ }).flat ]);
+            @product.push([ $arow.list.map: { $brow.flat >>*>> $_ } ]);
         }
     }
-#    @!rows.map: {
-#        my $arow = $_;
-#        $b!rows.map: {
-#            my $brow = $_;
-#            @product.push([ ($arow.list.map: { $brow.flat >>*>> $_ }).flat ]);
-#        }
-#    };
     Math::Matrix.new( @product );
 }
 
