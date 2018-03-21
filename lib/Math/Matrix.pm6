@@ -1305,17 +1305,26 @@ multi method subtract(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b!
     Math::Matrix.new( @subtract );
 }
 
+
 multi method add-row(Math::Matrix:D: Int $row, @row where {.all ~~ Numeric} --> Math::Matrix:D ) {
     fail X::OutOfRange.new(
-        :what<Row index> , :got($row), :range("0..{$!row-count -1 }")
+        :what<Row Index> , :got($row), :range("0..{$!row-count - 1}")
     ) unless 0 <= $row < $!row-count;
-    fail "Matrix has $!column-count columns, but got only "~ +@row ~ "elements." unless $!column-count == +@row;
-    my @m = @!rows;
-@m[0][0] = 0;
-#    my @sum;
-#    for ^$!row-count X ^$!column-count -> ($r, $c) {
-#        @sum[$r][$c] = @!rows[$r][$c] + $b!rows[$r][$c];
-#    }
+    fail "Matrix has $!column-count columns, but got "~ +@row ~ "element row." unless $!column-count == +@row;
+    my @m = AoA_clone(@!rows);
+    @m[$row] = @m[$row] <<+>> @row;
+    Math::Matrix.new( @m );
+}
+
+multi method add-column(Math::Matrix:D: Int $col, @col where {.all ~~ Numeric} --> Math::Matrix:D ) {
+    fail X::OutOfRange.new(
+        :what<Column Index> , :got($col), :range("0..{$!column-count - 1}")
+    ) unless 0 <= $col < $!column-count;
+    fail "Matrix has $!row-count rows, but got "~ +@col ~ "element column." unless $!row-count == +@col;
+    my @m = AoA_clone(@!rows);
+    @col.keys.map:{ 
+        @m[$_][$col] += @col[$_] 
+    };
     Math::Matrix.new( @m );
 }
 
@@ -1482,8 +1491,8 @@ method reduce-rows (Math::Matrix:D: &coderef){
 =end pod
 
 method reduce-columns (Math::Matrix:D: &coderef){
-    gather for ^$!column-count -> $i {
-        take self.column($i).reduce( &coderef )
+    ^$!column-count.map: {
+        self.column($i).reduce( &coderef )
     }
 }
 
