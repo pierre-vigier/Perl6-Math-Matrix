@@ -48,7 +48,7 @@ subtest {
     my $lsmatrix = Math::Matrix.new([[1,2,3],[5,6,7]]);
     my $expected = Math::Matrix.new([[6,7,8],[10,11,12]]);
 
-#    ok $matrix.submatrix(0,0) ~~ $fsmatrix,         "submatrix built by removing first cell";
+    ok $matrix.submatrix(0,0) ~~ $fsmatrix,          "submatrix built by removing first cell";
 #    ok $matrix.submatrix(2,3) ~~ $lsmatrix,         "submatrix built by removing last cell";
     ok $matrix.submatrix( 1, 1, 2, 3) ~~ $expected,  "submatrix wiht start and end cell";
     ok $matrix.submatrix((1,2),(1...3))~~ $expected, "Simple submatrix";
