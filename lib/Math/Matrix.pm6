@@ -1305,7 +1305,7 @@ multi method subtract(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b!
     Math::Matrix.new( @subtract );
 }
 
-multi method add-row(Math::Matrix:D: Int $row, @row where {.all ~~ Numeric} --> Math::Matrix:D } --> Math::Matrix:D ) {
+multi method add-row(Math::Matrix:D: Int $row, @row where {.all ~~ Numeric} --> Math::Matrix:D ) {
     fail X::OutOfRange.new(
         :what<Row index> , :got($row), :range("0..{$!row-count -1 }")
     ) unless 0 <= $row < $!row-count;
