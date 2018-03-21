@@ -353,6 +353,7 @@ multi method submatrix(Math::Matrix:D: Int:D $row, Int:D $col --> Math::Matrix:D
     my @rows = ^$!row-count;
     @rows.splice($row,1);
     my @cols = ^$!column-count;
+say @rows, @cols;
     @cols.splice($col,1);
     self.submatrix(@rows ,@cols);
 }
