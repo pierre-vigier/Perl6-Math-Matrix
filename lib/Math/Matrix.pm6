@@ -1220,7 +1220,7 @@ method decompositionCholesky(Math::Matrix:D: --> Math::Matrix:D) {
 ################################################################################
 
 =begin pod
-=head2 Matrix Operations
+=head2 Matrix Math Operations
 =head3 add
 
     my $sum = $matrix.add( $matrix2 );  # cell wise addition of 2 same sized matrices
@@ -1343,6 +1343,7 @@ multi method tensorProduct(Math::Matrix:D: Math::Matrix $b  --> Math::Matrix:D) 
 ################################################################################
 
 =begin pod
+=head2 Structural Matrix Operations
 =head3 map
 
     Like the built in map it iterates over all elements, running a code block.
@@ -1426,7 +1427,7 @@ method reduce-columns (Math::Matrix:D: &coderef){
 =head1 Operators
 
     The Module overloads or uses a range of well and less known ops.
-    +, -, * are commutative.
+    +, -, * and ~~ are commutative.
 
     my $a   = +$matrix               # Num context, amount (count) of cells
     my $b   = ?$matrix               # Bool context, True if any cell has a none zero value

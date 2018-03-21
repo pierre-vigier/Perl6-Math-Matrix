@@ -1,8 +1,10 @@
+
  0.1.8:
     - 2018.3.20
     - added method: tensorProduct, alias infix op x, unicode alias ⊗
     - added method: conjugated, is-self-adjoint, is-unitary, is-positive-semidefinite
-    - more property setting optimization in constructors 
+    - more property setting optimization in constructors
+    - new category for methods: structural ops
 
  0.1.7:
     - 2018.3.18

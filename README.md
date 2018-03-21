@@ -453,8 +453,8 @@ Decompositions
 
     This decomposition works only on symmetric and definite positive matrices.
 
-Matrix Operations
------------------
+Matrix Math Operations
+----------------------
 
 ### add
 
@@ -502,6 +502,9 @@ Matrix Operations
     my $c = $matrixa.tensorProduct( $matrixb );
     my $c = $a x $b;                            # works too as operator alias
 
+Structural Matrix Operations
+----------------------------
+
 ### map
 
     Like the built in map it iterates over all elements, running a code block.
@@ -541,7 +544,7 @@ Operators
 =========
 
     The Module overloads or uses a range of well and less known ops.
-    +, -, * are commutative.
+    +, -, * and ~~ are commutative.
 
     my $a   = +$matrix               # Num context, amount (count) of cells
     my $b   = ?$matrix               # Bool context, True if any cell has a none zero value
