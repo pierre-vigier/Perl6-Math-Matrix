@@ -79,11 +79,11 @@ subset Positive_Int of Int where * > 0 ;
 =item numeric properties: size, elems, density, trace, determinant, rank, kernel, norm, condition
 =item derived matrices: transposed, negated, conjugated, inverted, reduced-row-echelon-form
 =item decompositions: decompositionLUCrout, decompositionLU, decompositionCholesky
-=item matrix math ops: add, subtract, multiply, dotProduct, map, reduce, reduce-rows, reduce-columns
-=item operators:   +,   -,   *,   **,   ⋅,  dot,   | |,   || ||
+=item matrix math ops: add, subtract, multiply, dotProduct, tensorProduct
+=item structural ops: map, reduce, reduce-rows, reduce-columns
+=item operators:   +,   -,   *,   **,   ⋅,  dot,  x,  | |,   || ||
 =end pod
-# =item structural operations: split join
-# ⊗
+# split join # ⊗
 
 ################################################################################
 # start constructors
@@ -1334,12 +1334,15 @@ multi method tensorProduct(Math::Matrix:D: Math::Matrix $b  --> Math::Matrix:D) 
         my $arow = $_;
         $b!rows.map: {
             my $brow = $_;
-            @p.push: [ ($arow.list.map: { $brow.flat >>*>> $_ }).flat ];
+            @p.push([ ($arow.list.map: { $brow.flat >>*>> $_ }).flat ]);
         }
     }; 
     Math::Matrix.new( @p );
 }
 
+################################################################################
+# end of math matrix operations - start structural matrix operations
+################################################################################
 
 =begin pod
 =head3 map
@@ -1410,9 +1413,6 @@ method reduce-columns (Math::Matrix:D: &coderef){
     }
 }
 
-################################################################################
-# end of math matrix operations - start structural matrix operations
-################################################################################
 
 #method split (){ 
 #}

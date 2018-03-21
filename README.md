@@ -46,9 +46,11 @@ METHODS
 
   * decompositions: decompositionLUCrout, decompositionLU, decompositionCholesky
 
-  * matrix math ops: add, subtract, multiply, dotProduct, map, reduce, reduce-rows, reduce-columns
+  * matrix math ops: add, subtract, multiply, dotProduct, tensorProduct
 
-  * operators: +, -, *, **, ⋅, dot, | |, || ||
+  * structural ops: map, reduce, reduce-rows, reduce-columns
+
+  * operators: +, -, *, **, ⋅, dot, x, | |, || ||
 
 Constructors
 ------------
