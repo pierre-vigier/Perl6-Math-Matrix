@@ -33,6 +33,7 @@ Matrices are readonly - all operations and derivatives are new objects.
 unit class Math::Matrix:ver<0.1.8>:auth<github:pierre-vigier>;
 use AttrX::Lazy;
 
+
 has @!rows is required;
 has $!diagonal is lazy;
 
@@ -317,7 +318,7 @@ method !build_diagonal(Math::Matrix:D: --> List){
 =begin pod
 =head3 submatrix
 
-    Return a subset of a given matrix. 
+    Return a subset of cells of a given matrix by deleting rows and/or columns. 
     Given $matrix = Math::Matrix.new([[1,2,3][4,5,6],[7,8,9]]);
     A submatrix with one row and two columns:
 
@@ -333,7 +334,7 @@ method !build_diagonal(Math::Matrix:D: --> List){
 =end pod
 
 multi method submatrix(Math::Matrix:D: Int:D $row, Int:D $col --> Math::Matrix:D ){
-    self.submatrix((0 .. $row-1),(0 .. $col-1));
+    self.submatrix((0 .. $row-1).list,(0 .. $col-1).list);
 }
 multi method submatrix(Math::Matrix:D: Int:D $row-min, Int:D $col-min, Int:D $row-max, Int:D $col-max --> Math::Matrix:D ){
     fail "Minimum row has to be smaller than maximum row" if $row-min > $row-max;
@@ -1312,8 +1313,8 @@ multi method multiply(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b!
 
     Matrix multiplication of two fitting matrices (colums left == rows right).
 
-    Example:    1 2  *  2 3  =  10 13       1*2+2*4 1*3+2*5
-                3 4     4 5     22 29       3*2+4*4 3*3+4*5
+    Example:    1 2  *  2 3  =  10 13  =  1*2+2*4  1*3+2*5
+                3 4     4 5     22 29     3*2+4*4  3*3+4*5
 
     my $product = $matrix1.dotProduct( $matrix2 )
     my $c = $a dot $b;              # works too as operator alias
