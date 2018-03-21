@@ -42,7 +42,7 @@ subtest {
 
 
 subtest {
-    plan 5;
+    plan 6;
     my $matrix   = Math::Matrix.new([[1,2,3,4],[5,6,7,8],[9,10,11,12]]);
     my $fsmatrix = Math::Matrix.new([[6,7,8],[10,11,12]]);
     my $lsmatrix = Math::Matrix.new([[1,2,3],[5,6,7]]);
@@ -50,7 +50,7 @@ subtest {
 
 #    ok $matrix.submatrix(0,0) ~~ $fsmatrix,         "submatrix built by removing first cell";
 #    ok $matrix.submatrix(2,3) ~~ $lsmatrix,         "submatrix built by removing last cell";
-#    ok $matrix.submatrix( 1, 1, 2, 3) ~~ $expected,  "submatrix wiht start and end cell";
+    ok $matrix.submatrix( 1, 1, 2, 3) ~~ $expected,  "submatrix wiht start and end cell";
     ok $matrix.submatrix((1,2),(1...3))~~ $expected, "Simple submatrix";
     dies-ok { $matrix.submatrix(10,1); },            "demanded rows are out of range";
     dies-ok { $matrix.submatrix(1,5); },             "demanded colums are out of range";
