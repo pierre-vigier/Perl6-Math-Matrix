@@ -325,22 +325,22 @@ method !build_diagonal(Math::Matrix:D: --> List){
 
     my $m = Math::Matrix.new([[1,2,3,4][2,3,4,5],[3,4,5,6]]);     # 1 2 3 4
                                                                     2 3 4 5
-    say $m.submatrix(1,2);  # 1 2 4                                 3 4 5 6
-                              3 4 6                            
+                                                                    3 4 5 6
+    say $m.submatrix(1,2);     # 1 2 4
+                                 3 4 6                            
 
-    If you provide two pairs of coordinates, these will be counted as left upper
-    and right lower corner of and area inside the original matrix, which will
-    the resulting submatrix.
+    If you provide two pairs of coordinates (row column), these will be counted as
+    left upper and right lower corner of and area inside the original matrix,
+    which will the resulting submatrix.
 
-    say $m.submatrix(1,1,2,2);  # 1 3                             7 8 9
-                              7 9                             
+    say $m.submatrix(1,1,1,3); # 2 3 4        
 
+    When provided with two lists of values (one for the rows - one for columns)
+    a new matrix will be created with the old rows and columns in that new order.
+    
+    $m.submatrix((3,2),(1,2)); # 4 5
+                                 3 4
 
-    $matrix.submatrix(0,1,1,2);          # is [[2,3],[5,6]]
-
-    When I just want cells in row 0 and 2 and colum 1 and 2 I use:
-
-    $matrix.submatrix((0,2),(1..2));     # is [[2,3],[8,9]]
 =end pod
 
 multi method submatrix(Math::Matrix:D: Int:D $row, Int:D $col --> Math::Matrix:D ){
@@ -360,7 +360,7 @@ multi method submatrix(Math::Matrix:D: Int:D $row, Int:D $col --> Math::Matrix:D
 multi method submatrix(Math::Matrix:D: Int:D $row-min, Int:D $col-min, Int:D $row-max, Int:D $col-max --> Math::Matrix:D ){
     fail "Minimum row has to be smaller than maximum row" if $row-min > $row-max;
     fail "Minimum column has to be smaller than maximum column" if $col-min > $col-max;
-    self.submatrix(($row-min .. $row-max),($col-min .. $col-max));
+    self.submatrix(($row-min .. $row-max).list,($col-min .. $col-max).list);
 }
 
 multi method submatrix(Math::Matrix:D: Int @rows, Int @cols --> Math::Matrix:D ){
