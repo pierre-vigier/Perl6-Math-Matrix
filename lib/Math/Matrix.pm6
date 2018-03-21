@@ -488,7 +488,7 @@ method gist(Math::Matrix:D: --> Str) {
         $str ~= ( [~] $r.[0..$cols-1].map( { $_.fmt($fmt) } ) ) ~ "$row-addon\n";
     }
     $str ~= " ...\n" if $!row-count > $max-rows;
-    $str;
+    $str.chomp;
 }
 
 =begin pod
