@@ -363,7 +363,7 @@ multi method submatrix(Math::Matrix:D: Int:D $row-min, Int:D $col-min, Int:D $ro
     self.submatrix(($row-min .. $row-max).list,($col-min .. $col-max).list);
 }
 
-multi method submatrix(Math::Matrix:D: Int @rows, Int @cols --> Math::Matrix:D ){
+multi method submatrix(Math::Matrix:D: @rows where .all ~~ Int, @cols where .all ~~ Int --> Math::Matrix:D ){
     fail X::OutOfRange.new(
         :what<Column index> , :got(@cols), :range("0..{$!column-count -1 }")
     ) unless 0 <= all(@cols) < $!column-count;
