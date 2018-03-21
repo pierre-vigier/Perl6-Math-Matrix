@@ -341,7 +341,7 @@ multi method submatrix(Math::Matrix:D: Int:D $row-min, Int:D $col-min, Int:D $ro
     self.submatrix(($row-min .. $row-max),($col-min .. $col-max));
 }
 
-multi method submatrix(Math::Matrix:D: @rows, @cols --> Math::Matrix:D ){
+multi method submatrix(Math::Matrix:D: Int @rows, Int @cols --> Math::Matrix:D ){
     fail X::OutOfRange.new(
         :what<Column index> , :got(@cols), :range("0..{$!column-count -1 }")
     ) unless 0 <= all(@cols) < $!column-count;
@@ -1223,6 +1223,13 @@ method decompositionCholesky(Math::Matrix:D: --> Math::Matrix:D) {
 =head2 Matrix Math Operations
 =head3 add
 
+    Example:    1 2  +  5    =  6 7 
+                3 4             8 9
+
+                1 2  +  2 3  =  3 5
+                3 4     4 5     7 9
+
+
     my $sum = $matrix.add( $matrix2 );  # cell wise addition of 2 same sized matrices
     my $s = $matrix + $matrix2;         # works too
 
@@ -1269,11 +1276,21 @@ multi method subtract(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b!
 =begin pod
 =head3 multiply
 
-    my $product = $matrix.multiply( $matrix2 );  # cell wise multiplication of same size matrices
-    my $p = $matrix * $matrix2;                  # works too
+    In scalar multiplication each cell of the matrix gets multiplied with the same
+    number (scalar). In addition to that, this method can multiply two same sized
+    matrices, by multipling the cells with the came coordinates from each operand.
+
+    Example:    1 2  *  5    =   5 10 
+                3 4             15 20
+
+                1 2  *  2 3  =   2  6
+                3 4     4 5     12 20
 
     my $product = $matrix.multiply( $number );   # multiply every cell with number
     my $p = $matrix * $number;                   # works too
+
+    my $product = $matrix.multiply( $matrix2 );  # cell wise multiplication of same size matrices
+    my $p = $matrix * $matrix2;                  # works too
 
 =end pod
 
@@ -1293,9 +1310,14 @@ multi method multiply(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b!
 =begin pod
 =head3 dotProduct
 
+    Matrix multiplication of two fitting matrices (colums left == rows right).
+
+    Example:    1 2  *  2 3  =  10 13       1*2+2*4 1*3+2*5
+                3 4     4 5     22 29       3*2+4*4 3*3+4*5
+
     my $product = $matrix1.dotProduct( $matrix2 )
-    my $c = $a ⋅ $b;                # works too as operator alias
-    my $c = $a dot $b;
+    my $c = $a dot $b;              # works too as operator alias
+    my $c = $a ⋅ $b;                # unicode operator alias
 
     A shortcut for multiplication is the power - operator **
     my $c = $a **  3;               # same as $a dot $a dot $a
@@ -1321,9 +1343,15 @@ multi method dotProduct(Math::Matrix:D: Math::Matrix $b --> Math::Matrix:D ) {
     is a concatination of all matrices you get by multiplication of an element
     of a with the complete matrix b as in $a.multiply($b.cell(..,..)).
     Just replace in a each cell with this product and you will get c.
+
+    Example:    1 2  *  2 3   =  1*[2 3] 2*[2 3]  =  2  3  4  6
+                3 4     4 5        [4 5]   [4 5]     4  5  8 10
+                                 3*[2 3] 4*[2 3]     6  9  8 12
+                                   [4 5]   [4 5]     8 15 16 20
     
     my $c = $matrixa.tensorProduct( $matrixb );
-    my $c = $a x $b;                            # works too as operator alias
+    my $c = $a x $b;                # works too as operator alias
+    my $c = $a ⊗ $b;                # unicode operator alias
 
 
 =end pod
@@ -1412,6 +1440,9 @@ method reduce-columns (Math::Matrix:D: &coderef){
     }
 }
 
+
+method cat-horizontally(){ 
+}
 
 #method split (){ 
 #}
