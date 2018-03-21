@@ -1006,8 +1006,13 @@ multi method condition(Math::Matrix:D: --> Numeric) {
 =head2 Derivative Matrices
 =head3 transposed, alias T
 
-    return a new Matrix, which is the transposition of the current one
+    returns a new, transposed Matrix, where rows became colums and vice versa.
 
+    Math::Matrix.new([[1,2,3],[3,4,6]]).transposed
+
+    Example:   [1 2 3].T  =  1 4       
+               [4 5 6]       2 5
+                             3 6
 =end pod
 
 method T(Math::Matrix:D: --> Math::Matrix:D  )         { self.transposed }
@@ -1021,8 +1026,11 @@ method transposed(Math::Matrix:D: --> Math::Matrix:D ) {
 =begin pod
 =head3 inverted
 
-    return a new Matrix, which is the inverted of the current one
-
+    Inverse matrix regarding to matrix multiplication.
+    The dot product of a matrix with its inverted results in a identity matrix
+    (neutral element in this group).
+    Matrices that have a square form and a full rank can be inverted.
+    Check this with the method .is-invertible.
 =end pod
 
 method inverted(Math::Matrix:D: --> Math::Matrix:D) {
@@ -1275,11 +1283,15 @@ multi method add(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b!row-c
 =begin pod
 =head3 subtract
 
+    Works analogous to add - it's just for convenance.
+
+    my $diff = $matrix.subtract( $number );   # subtracts number from every cell (scalar subtraction)
+    my $sd = $matrix - $number;               # works too
+    my $sd = $number - $matrix ;              # works too
+
     my $diff = $matrix.subtract( $matrix2 );  # cell wise subraction of 2 same sized matrices
     my $d = $matrix - $matrix2;               # works too
 
-    my $diff = $matrix.subtract( $number );   # subtracts number from every cell 
-    my $sd = $matrix - $number;               # works too
 
 =end pod
 
