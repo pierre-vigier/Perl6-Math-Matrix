@@ -10,7 +10,7 @@ Math::Matrix - create, compare, compute and measure 2D matrices
 VERSION
 =======
 
-0.1.7
+0.1.8
 
 SYNOPSIS
 ========
@@ -50,7 +50,7 @@ METHODS
 
   * structural ops: map, reduce, reduce-rows, reduce-columns
 
-  * operators: +, -, *, **, ⋅, dot, x, | |, || ||
+  * operators: +, -, *, **, ⋅, dot, ⊗, x, | |, || ||
 
 Constructors
 ------------
@@ -559,8 +559,11 @@ Operators
     my $p   =  $matrixa * $matrixb;  # cell wise product of two same sized matrices
     my $sp  =  $matrix  * $number;   # multiply number to every cell
 
+    my $tp  =  $a x $b;              # tensor product 
+    my $tp  =  $a ⊗ $b;              # tensor product, unicode alias
+
     my $dp  =  $a dot $b;            # dot product of two fitting matrices (cols a = rows b)
-    my $dp  =  $a ⋅ $b;
+    my $dp  =  $a ⋅ $b;              # dot product, unicode alias
 
     my $c   =  $a **  3;             # $a to the power of 3, same as $a dot $a dot $a
     my $c   =  $a ** -3;             # alias to ($a dot $a dot $a).inverted
