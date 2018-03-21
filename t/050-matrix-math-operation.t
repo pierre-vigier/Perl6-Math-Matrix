@@ -62,7 +62,7 @@ subtest {
 }, "Dot Product";
 
 subtest {
-    plan 3;
+    plan 4;
     my $a = Math::Matrix.new( [[1,2],[3,4]] );
     my $b = Math::Matrix.new( [[5,6],[7,8]] );
     my $p = Math::Matrix.new( [[5,6,10,12],[7,8,14,16],[15,18,20,24],[21,24,28,32]] );
