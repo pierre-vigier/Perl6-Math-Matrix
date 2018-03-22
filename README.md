@@ -501,14 +501,20 @@ Matrix Math Operations
     my $diff = $matrix.subtract( $matrix2 );  # cell wise subraction of 2 same sized matrices
     my $d = $matrix - $matrix2;               # works too
 
-### add-row Add a vector (row or col of some matrix) to a row of the matrix. In this example we add (2,3) to the second row.
+### add-row
+
+    Add a vector (row or col of some matrix) to a row of the matrix.
+    In this example we add (2,3) to the second row.
 
     Math::Matrix.new( [[1,2],[3,4]] ).add-row(1,(2,3))
 
     Example:    1 2  +       =  1 2
                 3 4    2 3      5 7
 
-### add-column Analog to add-row: Math::Matrix.new( [[1,2],[3,4]] ).add-column(1,(2,3))
+### add-column
+
+    Analog to add-row:
+    Math::Matrix.new( [[1,2],[3,4]] ).add-column(1,(2,3))
 
     Example:    1 2  +   2   =  1 4
                 3 4      3      3 7
