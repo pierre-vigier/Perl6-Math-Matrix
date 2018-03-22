@@ -1421,7 +1421,7 @@ method multiply-column(Math::Matrix:D: Int $col, Numeric $factor --> Math::Matri
         :what<Column Index> , :got($col), :range("0..{$!column-count - 1}")
     ) unless 0 <= $col < $!column-count;
     my @m = AoA_clone(@!rows);
-    @col.keys.map:{ @m[$_][$col] *= $factor };
+    (^$!column-count).map:{ @m[$_][$col] *= $factor };
     Math::Matrix.new( @m );
 }
 
