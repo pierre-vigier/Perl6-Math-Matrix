@@ -576,10 +576,10 @@ Matrix Math Operations
 ### tensorProduct
 
     The tensor product between a matrix a of size (m,n) and a matrix b of size
-    (p,q) is a matrix c of size (a*m,b*n). The maybe simplest description of c
-    is a concatination of all matrices you get by multiplication of an element
-    of a with the complete matrix b as in $a.multiply($b.cell(..,..)).
-    Just replace in a each cell with this product and you will get c.
+    (p,q) is a matrix c of size (m*p,n*q). All matrices you get by multiplying
+    an element (cell) of matrix a with matrix b (as in $a.multiply($b.cell(..,..))
+    concatinated result in matrix c. 
+    (Or replace in a each cell with its product with b.)
 
     Example:    1 2  *  2 3   =  1*[2 3] 2*[2 3]  =  2  3  4  6
                 3 4     4 5        [4 5]   [4 5]     4  5  8 10

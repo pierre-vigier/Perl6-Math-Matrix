@@ -1288,6 +1288,7 @@ multi method add(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b!row-c
     Math::Matrix.new( @sum );
 }
 
+
 =begin pod
 =head3 subtract
 
@@ -1312,6 +1313,7 @@ multi method subtract(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b!
     }
     Math::Matrix.new( @subtract );
 }
+
 
 =begin pod
 =head3 add-row
@@ -1392,6 +1394,7 @@ multi method multiply(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b!
     Math::Matrix.new( @multiply );
 }
 
+
 =begin pod
 =head3 multiply-row
 
@@ -1411,6 +1414,7 @@ method multiply-row(Math::Matrix:D: Int $row, Numeric $factor --> Math::Matrix:D
     @m[$row] = @m[$row] >>*>> $factor;
     Math::Matrix.new( @m );
 }
+
 
 =begin pod
 =head3 multiply-row
@@ -1463,14 +1467,15 @@ multi method dotProduct(Math::Matrix:D: Math::Matrix $b --> Math::Matrix:D ) {
     Math::Matrix.new( @product );
 }
 
+
 =begin pod
 =head3 tensorProduct
 
     The tensor product between a matrix a of size (m,n) and a matrix b of size
-    (p,q) is a matrix c of size (a*m,b*n). The maybe simplest description of c
-    is a concatination of all matrices you get by multiplication of an element
-    of a with the complete matrix b as in $a.multiply($b.cell(..,..)).
-    Just replace in a each cell with this product and you will get c.
+    (p,q) is a matrix c of size (m*p,n*q). All matrices you get by multiplying
+    an element (cell) of matrix a with matrix b (as in $a.multiply($b.cell(..,..))
+    concatinated result in matrix c. 
+    (Or replace in a each cell with its product with b.)
 
     Example:    1 2  *  2 3   =  1*[2 3] 2*[2 3]  =  2  3  4  6
                 3 4     4 5        [4 5]   [4 5]     4  5  8 10
@@ -1518,6 +1523,7 @@ method map(Math::Matrix:D: &coderef --> Math::Matrix:D) {
     } ] );
 }
 
+
 =begin pod
 =head3 reduce
 
@@ -1535,6 +1541,7 @@ method map(Math::Matrix:D: &coderef --> Math::Matrix:D) {
 method reduce(Math::Matrix:D: &coderef ) {
     (@!rows.map: {$_.flat}).flat.reduce( &coderef );
 }
+
 
 =begin pod
 =head3 reduce-rows
@@ -1557,7 +1564,6 @@ method reduce-rows (Math::Matrix:D: &coderef){
     resulting list:
 
     say Math::Matrix.new( [[1,2],[3,4]] ).reduce-columns(&[*]);  # prints (3, 8)
-
 =end pod
 
 method reduce-columns (Math::Matrix:D: &coderef){
@@ -1644,7 +1650,6 @@ multi sub prefix:<->(Math::Matrix $a --> Math::Matrix:D ) is export {
 multi sub infix:<⊗>( Math::Matrix $a, Math::Matrix $b  --> Math::Matrix:D ) is looser(&infix:<*>) is export {
     $a.tensorProduct( $b );
 }
-
 
 multi sub infix:<x>( Math::Matrix $a, Math::Matrix $b  --> Math::Matrix:D ) is looser(&infix:<*>) is export {
     $a.tensorProduct( $b );

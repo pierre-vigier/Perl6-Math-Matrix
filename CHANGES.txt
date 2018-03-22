@@ -3,6 +3,7 @@
     - 2018.
     - add methods: add-row, add-column, multiply-row, multiply-column
     - submatrix with 2 Int parameter works now as expected
+    - accessor column gets faster
     - added docs
 
  0.1.8:
