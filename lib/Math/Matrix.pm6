@@ -1263,7 +1263,6 @@ method decompositionCholesky(Math::Matrix:D: --> Math::Matrix:D) {
 
     my $sum = $matrix.add( $number );   # adds number from every cell 
     my $s = $matrix + $number;          # works too
-
 =end pod
 
 multi method add(Math::Matrix:D: Real $r --> Math::Matrix:D ) {
@@ -1305,6 +1304,16 @@ multi method subtract(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b!
     Math::Matrix.new( @subtract );
 }
 
+=begin pod
+=head3 add-row
+    Add a vector (row or col of some matrix) to a row of the matrix.
+    In this example we add (2,3) to the second row.
+
+    Math::Matrix.new( [[1,2],[3,4]] ).add-row(1,(2,3))
+
+    Example:    1 2  +       =  1 2
+                3 4    2 3      5 7
+=end pod
 
 multi method add-row(Math::Matrix:D: Int $row, @row where {.all ~~ Numeric} --> Math::Matrix:D ) {
     fail X::OutOfRange.new(
@@ -1315,6 +1324,16 @@ multi method add-row(Math::Matrix:D: Int $row, @row where {.all ~~ Numeric} --> 
     @m[$row] = @m[$row] <<+>> @row;
     Math::Matrix.new( @m );
 }
+
+
+=begin pod
+=head3 add-column
+    Analog to add-row:
+    Math::Matrix.new( [[1,2],[3,4]] ).add-column(1,(2,3))
+
+    Example:    1 2  +   2   =  1 4
+                3 4      3      3 7
+=end pod
 
 multi method add-column(Math::Matrix:D: Int $col, @col where {.all ~~ Numeric} --> Math::Matrix:D ) {
     fail X::OutOfRange.new(
