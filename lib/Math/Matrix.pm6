@@ -1316,7 +1316,7 @@ multi method subtract(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b!
                 3 4    2 3      5 7
 =end pod
 
-multi method add-row(Math::Matrix:D: Int $row, @row where {.all ~~ Numeric} --> Math::Matrix:D ) {
+method add-row(Math::Matrix:D: Int $row, @row where {.all ~~ Numeric} --> Math::Matrix:D ) {
     fail X::OutOfRange.new(
         :what<Row Index> , :got($row), :range("0..{$!row-count - 1}")
     ) unless 0 <= $row < $!row-count;
@@ -1337,7 +1337,7 @@ multi method add-row(Math::Matrix:D: Int $row, @row where {.all ~~ Numeric} --> 
                 3 4      3      3 7
 =end pod
 
-multi method add-column(Math::Matrix:D: Int $col, @col where {.all ~~ Numeric} --> Math::Matrix:D ) {
+method add-column(Math::Matrix:D: Int $col, @col where {.all ~~ Numeric} --> Math::Matrix:D ) {
     fail X::OutOfRange.new(
         :what<Column Index> , :got($col), :range("0..{$!column-count - 1}")
     ) unless 0 <= $col < $!column-count;
@@ -1386,21 +1386,42 @@ multi method multiply(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b!
 =begin pod
 =head3 multiply-row
 
-    Add a vector (row or col of some matrix) to a row of the matrix.
-    In this example we add (2,3) to the second row.
+    Multiply scalar number to each cell of a row.
 
-    Math::Matrix.new( [[1,2],[3,4]] ).multiply-row(1,2);
+    Math::Matrix.new( [[1,2],[3,4]] ).multiply-row(0,2);
 
-    Example:    1 2  +       =  1 2
-                3 4    2 3      5 7
+    Example:    1 2  * 2     =  2 4
+                3 4             3 4
 =end pod
 
-multi method multiply-row(Math::Matrix:D: Int $row, Numeric $factor --> Math::Matrix:D ) {
+method multiply-row(Math::Matrix:D: Int $row, Numeric $factor --> Math::Matrix:D ) {
     fail X::OutOfRange.new(
         :what<Row Index> , :got($row), :range("0..{$!row-count - 1}")
     ) unless 0 <= $row < $!row-count;
     my @m = AoA_clone(@!rows);
     @m[$row] = @m[$row] >>*>> $factor;
+    Math::Matrix.new( @m );
+}
+
+=begin pod
+=head3 multiply-row
+
+    Multiply scalar number to each cell of a column.
+
+    Math::Matrix.new( [[1,2],[3,4]] ).multiply-row(0,2);
+
+    Example:    1 2          =  2 2
+                3 4             6 4
+            
+               *2
+=end pod
+
+method multiply-column(Math::Matrix:D: Int $col, Numeric $factor --> Math::Matrix:D ) {
+    fail X::OutOfRange.new(
+        :what<Column Index> , :got($col), :range("0..{$!column-count - 1}")
+    ) unless 0 <= $col < $!column-count;
+    my @m = AoA_clone(@!rows);
+    @col.keys.map:{ @m[$_][$col] *= $factor };
     Math::Matrix.new( @m );
 }
 

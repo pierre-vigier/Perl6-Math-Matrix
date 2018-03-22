@@ -47,14 +47,20 @@ subtest {
 }, "Subtraction";
 
 subtest {
-    plan 3;
+    plan 6;
     my $matrix = Math::Matrix.new([[1,2],[3,4]]);
     my $expected1 = Math::Matrix.new([[3,6],[3,4]]);
     my $expected2 = Math::Matrix.new([[1,2],[9,12]]);
+    my $expected3 = Math::Matrix.new([[3,2],[9,4]]);
+    my $expected4 = Math::Matrix.new([[1,6],[3,12]]);
 
-    ok $matrix.add-row(0,3) ~~ $expected1,  "multiply a row";
-    ok $matrix.add-row(1,3) ~~ $expected2,  "multiply another row";
-    dies-ok { $matrix.add-row(3,2) },       "row index out of bound";
+    ok $matrix.multiply-row(0,3) ~~ $expected1,   "multiply a row";
+    ok $matrix.multiply-row(1,3) ~~ $expected2,   "multiply another row";
+    dies-ok { $matrix.multiply-row(3,2) },        "row index out of bound";
+
+    ok $matrix.multiply-column(0,3) ~~ $expected3,"multiply a column";
+    ok $matrix.multiply-column(1,3) ~~ $expected4,"multiply another column";
+    dies-ok { $matrix.multiply-column(3,2) },     "row index out of bound";
 }, "Partial Scalar Multiplication";
 
 subtest {
