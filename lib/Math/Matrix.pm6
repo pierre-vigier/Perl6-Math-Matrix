@@ -111,17 +111,25 @@ method new( @m ) {
     die "All Row must contains only numeric values" unless all( @m[*;*] ) ~~ Numeric;
     self.bless( rows => @m );
 }
+
 method clone { self.bless( rows => @!rows ) }
 
 sub AoA_clone (@m)  {  map {[ map {$^cell.clone}, $^row.flat ]}, @m }
 
-submethod BUILD( :@rows!, :$determinant, :$rank, :$diagonal, :$is-upper-triangular, :$is-lower-triangular ) {
+submethod BUILD( :@rows!, :$diagonal, :$density, :$trace, :$determinant, :$rank, :$kernel,
+                 :$is-zero, :$is-identity,: $is-symmetric, :$is-upper-triangular, :$is-lower-triangular ) {
     @!rows = AoA_clone (@rows);
     $!row-count = @rows.elems;
     $!column-count = @rows[0].elems;
-    $!determinant = $determinant if $determinant.defined;
-    $!rank = $rank if $rank.defined;
     $!diagonal = $diagonal if $diagonal.defined;
+    $!density  = $density if $density.defined;
+    $!trace    = $trace if $trace.defined;
+    $!determinant = $determinant if $determinant.defined;
+    $!rank   = $rank if $rank.defined;
+    $!kernel = $kernel if $kernel.defined;
+    $!is-zero = $is-zero if $is-zero.defined;
+    $!is-identity = $is-identity if $is-identity.defined;
+    $!is-symmetric = $is-symmetric if $is-symmetric.defined;
     $!is-upper-triangular = $is-upper-triangular if $is-upper-triangular.defined;
     $!is-lower-triangular = $is-lower-triangular if $is-lower-triangular.defined;
 }
@@ -1514,7 +1522,7 @@ method map(Math::Matrix:D: &coderef --> Math::Matrix:D) {
 
     Map only specified row (row number is first parameter).
     
-    say Math::Matrix.new([[1,2],[3,4]]).map-row(1, * + 1); # prints:
+    say Math::Matrix.new([[1,2],[3,4]]).map-row(1, {$_ + 1}); # prints:
 
     1 2
     4 5
@@ -1532,7 +1540,7 @@ method map-row(Math::Matrix:D: Int $row, &coderef --> Math::Matrix:D ) {
 =begin pod
 =head3 map-column
 
-    say Math::Matrix.new([[1,2],[3,4]]).map-column(1, * + 1); # prints:
+    say Math::Matrix.new([[1,2],[3,4]]).map-column(1, {$_ + 1}); # prints:
 
     1 3
     3 5
