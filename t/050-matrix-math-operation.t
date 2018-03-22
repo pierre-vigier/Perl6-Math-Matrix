@@ -1,38 +1,59 @@
 use Test;
 use Math::Matrix;
-plan 6;
-
+plan 8;
 
 subtest {
-    plan 4;
+    plan 8;
+    my $matrix = Math::Matrix.new([[1,2],[3,4]]);
+    my $expected1 = Math::Matrix.new([[3,5],[3,4]]);
+    my $expected2 = Math::Matrix.new([[1,2],[4,6]]);
+    my $expected3 = Math::Matrix.new([[2,2],[5,4]]);
+    my $expected4 = Math::Matrix.new([[1,3],[3,6]]);
+
+    ok $matrix.add-row(0,(1,2)) ~~ $expected1,  "add a row";
+    ok $matrix.add-row(1,(1,2)) ~~ $expected2,  "add another row";
+    dies-ok { $matrix.add-row(3,(1,2)) },       "row index out of bound";
+    dies-ok { $matrix.add-row(1,(1))   },       "row size out of bound";
+
+    ok $matrix.add-column(0,(1,2))~~ $expected3,"add a column";
+    ok $matrix.add-column(1,(1,2))~~ $expected4,"add another column";
+    dies-ok { $matrix.add-column(3,(1,2)) },     "column index out of bound";
+    dies-ok { $matrix.add-column(1,(1))   },     "column size out of bound";
+}, "Vector Addition";
+
+subtest {
+    plan 5;
     my $matrix = Math::Matrix.new([[1,2],[3,4]]);
     my $matrix2 = Math::Matrix.new([[4,3],[2,1]]);
     my $expected = Math::Matrix.new([[5,5],[5,5]]);
+
     ok $matrix.add( $matrix2 ) ~~ $expected, "Sum of matrices";
     ok $matrix2.add( $matrix ) ~~ $expected, "Sum of matrices reversed";
     ok $matrix + $matrix2 ~~ $expected, "Sum of matrices using + operator";
     ok $matrix2 + $matrix ~~ $expected, "Sum of matrices using + operator reversed";
-}, "Addition";
+
+    dies-ok { $matrix.add(Math::Matrix.new([[1]]))}, "matrix size out of bound";
+}, "Matrix Addition";
 
 subtest {
-    plan 4;
-    my $matrix = Math::Matrix.new([[1,2],[3,4]]);
-    my $matrix2 = Math::Matrix.new([[4,3],[2,1]]);
-    my $expected = Math::Matrix.new([[5,5],[5,5]]);
-    ok $matrix.add( $matrix2 ) ~~ $expected, "Sum of matrices";
-    ok $matrix2.add( $matrix ) ~~ $expected, "Sum of matrices reversed";
-    ok $matrix + $matrix2 ~~ $expected, "Sum of matrices using + operator";
-    ok $matrix2 + $matrix ~~ $expected, "Sum of matrices using + operator reversed";
-}, "Addition";
-
-subtest {
-    plan 2;
+    plan 3;
     my $matrix = Math::Matrix.new([[1,2],[3,4]]);
     my $matrix2 = Math::Matrix.new([[4,3],[2,1]]);
     my $expected = Math::Matrix.new([[ -3 , -1 ],[ 1 , 3 ]]);
-    ok $matrix.subtract( $matrix2 ) ~~ $expected, "Substraction of matrices";
-    ok $matrix - $matrix2 ~~ $expected, "Substraction of matrices using - operator";
+
+    ok $matrix.subtract( $matrix2 ) ~~ $expected,         "Substraction of matrices";
+    ok $matrix - $matrix2 ~~ $expected,                   "Substraction of matrices using - operator";
+    dies-ok { $matrix.subtract(Math::Matrix.new([[1]]))}, "matrix size out of bound";
 }, "Subtraction";
+
+subtest {
+    plan 3;
+    my $matrix = Math::Matrix.new([[1,1],[1,1]]);
+    my $expected = Math::Matrix.new([[2.2, 2.2],[2.2, 2.2]]);
+    ok $matrix.multiply( 2.2 ) ~~ $expected, "multiplication with real working";
+    ok $matrix * 2.2 ~~ $expected, "multiplication with real working with operator *";
+    ok 2.2 * $matrix ~~ $expected, "multiplication with real working with operator *, reverse args";
+}, "Partial Scalar Multiplication";
 
 subtest {
     plan 3;
@@ -44,12 +65,14 @@ subtest {
 }, "Scalar Multiplication";
 
 subtest {
-    plan 2;
+    plan 3;
     my $matrix = Math::Matrix.new([[1,2],[3,4]]);
     my $matrix2 = Math::Matrix.new([[4,3],[2,1]]);
     my $expected = Math::Matrix.new([[ 4 , 6 ],[ 6 , 4 ]]);
+
     ok $matrix.multiply( $matrix2 ) ~~ $expected, "Multiplication of matrices (element by element)";
-    ok $matrix * $matrix2 ~~ $expected, "Multiplication of matrices using * operator";
+    ok $matrix * $matrix2 ~~ $expected,           "Multiplication of matrices using * operator";
+    dies-ok {$matrix.multiply(Math::Matrix.new([[1]]))}, "matrix size out of bound";
 }, "Cellwise Multiplication";
 
 
