@@ -546,7 +546,7 @@ Matrix Math Operations
     Example:    1 2  * 2     =  2 4
                 3 4             3 4
 
-### multiply-row
+### multiply-column
 
     Multiply scalar number to each cell of a column.
 

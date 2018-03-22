@@ -468,7 +468,6 @@ multi method list-columns(Math::Matrix:D: --> List) {
     1 2 3 4 5 ..
     3 4 5 6 7 ..
     ...
-
 =end pod
 
 method gist(Math::Matrix:D: --> Str) {
@@ -613,7 +612,6 @@ method !build_is-identity(Math::Matrix:D: --> Bool) {
     Example:    1 2 5
                 0 3 8
                 0 0 7
-
 =end pod
 
 method !build_is-upper-triangular(Math::Matrix:D: --> Bool) {
@@ -633,7 +631,6 @@ method !build_is-upper-triangular(Math::Matrix:D: --> Bool) {
     Example:    1 0 0
                 2 3 0
                 5 8 7
-
 =end pod
 
 method !build_is-lower-triangular(Math::Matrix:D: --> Bool) {
@@ -699,7 +696,6 @@ method is-diagonally-dominant(Math::Matrix:D: Bool :$strict = False, Str :$along
     Example:    1 2 3
                 2 5 4
                 3 4 7
-
 =end pod
 
 method !build_is-symmetric(Math::Matrix:D: --> Bool) {
@@ -782,6 +778,7 @@ method !build_is-positive-definite (Math::Matrix:D: --> Bool) { # with Sylvester
     True;
 }
 
+
 =begin pod
 =head3 is-positive-semidefinite
 
@@ -836,7 +833,6 @@ method elems (Math::Matrix:D: --> Int) {
     my $d = $matrix.density( );   
 
     Density is the percentage of cell which are not zero.
-
 =end pod
 
 
@@ -854,12 +850,12 @@ method !build_density(Math::Matrix:D: --> Rat) {
 
     The trace of a square matrix is the sum of the cells on the main diagonal.
     In other words: sum of cells which row and column value is identical.
-
 =end pod
 
 method !build_trace(Math::Matrix:D: --> Numeric) {
     self.diagonal.sum;
 }
+
 
 =begin pod
 =head3 determinant, alias det
@@ -911,6 +907,7 @@ method determinant-naive(Math::Matrix:D: --> Numeric) {
     $det;
 }
 
+
 =begin pod
 =head3 rank
 
@@ -921,7 +918,6 @@ method determinant-naive(Math::Matrix:D: --> Numeric) {
     (thats why this command is sometimes calles dim)
 
 =end pod
-
 
 method !build_rank(Math::Matrix:D: --> Int) {
     my $rank = 0;
@@ -1417,7 +1413,7 @@ method multiply-row(Math::Matrix:D: Int $row, Numeric $factor --> Math::Matrix:D
 
 
 =begin pod
-=head3 multiply-row
+=head3 multiply-column
 
     Multiply scalar number to each cell of a column.
 
@@ -1523,6 +1519,15 @@ method map(Math::Matrix:D: &coderef --> Math::Matrix:D) {
     } ] );
 }
 
+
+method map-column(Math::Matrix:D: Int $col, &coderef --> Math::Matrix:D ) {
+    fail X::OutOfRange.new(
+        :what<Column Index> , :got($col), :range("0..{$!column-count - 1}")
+    ) unless 0 <= $col < $!column-count;
+    my @m = AoA_clone(@!rows);
+    (^$!column-count).map:{ @m[$_][$col] = &coderef( @m[$_][$col] ) };
+    Math::Matrix.new( @m );
+}
 
 =begin pod
 =head3 reduce
