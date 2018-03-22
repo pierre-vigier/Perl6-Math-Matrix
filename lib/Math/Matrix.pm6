@@ -298,7 +298,7 @@ multi method column(Math::Matrix:D: Int:D $column --> List) {
     fail X::OutOfRange.new(
         :what<Column index> , :got($column), :range("0..{$!column-count -1 }")
     ) unless 0 <= $column < $!column-count;
-    ( gather for ^$!row-count -> $i { take @!rows[$i;$column] } ).list;
+    (^$!row-count).map:{ @!rows[$_;$column] };
 }
 
 =begin pod
@@ -358,7 +358,7 @@ multi method submatrix(Math::Matrix:D: Int:D $row, Int:D $col --> Math::Matrix:D
 multi method submatrix(Math::Matrix:D: Int:D $row-min, Int:D $col-min, Int:D $row-max, Int:D $col-max --> Math::Matrix:D ){
     fail "Minimum row has to be smaller than maximum row" if $row-min > $row-max;
     fail "Minimum column has to be smaller than maximum column" if $col-min > $col-max;
-    self.submatrix(($row-min .. $row-max).list,($col-min .. $col-max).list);
+    self.submatrix(($row-min .. $row-max).list, ($col-min .. $col-max).list);
 }
 
 multi method submatrix(Math::Matrix:D: @rows where .all ~~ Int, @cols where .all ~~ Int --> Math::Matrix:D ){
@@ -1288,8 +1288,6 @@ multi method add(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b!row-c
 
     my $diff = $matrix.subtract( $matrix2 );  # cell wise subraction of 2 same sized matrices
     my $d = $matrix - $matrix2;               # works too
-
-
 =end pod
 
 multi method subtract(Math::Matrix:D: Real $r --> Math::Matrix:D ) {
