@@ -1,7 +1,8 @@
 
  0.1.9:
     - 2018.
-    - add methods: add-row, add-column, multiply-row, multiply-column
+    - add methods: add-row, add-column, multiply-row, multiply-column, 
+    - add map-row, map-column, also to set rows to zero
     - submatrix with 2 Int parameter works now as expected
     - accessor column gets faster
     - added docs

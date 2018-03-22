@@ -48,7 +48,7 @@ METHODS
 
   * matrix math ops: add, subtract, add-row, add-column, multiply, multiply-row, multiply-column, dotProduct, tensorProduct
 
-  * structural ops: map, reduce, reduce-rows, reduce-columns
+  * structural ops: map, map-row, map-column, reduce, reduce-rows, reduce-columns
 
   * operators: +, -, *, **, ⋅, dot, ⊗, x, | |, || ||
 
@@ -598,10 +598,26 @@ Structural Matrix Operations
     Like the built in map it iterates over all elements, running a code block.
     The results for a new matrix.
 
-    say Math::Matrix.new( [[1,2],[3,4]] ).map(* + 1);    # prints
+    say Math::Matrix.new([[1,2],[3,4]]).map(* + 1);    # prints:
 
     2 3
     4 5
+
+### map-row
+
+    Map only specified row (row number is first parameter).
+
+    say Math::Matrix.new([[1,2],[3,4]]).map-row(1, * + 1); # prints:
+
+    1 2
+    4 5
+
+### map-column
+
+    say Math::Matrix.new([[1,2],[3,4]]).map-column(1, * + 1); # prints:
+
+    1 3
+    3 5
 
 ### reduce
 

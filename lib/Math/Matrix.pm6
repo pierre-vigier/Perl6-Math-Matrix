@@ -81,7 +81,7 @@ subset Positive_Int of Int where * > 0 ;
 =item derived matrices: transposed, negated, conjugated, inverted, reduced-row-echelon-form
 =item decompositions: decompositionLUCrout, decompositionLU, decompositionCholesky
 =item matrix math ops: add, subtract, add-row, add-column, multiply, multiply-row, multiply-column, dotProduct, tensorProduct
-=item structural ops: map, reduce, reduce-rows, reduce-columns
+=item structural ops: map, map-row, map-column, reduce, reduce-rows, reduce-columns
 =item operators:   +,   -,   *,   **,   ⋅,  dot,  ⊗,  x,  | |,   || ||
 =end pod
 # split join
@@ -1403,12 +1403,7 @@ multi method multiply(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b!
 =end pod
 
 method multiply-row(Math::Matrix:D: Int $row, Numeric $factor --> Math::Matrix:D ) {
-    fail X::OutOfRange.new(
-        :what<Row Index> , :got($row), :range("0..{$!row-count - 1}")
-    ) unless 0 <= $row < $!row-count;
-    my @m = AoA_clone(@!rows);
-    @m[$row] = @m[$row] >>*>> $factor;
-    Math::Matrix.new( @m );
+    self.map-row($row,{$_ * $factor});
 }
 
 
@@ -1425,13 +1420,8 @@ method multiply-row(Math::Matrix:D: Int $row, Numeric $factor --> Math::Matrix:D
                *2
 =end pod
 
-method multiply-column(Math::Matrix:D: Int $col, Numeric $factor --> Math::Matrix:D ) {
-    fail X::OutOfRange.new(
-        :what<Column Index> , :got($col), :range("0..{$!column-count - 1}")
-    ) unless 0 <= $col < $!column-count;
-    my @m = AoA_clone(@!rows);
-    (^$!column-count).map:{ @m[$_][$col] *= $factor };
-    Math::Matrix.new( @m );
+method multiply-column(Math::Matrix:D: Int $column, Numeric $factor --> Math::Matrix:D ) {
+    self.map-column($column,{$_ * $factor});
 }
 
 
@@ -1506,11 +1496,10 @@ multi method tensorProduct(Math::Matrix:D: Math::Matrix $b  --> Math::Matrix:D) 
     Like the built in map it iterates over all elements, running a code block.
     The results for a new matrix.
 
-    say Math::Matrix.new( [[1,2],[3,4]] ).map(* + 1);    # prints
+    say Math::Matrix.new([[1,2],[3,4]]).map(* + 1);    # prints:
 
     2 3
     4 5
-
 =end pod
 
 method map(Math::Matrix:D: &coderef --> Math::Matrix:D) {
@@ -1520,6 +1509,17 @@ method map(Math::Matrix:D: &coderef --> Math::Matrix:D) {
 }
 
 
+=begin pod
+=head3 map-row
+
+    Map only specified row (row number is first parameter).
+    
+    say Math::Matrix.new([[1,2],[3,4]]).map-row(1, * + 1); # prints:
+
+    1 2
+    4 5
+=end pod
+
 method map-row(Math::Matrix:D: Int $row, &coderef --> Math::Matrix:D ) {
     fail X::OutOfRange.new(
         :what<Row Index> , :got($row), :range("0..{$!row-count - 1}")
@@ -1528,6 +1528,15 @@ method map-row(Math::Matrix:D: Int $row, &coderef --> Math::Matrix:D ) {
     @m[$row] = @m[$row].map(&coderef);
     Math::Matrix.new( @m );
 }
+
+=begin pod
+=head3 map-column
+
+    say Math::Matrix.new([[1,2],[3,4]]).map-column(1, * + 1); # prints:
+
+    1 3
+    3 5
+=end pod
 
 
 method map-column(Math::Matrix:D: Int $col, &coderef --> Math::Matrix:D ) {
