@@ -12,7 +12,18 @@ subtest {
     ok $matrix2.add( $matrix ) ~~ $expected, "Sum of matrices reversed";
     ok $matrix + $matrix2 ~~ $expected, "Sum of matrices using + operator";
     ok $matrix2 + $matrix ~~ $expected, "Sum of matrices using + operator reversed";
-}, "Sum of matrices";
+}, "Addition";
+
+subtest {
+    plan 4;
+    my $matrix = Math::Matrix.new([[1,2],[3,4]]);
+    my $matrix2 = Math::Matrix.new([[4,3],[2,1]]);
+    my $expected = Math::Matrix.new([[5,5],[5,5]]);
+    ok $matrix.add( $matrix2 ) ~~ $expected, "Sum of matrices";
+    ok $matrix2.add( $matrix ) ~~ $expected, "Sum of matrices reversed";
+    ok $matrix + $matrix2 ~~ $expected, "Sum of matrices using + operator";
+    ok $matrix2 + $matrix ~~ $expected, "Sum of matrices using + operator reversed";
+}, "Addition";
 
 subtest {
     plan 2;
@@ -21,7 +32,16 @@ subtest {
     my $expected = Math::Matrix.new([[ -3 , -1 ],[ 1 , 3 ]]);
     ok $matrix.subtract( $matrix2 ) ~~ $expected, "Substraction of matrices";
     ok $matrix - $matrix2 ~~ $expected, "Substraction of matrices using - operator";
-}, "Substraction of matrices";
+}, "Subtraction";
+
+subtest {
+    plan 3;
+    my $matrix = Math::Matrix.new([[1,1],[1,1]]);
+    my $expected = Math::Matrix.new([[2.2, 2.2],[2.2, 2.2]]);
+    ok $matrix.multiply( 2.2 ) ~~ $expected, "multiplication with real working";
+    ok $matrix * 2.2 ~~ $expected, "multiplication with real working with operator *";
+    ok 2.2 * $matrix ~~ $expected, "multiplication with real working with operator *, reverse args";
+}, "Scalar Multiplication";
 
 subtest {
     plan 2;
@@ -30,16 +50,8 @@ subtest {
     my $expected = Math::Matrix.new([[ 4 , 6 ],[ 6 , 4 ]]);
     ok $matrix.multiply( $matrix2 ) ~~ $expected, "Multiplication of matrices (element by element)";
     ok $matrix * $matrix2 ~~ $expected, "Multiplication of matrices using * operator";
-}, "Multiplication of matrices";
+}, "Cellwise Multiplication";
 
-subtest {
-    plan 3;
-    my $matrix = Math::Matrix.new([[1,1],[1,1]]);
-    my $expected = Math::Matrix.new([[ 2.2 , 2.2 ],[ 2.2 , 2.2 ]]);
-    ok $matrix.multiply( 2.2 ) ~~ $expected, "multiplication with real working";
-    ok $matrix * 2.2 ~~ $expected, "multiplication with real working with operator *";
-    ok 2.2 * $matrix ~~ $expected, "multiplication with real working with operator *, reverse args";
-}, "Multiply Matrix with number";
 
 subtest {
     plan 8;

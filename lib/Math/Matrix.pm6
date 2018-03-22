@@ -1384,6 +1384,16 @@ multi method multiply(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b!
 }
 
 
+multi method multiply-row(Math::Matrix:D: Int $row, Numeric $factor --> Math::Matrix:D ) {
+    fail X::OutOfRange.new(
+        :what<Row Index> , :got($row), :range("0..{$!row-count - 1}")
+    ) unless 0 <= $row < $!row-count;
+    my @m = AoA_clone(@!rows);
+    @m[$row] = @m[$row] >>*>> $factor;
+    Math::Matrix.new( @m );
+}
+
+
 =begin pod
 =head3 dotProduct
 
