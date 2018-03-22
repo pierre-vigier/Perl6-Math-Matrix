@@ -80,7 +80,7 @@ subset Positive_Int of Int where * > 0 ;
 =item numeric properties: size, elems, density, trace, determinant, rank, kernel, norm, condition
 =item derived matrices: transposed, negated, conjugated, inverted, reduced-row-echelon-form
 =item decompositions: decompositionLUCrout, decompositionLU, decompositionCholesky
-=item matrix math ops: add, subtract, add-row, add-column, multiply, dotProduct, tensorProduct
+=item matrix math ops: add, subtract, add-row, add-column, multiply, multiply-row, multiply-column, dotProduct, tensorProduct
 =item structural ops: map, reduce, reduce-rows, reduce-columns
 =item operators:   +,   -,   *,   **,   ⋅,  dot,  ⊗,  x,  | |,   || ||
 =end pod
@@ -1310,7 +1310,7 @@ multi method subtract(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b!
     Add a vector (row or col of some matrix) to a row of the matrix.
     In this example we add (2,3) to the second row.
 
-    Math::Matrix.new( [[1,2],[3,4]] ).add-row(1,(2,3))
+    Math::Matrix.new( [[1,2],[3,4]] ).add-row(1,(2,3));
 
     Example:    1 2  +       =  1 2
                 3 4    2 3      5 7
@@ -1331,7 +1331,7 @@ multi method add-row(Math::Matrix:D: Int $row, @row where {.all ~~ Numeric} --> 
 =head3 add-column
 
     Analog to add-row:
-    Math::Matrix.new( [[1,2],[3,4]] ).add-column(1,(2,3))
+    Math::Matrix.new( [[1,2],[3,4]] ).add-column(1,(2,3));
 
     Example:    1 2  +   2   =  1 4
                 3 4      3      3 7
@@ -1383,6 +1383,17 @@ multi method multiply(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b!
     Math::Matrix.new( @multiply );
 }
 
+=begin pod
+=head3 multiply-row
+
+    Add a vector (row or col of some matrix) to a row of the matrix.
+    In this example we add (2,3) to the second row.
+
+    Math::Matrix.new( [[1,2],[3,4]] ).multiply-row(1,2);
+
+    Example:    1 2  +       =  1 2
+                3 4    2 3      5 7
+=end pod
 
 multi method multiply-row(Math::Matrix:D: Int $row, Numeric $factor --> Math::Matrix:D ) {
     fail X::OutOfRange.new(
