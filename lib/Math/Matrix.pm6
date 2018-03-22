@@ -1514,7 +1514,7 @@ method map(Math::Matrix:D: &coderef --> Math::Matrix:D) {
 
     Map only specified row (row number is first parameter).
     
-    say Math::Matrix.new([[1,2],[3,4]]).map-row(1, * + 1); # prints:
+    say Math::Matrix.new([[1,2],[3,4]]).map-row(1, {$_ + 1}); # prints:
 
     1 2
     4 5
@@ -1532,7 +1532,7 @@ method map-row(Math::Matrix:D: Int $row, &coderef --> Math::Matrix:D ) {
 =begin pod
 =head3 map-column
 
-    say Math::Matrix.new([[1,2],[3,4]]).map-column(1, * + 1); # prints:
+    say Math::Matrix.new([[1,2],[3,4]]).map-column(1, {$_ + 1}); # prints:
 
     1 3
     3 5
