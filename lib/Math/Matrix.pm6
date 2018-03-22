@@ -1306,6 +1306,7 @@ multi method subtract(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b!
 
 =begin pod
 =head3 add-row
+
     Add a vector (row or col of some matrix) to a row of the matrix.
     In this example we add (2,3) to the second row.
 
@@ -1328,6 +1329,7 @@ multi method add-row(Math::Matrix:D: Int $row, @row where {.all ~~ Numeric} --> 
 
 =begin pod
 =head3 add-column
+
     Analog to add-row:
     Math::Matrix.new( [[1,2],[3,4]] ).add-column(1,(2,3))
 

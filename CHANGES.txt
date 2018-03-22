@@ -1,6 +1,7 @@
 
  0.1.9:
     - 2018.
+    - add methods: add-row, add-column
     - submatrix with 2 Int parameter works now as expected
     - added docs
 
