@@ -1520,12 +1520,22 @@ method map(Math::Matrix:D: &coderef --> Math::Matrix:D) {
 }
 
 
+method map-row(Math::Matrix:D: Int $row, &coderef --> Math::Matrix:D ) {
+    fail X::OutOfRange.new(
+        :what<Row Index> , :got($row), :range("0..{$!row-count - 1}")
+    ) unless 0 <= $row < $!row-count;
+    my @m = AoA_clone(@!rows);
+    @m[$row] = @m[$row].map(&coderef);
+    Math::Matrix.new( @m );
+}
+
+
 method map-column(Math::Matrix:D: Int $col, &coderef --> Math::Matrix:D ) {
     fail X::OutOfRange.new(
         :what<Column Index> , :got($col), :range("0..{$!column-count - 1}")
     ) unless 0 <= $col < $!column-count;
     my @m = AoA_clone(@!rows);
-    (^$!column-count).map:{ @m[$_][$col] = &coderef( @m[$_][$col] ) };
+    (^$!column-count).map:{ @m[$_;$col] = &coderef( @m[$_;$col] ) };
     Math::Matrix.new( @m );
 }
 
