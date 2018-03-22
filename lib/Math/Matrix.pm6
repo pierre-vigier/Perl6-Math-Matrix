@@ -257,7 +257,7 @@ method new-vector-product (Math::Matrix:U: @column_vector, @row_vector ){
 
 =end pod
 
-multi method cell(Math::Matrix:D: Int:D $row, Int:D $column --> Numeric ) {
+method cell(Math::Matrix:D: Int:D $row, Int:D $column --> Numeric ) {
     fail X::OutOfRange.new(
         :what<Row index> , :got($row), :range("0..{$!row-count -1 }")
     ) unless 0 <= $row < $!row-count;
@@ -266,6 +266,7 @@ multi method cell(Math::Matrix:D: Int:D $row, Int:D $column --> Numeric ) {
     ) unless 0 <= $column < $!column-count;
     return @!rows[$row][$column];
 }
+
 
 =begin pod
 =head3 row
@@ -277,12 +278,13 @@ multi method cell(Math::Matrix:D: Int:D $row, Int:D $column --> Numeric ) {
 
 =end pod
 
-multi method row(Math::Matrix:D: Int:D $row  --> List) {
+method row(Math::Matrix:D: Int:D $row  --> List) {
     fail X::OutOfRange.new(
         :what<Row index> , :got($row), :range("0..{$!row-count -1 }")
     ) unless 0 <= $row < $!row-count;
     return @!rows[$row].list;
 }
+
 
 =begin pod
 =head3 column
@@ -294,12 +296,13 @@ multi method row(Math::Matrix:D: Int:D $row  --> List) {
 
 =end pod
 
-multi method column(Math::Matrix:D: Int:D $column --> List) {
+method column(Math::Matrix:D: Int:D $column --> List) {
     fail X::OutOfRange.new(
         :what<Column index> , :got($column), :range("0..{$!column-count -1 }")
     ) unless 0 <= $column < $!column-count;
-    (^$!row-count).map:{ @!rows[$_;$column] };
+    (@!rows.keys.map:{ @!rows[$_;$column] }).list;
 }
+
 
 =begin pod
 =head3 diagonal
@@ -314,6 +317,7 @@ method !build_diagonal(Math::Matrix:D: --> List){
     fail "Number of columns has to be same as number of rows" unless self.is-square;
     ( gather for ^$!row-count -> $i { take @!rows[$i;$i] } ).list;
 }
+
 
 =begin pod
 =head3 submatrix
@@ -340,7 +344,6 @@ method !build_diagonal(Math::Matrix:D: --> List){
     
     $m.submatrix((3,2),(1,2)); # 4 5
                                  3 4
-
 =end pod
 
 multi method submatrix(Math::Matrix:D: Int:D $row, Int:D $col --> Math::Matrix:D ){
@@ -390,6 +393,7 @@ multi method submatrix(Math::Matrix:D: @rows where .all ~~ Int, @cols where .all
 
 method Bool(Math::Matrix:D: --> Bool)    {   ! self.is-zero   }
 
+
 =begin pod
 =head3 Numeric
 
@@ -402,6 +406,7 @@ method Bool(Math::Matrix:D: --> Bool)    {   ! self.is-zero   }
 
 method Numeric (Math::Matrix:D: --> Int) {   self.elems   }
 
+
 =begin pod
 =head3 Str
 
@@ -412,6 +417,7 @@ method Numeric (Math::Matrix:D: --> Int) {   self.elems   }
 =end pod
 
 method Str(Math::Matrix:D: --> Str)      {   @!rows.gist   }
+
 
 =begin pod
 =head3 perl
@@ -437,6 +443,7 @@ multi method perl(Math::Matrix:D: --> Str) {
 multi method list-rows(Math::Matrix:D: --> List) {
     (@!rows.map: {$_.flat}).list;
 }
+
 
 =begin pod
 =head3 list-columns
@@ -491,6 +498,7 @@ method gist(Math::Matrix:D: --> Str) {
     $str.chomp;
 }
 
+
 =begin pod
 =head3 full
 
@@ -531,7 +539,6 @@ multi σ_permutations ([$x, *@xs]) {
 ################################################################################
 # end of type conversion and handy shortcuts - start boolean matrix properties
 ################################################################################
-
 
 =begin pod
 =head2 Boolean Properties
@@ -589,7 +596,6 @@ method !build_is-zero(Math::Matrix:D: --> Bool) {
                 0 0 1
 =end pod
 
-
 method !build_is-identity(Math::Matrix:D: --> Bool) {
     return False unless self.is-square;
     for ^$!row-count X ^$!column-count -> ($r, $c) {
@@ -597,6 +603,7 @@ method !build_is-identity(Math::Matrix:D: --> Bool) {
     }
     True;
 }
+
 
 =begin pod
 =head3 is-upper-triangular
@@ -617,6 +624,7 @@ method !build_is-upper-triangular(Math::Matrix:D: --> Bool) {
     True;
 }
 
+
 =begin pod
 =head3 is-lower-triangular
 
@@ -636,6 +644,7 @@ method !build_is-lower-triangular(Math::Matrix:D: --> Bool) {
     True;
 }
 
+
 =begin pod
 =head3 is-diagonal
 
@@ -649,6 +658,7 @@ method !build_is-lower-triangular(Math::Matrix:D: --> Bool) {
 method !build_is-diagonal(Math::Matrix:D: --> Bool) {
     return $.is-upper-triangular && $.is-lower-triangular;
 }
+
 
 =begin pod
 =head3 is-diagonally-dominant
@@ -678,6 +688,7 @@ method is-diagonally-dominant(Math::Matrix:D: Bool :$strict = False, Str :$along
     return $rowwise if $along eq 'row';
     $colwise and $rowwise;
 }
+
 
 =begin pod
 =head3 is-symmetric
