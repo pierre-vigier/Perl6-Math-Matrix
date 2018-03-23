@@ -314,10 +314,6 @@ the matrix product (method dotProduct, or operator dot) of a column vector
 
     True if all main minors or all Eigenvalues are greater equal zero.
 
-
-
-
-
 =head2 Numeric Properties
 =head3 size
 
