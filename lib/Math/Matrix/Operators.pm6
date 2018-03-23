@@ -1,5 +1,6 @@
 use v6.c;
-role Math::Matrix::Operators;
+
+unit role Math::Matrix::Operators;
 
 multi sub infix:<+>(Math::Matrix $a, Math::Matrix $b --> Math::Matrix:D ) is export {
     $a.add($b);

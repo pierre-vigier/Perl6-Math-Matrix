@@ -70,19 +70,6 @@ submethod BUILD( :@rows!, :$diagonal, :$density, :$trace, :$determinant, :$rank,
     $!is-lower-triangular = $is-lower-triangular if $is-lower-triangular.defined;
 }
 
-=begin pod
-=head3 new-zero
-
-    This method is a constructor that returns an zero matrix of the size given in parameter.
-    If only one parameter is given, the matrix is quadratic. All the cells are set to 0.
-
-    say Math::Matrix.new-zero( 3, 4 ) :
-
-    0 0 0 0
-    0 0 0 0
-    0 0 0 0
-
-=end pod
 
 method !zero_array( Positive_Int $rows, Positive_Int $cols = $rows ) {
     return [ [ 0 xx $cols ] xx $rows ];
@@ -99,21 +86,6 @@ multi method new-zero(Math::Matrix:U: Positive_Int $rows, Positive_Int $cols) {
             is-zero => True, is-identity => False, is-diagonal => ($cols == $rows),  );
 }
 
-=begin pod
-=head3 new-identity
-
-    This method is a constructor that returns an identity matrix of the size given in parameter
-    All the cells are set to 0 except the top/left to bottom/right diagonale, set to 1
-
-    say Math::Matrix.new-identity( 3 ):
-  
-    1 0 0
-    0 1 0
-    0 0 1
-
-
-=end pod
-
 method !identity_array( Positive_Int $size ) {
     my @identity;
     for ^$size X ^$size -> ($r, $c) { @identity[$r][$c] = ($r == $c ?? 1 !! 0) }
@@ -126,23 +98,6 @@ method new-identity(Math::Matrix:U: Positive_Int $size ) {
                 is-zero => False, is-identity => True, 
                 is-square => True, is-diagonal => True, is-symmetric => True );
 }
-
-=begin pod
-=head3 new-diagonal
-
-    This method is a constructor that returns an diagonal matrix of the size given
-    by count of the parameter.
-    All the cells are set to 0 except the top/left to bottom/right diagonal,
-    set to given values.
-
-    say Math::Matrix.new-diagonal( 2, 4, 5 ):
-
-    2 0 0
-    0 4 0
-    0 0 5
-
-
-=end pod
 
 method new-diagonal(Math::Matrix:U: *@diag ){
     fail "Expect an List of Number" unless @diag and [and] @diag >>~~>> Numeric;
@@ -165,18 +120,6 @@ method !new-upper-triangular(Math::Matrix:U: @m ) {
     self.bless( rows => @m, is-upper-triangular => True );
 }
 
-=begin pod
-=head3 new-vector-product
-
-    This method is a constructor that returns a matrix which is a result of 
-    the matrix product (method dotProduct, or operator dot) of a column vector
-    (first argument) and a row vector (second argument).
-
-    my $matrixp = Math::Matrix.new-vector-product([1,2,3],[2,3,4]);
-    my $matrix = Math::Matrix.new([2,3,4],[4,6,8],[6,9,12]);       # same matrix
-
-=end pod
-
 method new-vector-product (Math::Matrix:U: @column_vector, @row_vector ){
     fail "Expect two Lists of Number" unless [and](@column_vector >>~~>> Numeric) and [and](@row_vector >>~~>> Numeric);
     my @p;
@@ -189,16 +132,6 @@ method new-vector-product (Math::Matrix:U: @column_vector, @row_vector ){
 ################################################################################
 # end of constructor - start accessors
 ################################################################################
-
-=begin pod
-=head2 Accessors
-=head3 cell
-
-    Gets value of element in third row and fourth column. (counting always from 0)
-
-    my $value = $matrix.cell(2,3);
-
-=end pod
 
 method cell(Math::Matrix:D: Int:D $row, Int:D $column --> Numeric ) {
     fail X::OutOfRange.new(
@@ -1529,10 +1462,8 @@ method reduce-columns (Math::Matrix:D: &coderef){
 
 
 method cat-horizontally(){ 
+
 }
 
-#method split (){ 
-#}
-
-# method join (){ 
-#}
+# method split (){ }
+# method join (){ }
