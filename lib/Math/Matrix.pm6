@@ -269,40 +269,12 @@ multi σ_permutations ([$x, *@xs]) {
 # end of type conversion and handy shortcuts - start boolean matrix properties
 ################################################################################
 
+method equal(Math::Matrix:D: Math::Matrix $b --> Bool) { @!rows ~~ $b!rows }
+method ACCEPTS(Math::Matrix $b --> Bool)               { self.equal( $b )  }
 
-method equal(Math::Matrix:D: Math::Matrix $b --> Bool) {
-    @!rows ~~ $b!rows;
-}
-method ACCEPTS(Math::Matrix $b --> Bool) {
-    self.equal( $b );
-}
+method !build_is-square(Math::Matrix:D: --> Bool) { $!column-count == $!row-count }
 
-method !build_is-square(Math::Matrix:D: --> Bool) {
-    $!column-count == $!row-count;
-}
-
-
-=begin pod
-=head3 is-zero
-
-   True if every cell has value of 0.
-=end pod
-
-method !build_is-zero(Math::Matrix:D: --> Bool) {
-    self.density() == 0;
-}
-
-
-=begin pod
-=head3 is-identity
-
-   True if every cell on the diagonal (where row index equals column index) is 1
-   and any other cell is 0.
-
-    Example:    1 0 0
-                0 1 0
-                0 0 1
-=end pod
+method !build_is-zero(Math::Matrix:D: --> Bool)   { self.density() == 0 }
 
 method !build_is-identity(Math::Matrix:D: --> Bool) {
     return False unless self.is-square;
@@ -312,17 +284,6 @@ method !build_is-identity(Math::Matrix:D: --> Bool) {
     True;
 }
 
-
-=begin pod
-=head3 is-upper-triangular
-
-   True if every cell below the diagonal (where row index is greater than column index) is 0.
-
-    Example:    1 2 5
-                0 3 8
-                0 0 7
-=end pod
-
 method !build_is-upper-triangular(Math::Matrix:D: --> Bool) {
     return False unless self.is-square;
     for ^$!row-count X ^$!column-count -> ($r, $c) {
@@ -330,17 +291,6 @@ method !build_is-upper-triangular(Math::Matrix:D: --> Bool) {
     }
     True;
 }
-
-
-=begin pod
-=head3 is-lower-triangular
-
-   True if every cell above the diagonal (where row index is smaller than column index) is 0.
-
-    Example:    1 0 0
-                2 3 0
-                5 8 7
-=end pod
 
 method !build_is-lower-triangular(Math::Matrix:D: --> Bool) {
     return False unless self.is-square;
@@ -350,35 +300,9 @@ method !build_is-lower-triangular(Math::Matrix:D: --> Bool) {
     True;
 }
 
-
-=begin pod
-=head3 is-diagonal
-
-   True if only cells on the diagonal differ from 0.
-
-    Example:    1 0 0
-                0 3 0
-                0 0 7
-=end pod
-
 method !build_is-diagonal(Math::Matrix:D: --> Bool) {
     return $.is-upper-triangular && $.is-lower-triangular;
 }
-
-
-=begin pod
-=head3 is-diagonally-dominant
-
-   True if cells on the diagonal have a bigger or equal absolute value than the
-   sum of the other absolute values in the column.
-
-   if $matrix.is-diagonally-dominant {
-   $matrix.is-diagonally-dominant(:!strict)   # same thing (default)
-   $matrix.is-diagonally-dominant(:strict)    # diagonal elements (DE) are stricly greater (>)
-   $matrix.is-diagonally-dominant(:!strict, :along<column>) # default
-   $matrix.is-diagonally-dominant(:strict,  :along<row>)    # DE > sum of rest row
-   $matrix.is-diagonally-dominant(:!strict, :along<both>)   # DE >= sum of rest row and rest column
-=end pod
 
 method is-diagonally-dominant(Math::Matrix:D: Bool :$strict = False, Str :$along where {$^orient eq any <column row both>} = 'column' --> Bool) {
     return False unless self.is-square;
@@ -395,18 +319,6 @@ method is-diagonally-dominant(Math::Matrix:D: Bool :$strict = False, Str :$along
     $colwise and $rowwise;
 }
 
-
-=begin pod
-=head3 is-symmetric
-
-    Is True if every cell with coordinates x y has same value as the cell on y x.
-    In other words: $matrix and $matrix.transposed (alias T) are the same.
-
-    Example:    1 2 3
-                2 5 4
-                3 4 7
-=end pod
-
 method !build_is-symmetric(Math::Matrix:D: --> Bool) {
     return False unless self.is-square;
     return True if $!row-count < 2;
@@ -418,63 +330,24 @@ method !build_is-symmetric(Math::Matrix:D: --> Bool) {
     True;
 }
 
-
-=begin pod
-=head3 is-self-adjoint
-
-    A Hermitian or self-adjoint matrix is equal to its transposed and conjugated.
-=end pod
-
 method !build_is-self-adjoint(Math::Matrix:D: --> Bool) {
     return False unless self.is-square;
     self.T.conj ~~ self;
 }
-
-
-=begin pod
-=head3 is-unitary
-
-    An unitery matrix multiplied (dotProduct) with its concjugate transposed 
-    derivative (.conj.T) is an identity matrix or said differently the 
-    concjugate transposed matrix equals the inversed matrix.
-=end pod
 
 method !build_is-unitary(Math::Matrix:D: --> Bool) {
     return False unless self.is-square;
     self.dotProduct( self.T.conj ) ~~ Math::Matrix.new-identity( $!row-count );
 }
 
-
-=begin pod
-=head3 is-orthogonal
-
-    An orthogonal matrix multiplied (dotProduct) with its transposed derivative (T)
-    is an identity matrix or in other words transosed and inverted matrices are equal.
-=end pod
-
 method !build_is-orthogonal(Math::Matrix:D: --> Bool) {
     return False unless self.is-square;
     self.dotProduct( self.T ) ~~ Math::Matrix.new-identity( $!row-count );
 }
 
-
-=begin pod
-=head3 is-invertible
-
-    Is True if number of rows and colums are the same (is-square) and determinant is not zero.
-    All rows or colums have to be Independent vectors.
-=end pod
-
 method !build_is-invertible(Math::Matrix:D: --> Bool) {
     self.is-square and self.determinant != 0;
 }
-
-
-=begin pod
-=head3 is-positive-definite
-
-    True if all main minors or all Eigenvalues are strictly greater zero.
-=end pod
 
 method !build_is-positive-definite (Math::Matrix:D: --> Bool) { # with Sylvester's criterion
     return False unless self.is-square;
@@ -487,13 +360,6 @@ method !build_is-positive-definite (Math::Matrix:D: --> Bool) { # with Sylvester
     True;
 }
 
-
-=begin pod
-=head3 is-positive-semidefinite
-
-    True if all main minors or all Eigenvalues are greater equal zero.
-=end pod
-
 method !build_is-positive-semidefinite (Math::Matrix:D: --> Bool) { # with Sylvester's criterion
     return False unless self.is-square;
     return False unless self.determinant >= 0;
@@ -504,80 +370,24 @@ method !build_is-positive-semidefinite (Math::Matrix:D: --> Bool) { # with Sylve
     }
     True;
 }
+
 ################################################################################
 # end of boolean matrix properties - start numeric matrix properties
 ################################################################################
 
-=begin pod
-=head2 Numeric Properties
-=head3 size
+method size(Math::Matrix:D: )          {  $!row-count, $!column-count }
 
-    List of two values: number of rows and number of columns.
-
-    say $matrix.size();
-    my $dim = min $matrix.size();  
-=end pod
-
-method size(Math::Matrix:D: ){
-    return $!row-count, $!column-count;
-}
-
-
-=begin pod
-=head3 elems
-
-    Number (count) of elements.
-
-    say $matrix.elems();
-    say +$matrix;                       # same thing
-=end pod
-
-method elems (Math::Matrix:D: --> Int) {
-    $!row-count * $!column-count;
-}
-
-=begin pod
-=head3 density
-
-    my $d = $matrix.density( );   
-
-    Density is the percentage of cell which are not zero.
-=end pod
-
+method elems (Math::Matrix:D: --> Int) {  $!row-count * $!column-count }
 
 method !build_density(Math::Matrix:D: --> Rat) {
     my $valcount = 0;
     for ^$!row-count X ^$!column-count -> ($r, $c) { $valcount++ if @!rows[$r][$c] != 0 }
-    $valcount / ($!row-count * $!column-count);
+    $valcount / self.elems;
 }
-
-
-=begin pod
-=head3 trace
-
-    my $tr = $matrix.trace( ); 
-
-    The trace of a square matrix is the sum of the cells on the main diagonal.
-    In other words: sum of cells which row and column value is identical.
-=end pod
 
 method !build_trace(Math::Matrix:D: --> Numeric) {
     self.diagonal.sum;
 }
-
-
-=begin pod
-=head3 determinant, alias det
-
-    If you see the columns as vectors, that describe the edges of a solid,
-    the determinant of a square matrix tells you the volume of that solid.
-    So if the solid is just in one dimension flat, the determinant is zero too.
-
-    my $det = $matrix.determinant( );
-    my $d = $matrix.det( );             # same thing
-    my $d = |$matrix|;                  # operator shortcut
-
-=end pod
 
 method det(Math::Matrix:D: --> Numeric )        { self.determinant }  # the usual short name
 method !build_determinant(Math::Matrix:D: --> Numeric) {
@@ -601,7 +411,6 @@ method !build_determinant(Math::Matrix:D: --> Numeric) {
     }
     $!determinant = $det;
 }
-
 method determinant-naive(Math::Matrix:D: --> Numeric) {
     fail "Number of columns has to be same as number of rows" unless self.is-square;
     return 1            if $!row-count == 0;
@@ -615,18 +424,6 @@ method determinant-naive(Math::Matrix:D: --> Numeric) {
     }
     $det;
 }
-
-
-=begin pod
-=head3 rank
-
-    my $r = $matrix.rank( );
-
-    rank is the number of independent row or column vectors
-    or also called independent dimensions
-    (thats why this command is sometimes calles dim)
-
-=end pod
 
 method !build_rank(Math::Matrix:D: --> Int) {
     my $rank = 0;
@@ -647,33 +444,9 @@ method !build_rank(Math::Matrix:D: --> Int) {
     $rank;
 }
 
-
-=begin pod
-=head3 kernel
-
-    my $tr = $matrix.kernel( );
-    kernel of matrix, number of dependent rows or columns
-
-=end pod
-
 method !build_kernel(Math::Matrix:D: --> Int) {
     min(self.size) - self.rank;
 }
-
-
-=begin pod
-=head3 norm
-
-    my $norm = $matrix.norm( );           # euclidian norm (L2, p = 2)
-    my $norm = ||$matrix||;               # operator shortcut to do the same
-    my $norm = $matrix.norm(1);           # p-norm, L1 = sum of all cells
-    my $norm = $matrix.norm(p:<4>,q:<3>); # p,q - norm, p = 4, q = 3
-    my $norm = $matrix.norm(p:<2>,q:<2>); # Frobenius norm
-    my $norm = $matrix.norm('max');       # maximum norm - biggest absolute value of a cell
-    $matrix.norm('row-sum');              # row sum norm - biggest abs. value-sum of a row
-    $matrix.norm('column-sum');           # column sum norm - same column wise
-=end pod
-
 
 multi method norm(Math::Matrix:D: Positive_Int :$p = 2, Positive_Int :$q = 1 --> Numeric) {
     my $norm = 0;
@@ -684,50 +457,23 @@ multi method norm(Math::Matrix:D: Positive_Int :$p = 2, Positive_Int :$q = 1 -->
     }
     $norm ** (1/$q);
 }
-
 multi method norm(Math::Matrix:D: Str $which where * eq 'row-sum' --> Numeric) {
     max map {[+] map {abs $_}, @$_}, @!rows;
 }
-
 multi method norm(Math::Matrix:D: Str $which where * eq 'column-sum' --> Numeric) {
     max map {my $c = $_; [+](map {abs $_[$c]}, @!rows) }, ^$!column-count;
 }
-
 multi method norm(Math::Matrix:D: Str $which where * eq 'max' --> Numeric) {
     max map {max map {abs $_},  @$_}, @!rows;
 }
 
-
-=begin pod
-=head3 condition
-
-    my $c = $matrix.condition( );        
-
-    Condition number of a matrix is L2 norm * L2 of inverted matrix.
-
-=end pod
-
-multi method condition(Math::Matrix:D: --> Numeric) {
+method condition(Math::Matrix:D: --> Numeric) {
     self.norm() * self.inverted().norm();
 }
-
 
 ################################################################################
 # end of numeric matrix properties - start create derivative matrices
 ################################################################################
-
-=begin pod
-=head2 Derivative Matrices
-=head3 transposed, alias T
-
-    returns a new, transposed Matrix, where rows became colums and vice versa.
-
-    Math::Matrix.new([[1,2,3],[3,4,6]]).transposed
-
-    Example:   [1 2 3].T  =  1 4       
-               [4 5 6]       2 5
-                             3 6
-=end pod
 
 method T(Math::Matrix:D: --> Math::Matrix:D  )         { self.transposed }
 method transposed(Math::Matrix:D: --> Math::Matrix:D ) {
@@ -735,17 +481,6 @@ method transposed(Math::Matrix:D: --> Math::Matrix:D ) {
     for ^$!row-count X ^$!column-count -> ($r, $c) { @transposed[$c][$r] = @!rows[$r][$c] }
     Math::Matrix.new( @transposed );
 }
-
-
-=begin pod
-=head3 inverted
-
-    Inverse matrix regarding to matrix multiplication.
-    The dot product of a matrix with its inverted results in a identity matrix
-    (neutral element in this group).
-    Matrices that have a square form and a full rank can be inverted.
-    Check this with the method .is-invertible.
-=end pod
 
 method inverted(Math::Matrix:D: --> Math::Matrix:D) {
     fail "Number of columns has to be same as number of rows" unless self.is-square;
@@ -773,42 +508,12 @@ method inverted(Math::Matrix:D: --> Math::Matrix:D) {
     Math::Matrix.new( @inverted );
 }
 
+method negated(Math::Matrix:D: --> Math::Matrix:D )       { self.map( - * ) }
 
-=begin pod
-=head3 negated
-
-    my $new = $matrix.negated();    # invert sign of all cells
-    my $neg = - $matrix;            # works too
-
-=end pod
-
-method negated(Math::Matrix:D: --> Math::Matrix:D ) {
-    self.map( - * );
-}
-
-
-=begin pod
-=head3 conjugated, alias conj
-
-    my $c = $matrix.conjugated();    # change every value to its complex conjugated
-    my $c = $matrix.conj();          # works too (official Perl 6 name)
-
-=end pod
 method conj(Math::Matrix:D: --> Math::Matrix:D  )         { self.conjugated }
 method conjugated(Math::Matrix:D: --> Math::Matrix:D ) {
     self.map( { $_.conj} );
 }
-
-
-
-=begin pod
-=head3 reduced-row-echelon-form, alias rref
-
-    my $rref = $matrix.reduced-row-echelon-form();
-    my $rref = $matrix.rref();
-
-    Return the reduced row echelon form of a matrix, a.k.a. row canonical form
-=end pod
 
 method reduced-row-echelon-form(Math::Matrix:D: --> Math::Matrix:D) {
     my @ref = self!clone_rows();
@@ -843,26 +548,6 @@ method rref(Math::Matrix:D: --> Math::Matrix:D) {
 # end of derivative matrices - start decompositions
 ################################################################################
 
-=begin pod
-=head2 Decompositions
-
-=head3 decompositionLU
-
-    my ($L, $U, $P) = $matrix.decompositionLU( );
-    $L dot $U eq $matrix dot $P;         # True
-    my ($L, $U) = $matrix.decompositionLUC(:!pivot);
-    $L dot $U eq $matrix;                # True
-
-    $L is a left triangular matrix and $R is a right one
-    Without pivotisation the marix has to be invertible (square and full ranked).
-    In case you whant two unipotent triangular matrices and a diagonal (D):
-    use the :diagonal option, which can be freely combined with :pivot.
-
-    my ($L, $D, $U, $P) = $matrix.decompositionLU( :diagonal );
-    $L dot $D dot $U eq $matrix dot $P;  # True
-
-=end pod
-
 # LU factorization with optional partial pivoting and optional diagonal matrix
 multi method decompositionLU(Math::Matrix:D: Bool :$pivot = True, :$diagonal = False) {
     fail "Not an square matrix" unless self.is-square;
@@ -871,6 +556,7 @@ multi method decompositionLU(Math::Matrix:D: Bool :$pivot = True, :$diagonal = F
     my @L = self!identity_array( $size );
     my @U = self!clone_rows( );
     my @P = self!identity_array( $size );
+
     for 0 .. $size-2 -> $c {
         if $pivot {
             my $maxrow = $c;
@@ -884,7 +570,6 @@ multi method decompositionLU(Math::Matrix:D: Bool :$pivot = True, :$diagonal = F
             @U[$r] = @U[$r] >>-<< $q <<*<< @U[$c];
         }
     }
-
     if $diagonal {
         my @D;
         for 0 ..^ $size -> $c {
@@ -897,17 +582,6 @@ multi method decompositionLU(Math::Matrix:D: Bool :$pivot = True, :$diagonal = F
     $pivot ?? (Math::Matrix!new-lower-triangular(@L), Math::Matrix!new-upper-triangular(@U), Math::Matrix.new(@P))
            !! (Math::Matrix!new-lower-triangular(@L), Math::Matrix!new-upper-triangular(@U));
 }
-
-
-=begin pod
-=head3 decompositionLUCrout
-
-    my ($L, $U) = $matrix.decompositionLUCrout( );
-    $L dot $U eq $matrix;                # True
-
-    $L is a left triangular matrix and $R is a right one
-    This decomposition works only on invertible matrices (square and full ranked).
-=end pod
 
 method decompositionLUCrout(Math::Matrix:D: ) {
     fail "Not square matrix" unless self.is-square;
@@ -931,16 +605,6 @@ method decompositionLUCrout(Math::Matrix:D: ) {
     return Math::Matrix.new($L), Math::Matrix.new($U);
 }
 
-
-=begin pod
-=head3 decompositionCholesky
-
-    my $D = $matrix.decompositionCholesky( );  # $D is a left triangular matrix
-    $D dot $D.T eq $matrix;                    # True 
-
-    This decomposition works only on symmetric and definite positive matrices.
-=end pod
-
 method decompositionCholesky(Math::Matrix:D: --> Math::Matrix:D) {
     fail "Not symmetric matrix" unless self.is-symmetric;
     fail "Not positive definite" unless self.is-positive-definite;
@@ -958,28 +622,9 @@ method decompositionCholesky(Math::Matrix:D: --> Math::Matrix:D) {
     return Math::Matrix!new-lower-triangular( @D );
 }
 
-
 ################################################################################
 # end of decompositions - start matrix operations
 ################################################################################
-
-=begin pod
-=head2 Matrix Math Operations
-=head3 add
-
-    Example:    1 2  +  5    =  6 7 
-                3 4             8 9
-
-                1 2  +  2 3  =  3 5
-                3 4     4 5     7 9
-
-
-    my $sum = $matrix.add( $matrix2 );  # cell wise addition of 2 same sized matrices
-    my $s = $matrix + $matrix2;         # works too
-
-    my $sum = $matrix.add( $number );   # adds number from every cell 
-    my $s = $matrix + $number;          # works too
-=end pod
 
 multi method add(Math::Matrix:D: Numeric $r --> Math::Matrix:D ) {
     self.map( * + $r );
@@ -993,20 +638,6 @@ multi method add(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b!row-c
     Math::Matrix.new( @sum );
 }
 
-
-=begin pod
-=head3 subtract
-
-    Works analogous to add - it's just for convenance.
-
-    my $diff = $matrix.subtract( $number );   # subtracts number from every cell (scalar subtraction)
-    my $sd = $matrix - $number;               # works too
-    my $sd = $number - $matrix ;              # works too
-
-    my $diff = $matrix.subtract( $matrix2 );  # cell wise subraction of 2 same sized matrices
-    my $d = $matrix - $matrix2;               # works too
-=end pod
-
 multi method subtract(Math::Matrix:D: Numeric $r --> Math::Matrix:D ) {
     self.map( * - $r );
 }
@@ -1019,19 +650,6 @@ multi method subtract(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b!
     Math::Matrix.new( @subtract );
 }
 
-
-=begin pod
-=head3 add-row
-
-    Add a vector (row or col of some matrix) to a row of the matrix.
-    In this example we add (2,3) to the second row.
-
-    Math::Matrix.new( [[1,2],[3,4]] ).add-row(1,(2,3));
-
-    Example:    1 2  +       =  1 2
-                3 4    2 3      5 7
-=end pod
-
 method add-row(Math::Matrix:D: Int $row, @row where {.all ~~ Numeric} --> Math::Matrix:D ) {
     fail X::OutOfRange.new(
         :what<Row Index> , :got($row), :range("0..{$!row-count - 1}")
@@ -1041,17 +659,6 @@ method add-row(Math::Matrix:D: Int $row, @row where {.all ~~ Numeric} --> Math::
     @m[$row] = @m[$row] <<+>> @row;
     Math::Matrix.new( @m );
 }
-
-
-=begin pod
-=head3 add-column
-
-    Analog to add-row:
-    Math::Matrix.new( [[1,2],[3,4]] ).add-column(1,(2,3));
-
-    Example:    1 2  +   2   =  1 4
-                3 4      3      3 7
-=end pod
 
 method add-column(Math::Matrix:D: Int $col, @col where {.all ~~ Numeric} --> Math::Matrix:D ) {
     fail X::OutOfRange.new(
@@ -1065,28 +672,6 @@ method add-column(Math::Matrix:D: Int $col, @col where {.all ~~ Numeric} --> Mat
     Math::Matrix.new( @m );
 }
 
-
-=begin pod
-=head3 multiply
-
-    In scalar multiplication each cell of the matrix gets multiplied with the same
-    number (scalar). In addition to that, this method can multiply two same sized
-    matrices, by multipling the cells with the came coordinates from each operand.
-
-    Example:    1 2  *  5    =   5 10 
-                3 4             15 20
-
-                1 2  *  2 3  =   2  6
-                3 4     4 5     12 20
-
-    my $product = $matrix.multiply( $number );   # multiply every cell with number
-    my $p = $matrix * $number;                   # works too
-
-    my $product = $matrix.multiply( $matrix2 );  # cell wise multiplication of same size matrices
-    my $p = $matrix * $matrix2;                  # works too
-
-=end pod
-
 multi method multiply(Math::Matrix:D: Numeric $r --> Math::Matrix:D ) {
     self.map( * * $r );
 }
@@ -1099,61 +684,15 @@ multi method multiply(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b!
     Math::Matrix.new( @multiply );
 }
 
-
-=begin pod
-=head3 multiply-row
-
-    Multiply scalar number to each cell of a row.
-
-    Math::Matrix.new( [[1,2],[3,4]] ).multiply-row(0,2);
-
-    Example:    1 2  * 2     =  2 4
-                3 4             3 4
-=end pod
-
 method multiply-row(Math::Matrix:D: Int $row, Numeric $factor --> Math::Matrix:D ) {
     self.map-row($row,{$_ * $factor});
 }
-
-
-=begin pod
-=head3 multiply-column
-
-    Multiply scalar number to each cell of a column.
-
-    Math::Matrix.new( [[1,2],[3,4]] ).multiply-row(0,2);
-
-    Example:    1 2          =  2 2
-                3 4             6 4
-            
-               *2
-=end pod
 
 method multiply-column(Math::Matrix:D: Int $column, Numeric $factor --> Math::Matrix:D ) {
     self.map-column($column,{$_ * $factor});
 }
 
-
-=begin pod
-=head3 dotProduct
-
-    Matrix multiplication of two fitting matrices (colums left == rows right).
-
-    Example:    1 2  *  2 3  =  10 13  =  1*2+2*4  1*3+2*5
-                3 4     4 5     22 29     3*2+4*4  3*3+4*5
-
-    my $product = $matrix1.dotProduct( $matrix2 )
-    my $c = $a dot $b;              # works too as operator alias
-    my $c = $a ⋅ $b;                # unicode operator alias
-
-    A shortcut for multiplication is the power - operator **
-    my $c = $a **  3;               # same as $a dot $a dot $a
-    my $c = $a ** -3;               # same as ($a dot $a dot $a).inverted
-    my $c = $a **  0;               # created an right sized identity matrix
-
-=end pod
-
-multi method dotProduct(Math::Matrix:D: Math::Matrix $b where { $a!column-count == $b!row-count} --> Math::Matrix:D ) {
+method dotProduct(Math::Matrix:D: Math::Matrix $b where { $a!column-count == $b!row-count} --> Math::Matrix:D ) {
     my @product;
     for ^$!row-count X ^$b!column-count -> ($r, $c) {
         @product[$r][$c] += @!rows[$r][$_] * $b!rows[$_][$c] for ^$b!row-count;
@@ -1161,29 +700,7 @@ multi method dotProduct(Math::Matrix:D: Math::Matrix $b where { $a!column-count 
     Math::Matrix.new( @product );
 }
 
-
-=begin pod
-=head3 tensorProduct
-
-    The tensor product between a matrix a of size (m,n) and a matrix b of size
-    (p,q) is a matrix c of size (m*p,n*q). All matrices you get by multiplying
-    an element (cell) of matrix a with matrix b (as in $a.multiply($b.cell(..,..))
-    concatinated result in matrix c. 
-    (Or replace in a each cell with its product with b.)
-
-    Example:    1 2  *  2 3   =  1*[2 3] 2*[2 3]  =  2  3  4  6
-                3 4     4 5        [4 5]   [4 5]     4  5  8 10
-                                 3*[2 3] 4*[2 3]     6  9  8 12
-                                   [4 5]   [4 5]     8 15 16 20
-    
-    my $c = $matrixa.tensorProduct( $matrixb );
-    my $c = $a x $b;                # works too as operator alias
-    my $c = $a ⊗ $b;                # unicode operator alias
-
-
-=end pod
-
-multi method tensorProduct(Math::Matrix:D: Math::Matrix $b  --> Math::Matrix:D) {
+method tensorProduct(Math::Matrix:D: Math::Matrix $b  --> Math::Matrix:D) {
     my @product;
     for @!rows -> $arow {
         for $b!rows -> $brow {
@@ -1197,36 +714,11 @@ multi method tensorProduct(Math::Matrix:D: Math::Matrix $b  --> Math::Matrix:D) 
 # end of math matrix operations - start structural matrix operations
 ################################################################################
 
-=begin pod
-=head2 Structural Matrix Operations
-=head3 map
-
-    Like the built in map it iterates over all elements, running a code block.
-    The results for a new matrix.
-
-    say Math::Matrix.new([[1,2],[3,4]]).map(* + 1);    # prints:
-
-    2 3
-    4 5
-=end pod
-
 method map(Math::Matrix:D: &coderef --> Math::Matrix:D) {
     Math::Matrix.new( [ @!rows.map: {
             [ $_.map( &coderef ) ]
     } ] );
 }
-
-
-=begin pod
-=head3 map-row
-
-    Map only specified row (row number is first parameter).
-    
-    say Math::Matrix.new([[1,2],[3,4]]).map-row(1, {$_ + 1}); # prints:
-
-    1 2
-    4 5
-=end pod
 
 method map-row(Math::Matrix:D: Int $row, &coderef --> Math::Matrix:D ) {
     fail X::OutOfRange.new(
@@ -1237,16 +729,6 @@ method map-row(Math::Matrix:D: Int $row, &coderef --> Math::Matrix:D ) {
     Math::Matrix.new( @m );
 }
 
-=begin pod
-=head3 map-column
-
-    say Math::Matrix.new([[1,2],[3,4]]).map-column(1, {0}); # prints:
-
-    1 0
-    3 0
-=end pod
-
-
 method map-column(Math::Matrix:D: Int $col, &coderef --> Math::Matrix:D ) {
     fail X::OutOfRange.new(
         :what<Column Index> , :got($col), :range("0..{$!column-count - 1}")
@@ -1256,36 +738,12 @@ method map-column(Math::Matrix:D: Int $col, &coderef --> Math::Matrix:D ) {
     Math::Matrix.new( @m );
 }
 
-=begin pod
-=head3 reduce
-
-    Like the built in reduce method, it iterates over all elements and joins
-    them into one value, by applying the given operator or method
-    to the previous result and the next element. I starts with the cell [0][0]
-    and moving from left to right in the first row and continue with the first
-    cell of the next row.
-    
-    Math::Matrix.new( [[1,2],[3,4]] ).reduce(&[+]);      # 10
-    Math::Matrix.new( [[1,2],[3,4]] ).reduce(&[*]);      # 10
-
-=end pod
-
 method reduce(Math::Matrix:D: &coderef ) {
-    (@!rows.map: {$_.flat}).flat.reduce( &coderef );
+    (@!rows.map: {$_.flat}).flat.reduce( &coderef )
 }
 
-
-=begin pod
-=head3 reduce-rows
-
-    Reduces (as described above) every row into one value, so the overall result
-    will be a list. In this example we calculate the sum of all cells in a row:
-    
-    say Math::Matrix.new( [[1,2],[3,4]] ).reduce-rows(&[+]);     # prints (3, 7)
-=end pod
-
 method reduce-rows (Math::Matrix:D: &coderef){
-    @!rows.map: { $_.flat.reduce( &coderef ) };
+    @!rows.map: { $_.flat.reduce( &coderef ) }
 }
 
 method reduce-columns (Math::Matrix:D: &coderef){
