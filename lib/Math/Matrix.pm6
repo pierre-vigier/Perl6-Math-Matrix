@@ -151,17 +151,16 @@ submethod BUILD( :@rows!, :$diagonal, :$density, :$trace, :$determinant, :$rank,
 method !zero_array( Positive_Int $rows, Positive_Int $cols = $rows ) {
     return [ [ 0 xx $cols ] xx $rows ];
 }
-
 multi method new-zero(Math::Matrix:U: Positive_Int $size) {
     self.bless( rows => self!zero_array($size, $size),
-        determinant => 0, rank => 0, kernel => $size, density => 0, trace => 0,
-        is-zero => True, is-identity => False, is-diagonal => True, 
-        is-square => True, is-symmetric => True  );
+            determinant => 0, rank => 0, kernel => $size, density => 0.0, trace => 0,
+            is-zero => True, is-identity => False, is-diagonal => True, 
+            is-square => True, is-symmetric => True  );
 }
 multi method new-zero(Math::Matrix:U: Positive_Int $rows, Positive_Int $cols) {
     self.bless( rows => self!zero_array($rows, $cols),
-        determinant => 0, rank => 0, kernel => min($rows, $cols), density => 0, trace => 0,
-        is-zero => True, is-identity => False, is-diagonal => ($cols == $rows),  );
+            determinant => 0, rank => 0, kernel => min($rows, $cols), density => 0.0, trace => 0,
+            is-zero => True, is-identity => False, is-diagonal => ($cols == $rows),  );
 }
 
 =begin pod
