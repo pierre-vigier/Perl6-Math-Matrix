@@ -1,35 +1,5 @@
-=begin pod
-=head1 NAME
-
-Math::Matrix - create, compare, compute and measure 2D matrices
-
-=head1 VERSION
-
-0.1.8
-
-=head1 SYNOPSIS
-
-Matrices are tables with rows (counting from 0) and columns of numbers: 
-
- transpose, invert, negate, add, subtract, multiply, dot product, size, determinant, 
- rank, kernel, trace, norm, decompositions and so on
-
-=head1 DESCRIPTION
-
-Perl6 already provide a lot of tools to work with array, shaped array, and so on,
-however, even hyper operators does not seem to be enough to do matrix calculation
-Purpose of that library is to propose some tools for Matrix calculation.
-
-I should probably use shaped array for the implementation, but i am encountering
-some issues for now. Problem being it might break the syntax for creation of a Matrix,
-use with consideration...
-
-Matrices are readonly - all operations and derivatives are new objects.
-=end pod
-################################################################################
-
 use v6.c;
-#need Math::Matrix::Operators;
+need Math::Matrix::Operators;
 
 unit class Math::Matrix:ver<0.1.8>:auth<github:pierre-vigier> does Math::Matrix::Operators;
 use AttrX::Lazy;
@@ -67,43 +37,9 @@ method !column-count  { $!column-count }
 
 subset Positive_Int of Int where * > 0 ;
 
-
-=begin pod
-=head1 METHODS
-=item constructors: new, new-zero, new-identity, new-diagonal, new-vector-product
-=item accessors: cell, row, column, diagonal, submatrix
-=item conversion: Bool, Numeric, Str, perl, list-rows, list-columns, gist, full
-=item boolean properties: equal, is-zero, is-identity, is-square, is-diagonal,
-    is-diagonally-dominant, is-upper-triangular, is-lower-triangular, is-invertible,
-    is-symmetric, is-unitary, is-self-adjoint, is-orthogonal,
-    is-positive-definite, is-positive-semidefinite
-=item numeric properties: size, elems, density, trace, determinant, rank, kernel, norm, condition
-=item derived matrices: transposed, negated, conjugated, inverted, reduced-row-echelon-form
-=item decompositions: decompositionLUCrout, decompositionLU, decompositionCholesky
-=item matrix math ops: add, subtract, add-row, add-column, multiply, multiply-row, multiply-column, dotProduct, tensorProduct
-=item structural ops: map, map-row, map-column, reduce, reduce-rows, reduce-columns
-=item operators:   +,   -,   *,   **,   ⋅,  dot,  ⊗,  x,  | |,   || ||
-=end pod
-# split join
-
 ################################################################################
 # start constructors
 ################################################################################
-
-=begin pod
-=head2 Constructors
-=head3 new( [[...],...,[...]] )
-
-   The default constructor, takes arrays of arrays of numbers.
-   Each second level array represents a row in the matrix.
-   That is why their length has to be the same.
-
-   Math::Matrix.new( [[1,2],[3,4]] ) creates:
-
-   1 2
-   3 4
-
-=end pod
 
 method new( @m ) {
     die "Expect an Array of Array" unless all @m ~~ Array;
@@ -1587,16 +1523,6 @@ method reduce-rows (Math::Matrix:D: &coderef){
     @!rows.map: { $_.flat.reduce( &coderef ) };
 }
 
-
-=begin pod
-=head3 reduce-columns
-
-    Similar to reduce-rows, this method reduces each column to one value in the 
-    resulting list:
-
-    say Math::Matrix.new( [[1,2],[3,4]] ).reduce-columns(&[*]);  # prints (3, 8)
-=end pod
-
 method reduce-columns (Math::Matrix:D: &coderef){
     (^$!column-count).map: { self.column($_).reduce( &coderef ) }
 }
@@ -1610,20 +1536,3 @@ method cat-horizontally(){
 
 # method join (){ 
 #}
-
-
-=begin pod
-
-=head1 Author
-
-Pierre VIGIER
-
-=head1 Contributors
-
-Herbert Breunung
-
-=head1 License
-
-Artistic License 2.0
-
-=end pod
