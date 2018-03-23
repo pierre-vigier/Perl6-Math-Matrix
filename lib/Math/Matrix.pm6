@@ -692,7 +692,9 @@ method multiply-column(Math::Matrix:D: Int $column, Numeric $factor --> Math::Ma
     self.map-column($column,{$_ * $factor});
 }
 
-method dotProduct(Math::Matrix:D: Math::Matrix $b where { $!column-count == $b!row-count} --> Math::Matrix:D ) {
+method dotProduct(Math::Matrix:D: Math::Matrix $b --> Math::Matrix:D ) {
+    fail "Number of columns of the second matrix is different from number of rows of the first operand"
+        unless $!column-count == $b!row-count;
     my @product;
     for ^$!row-count X ^$b!column-count -> ($r, $c) {
         @product[$r][$c] += @!rows[$r][$_] * $b!rows[$_][$c] for ^$b!row-count;
