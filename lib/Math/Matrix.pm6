@@ -70,7 +70,6 @@ submethod BUILD( :@rows!, :$diagonal, :$density, :$trace, :$determinant, :$rank,
     $!is-lower-triangular = $is-lower-triangular if $is-lower-triangular.defined;
 }
 
-
 method !zero_array( Positive_Int $rows, Positive_Int $cols = $rows ) {
     return [ [ 0 xx $cols ] xx $rows ];
 }
@@ -143,34 +142,12 @@ method cell(Math::Matrix:D: Int:D $row, Int:D $column --> Numeric ) {
     return @!rows[$row][$column];
 }
 
-
-=begin pod
-=head3 row
-
-    Gets values of specified row (first required parameter) as a list.
-    That would be (1, 2) if matrix is [[1,2][3,4]].
-
-    my @values = $matrix.row(0);
-
-=end pod
-
 method row(Math::Matrix:D: Int:D $row  --> List) {
     fail X::OutOfRange.new(
         :what<Row index> , :got($row), :range("0..{$!row-count -1 }")
     ) unless 0 <= $row < $!row-count;
     return @!rows[$row].list;
 }
-
-
-=begin pod
-=head3 column
-
-    Gets values of specified column (first required parameter) as a list.
-    That would be (1, 4) if matrix is [[1,2][3,4]].
-
-    my @values = $matrix.column(0);
-
-=end pod
 
 method column(Math::Matrix:D: Int:D $column --> List) {
     fail X::OutOfRange.new(
@@ -179,48 +156,11 @@ method column(Math::Matrix:D: Int:D $column --> List) {
     (@!rows.keys.map:{ @!rows[$_;$column] }).list;
 }
 
-
-=begin pod
-=head3 diagonal
-
-    Gets values of diagonal elements. That would be (1, 4) if matrix is [[1,2][3,4]].
-
-    my @values = $matrix.diagonal();
-
-=end pod
-
 method !build_diagonal(Math::Matrix:D: --> List){
     fail "Number of columns has to be same as number of rows" unless self.is-square;
     ( gather for ^$!row-count -> $i { take @!rows[$i;$i] } ).list;
 }
 
-
-=begin pod
-=head3 submatrix
-
-    Subset of cells of a given matrix by deleting rows and/or columns. 
-
-    The first and simplest usage is by choosing a cell (by coordinates).
-    Row and column of that cell will be removed.
-
-    my $m = Math::Matrix.new([[1,2,3,4][2,3,4,5],[3,4,5,6]]);     # 1 2 3 4
-                                                                    2 3 4 5
-                                                                    3 4 5 6
-    say $m.submatrix(1,2);     # 1 2 4
-                                 3 4 6                            
-
-    If you provide two pairs of coordinates (row column), these will be counted as
-    left upper and right lower corner of and area inside the original matrix,
-    which will the resulting submatrix.
-
-    say $m.submatrix(1,1,1,3); # 2 3 4        
-
-    When provided with two lists of values (one for the rows - one for columns)
-    a new matrix will be created with the old rows and columns in that new order.
-    
-    $m.submatrix((3,2),(1,2)); # 4 5
-                                 3 4
-=end pod
 
 multi method submatrix(Math::Matrix:D: Int:D $row, Int:D $col --> Math::Matrix:D ){
     fail X::OutOfRange.new(
@@ -254,97 +194,23 @@ multi method submatrix(Math::Matrix:D: @rows where .all ~~ Int, @cols where .all
 # end of accessors - start with type conversion and handy shortcuts
 ################################################################################
 
-=begin pod
-=head2 Type Conversion And Output Flavour
-=head3 Bool
-
-    Conversion into Bool context. Returns False if matrix is zero
-    (all cells equal zero as in is-zero), otherwise True.
-    
-    $matrix.Bool
-    ? $matrix           # alias
-    if $matrix          # Bool context too
-
-=end pod
-
 method Bool(Math::Matrix:D: --> Bool)    {   ! self.is-zero   }
 
-
-=begin pod
-=head3 Numeric
-
-    Conversion into Numeric context. Returns number (amount) of cells (as .elems).
-    Please note, only prefix a prefix + (as in: + $matrix) will call this Method.
-    A infix (as in $matrix + $number) calls .add($number).
-    
-    $matrix.Numeric   or      + $matrix
-=end pod
-
-method Numeric (Math::Matrix:D: --> Int) {   self.elems   }
-
-
-=begin pod
-=head3 Str
-
-    Conversion into String context. Returns content of all cells in the
-    data structure form like "[[..,..,...],[...],...]"
-    
-    put $matrix     or      print $matrix
-=end pod
+method Numeric (Math::Matrix:D: --> Int) {   self.elems    }
 
 method Str(Math::Matrix:D: --> Str)      {   @!rows.gist   }
 
-
-=begin pod
-=head3 perl
-
-    Conversion into String like context that can reevaluated into the same
-    object later. ( "Math::Matrix.new([[..,..,...],[...],...])" )
-    
-    my $clone = eval $matrix.perl;
-=end pod
-
 multi method perl(Math::Matrix:D: --> Str) {
-    self.WHAT.perl ~ ".new(" ~ @!rows.perl ~ ")";
+  self.WHAT.perl ~ ".new(" ~ @!rows.perl ~ ")";
 }
 
-
-=begin pod
-=head3 list-rows
-
-    Returns a list of lists, reflecting the row-wise content of the matrix.
-    
-    Math::Matrix.new( [[1,2],[3,4]] ).list-rows ~~ ((1 2) (3 4))     # True
-=end pod
-multi method list-rows(Math::Matrix:D: --> List) {
+method list-rows(Math::Matrix:D: --> List) {
     (@!rows.map: {$_.flat}).list;
 }
 
-
-=begin pod
-=head3 list-columns
-
-    Returns a list of lists, reflecting the row-wise content of the matrix.
-    
-    Math::Matrix.new( [[1,2],[3,4]] ).list-columns ~~ ((1 3) (2 4)) # True
-=end pod
-multi method list-columns(Math::Matrix:D: --> List) {
+method list-columns(Math::Matrix:D: --> List) {
     ((0 .. $!column-count - 1).map: {self.column($_)}).list;
 }
-
-
-=begin pod
-=head3 gist
-
-    Limited tabular view for the shell output. Just cuts off excessive
-    rows and columns. Implicitly called while:
-    
-    say $matrix;      # output when matrix has more than 100 cells
-
-    1 2 3 4 5 ..
-    3 4 5 6 7 ..
-    ...
-=end pod
 
 method gist(Math::Matrix:D: --> Str) {
     my $max-rows = 20;
@@ -373,16 +239,6 @@ method gist(Math::Matrix:D: --> Str) {
     $str.chomp;
 }
 
-
-=begin pod
-=head3 full
-
-    Full tabular view (all rows and columns) for the shell or file output.
-    
-    say $matrix.full;
-
-=end pod
-
 method full (Math::Matrix:D: --> Str) {
     my $max-char = max( @!rows[*;*] ).Int.chars;
     my $fmt;
@@ -401,9 +257,7 @@ method full (Math::Matrix:D: --> Str) {
     $str;
 }
 
-
 sub insert ($x, @xs) { ([flat @xs[0 ..^ $_], $x, @xs[$_ .. *]] for 0 .. @xs) }
-
 sub order ($sg, @xs) { $sg > 0 ?? @xs !! @xs.reverse }
 
 multi σ_permutations ([]) { [] => 1 }
@@ -415,34 +269,13 @@ multi σ_permutations ([$x, *@xs]) {
 # end of type conversion and handy shortcuts - start boolean matrix properties
 ################################################################################
 
-=begin pod
-=head2 Boolean Properties
-=head3 equal
-
-    Checks two matrices for equality. They have to be of same size and
-    every element of the first matrix on a particular position has to be equal
-    to the element (on the same position) of the second matrix.
-    
-    if $matrixa.equal( $matrixb ) {
-    if $matrixa ~~ $matrixb {
-=end pod
 
 method equal(Math::Matrix:D: Math::Matrix $b --> Bool) {
     @!rows ~~ $b!rows;
 }
-
 method ACCEPTS(Math::Matrix $b --> Bool) {
     self.equal( $b );
 }
-
-
-=begin pod
-=head3 is-square
-
-    True if number of rows and colums are the same.
-
-    if $matrix.is-square {
-=end pod
 
 method !build_is-square(Math::Matrix:D: --> Bool) {
     $!column-count == $!row-count;
@@ -1148,7 +981,7 @@ method decompositionCholesky(Math::Matrix:D: --> Math::Matrix:D) {
     my $s = $matrix + $number;          # works too
 =end pod
 
-multi method add(Math::Matrix:D: Real $r --> Math::Matrix:D ) {
+multi method add(Math::Matrix:D: Numeric $r --> Math::Matrix:D ) {
     self.map( * + $r );
 }
 
@@ -1174,7 +1007,7 @@ multi method add(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b!row-c
     my $d = $matrix - $matrix2;               # works too
 =end pod
 
-multi method subtract(Math::Matrix:D: Real $r --> Math::Matrix:D ) {
+multi method subtract(Math::Matrix:D: Numeric $r --> Math::Matrix:D ) {
     self.map( * - $r );
 }
 
@@ -1254,7 +1087,7 @@ method add-column(Math::Matrix:D: Int $col, @col where {.all ~~ Numeric} --> Mat
 
 =end pod
 
-multi method multiply(Math::Matrix:D: Real $r --> Math::Matrix:D ) {
+multi method multiply(Math::Matrix:D: Numeric $r --> Math::Matrix:D ) {
     self.map( * * $r );
 }
 
@@ -1320,9 +1153,8 @@ method multiply-column(Math::Matrix:D: Int $column, Numeric $factor --> Math::Ma
 
 =end pod
 
-multi method dotProduct(Math::Matrix:D: Math::Matrix $b --> Math::Matrix:D ) {
+multi method dotProduct(Math::Matrix:D: Math::Matrix $b where { $a!column-count == $b!row-count} --> Math::Matrix:D ) {
     my @product;
-    fail "Number of columns of the second matrix is different from number of rows of the first operand" unless $!column-count == $b!row-count;
     for ^$!row-count X ^$b!column-count -> ($r, $c) {
         @product[$r][$c] += @!rows[$r][$_] * $b!rows[$_][$c] for ^$b!row-count;
     }
