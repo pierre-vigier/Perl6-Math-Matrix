@@ -1540,10 +1540,10 @@ method map-row(Math::Matrix:D: Int $row, &coderef --> Math::Matrix:D ) {
 =begin pod
 =head3 map-column
 
-    say Math::Matrix.new([[1,2],[3,4]]).map-column(1, {$_ + 1}); # prints:
+    say Math::Matrix.new([[1,2],[3,4]]).map-column(1, {0}); # prints:
 
-    1 3
-    3 5
+    1 0
+    3 0
 =end pod
 
 
