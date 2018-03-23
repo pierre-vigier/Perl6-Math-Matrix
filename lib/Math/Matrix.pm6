@@ -117,7 +117,7 @@ method clone { self.bless( rows => @!rows ) }
 sub AoA_clone (@m)  {  map {[ map {$^cell.clone}, $^row.flat ]}, @m }
 
 submethod BUILD( :@rows!, :$diagonal, :$density, :$trace, :$determinant, :$rank, :$kernel,
-                 :$is-zero, :$is-identity,: $is-symmetric, :$is-upper-triangular, :$is-lower-triangular ) {
+                 :$is-zero, :$is-identity, :$is-symmetric, :$is-upper-triangular, :$is-lower-triangular ) {
     @!rows = AoA_clone (@rows);
     $!row-count = @rows.elems;
     $!column-count = @rows[0].elems;
