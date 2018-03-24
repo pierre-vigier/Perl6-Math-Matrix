@@ -740,6 +740,15 @@ method map-column(Math::Matrix:D: Int $col, &coderef --> Math::Matrix:D ) {
     Math::Matrix.new( @m );
 }
 
+method cat-horizontally (Math::Matrix:D: @*b --> Math::Matrix:D){
+    my @m =  @!rows.clone();
+    for @b -> $b {
+        fail "Number of rows in both matrices has to be same" unless $!row-count == $b!row-count;
+        @m.keys.map:{ @m[$_].append($b!rows[$_].list) };
+    }
+    Math::Matrix.new( @m );
+}
+
 method reduce(Math::Matrix:D: &coderef ) {
     (@!rows.map: {$_.flat}).flat.reduce( &coderef )
 }
@@ -752,12 +761,6 @@ method reduce-columns (Math::Matrix:D: &coderef){
     (^$!column-count).map: { self.column($_).reduce( &coderef ) }
 }
 
-method cat-horizontally (Math::Matrix:D: Math::Matrix $b --> Math::Matrix:D){ 
-    fail "Number of rows in both matrices has to be same" unless $!row-count == $b!row-count;
-    my @m =  @!rows.clone();
-    @m.keys.map:{ @m[$_].append($b!rows[$_].list) };
-    Math::Matrix.new( @m );
-}
 
 # method split (){ }
 # method join (){ }

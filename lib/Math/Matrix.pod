@@ -591,6 +591,10 @@ the matrix product (method dotProduct, or operator dot) of a column vector
     1 0
     3 0
 
+=head3 cat-horizontally
+
+=head3 cat-vertically
+
 =head3 reduce
 
     Like the built in reduce method, it iterates over all elements and joins

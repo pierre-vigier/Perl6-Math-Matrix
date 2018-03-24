@@ -2,9 +2,11 @@
  0.1.9:
     - 2018.
     - add methods: add-row, add-column, multiply-row, multiply-column, 
-    - add map-row, map-column, also to set rows to zero
+    - add map-row, map-column, cat-horizontally, cat-vertically 
     - submatrix with 2 Int parameter works now as expected
     - accessor column gets faster
+    - move docs into Matrix.pod
+    - move parts of code into roles (ops and deompost)
     - added docs
 
  0.1.8:
