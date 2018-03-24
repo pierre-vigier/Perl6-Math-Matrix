@@ -1,7 +1,7 @@
 use v6.c;
 use Math::Matrix::Operators;
 
-unit class Math::Matrix:ver<0.1.8>:auth<github:pierre-vigier> does Math::Matrix::Operators;
+unit class Math::Matrix:ver<0.1.8>:auth<github:pierre-vigier>;
 use AttrX::Lazy;
 
 has @!rows is required;
@@ -742,9 +742,7 @@ method map-column(Math::Matrix:D: Int $col, &coderef --> Math::Matrix:D ) {
 
 method cat-vertically (Math::Matrix:D: *@b --> Math::Matrix:D) {
     fail "Number of columns in both matrices has to be same" unless $!column-count == $b!column-count;
-    my @m =  @!rows.clone();
-        @m.keys.map:{ @m[$_].append($b!rows[$_].list) };
-    Math::Matrix.new( @m );
+    Math::Matrix.new( @!rows.clone().append($b!rows) );
 }
 
 method cat-horizontally (Math::Matrix:D: *@b --> Math::Matrix:D){
