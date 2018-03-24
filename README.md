@@ -612,6 +612,10 @@ Structural Matrix Operations
     1 0
     3 0
 
+### cat-horizontally
+
+### cat-vertically
+
 ### reduce
 
     Like the built in reduce method, it iterates over all elements and joins
