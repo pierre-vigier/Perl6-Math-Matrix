@@ -48,7 +48,9 @@ METHODS
 
   * matrix math ops: add, subtract, add-row, add-column, multiply, multiply-row, multiply-column, dotProduct, tensorProduct
 
-  * structural ops: map, map-row, map-column, cat-vertically, cat-horizontally, reduce, reduce-rows, reduce-columns
+  * list like ops: map, map-row, map-column, reduce, reduce-rows, reduce-columns
+
+  * structural ops: cat-vertically, cat-horizontally
 
   * operators: +, -, *, **, ⋅, dot, ⊗, x, | |, || ||
 
@@ -583,8 +585,8 @@ Matrix Math Operations
     my $c = $a x $b;                # works too as operator alias
     my $c = $a ⊗ $b;                # unicode operator alias
 
-Structural Matrix Operations
-----------------------------
+List Like Matrix Operations
+---------------------------
 
 ### map
 
@@ -612,10 +614,6 @@ Structural Matrix Operations
     1 0
     3 0
 
-### cat-vertically
-
-### cat-horizontally
-
 ### reduce
 
     Like the built in reduce method, it iterates over all elements and joins
@@ -639,6 +637,15 @@ Structural Matrix Operations
 Similar to reduce-rows, this method reduces each column to one value in the resulting list:
 
     say Math::Matrix.new( [[1,2],[3,4]] ).reduce-columns(&[*]);  # prints (3, 8)
+
+Structural Matrix Operations
+----------------------------
+
+### cat-vertically
+
+### cat-vertically
+
+### cat-horizontally
 
 Operators
 =========
