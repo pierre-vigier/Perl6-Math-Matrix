@@ -1,7 +1,6 @@
 use v6.c;
 
-unit class Math::Matrix :ver<0.1.8>
-                        :auth<github:pierre-vigier>;
+unit class Math::Matrix:ver<0.1.8>:auth<github:pierre-vigier>;
 use AttrX::Lazy;
 
 has @!rows is required;
@@ -761,7 +760,7 @@ method move-row (Math::Matrix:D: Int $from, Int $to --> Math::Matrix:D) {
 }
 
 
-method cat-vertically (Math::Matrix:D: *@b --> Math::Matrix:D) {
+method cat-vertically (Math::Matrix:D: $b --> Math::Matrix:D) {
     fail "Number of columns in both matrices has to be same" unless $!column-count == $b!column-count;
     Math::Matrix.new( @!rows.clone().append($b!rows) );
 }
