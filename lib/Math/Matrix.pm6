@@ -741,7 +741,10 @@ method map-column(Math::Matrix:D: Int $col, &coderef --> Math::Matrix:D ) {
 }
 
 method cat-vertically (Math::Matrix:D: *@b --> Math::Matrix:D) {
-
+    fail "Number of columns in both matrices has to be same" unless $!column-count == $b!column-count;
+    my @m =  @!rows.clone();
+        @m.keys.map:{ @m[$_].append($b!rows[$_].list) };
+    Math::Matrix.new( @m );
 }
 
 method cat-horizontally (Math::Matrix:D: *@b --> Math::Matrix:D){
@@ -774,15 +777,12 @@ method reduce-columns (Math::Matrix:D: &coderef){
 # end of structural matrix operations - start operators
 ################################################################################
 
+multi sub infix:<+>(::?CLASS $a, ::?CLASS $b --> ::?CLASS:D ) is export { $a.add($b) }
+multi sub infix:<+>(::?CLASS $a, Numeric $n  --> ::?CLASS:D ) is export { $a.add($n) }
+multi sub infix:<+>(Numeric $n, ::?CLASS $a  --> ::?CLASS:D ) is export { $a.add($n) }
+
 multi sub prefix:<->(::?CLASS $a            --> ::?CLASS:D ) is export  { $a.negated() }
 multi sub infix:<->(Numeric $n, ::?CLASS $a --> ::?CLASS:D ) is export  { $a.negated.add($n) }
-
-multi sub infix:<⊗>( ::?CLASS $a, ::?CLASS $b --> ::?CLASS:D ) is looser(&infix:<*>) is export {
-    $a.tensorProduct( $b );
-}
-multi sub infix:<x>( ::?CLASS $a, ::?CLASS $b --> ::?CLASS:D ) is looser(&infix:<*>) is export {
-    $a.tensorProduct( $b );
-}
 
 multi sub infix:<*>(::?CLASS $a, Numeric $n  --> ::?CLASS:D ) is export { $a.multiply($n) }
 multi sub infix:<*>(Numeric $n, ::?CLASS $a  --> ::?CLASS:D ) is export { $a.multiply($n) }
@@ -802,10 +802,12 @@ multi sub infix:<dot>(::?CLASS $a, ::?CLASS $b --> ::?CLASS:D ) is looser(&infix
     $a.dotProduct( $b );
 }
 
-multi sub circumfix:<| |>(::?CLASS $a --> Numeric) is equiv(&prefix:<!>) is export {
-    $a.determinant();
+multi sub infix:<⊗>( ::?CLASS $a, ::?CLASS $b --> ::?CLASS:D ) is looser(&infix:<*>) is export {
+    $a.tensorProduct( $b );
+}
+multi sub infix:<x>( ::?CLASS $a, ::?CLASS $b --> ::?CLASS:D ) is looser(&infix:<*>) is export {
+    $a.tensorProduct( $b );
 }
 
-multi sub circumfix:<|| ||>(::?CLASS $a --> Numeric) is equiv(&prefix:<!>) is export {
-    $a.norm();
-}
+multi sub circumfix:<| |>(::?CLASS $a --> Numeric) is equiv(&prefix:<!>) is export { $a.determinant }
+multi sub circumfix:<|| ||>(::?CLASS $a --> Numeric) is equiv(&prefix:<!>) is export { $a.norm }
