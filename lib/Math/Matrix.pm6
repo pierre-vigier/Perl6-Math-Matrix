@@ -770,14 +770,6 @@ method reduce-columns (Math::Matrix:D: &coderef){
 # end of structural matrix operations - start operators
 ################################################################################
 
-multi sub infix:<⊗>( ::?CLASS $a, ::?CLASS $b  --> ::?CLASS:D ) is looser(&infix:<*>) is export {
-    $a.tensorProduct( $b );
-}
-
-multi sub infix:<x>( ::?CLASS $a, ::?CLASS $b  --> ::?CLASS:D ) is looser(&infix:<*>) is export {
-    $a.tensorProduct( $b );
-}
-
 multi sub infix:<⋅>( ::?CLASS $a, ::?CLASS $b --> ::?CLASS:D ) is looser(&infix:<*>) is export {
     $a.dotProduct( $b );
 }
