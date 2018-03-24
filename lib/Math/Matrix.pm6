@@ -1,7 +1,7 @@
 use v6.c;
-use Math::Matrix::Operators;
 
-unit class Math::Matrix:ver<0.1.8>:auth<github:pierre-vigier>;
+unit class Math::Matrix :ver<0.1.8>
+                        :auth<github:pierre-vigier>;
 use AttrX::Lazy;
 
 has @!rows is required;
@@ -713,8 +713,9 @@ method tensorProduct(Math::Matrix:D: Math::Matrix $b  --> Math::Matrix:D) {
 }
 
 ################################################################################
-# end of math matrix operations - start structural matrix operations
+# end of math matrix operations - start list like matrix operations
 ################################################################################
+
 
 method map(Math::Matrix:D: &coderef --> Math::Matrix:D) {
     Math::Matrix.new( [ @!rows.map: {
@@ -740,6 +741,26 @@ method map-column(Math::Matrix:D: Int $col, &coderef --> Math::Matrix:D ) {
     Math::Matrix.new( @m );
 }
 
+method reduce(Math::Matrix:D: &coderef ) {
+    (@!rows.map: {$_.flat}).flat.reduce( &coderef )
+}
+
+method reduce-rows (Math::Matrix:D: &coderef){
+    @!rows.map: { $_.flat.reduce( &coderef ) }
+}
+
+method reduce-columns (Math::Matrix:D: &coderef){
+    (^$!column-count).map: { self.column($_).reduce( &coderef ) }
+}
+
+################################################################################
+# end of list like matrix operations - start structural matrix operations
+################################################################################
+
+method move-row (Math::Matrix:D: Int $from, Int $to --> Math::Matrix:D) {
+}
+
+
 method cat-vertically (Math::Matrix:D: *@b --> Math::Matrix:D) {
     fail "Number of columns in both matrices has to be same" unless $!column-count == $b!column-count;
     Math::Matrix.new( @!rows.clone().append($b!rows) );
@@ -752,18 +773,6 @@ method cat-horizontally (Math::Matrix:D: *@b --> Math::Matrix:D){
         @m.keys.map:{ @m[$_].append($b!rows[$_].list) };
     }
     Math::Matrix.new( @m );
-}
-
-method reduce(Math::Matrix:D: &coderef ) {
-    (@!rows.map: {$_.flat}).flat.reduce( &coderef )
-}
-
-method reduce-rows (Math::Matrix:D: &coderef){
-    @!rows.map: { $_.flat.reduce( &coderef ) }
-}
-
-method reduce-columns (Math::Matrix:D: &coderef){
-    (^$!column-count).map: { self.column($_).reduce( &coderef ) }
 }
 
 

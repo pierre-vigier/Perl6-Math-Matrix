@@ -38,7 +38,8 @@ Matrices are readonly - all operations and derivatives are new objects.
 =item derived matrices: transposed, negated, conjugated, inverted, reduced-row-echelon-form
 =item decompositions: decompositionLUCrout, decompositionLU, decompositionCholesky
 =item matrix math ops: add, subtract, add-row, add-column, multiply, multiply-row, multiply-column, dotProduct, tensorProduct
-=item structural ops: map, map-row, map-column, cat-vertically, cat-horizontally, reduce, reduce-rows, reduce-columns
+=item list like ops: map, map-row, map-column, reduce, reduce-rows, reduce-columns
+=item structural ops: cat-vertically, cat-horizontally
 =item operators:   +,   -,   *,   **,   ⋅,  dot,  ⊗,  x,  | |,   || ||
 
 
@@ -448,6 +449,7 @@ the matrix product (method dotProduct, or operator dot) of a column vector
 
     This decomposition works only on symmetric and definite positive matrices.
 
+
 =head2 Matrix Math Operations
 =head3 add
 
@@ -564,7 +566,7 @@ the matrix product (method dotProduct, or operator dot) of a column vector
     my $c = $a x $b;                # works too as operator alias
     my $c = $a ⊗ $b;                # unicode operator alias
 
-=head2 Structural Matrix Operations
+=head2 List Like Matrix Operations
 =head3 map
 
     Like the built in map it iterates over all elements, running a code block.
@@ -591,11 +593,6 @@ the matrix product (method dotProduct, or operator dot) of a column vector
     1 0
     3 0
 
-=head3 cat-vertically
-
-=head3 cat-horizontally
-
-
 =head3 reduce
 
     Like the built in reduce method, it iterates over all elements and joins
@@ -620,6 +617,15 @@ Similar to reduce-rows, this method reduces each column to one value in the
 resulting list:
 
     say Math::Matrix.new( [[1,2],[3,4]] ).reduce-columns(&[*]);  # prints (3, 8)
+
+
+=head2 Structural Matrix Operations
+
+=head3 cat-vertically
+
+=head3 cat-vertically
+
+=head3 cat-horizontally
 
 
 =head1 Operators
