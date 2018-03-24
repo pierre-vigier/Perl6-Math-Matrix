@@ -48,7 +48,7 @@ METHODS
 
   * matrix math ops: add, subtract, add-row, add-column, multiply, multiply-row, multiply-column, dotProduct, tensorProduct
 
-  * structural ops: map, map-row, map-column, reduce, reduce-rows, reduce-columns
+  * structural ops: map, map-row, map-column, cat-vertically, cat-horizontally, reduce, reduce-rows, reduce-columns
 
   * operators: +, -, *, **, ⋅, dot, ⊗, x, | |, || ||
 
@@ -612,9 +612,9 @@ Structural Matrix Operations
     1 0
     3 0
 
-### cat-horizontally
-
 ### cat-vertically
+
+### cat-horizontally
 
 ### reduce
 

@@ -740,6 +740,10 @@ method map-column(Math::Matrix:D: Int $col, &coderef --> Math::Matrix:D ) {
     Math::Matrix.new( @m );
 }
 
+method cat-vertically (Math::Matrix:D: *@b --> Math::Matrix:D) {
+
+}
+
 method cat-horizontally (Math::Matrix:D: *@b --> Math::Matrix:D){
     my @m =  @!rows.clone();
     for @b -> $b {
@@ -769,6 +773,8 @@ method reduce-columns (Math::Matrix:D: &coderef){
 ################################################################################
 # end of structural matrix operations - start operators
 ################################################################################
+
+multi sub prefix:<->(::?CLASS $a            --> ::?CLASS:D ) is export  { $a.negated() }
 
 multi sub infix:<⋅>( ::?CLASS $a, ::?CLASS $b --> ::?CLASS:D ) is looser(&infix:<*>) is export {
     $a.dotProduct( $b );

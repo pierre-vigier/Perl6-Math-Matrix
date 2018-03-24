@@ -38,7 +38,7 @@ Matrices are readonly - all operations and derivatives are new objects.
 =item derived matrices: transposed, negated, conjugated, inverted, reduced-row-echelon-form
 =item decompositions: decompositionLUCrout, decompositionLU, decompositionCholesky
 =item matrix math ops: add, subtract, add-row, add-column, multiply, multiply-row, multiply-column, dotProduct, tensorProduct
-=item structural ops: map, map-row, map-column, reduce, reduce-rows, reduce-columns
+=item structural ops: map, map-row, map-column, cat-vertically, cat-horizontally, reduce, reduce-rows, reduce-columns
 =item operators:   +,   -,   *,   **,   ⋅,  dot,  ⊗,  x,  | |,   || ||
 
 
@@ -591,9 +591,10 @@ the matrix product (method dotProduct, or operator dot) of a column vector
     1 0
     3 0
 
+=head3 cat-vertically
+
 =head3 cat-horizontally
 
-=head3 cat-vertically
 
 =head3 reduce
 

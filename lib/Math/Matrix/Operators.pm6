@@ -8,7 +8,7 @@ multi sub infix:<+>(::?CLASS $a, Numeric $n  --> ::?CLASS:D ) is export { $a.add
 multi sub infix:<+>(Numeric $n, ::?CLASS $a --> ::?CLASS:D ) is export  { $a.add($n) }
 
 multi sub infix:<->(Numeric $n, ::?CLASS $a --> ::?CLASS:D ) is export  { $a.negated.add($n) }
-multi sub prefix:<->(::?CLASS $a            --> ::?CLASS:D ) is export  { $a.negated() }
+
 
 
 multi sub infix:<⊗>( ::?CLASS $a, ::?CLASS $b --> ::?CLASS:D ) is looser(&infix:<*>) is export {
