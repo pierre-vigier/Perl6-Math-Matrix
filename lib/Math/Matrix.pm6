@@ -739,7 +739,7 @@ method map-column(Math::Matrix:D: Int $col, &coderef --> Math::Matrix:D ) {
 method map-cell(Math::Matrix:D: Int $row, Int $col, &coderef --> Math::Matrix:D ) {
     self.check_index($row, $col);
     my @m = self!clone_rows;
-    @m[$row;$col] = &coderef( @m[$row;$col] ) };
+    @m[$row;$col] = &coderef( @m[$row;$col] );
     Math::Matrix.new( @m );
 }
 
@@ -762,10 +762,15 @@ method reduce-columns (Math::Matrix:D: &coderef){
 method move-row (Math::Matrix:D: Int $from, Int $to --> Math::Matrix:D) {
     self.check_row_index(($from, $to));
     my @m = self!clone_rows;
+    @m.splice($to, 1, @m.splice($from, 1 ));
+    #$to-- unless $to < $from;
+    Math::Matrix.new(@m);
 }
 
 method swap-rows (Math::Matrix:D: Int $rowa, Int $rowb --> Math::Matrix:D) {
     self.check_row_index(($rowa, $rowb));
+    my @m = self!clone_rows;
+    Math::Matrix.new(@m);
 }
 
 
