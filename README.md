@@ -617,9 +617,13 @@ Structural Matrix Operations
 
 ### swap-columns
 
-### cat-vertically
+### prepend-vertically
 
-### cat-horizontally
+### append-vertically
+
+### prepend-horizontally
+
+### append-horizontally
 
 Operators
 =========
