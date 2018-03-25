@@ -266,8 +266,9 @@ multi σ_permutations ([$x, *@xs]) {
 # end of type conversion and handy shortcuts - start boolean matrix properties
 ################################################################################
 
-method equal(Math::Matrix:D: Math::Matrix $b --> Bool) { @!rows ~~ $b!rows }
-method ACCEPTS(Math::Matrix $b --> Bool)               { self.equal( $b )  }
+method equal(Math::Matrix:D: Math::Matrix $b --> Bool)           { @!rows ~~ $b!rows }
+multi method ACCEPTS(Math::Matrix:D: Math::Matrix:D $b --> Bool) { self.equal( $b )  }
+multi method ACCEPTS(Math::Matrix:D: Math::Matrix:U $b --> Bool) { True  }
 
 method !build_is-square(Math::Matrix:D: --> Bool) { $!column-count == $!row-count }
 
