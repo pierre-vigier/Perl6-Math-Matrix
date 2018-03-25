@@ -38,7 +38,7 @@ Matrices are readonly - all operations and derivatives are new objects.
 =item derived matrices: transposed, negated, conjugated, inverted, reduced-row-echelon-form
 =item decompositions: decompositionLUCrout, decompositionLU, decompositionCholesky
 =item matrix math ops: add, subtract, add-row, add-column, multiply, multiply-row, multiply-column, dotProduct, tensorProduct
-=item list like ops: elems, elem, map, map-row, map-column, reduce, reduce-rows, reduce-columns
+=item list like ops: elems, elem, map, map-row, map-column, map-cell, reduce, reduce-rows, reduce-columns
 =item structural ops: move-row, move-column, swap-rows, swap-columns, cat-vertically, cat-horizontally
 =item operators:   +,   -,   *,   **,   ⋅,  dot,  ⊗,  x,  | |,   || ||
 
@@ -101,36 +101,35 @@ the matrix product (method dotProduct, or operator dot) of a column vector
 =head2 Accessors
 =head3 cell
 
-    Gets value of element in third row and fourth column. (counting always from 0)
+Gets value of element in third row and fourth column. (counting always from 0)
 
     my $value = $matrix.cell(2,3);
 
 =head3 row
 
-    Gets values of specified row (first required parameter) as a list.
-    That would be (1, 2) if matrix is [[1,2][3,4]].
+Gets values of specified row (first required parameter) as a list.
+That would be (1, 2) if matrix is [[1,2][3,4]].
 
     my @values = $matrix.row(0);
 
 =head3 column
 
-    Gets values of specified column (first required parameter) as a list.
-    That would be (1, 4) if matrix is [[1,2][3,4]].
+Gets values of specified column (first required parameter) as a list.
+That would be (1, 4) if matrix is [[1,2][3,4]].
 
     my @values = $matrix.column(0);
 
 =head3 diagonal
 
-    Gets values of diagonal elements. That would be (1, 4) if matrix is [[1,2][3,4]].
+Gets values of diagonal elements. That would be (1, 4) if matrix is [[1,2][3,4]].
 
     my @values = $matrix.diagonal();
 
 =head3 submatrix
 
-    Subset of cells of a given matrix by deleting rows and/or columns. 
-
-    The first and simplest usage is by choosing a cell (by coordinates).
-    Row and column of that cell will be removed.
+Subset of cells of a given matrix by deleting rows and/or columns. 
+The first and simplest usage is by choosing a cell (by coordinates).
+Row and column of that cell will be removed.
 
     my $m = Math::Matrix.new([[1,2,3,4][2,3,4,5],[3,4,5,6]]);     # 1 2 3 4
                                                                     2 3 4 5
@@ -138,14 +137,14 @@ the matrix product (method dotProduct, or operator dot) of a column vector
     say $m.submatrix(1,2);     # 1 2 4
                                  3 4 6                            
 
-    If you provide two pairs of coordinates (row column), these will be counted as
-    left upper and right lower corner of and area inside the original matrix,
-    which will the resulting submatrix.
+If you provide two pairs of coordinates (row column), these will be counted as
+left upper and right lower corner of and area inside the original matrix,
+which will the resulting submatrix.
 
     say $m.submatrix(1,1,1,3); # 2 3 4        
 
-    When provided with two lists of values (one for the rows - one for columns)
-    a new matrix will be created with the old rows and columns in that new order.
+When provided with two lists of values (one for the rows - one for columns)
+a new matrix will be created with the old rows and columns in that new order.
     
     $m.submatrix((3,2),(1,2)); # 4 5
                                  3 4
@@ -153,8 +152,8 @@ the matrix product (method dotProduct, or operator dot) of a column vector
 =head2 Type Conversion And Output Flavour
 =head3 Bool
 
-    Conversion into Bool context. Returns False if matrix is zero
-    (all cells equal zero as in is-zero), otherwise True.
+Conversion into Bool context. Returns False if matrix is zero
+(all cells equal zero as in is-zero), otherwise True.
     
     $matrix.Bool
     ? $matrix           # alias
@@ -162,42 +161,42 @@ the matrix product (method dotProduct, or operator dot) of a column vector
 
 =head3 Numeric
 
-    Conversion into Numeric context. Returns number (amount) of cells (as .elems).
-    Please note, only prefix a prefix + (as in: + $matrix) will call this Method.
-    A infix (as in $matrix + $number) calls .add($number).
+Conversion into Numeric context. Returns number (amount) of cells (as .elems).
+Please note, only prefix a prefix + (as in: + $matrix) will call this Method.
+A infix (as in $matrix + $number) calls .add($number).
     
     $matrix.Numeric   or      + $matrix
 
 =head3 Str
 
-    Conversion into String context. Returns content of all cells in the
-    data structure form like "[[..,..,...],[...],...]"
+Conversion into String context. Returns content of all cells in the
+data structure form like "[[..,..,...],[...],...]"
     
     put $matrix     or      print $matrix
 
 =head3 perl
 
-    Conversion into String like context that can reevaluated into the same
-    object later. ( "Math::Matrix.new([[..,..,...],[...],...])" )
+Conversion into String like context that can reevaluated into the same
+object later. ( "Math::Matrix.new([[..,..,...],[...],...])" )
     
     my $clone = eval $matrix.perl;
 
 =head3 list-rows
 
-    Returns a list of lists, reflecting the row-wise content of the matrix.
+Returns a list of lists, reflecting the row-wise content of the matrix.
     
     Math::Matrix.new( [[1,2],[3,4]] ).list-rows ~~ ((1 2) (3 4))     # True
 
 =head3 list-columns
 
-    Returns a list of lists, reflecting the row-wise content of the matrix.
+Returns a list of lists, reflecting the row-wise content of the matrix.
     
     Math::Matrix.new( [[1,2],[3,4]] ).list-columns ~~ ((1 3) (2 4)) # True
 
 =head3 gist
 
-    Limited tabular view for the shell output. Just cuts off excessive
-    rows and columns. Implicitly called while:
+Limited tabular view for the shell output. Just cuts off excessive
+rows and columns. Implicitly called while:
     
     say $matrix;      # output when matrix has more than 100 cells
 
@@ -207,7 +206,7 @@ the matrix product (method dotProduct, or operator dot) of a column vector
 
 =head3 full
 
-    Full tabular view (all rows and columns) for the shell or file output.
+Full tabular view (all rows and columns) for the shell or file output.
     
     say $matrix.full;
 
@@ -230,16 +229,16 @@ Checks if this value is element of the matrix.
 
 =head3 is-square
 
-    True if number of rows and colums are the same.
+True if number of rows and colums are the same.
 
 =head3 is-zero
 
-   True if every cell (element) has value of 0.
+True if every cell (element) has value of 0.
 
 =head3 is-identity
 
-   True if every cell on the diagonal (where row index equals column index) is 1
-   and any other cell is 0.
+True if every cell on the diagonal (where row index equals column index) is 1
+and any other cell is 0.
 
     Example:    1 0 0
                 0 1 0
@@ -247,7 +246,7 @@ Checks if this value is element of the matrix.
 
 =head3 is-upper-triangular
 
-   True if every cell below the diagonal (where row index is greater than column index) is 0.
+True if every cell below the diagonal (where row index is greater than column index) is 0.
 
     Example:    1 2 5
                 0 3 8
@@ -255,7 +254,7 @@ Checks if this value is element of the matrix.
 
 =head3 is-lower-triangular
 
-   True if every cell above the diagonal (where row index is smaller than column index) is 0.
+True if every cell above the diagonal (where row index is smaller than column index) is 0.
 
     Example:    1 0 0
                 2 3 0
@@ -283,8 +282,8 @@ Checks if this value is element of the matrix.
 
 =head3 is-symmetric
 
-    Is True if every cell with coordinates x y has same value as the cell on y x.
-    In other words: $matrix and $matrix.transposed (alias T) are the same.
+Is True if every cell with coordinates x y has same value as the cell on y x.
+In other words: $matrix and $matrix.transposed (alias T) are the same.
 
     Example:    1 2 3
                 2 5 4
@@ -292,7 +291,7 @@ Checks if this value is element of the matrix.
 
 =head3 is-self-adjoint
 
-    A Hermitian or self-adjoint matrix is equal to its transposed and conjugated.
+A Hermitian or self-adjoint matrix is equal to its transposed and conjugated.
 
     Example:    1   2   3+i
                 2   5   4
@@ -300,61 +299,62 @@ Checks if this value is element of the matrix.
 
 =head3 is-unitary
 
-    An unitery matrix multiplied (dotProduct) with its concjugate transposed 
-    derivative (.conj.T) is an identity matrix, or said differently:
-    the concjugate transposed matrix equals the inversed matrix.
+An unitery matrix multiplied (dotProduct) with its concjugate transposed 
+derivative (.conj.T) is an identity matrix, or said differently:
+the concjugate transposed matrix equals the inversed matrix.
 
 =head3 is-orthogonal
 
-    An orthogonal matrix multiplied (dotProduct) with its transposed derivative (T)
-    is an identity matrix or in other words transosed and inverted matrices are equal.
+An orthogonal matrix multiplied (dotProduct) with its transposed derivative (T)
+is an identity matrix or in other words transosed and inverted matrices are equal.
 
 =head3 is-invertible
 
-    Is True if number of rows and colums are the same (is-square) and determinant is not zero.
-    All rows or colums have to be Independent vectors.
+Is True if number of rows and colums are the same (is-square) and determinant is not zero.
+All rows or colums have to be Independent vectors.
 
 =head3 is-positive-definite
 
-    True if all main minors or all Eigenvalues are strictly greater zero.
+True if all main minors or all Eigenvalues are strictly greater zero.
 
 =head3 is-positive-semidefinite
 
-    True if all main minors or all Eigenvalues are greater equal zero.
+True if all main minors or all Eigenvalues are greater equal zero.
 
 =head2 Numeric Properties
 =head3 size
 
-    List of two values: number of rows and number of columns.
+List of two values: number of rows and number of columns.
 
     say $matrix.size();
     my $dim = min $matrix.size();  
 
 =head3 elems
 
-    Number (count) of elements.
+Number (count) of elements.
 
     say $matrix.elems();
     say +$matrix;                       # same thing
 
 =head3 density
 
-    my $d = $matrix.density( );   
+Density is the percentage of cell which are not zero.
 
-    Density is the percentage of cell which are not zero.
+    my $d = $matrix.density( );   
 
 =head3 trace
 
-    my $tr = $matrix.trace( ); 
 
-    The trace of a square matrix is the sum of the cells on the main diagonal.
-    In other words: sum of cells which row and column value is identical.
+ The trace of a square matrix is the sum of the cells on the main diagonal.
+ In other words: sum of cells which row and column value is identical.
+
+    my $tr = $matrix.trace( ); 
 
 =head3 determinant, alias det
 
-    If you see the columns as vectors, that describe the edges of a solid,
-    the determinant of a square matrix tells you the volume of that solid.
-    So if the solid is just in one dimension flat, the determinant is zero too.
+If you see the columns as vectors, that describe the edges of a solid,
+the determinant of a square matrix tells you the volume of that solid.
+So if the solid is just in one dimension flat, the determinant is zero too.
 
     my $det = $matrix.determinant( );
     my $d = $matrix.det( );             # same thing
@@ -362,16 +362,17 @@ Checks if this value is element of the matrix.
 
 =head3 rank
 
-    my $r = $matrix.rank( );
+Rank is the number of independent row or column vectors or also called independent
+dimensions (thats why this command is sometimes calles dim)
 
-    rank is the number of independent row or column vectors
-    or also called independent dimensions
-    (thats why this command is sometimes calles dim)
+    my $r = $matrix.rank( );
 
 =head3 kernel
 
+Kernel of matrix, number of dependent rows or columns (rank + kernel = dim).
+
     my $tr = $matrix.kernel( );
-    kernel of matrix, number of dependent rows or columns
+
 
 =head3 norm
 
@@ -386,14 +387,14 @@ Checks if this value is element of the matrix.
 
 =head3 condition
 
-    my $c = $matrix.condition( );        
+Condition number of a matrix is L2 norm * L2 of inverted matrix.
 
-    Condition number of a matrix is L2 norm * L2 of inverted matrix.
+    my $c = $matrix.condition( );        
 
 =head2 Derivative Matrices
 =head3 transposed, alias T
 
-    returns a new, transposed Matrix, where rows became colums and vice versa.
+Returns a new, transposed Matrix, where rows became colums and vice versa.
 
     Math::Matrix.new([[1,2,3],[3,4,6]]).transposed
 
@@ -402,11 +403,11 @@ Checks if this value is element of the matrix.
                              3 6
 =head3 inverted
 
-    Inverse matrix regarding to matrix multiplication.
-    The dot product of a matrix with its inverted results in a identity matrix
-    (neutral element in this group).
-    Matrices that have a square form and a full rank can be inverted.
-    Check this with the method .is-invertible.
+Inverse matrix regarding to matrix multiplication.
+The dot product of a matrix with its inverted results in a identity matrix
+(neutral element in this group).
+Matrices that have a square form and a full rank can be inverted.
+Check this with the method .is-invertible.
 
 =head3 negated
 
@@ -420,10 +421,10 @@ Checks if this value is element of the matrix.
 
 =head3 reduced-row-echelon-form, alias rref
 
+Return the reduced row echelon form of a matrix, a.k.a. row canonical form
+
     my $rref = $matrix.reduced-row-echelon-form();
     my $rref = $matrix.rref();
-
-    Return the reduced row echelon form of a matrix, a.k.a. row canonical form
 
 =head2 Decompositions
 =head3 decompositionLU
@@ -433,10 +434,10 @@ Checks if this value is element of the matrix.
     my ($L, $U) = $matrix.decompositionLUC(:!pivot);
     $L dot $U eq $matrix;                # True
 
-    $L is a left triangular matrix and $R is a right one
-    Without pivotisation the marix has to be invertible (square and full ranked).
-    In case you whant two unipotent triangular matrices and a diagonal (D):
-    use the :diagonal option, which can be freely combined with :pivot.
+$L is a left triangular matrix and $R is a right one
+Without pivotisation the marix has to be invertible (square and full ranked).
+In case you whant two unipotent triangular matrices and a diagonal (D):
+use the :diagonal option, which can be freely combined with :pivot.
 
     my ($L, $D, $U, $P) = $matrix.decompositionLU( :diagonal );
     $L dot $D dot $U eq $matrix dot $P;  # True
@@ -446,16 +447,15 @@ Checks if this value is element of the matrix.
     my ($L, $U) = $matrix.decompositionLUCrout( );
     $L dot $U eq $matrix;                # True
 
-    $L is a left triangular matrix and $R is a right one
-    This decomposition works only on invertible matrices (square and full ranked).
+$L is a left triangular matrix and $R is a right one
+This decomposition works only on invertible matrices (square and full ranked).
 
 =head3 decompositionCholesky
 
+This decomposition works only on symmetric and definite positive matrices.
+
     my $D = $matrix.decompositionCholesky( );  # $D is a left triangular matrix
     $D dot $D.T eq $matrix;                    # True 
-
-    This decomposition works only on symmetric and definite positive matrices.
-
 
 =head2 Matrix Math Operations
 =head3 add
@@ -466,7 +466,6 @@ Checks if this value is element of the matrix.
                 1 2  +  2 3  =  3 5
                 3 4     4 5     7 9
 
-
     my $sum = $matrix.add( $matrix2 );  # cell wise addition of 2 same sized matrices
     my $s = $matrix + $matrix2;         # works too
 
@@ -475,7 +474,7 @@ Checks if this value is element of the matrix.
 
 =head3 subtract
 
-    Works analogous to add - it's just for convenance.
+Works analogous to add - it's just for convenance.
 
     my $diff = $matrix.subtract( $number );   # subtracts number from every cell (scalar subtraction)
     my $sd = $matrix - $number;               # works too
@@ -486,8 +485,8 @@ Checks if this value is element of the matrix.
 
 =head3 add-row
 
-    Add a vector (row or col of some matrix) to a row of the matrix.
-    In this example we add (2,3) to the second row.
+Add a vector (row or col of some matrix) to a row of the matrix.
+In this example we add (2,3) to the second row.
 
     Math::Matrix.new( [[1,2],[3,4]] ).add-row(1,(2,3));
 
@@ -496,7 +495,6 @@ Checks if this value is element of the matrix.
 
 =head3 add-column
 
-    Analog to add-row:
     Math::Matrix.new( [[1,2],[3,4]] ).add-column(1,(2,3));
 
     Example:    1 2  +   2   =  1 4
@@ -504,9 +502,9 @@ Checks if this value is element of the matrix.
 
 =head3 multiply
 
-    In scalar multiplication each cell of the matrix gets multiplied with the same
-    number (scalar). In addition to that, this method can multiply two same sized
-    matrices, by multipling the cells with the came coordinates from each operand.
+In scalar multiplication each cell of the matrix gets multiplied with the same
+number (scalar). In addition to that, this method can multiply two same sized
+matrices, by multipling the cells with the came coordinates from each operand.
 
     Example:    1 2  *  5    =   5 10 
                 3 4             15 20
@@ -522,7 +520,7 @@ Checks if this value is element of the matrix.
 
 =head3 multiply-row
 
-    Multiply scalar number to each cell of a row.
+Multiply scalar number to each cell of a row.
 
     Math::Matrix.new( [[1,2],[3,4]] ).multiply-row(0,2);
 
@@ -531,7 +529,7 @@ Checks if this value is element of the matrix.
 
 =head3 multiply-column
 
-    Multiply scalar number to each cell of a column.
+Multiply scalar number to each cell of a column.
 
     Math::Matrix.new( [[1,2],[3,4]] ).multiply-row(0,2);
 
@@ -542,7 +540,7 @@ Checks if this value is element of the matrix.
 
 =head3 dotProduct
 
-    Matrix multiplication of two fitting matrices (colums left == rows right).
+Matrix multiplication of two fitting matrices (colums left == rows right).
 
     Example:    1 2  *  2 3  =  10 13  =  1*2+2*4  1*3+2*5
                 3 4     4 5     22 29     3*2+4*4  3*3+4*5
@@ -558,11 +556,11 @@ Checks if this value is element of the matrix.
 
 =head3 tensorProduct
 
-    The tensor product between a matrix a of size (m,n) and a matrix b of size
-    (p,q) is a matrix c of size (m*p,n*q). All matrices you get by multiplying
-    an element (cell) of matrix a with matrix b (as in $a.multiply($b.cell(..,..))
-    concatinated result in matrix c. 
-    (Or replace in a each cell with its product with b.)
+The tensor product between a matrix a of size (m,n) and a matrix b of size
+(p,q) is a matrix c of size (m*p,n*q). All matrices you get by multiplying
+an element (cell) of matrix a with matrix b (as in $a.multiply($b.cell(..,..))
+concatinated result in matrix c. 
+(Or replace in a each cell with its product with b.)
 
     Example:    1 2  *  2 3   =  1*[2 3] 2*[2 3]  =  2  3  4  6
                 3 4     4 5        [4 5]   [4 5]     4  5  8 10
@@ -576,8 +574,8 @@ Checks if this value is element of the matrix.
 =head2 List Like Matrix Operations
 =head3 map
 
-    Like the built in map it iterates over all elements, running a code block.
-    The results for a new matrix.
+Like the built in map it iterates over all elements, running a code block.
+The results for a new matrix.
 
     say Math::Matrix.new([[1,2],[3,4]]).map(* + 1);    # prints:
 
@@ -586,7 +584,7 @@ Checks if this value is element of the matrix.
 
 =head3 map-row
 
-    Map only specified row (row number is first parameter).
+Map only specified row (row number is first parameter).
     
     say Math::Matrix.new([[1,2],[3,4]]).map-row(1, {$_ + 1}); # prints:
 
@@ -600,21 +598,32 @@ Checks if this value is element of the matrix.
     1 0
     3 0
 
+=head3 map-cell
+
+Changes value of one cell on row (first parameter) and column (second) with
+code block (third, $_ or $^... is previous value).
+
+    say Math::Matrix.new([[1,2],[3,4]]).map-cell(0, 1, {$_  * 3}); # prints:
+
+    1 6
+    3 4
+
+
 =head3 reduce
 
-    Like the built in reduce method, it iterates over all elements and joins
-    them into one value, by applying the given operator or method
-    to the previous result and the next element. I starts with the cell [0][0]
-    and moving from left to right in the first row and continue with the first
-    cell of the next row.
+Like the built in reduce method, it iterates over all elements and joins
+them into one value, by applying the given operator or method
+to the previous result and the next element. I starts with the cell [0][0]
+and moving from left to right in the first row and continue with the first
+cell of the next row.
     
     Math::Matrix.new( [[1,2],[3,4]] ).reduce(&[+]);      # 10
     Math::Matrix.new( [[1,2],[3,4]] ).reduce(&[*]);      # 10
 
 =head3 reduce-rows
 
-    Reduces (as described above) every row into one value, so the overall result
-    will be a list. In this example we calculate the sum of all cells in a row:
+Reduces (as described above) every row into one value, so the overall result
+will be a list. In this example we calculate the sum of all cells in a row:
     
     say Math::Matrix.new( [[1,2],[3,4]] ).reduce-rows(&[+]);     # prints (3, 7)
 

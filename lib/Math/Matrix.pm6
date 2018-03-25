@@ -374,8 +374,6 @@ method !build_is-positive-semidefinite (Math::Matrix:D: --> Bool) { # with Sylve
 
 method size(Math::Matrix:D: )          {  $!row-count, $!column-count }
 
-method elems (Math::Matrix:D: --> Int) {  $!row-count * $!column-count }
-
 method !build_density(Math::Matrix:D: --> Rat) {
     my $valcount = 0;
     for ^$!row-count X ^$!column-count -> ($r, $c) { $valcount++ if @!rows[$r][$c] != 0 }
@@ -709,6 +707,8 @@ method tensorProduct(Math::Matrix:D: Math::Matrix $b  --> Math::Matrix:D) {
 # end of math matrix operations - start list like matrix operations
 ################################################################################
 
+method elems (Math::Matrix:D: --> Int)          {  $!row-count * $!column-count }
+
 multi method elem (Math::Matrix:D: Numeric $e  --> Bool) {
     self.map( {return True if $_ == $e});
     False;
@@ -735,6 +735,13 @@ method map-column(Math::Matrix:D: Int $col, &coderef --> Math::Matrix:D ) {
     self.check_column_index($col);
     my @m = self!clone_rows;
     (^$!column-count).map:{ @m[$_;$col] = &coderef( @m[$_;$col] ) };
+    Math::Matrix.new( @m );
+}
+
+method map-cell(Math::Matrix:D: Int $row, Int $col, &coderef --> Math::Matrix:D ) {
+    self.check_index($row, $col);
+    my @m = self!clone_rows;
+    @m[$row;$col] = &coderef( @m[$row;$col] ) };
     Math::Matrix.new( @m );
 }
 
