@@ -611,19 +611,73 @@ Structural Matrix Operations
 
 ### move-row
 
+    Math::Matrix.new( [[1,2,3],[4,5,6],[7,8,9]] ).move-row(0,1);  # move row 0 to 1
+    Math::Matrix.new( [[1,2,3],[4,5,6],[7,8,9]] ).move-row(0=>1); # same
+
+    1 2 3           4 5 6
+    4 5 6    ==>    1 2 3
+    7 8 9           7 8 9
+
 ### move-column
+
+    Math::Matrix.new( [[1,2,3],[4,5,6],[7,8,9]] ).move-column(2,1);
+    Math::Matrix.new( [[1,2,3],[4,5,6],[7,8,9]] ).move-column(2=>1); # same
+
+    1 2 3           1 3 2
+    4 5 6    ==>    4 6 5
+    7 8 9           7 9 8
 
 ### swap-rows
 
+    Math::Matrix.new( [[1,2,3],[4,5,6],[7,8,9]] ).swap-rows(2,0);
+
+    1 2 3           7 8 9
+    4 5 6    ==>    4 5 6
+    7 8 9           1 2 3
+
 ### swap-columns
+
+    Math::Matrix.new( [[1,2,3],[4,5,6],[7,8,9]] ).swap-columns(0,2);
+
+    1 2 3           3 2 1
+    4 5 6    ==>    6 5 4
+    7 8 9           9 8 7
 
 ### prepend-vertically
 
+    Math::Matrix.new([[1,2],[3,4]])
+                .prepend-vertically( Math::Matrix.new([[5,6],[7,8]]) );
+
+    5 6  ~  1 2  =  5 6 1 2
+    7 8     3 4     7 8 3 4
+
 ### append-vertically
+
+    Math::Matrix.new([[1,2],[3,4]])
+                .append-vertically( Math::Matrix.new([[5,6],[7,8]]) );
+
+    1 2  ~  5 6  =  1 2 5 6
+    3 4     7 8     3 4 7 8
 
 ### prepend-horizontally
 
+    Math::Matrix.new([[1,2],[3,4]])
+                .prepend-horizontally( Math::Matrix.new([[5,6],[7,8]]) );
+
+    5 6
+    7 8
+    1 2
+    3 4
+
 ### append-horizontally
+
+    Math::Matrix.new([[1,2],[3,4]])
+                .append-horizontally( Math::Matrix.new([[5,6],[7,8]]) );
+
+    1 2
+    3 4
+    5 6
+    7 8
 
 Operators
 =========

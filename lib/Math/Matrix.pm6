@@ -759,14 +759,20 @@ method reduce-columns (Math::Matrix:D: &coderef){
 # end of list like matrix operations - start structural matrix operations
 ################################################################################
 
-method move-row (Math::Matrix:D: Int $from, Int $to --> Math::Matrix:D) {
+multi method move-row (Math::Matrix:D: Pair $p --> Math::Matrix:D) {
+    self.move-row($p.key, $p.value) 
+}
+multi method move-row (Math::Matrix:D: Int $from, Int $to --> Math::Matrix:D) {
     return self if $from == $to;
     my @rows = (^$!row-count).list;
     @rows.splice($to,0,@rows.splice($from,1));
     self.submatrix(@rows, (^$!column-count).list);
 }
 
-method move-column (Math::Matrix:D: Int $from, Int $to --> Math::Matrix:D) {
+multi method move-column (Math::Matrix:D: Pair $p --> Math::Matrix:D) {
+    self.move-column($p.key, $p.value) 
+}
+multi method move-column (Math::Matrix:D: Int $from, Int $to --> Math::Matrix:D) {
     return self if $from == $to;
     my @cols = (^$!column-count).list;
     @cols.splice($to,0,@cols.splice($from,1));
@@ -787,7 +793,6 @@ method swap-columns (Math::Matrix:D: Int $cola, Int $colb --> Math::Matrix:D) {
     self.submatrix((^$!row-count).list, @cols);
 }
 
-
 method append-vertically (Math::Matrix:D: *@b --> Math::Matrix:D) {
     my @m = self!clone_rows;
     for @b {
@@ -796,7 +801,9 @@ method append-vertically (Math::Matrix:D: *@b --> Math::Matrix:D) {
                 unless $!column-count == $_!column-count;
             @m.append( $_!rows.list );
         }
-        when Array { }
+        when Array {
+            
+        }
         default { fail "Input can only be a matrix or array of arrays of numeric!" }
     }
     Math::Matrix.new(@m);
@@ -808,10 +815,14 @@ method append-horizontally (Math::Matrix:D: *@b --> Math::Matrix:D){
         when Math::Matrix {
             fail "Number of rows in both matrices has to be same" 
                 unless $!row-count == $_!row-count;
-            my $b = $_; 
+            my $b = $_;
             @m.keys.map:{ @m[$_].append($b!rows[$_].list) };
         }
-        when Array { }
+        when Array {
+            fail "Number of rows in matrices and data has to be same" 
+                unless $!row-count == $_.elems;
+            my @a = $_.list;
+        }
         default { fail "Input can only be a matrix or array of arrays of numeric!" }
     }
     Math::Matrix.new( @m );
