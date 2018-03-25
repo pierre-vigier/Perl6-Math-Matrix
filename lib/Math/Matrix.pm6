@@ -822,7 +822,7 @@ method append-vertically (Math::Matrix:D: *@b --> Math::Matrix:D) {
             @m.append( $_!rows.list );
         }
         when Array {
-            fail "Data has to be an array of arrays, not Array of {$_[0].WHAT}" unless $_[0] ~~ Array;
+            fail "Data has to be an array of arrays, not Array of $_ {$_.WHAT, $_.list}" unless $_[0] ~~ Array;
             for $_.list -> $row {
                 fail "Number of columns in matrices and data has to be same." 
                     unless $row ~~ Array and $row.elems == $!column-count;
