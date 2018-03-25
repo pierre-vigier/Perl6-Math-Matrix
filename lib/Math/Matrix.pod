@@ -32,7 +32,7 @@ Matrices are readonly - all operations and derivatives are new objects.
 =item conversion: Bool, Numeric, Str, perl, list-rows, list-columns, gist, full
 =item boolean properties: equal, is-zero, is-identity, is-square, is-diagonal,
     is-diagonally-dominant, is-upper-triangular, is-lower-triangular, is-invertible,
-    is-symmetric, is-unitary, is-self-adjoint, is-orthogonal,
+    is-symmetric, is- antisymmetric, is-unitary, is-self-adjoint, is-orthogonal,
     is-positive-definite, is-positive-semidefinite
 =item numeric properties: size, density, trace, determinant, rank, kernel, norm, condition
 =item derived matrices: transposed, negated, conjugated, inverted, reduced-row-echelon-form
@@ -288,6 +288,15 @@ In other words: $matrix and $matrix.transposed (alias T) are the same.
     Example:    1 2 3
                 2 5 4
                 3 4 7
+
+=head3 is-antisymmetric
+
+Means the transposed and negated matrix are the same.
+
+    Example:    0  2  3
+               -2  0  4
+               -3 -4  0
+
 
 =head3 is-self-adjoint
 

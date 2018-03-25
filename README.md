@@ -38,7 +38,7 @@ METHODS
 
   * conversion: Bool, Numeric, Str, perl, list-rows, list-columns, gist, full
 
-  * boolean properties: equal, is-zero, is-identity, is-square, is-diagonal, is-diagonally-dominant, is-upper-triangular, is-lower-triangular, is-invertible, is-symmetric, is-unitary, is-self-adjoint, is-orthogonal, is-positive-definite, is-positive-semidefinite
+  * boolean properties: equal, is-zero, is-identity, is-square, is-diagonal, is-diagonally-dominant, is-upper-triangular, is-lower-triangular, is-invertible, is-symmetric, is- antisymmetric, is-unitary, is-self-adjoint, is-orthogonal, is-positive-definite, is-positive-semidefinite
 
   * numeric properties: size, density, trace, determinant, rank, kernel, norm, condition
 
@@ -282,6 +282,14 @@ Is True if every cell with coordinates x y has same value as the cell on y x. In
     Example:    1 2 3
                 2 5 4
                 3 4 7
+
+### is-antisymmetric
+
+Means the transposed and negated matrix are the same.
+
+    Example:    0  2  3
+               -2  0  4
+               -3 -4  0
 
 ### is-self-adjoint
 

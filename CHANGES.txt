@@ -1,9 +1,11 @@
 
  0.2.0:
     - 2018.
-    - add methods: add-row, add-column, multiply-row, multiply-column, 
-    - add map-row, map-column, cat-horizontally, cat-vertically 
-    - add method elem to check if value is there or in range
+    - add methods: add-row, add-column, multiply-row, multiply-column, map-row, map-column
+    - add methods move-row, move-column, swap-rows, swap-columns, 
+          prepend-vertically, append-vertically, prepend-horizontally, append-horizontally
+    - add method elem to check if any cell is equal to value or in a range
+    - new property: antisymmetric
     - new category: list like ops
     - submatrix with 2 Int parameter works now as expected
     - accessor column gets faster

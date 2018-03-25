@@ -16,6 +16,7 @@ has Bool $!is-lower-triangular is lazy;
 has Bool $!is-upper-triangular is lazy;
 has Bool $!is-square is lazy;
 has Bool $!is-symmetric is lazy;
+has Bool $!is-antisymmetric is lazy;
 has Bool $!is-self-adjoint is lazy;
 has Bool $!is-unitary is lazy;
 has Bool $!is-orthogonal is lazy;
@@ -320,6 +321,17 @@ method !build_is-symmetric(Math::Matrix:D: --> Bool) {
     for ^($!row-count - 1) -> $r {
         for $r ^..^ $!row-count -> $c {
             return False unless @!rows[$r][$c] == @!rows[$c][$r];
+        }
+    }
+    True;
+}
+
+method !build_is-antisymmetric(Math::Matrix:D: --> Bool) {
+    return False unless self.is-square;
+    return True if $!row-count < 2;
+    for ^($!row-count - 1) -> $r {
+        for $r ^..^ $!row-count -> $c {
+            return False unless @!rows[$r][$c] == - @!rows[$c][$r];
         }
     }
     True;
