@@ -776,15 +776,15 @@ method move-column (Math::Matrix:D: Int $from, Int $to --> Math::Matrix:D) {
 method swap-rows (Math::Matrix:D: Int $rowa, Int $rowb --> Math::Matrix:D) {
     return self if $rowa == $rowb;
     my @rows = (^$!row-count).list;
-    @rows.splice($to,0,@rows.splice($from,1));
+    (@rows.[$rowa], @rows.[$rowb]) = (@rows.[$rowb], @rows.[$rowa]);
     self.submatrix(@rows, (^$!column-count).list);
 }
 
 method swap-columns (Math::Matrix:D: Int $cola, Int $colb --> Math::Matrix:D) {
     return self if $cola == $colb;
-    my @rows = (^$!row-count).list;
-    @rows.splice($to,0,@rows.splice($from,1));
-    self.submatrix(@rows, (^$!column-count).list);
+    my @cols = (^$!rolumn-count).list;
+    (@cols.[$cola], @cols.[$colb]) = (@cols.[$colb], @cols.[$cola]);
+    self.submatrix((^$!row-count).list, @cols);
 }
 
 
@@ -797,17 +797,22 @@ method append-vertically (Math::Matrix:D: *@b --> Math::Matrix:D) {
             @m.append( $_!rows.list );
         }
         when Array { }
-        default { fail "Input can only be a matrix or array of arrays of numeric!";}
-
+        default { fail "Input can only be a matrix or array of arrays of numeric!" }
     }
     Math::Matrix.new(@m);
 }
 
 method append-horizontally (Math::Matrix:D: *@b --> Math::Matrix:D){
     my @m = self!clone_rows;
-    for @b -> $b {
-        fail "Number of rows in both matrices has to be same" unless $!row-count == $b!row-count;
-        @m.keys.map:{ @m[$_].append($b!rows[$_].list) };
+    for @b {
+        when Math::Matrix {
+            fail "Number of rows in both matrices has to be same" 
+                unless $!row-count == $b!row-count;
+                unless $!column-count == $_!column-count;
+            @m.keys.map:{ @m[$_].append($b!rows[$_].list) };
+        }
+        when Array { }
+        default { fail "Input can only be a matrix or array of arrays of numeric!" }
     }
     Math::Matrix.new( @m );
 }
