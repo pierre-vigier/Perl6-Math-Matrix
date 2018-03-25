@@ -793,6 +793,28 @@ method swap-columns (Math::Matrix:D: Int $cola, Int $colb --> Math::Matrix:D) {
     self.submatrix((^$!row-count).list, @cols);
 }
 
+method prepend-vertically (Math::Matrix:D: *@b --> Math::Matrix:D) {
+    my @m;
+    for @b {
+        when Math::Matrix {
+            fail "Number of columns in both matrices has to be same"
+                unless $!column-count == $_!column-count;
+            @m.append( $_!rows.list );
+        }
+        when Array {
+            fail "Data has to be an array of arrays" unless $_[0] ~~ Array;
+            for $_.list -> $row {
+                fail "Number of rows in matrices and data has to be same." 
+                    unless $row ~~ Array and $row.elems == $!column-count;
+                fail "Data has to consist of numbers!" unless all($row.list) ~~ Numeric;
+                @m.append( $row );
+            }
+        }
+        default { fail "Input can only be a matrix or array of arrays of numeric!" }
+    }
+    Math::Matrix.new(@m.append(self!clone_rows.list));
+}
+
 method append-vertically (Math::Matrix:D: *@b --> Math::Matrix:D) {
     my @m = self!clone_rows;
     for @b {
@@ -802,11 +824,45 @@ method append-vertically (Math::Matrix:D: *@b --> Math::Matrix:D) {
             @m.append( $_!rows.list );
         }
         when Array {
-            
+            fail "Data has to be an array of arrays" unless $_[0] ~~ Array;
+            for $_.list -> $row {
+                fail "Number of rows in matrices and data has to be same." 
+                    unless $row ~~ Array and $row.elems == $!column-count;
+                fail "Data has to consist of numbers!" unless all($row.list) ~~ Numeric;
+                @m.append( $row );
+            }
         }
         default { fail "Input can only be a matrix or array of arrays of numeric!" }
     }
     Math::Matrix.new(@m);
+}
+
+method prepend-horizontally (Math::Matrix:D: *@b --> Math::Matrix:D){
+    my @m;
+    for @b {
+        when Math::Matrix {
+            fail "Number of rows in both matrices has to be same" 
+                unless $!row-count == $_!row-count;
+            my $b = $_;
+            (^$!row-count).map: { @m[$_].append($b!rows[$_].list) };
+        }
+        when Array {
+            fail "Number of rows in matrices and data has to be same" 
+                unless $!row-count == $_.elems;
+            my $data = $_;
+            fail "Data has to be an array of arrays" unless $data[0] ~~ Array;
+            my $col = $data[0].elems;
+            (^$!row-count).map: { 
+                fail "Number of rows in matrices and data has to be same." 
+                    unless $data[$_] ~~ Array and $data[$_].elems == $col;
+                fail "Data has to consist of numbers!" unless all($data[$_].list) ~~ Numeric;
+                @m[$_].append($data[$_].list);
+            };
+        }
+        default { fail "Input can only be a matrix or array of arrays of numeric!" }
+    }
+    (^$!row-count).map: { @m[$_].append(self!rows[$_].list) };
+    Math::Matrix.new( @m );
 }
 
 method append-horizontally (Math::Matrix:D: *@b --> Math::Matrix:D){
@@ -821,7 +877,15 @@ method append-horizontally (Math::Matrix:D: *@b --> Math::Matrix:D){
         when Array {
             fail "Number of rows in matrices and data has to be same" 
                 unless $!row-count == $_.elems;
-            my @a = $_.list;
+            my $data = $_;
+            fail "Data has to be an array of arrays" unless $data[0] ~~ Array;
+            my $col = $data[0].elems;
+            @m.keys.map:{ 
+                fail "Number of rows in matrices and data has to be same." 
+                    unless $data[$_] ~~ Array and $data[$_].elems == $col;
+                fail "Data has to consist of numbers!" unless all($data[$_].list) ~~ Numeric;
+                @m[$_].append($data[$_].list);
+            };
         }
         default { fail "Input can only be a matrix or array of arrays of numeric!" }
     }
