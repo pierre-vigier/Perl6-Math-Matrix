@@ -768,7 +768,7 @@ method move-row (Math::Matrix:D: Int $from, Int $to --> Math::Matrix:D) {
 
 method move-column (Math::Matrix:D: Int $from, Int $to --> Math::Matrix:D) {
     return self if $from == $to;
-    my @cols = (^$!rolumn-count).list;
+    my @cols = (^$!column-count).list;
     @cols.splice($to,0,@cols.splice($from,1));
     self.submatrix((^$!row-count).list, @cols);
 }
@@ -782,7 +782,7 @@ method swap-rows (Math::Matrix:D: Int $rowa, Int $rowb --> Math::Matrix:D) {
 
 method swap-columns (Math::Matrix:D: Int $cola, Int $colb --> Math::Matrix:D) {
     return self if $cola == $colb;
-    my @cols = (^$!rolumn-count).list;
+    my @cols = (^$!column-count).list;
     (@cols.[$cola], @cols.[$colb]) = (@cols.[$colb], @cols.[$cola]);
     self.submatrix((^$!row-count).list, @cols);
 }
@@ -807,8 +807,8 @@ method append-horizontally (Math::Matrix:D: *@b --> Math::Matrix:D){
     for @b {
         when Math::Matrix {
             fail "Number of rows in both matrices has to be same" 
-                unless $!row-count == $b!row-count;
-                unless $!column-count == $_!column-count;
+                unless $!row-count == $_!row-count;
+            my $b = $_; 
             @m.keys.map:{ @m[$_].append($b!rows[$_].list) };
         }
         when Array { }
