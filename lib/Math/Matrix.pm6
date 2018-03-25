@@ -191,11 +191,9 @@ multi method submatrix(Math::Matrix:D: @rows where .all ~~ Int, @cols where .all
 # end of accessors - start with type conversion and handy shortcuts
 ################################################################################
 
-method Bool(Math::Matrix:D: --> Bool)    {   ! self.is-zero   }
-
-method Numeric (Math::Matrix:D: --> Int) {   self.elems    }
-
-method Str(Math::Matrix:D: --> Str)      {   @!rows.gist   }
+method Bool(Math::Matrix:D: --> Bool)    { ! self.is-zero }
+method Numeric (Math::Matrix:D: --> Int) {   self.elems   }
+method Str(Math::Matrix:D: --> Str)      {   @!rows.gist  }
 
 multi method perl(Math::Matrix:D: --> Str) {
   self.WHAT.perl ~ ".new(" ~ @!rows.perl ~ ")";
@@ -267,7 +265,7 @@ multi σ_permutations ([$x, *@xs]) {
 ################################################################################
 
 method equal(Math::Matrix:D: Math::Matrix $b --> Bool)           { @!rows ~~ $b!rows }
-method ACCEPTS(Math::Matrix:D: Math::Matrix:D $b --> Bool)       { self.equal( $b )  }
+multi method ACCEPTS(Math::Matrix:D: Math::Matrix:D $b --> Bool) { self.equal( $b )  }
 
 method !build_is-square(Math::Matrix:D: --> Bool) { $!column-count == $!row-count }
 
