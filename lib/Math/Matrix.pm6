@@ -761,16 +761,18 @@ method reduce-columns (Math::Matrix:D: &coderef){
 
 method move-row (Math::Matrix:D: Int $from, Int $to --> Math::Matrix:D) {
     self.check_row_index(($from, $to));
+    return self if $from == $to;
     my @m = self!clone_rows;
-    my $row = @m.splice($from, 1 );
+    my $row = @m.splice($from, 1);
     #@m.splice($to, 0, @m.splice($from, 1 ));
-    $to-- unless $to < $from;
+    $to = $to - 1 unless $to < $from;
     @m.splice($to, 0, $row);
     Math::Matrix.new(@m);
 }
 
 method move-column (Math::Matrix:D: Int $from, Int $to --> Math::Matrix:D) {
     self.check_column_index(($from, $to));
+    return self if $from == $to;
     my @m = self!clone_rows;
     @m.map: { @_.splice($to, 0, @_.splice($from, 1 )) };
     Math::Matrix.new(@m);
