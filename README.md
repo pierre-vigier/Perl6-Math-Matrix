@@ -50,7 +50,7 @@ METHODS
 
   * list like ops: elems, elem, map, map-row, map-column, map-cell, reduce, reduce-rows, reduce-columns
 
-  * structural ops: move-row, move-column, swap-rows, swap-columns, append-vertically, append-horizontally
+  * structural ops: move-row, move-column, swap-rows, swap-columns, prepend-vertically, append-vertically, prepend-horizontally, append-horizontally
 
   * operators: +, -, *, **, ⋅, dot, ⊗, x, | |, || ||
 
