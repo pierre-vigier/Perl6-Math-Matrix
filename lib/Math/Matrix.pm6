@@ -657,9 +657,7 @@ method add-column(Math::Matrix:D: Int $col, @col where {.all ~~ Numeric} --> Mat
     self.check_column_index($col);
     fail "Matrix has $!row-count rows, but got "~ +@col ~ "element column." unless $!row-count == +@col;
     my @m = self!clone_rows;
-    @col.keys.map:{ 
-        @m[$_][$col] += @col[$_] 
-    };
+    @col.keys.map:{ @m[$_][$col] += @col[$_] };
     Math::Matrix.new( @m );
 }
 
@@ -762,6 +760,8 @@ method reduce-columns (Math::Matrix:D: &coderef){
 ################################################################################
 
 method move-row (Math::Matrix:D: Int $from, Int $to --> Math::Matrix:D) {
+    self.check_row_index(($from, $to));
+    my @m = self!clone_rows;
 }
 
 method swap-rows (Math::Matrix:D: Int $rowa, Int $rowb --> Math::Matrix:D) {
@@ -769,12 +769,16 @@ method swap-rows (Math::Matrix:D: Int $rowa, Int $rowb --> Math::Matrix:D) {
 }
 
 
-method cat-vertically (Math::Matrix:D: $b --> Math::Matrix:D) {
-    fail "Number of columns in both matrices has to be same" unless $!column-count == $b!column-count;
-    Math::Matrix.new( @!rows.clone.append( $b!rows ) );
+method append-vertically (Math::Matrix:D: *@b --> Math::Matrix:D) {
+    my @m = self!clone_rows;
+    for @b -> $b {
+        fail "Number of columns in both matrices has to be same" unless $!column-count == $b!column-count;
+        @m.append( $b!rows.list );
+    }
+    Math::Matrix.new(@m);
 }
 
-method cat-horizontally (Math::Matrix:D: *@b --> Math::Matrix:D){
+method append-horizontally (Math::Matrix:D: *@b --> Math::Matrix:D){
     my @m = self!clone_rows;
     for @b -> $b {
         fail "Number of rows in both matrices has to be same" unless $!row-count == $b!row-count;
