@@ -763,10 +763,8 @@ method move-row (Math::Matrix:D: Int $from, Int $to --> Math::Matrix:D) {
     self.check_row_index(($from, $to));
     return self if $from == $to;
     my @m = self!clone_rows;
-    my $row = @m.splice($from, 1);
-    #@m.splice($to, 0, @m.splice($from, 1 ));
-    $to = $to - 1 unless $to < $from;
-    @m.splice($to, 0, $row);
+    if $to < $from { @m.splice($to  , 0, @m.splice($from, 1 )) }
+    else           { @m.splice($to-1, 0, @m.splice($from, 1 )) }
     Math::Matrix.new(@m);
 }
 
