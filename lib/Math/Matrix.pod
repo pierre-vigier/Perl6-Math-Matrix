@@ -646,9 +646,13 @@ resulting list:
 
 =head3 swap-columns
 
-=head3 cat-vertically
+=head3 prepend-vertically
 
-=head3 cat-horizontally
+=head3 append-vertically
+
+=head3 prepend-horizontally
+
+=head3 append-horizontally
 
 
 =head1 Operators

@@ -769,7 +769,9 @@ method move-row (Math::Matrix:D: Int $from, Int $to --> Math::Matrix:D) {
 
 method swap-rows (Math::Matrix:D: Int $rowa, Int $rowb --> Math::Matrix:D) {
     self.check_row_index(($rowa, $rowb));
+    return self if $rowa == $rowb;
     my @m = self!clone_rows;
+    ($rowa, $rowb) = ($rowb, $rowa) if $rowa > $rowb;
     Math::Matrix.new(@m);
 }
 
