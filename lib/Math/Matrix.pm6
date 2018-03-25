@@ -268,7 +268,7 @@ multi σ_permutations ([$x, *@xs]) {
 
 method equal(Math::Matrix:D: Math::Matrix $b --> Bool)           { @!rows ~~ $b!rows }
 multi method ACCEPTS(Math::Matrix:D: Math::Matrix:D $b --> Bool) { self.equal( $b )  }
-multi method ACCEPTS(Math::Matrix:D: Math::Matrix:U $b --> Bool) { True  }
+#multi method ACCEPTS(Math::Matrix:D: Math::Matrix:U $b --> Bool) { True  }
 
 method !build_is-square(Math::Matrix:D: --> Bool) { $!column-count == $!row-count }
 
@@ -825,7 +825,7 @@ method append-vertically (Math::Matrix:D: *@b --> Math::Matrix:D) {
             @m.append( $_!rows.list );
         }
         when Array {
-            fail "Data has to be an array of arrays" unless $_[0] ~~ Array;
+            fail "Data has to be an array of arrays, not Array of $_[0]" unless $_[0] ~~ Array;
             for $_.list -> $row {
                 fail "Number of rows in matrices and data has to be same." 
                     unless $row ~~ Array and $row.elems == $!column-count;
