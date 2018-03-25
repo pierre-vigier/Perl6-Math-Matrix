@@ -764,26 +764,27 @@ method move-row (Math::Matrix:D: Int $from, Int $to --> Math::Matrix:D) {
     my @rows = (^$!row-count).list;
     @rows.splice($to,0,@rows.splice($from,1));
     self.submatrix(@rows, (^$!column-count).list);
-#    my @m = self!clone_rows;
-#    if $to < $from { @m.splice($to  , 0, @m.splice($from, 1 )) }
-#    else           { @m.splice($to-1, 0, @m.splice($from, 1 )) }
-#    Math::Matrix.new(@m);
 }
 
 method move-column (Math::Matrix:D: Int $from, Int $to --> Math::Matrix:D) {
-    self.check_column_index(($from, $to));
     return self if $from == $to;
-    my @m = self!clone_rows;
-    @m.keys.map: { @m[$_].splice($to, 0, @m[$_].splice($from, 1 )) };
-    Math::Matrix.new(@m);
+    my @cols = (^$!rolumn-count).list;
+    @cols.splice($to,0,@cols.splice($from,1));
+    self.submatrix((^$!row-count).list, @cols);
 }
 
 method swap-rows (Math::Matrix:D: Int $rowa, Int $rowb --> Math::Matrix:D) {
-    self.check_row_index(($rowa, $rowb));
     return self if $rowa == $rowb;
-    my @m = self!clone_rows;
-    ($rowa, $rowb) = ($rowb, $rowa) if $rowa > $rowb;
-    Math::Matrix.new(@m);
+    my @rows = (^$!row-count).list;
+    @rows.splice($to,0,@rows.splice($from,1));
+    self.submatrix(@rows, (^$!column-count).list);
+}
+
+method swap-columns (Math::Matrix:D: Int $cola, Int $colb --> Math::Matrix:D) {
+    return self if $cola == $colb;
+    my @rows = (^$!row-count).list;
+    @rows.splice($to,0,@rows.splice($from,1));
+    self.submatrix(@rows, (^$!column-count).list);
 }
 
 
