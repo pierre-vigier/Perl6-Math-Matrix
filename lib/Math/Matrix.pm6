@@ -760,12 +760,14 @@ method reduce-columns (Math::Matrix:D: &coderef){
 ################################################################################
 
 method move-row (Math::Matrix:D: Int $from, Int $to --> Math::Matrix:D) {
-    self.check_row_index(($from, $to));
     return self if $from == $to;
-    my @m = self!clone_rows;
-    if $to < $from { @m.splice($to  , 0, @m.splice($from, 1 )) }
-    else           { @m.splice($to-1, 0, @m.splice($from, 1 )) }
-    Math::Matrix.new(@m);
+    my @rows = (^$!row-count).list;
+    @rows.splice($to,0,@rows.splice($from,1));
+    self.submatrix(@rows, (^$!column-count).list);
+#    my @m = self!clone_rows;
+#    if $to < $from { @m.splice($to  , 0, @m.splice($from, 1 )) }
+#    else           { @m.splice($to-1, 0, @m.splice($from, 1 )) }
+#    Math::Matrix.new(@m);
 }
 
 method move-column (Math::Matrix:D: Int $from, Int $to --> Math::Matrix:D) {
