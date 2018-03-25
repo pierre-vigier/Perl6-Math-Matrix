@@ -34,12 +34,12 @@ Matrices are readonly - all operations and derivatives are new objects.
     is-diagonally-dominant, is-upper-triangular, is-lower-triangular, is-invertible,
     is-symmetric, is-unitary, is-self-adjoint, is-orthogonal,
     is-positive-definite, is-positive-semidefinite
-=item numeric properties: size, elems, density, trace, determinant, rank, kernel, norm, condition
+=item numeric properties: size, density, trace, determinant, rank, kernel, norm, condition
 =item derived matrices: transposed, negated, conjugated, inverted, reduced-row-echelon-form
 =item decompositions: decompositionLUCrout, decompositionLU, decompositionCholesky
 =item matrix math ops: add, subtract, add-row, add-column, multiply, multiply-row, multiply-column, dotProduct, tensorProduct
-=item list like ops: map, map-row, map-column, reduce, reduce-rows, reduce-columns
-=item structural ops: cat-vertically, cat-horizontally
+=item list like ops: elems, elem, map, map-row, map-column, reduce, reduce-rows, reduce-columns
+=item structural ops: move-row, move-column, swap-rows, swap-columns, cat-vertically, cat-horizontally
 =item operators:   +,   -,   *,   **,   ⋅,  dot,  ⊗,  x,  | |,   || ||
 
 
@@ -214,12 +214,19 @@ the matrix product (method dotProduct, or operator dot) of a column vector
 =head2 Boolean Properties
 =head3 equal
 
-    Checks two matrices for equality. They have to be of same size and
-    every element of the first matrix on a particular position has to be equal
-    to the element (on the same position) of the second matrix.
+Checks two matrices for equality. They have to be of same size and every element
+of the first matrix on a particular position has to be equal to the element
+(on the same position) of the second matrix.
     
     if $matrixa.equal( $matrixb ) {
     if $matrixa ~~ $matrixb {
+
+=head3 elem
+
+Checks if this value is element of the matrix.
+    
+    Math::Matrix.new( [[1,2],[3,4]] ).elem(4)     # True
+    Math::Matrix.new( [[1,2],[3,4]] ).elem(3..5)  # True (range variant)
 
 =head3 is-square
 
@@ -621,7 +628,14 @@ resulting list:
 
 =head2 Structural Matrix Operations
 
-=head3 cat-vertically
+
+=head3 move-row
+
+=head3 move-column
+
+=head3 swap-rows
+
+=head3 swap-columns
 
 =head3 cat-vertically
 

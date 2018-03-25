@@ -38,7 +38,7 @@ METHODS
 
   * conversion: Bool, Numeric, Str, perl, list-rows, list-columns, gist, full
 
-  * boolean properties: equal, is-zero, is-identity, is-square, is-diagonal, is-diagonally-dominant, is-upper-triangular, is-lower-triangular, is-invertible, is-symmetric, is-unitary, is-self-adjoint, is-orthogonal, is-positive-definite, is-positive-semidefinite
+  * boolean properties: equal, elem, is-zero, is-identity, is-square, is-diagonal, is-diagonally-dominant, is-upper-triangular, is-lower-triangular, is-invertible, is-symmetric, is-unitary, is-self-adjoint, is-orthogonal, is-positive-definite, is-positive-semidefinite
 
   * numeric properties: size, elems, density, trace, determinant, rank, kernel, norm, condition
 
@@ -50,7 +50,7 @@ METHODS
 
   * list like ops: map, map-row, map-column, reduce, reduce-rows, reduce-columns
 
-  * structural ops: cat-vertically, cat-horizontally
+  * structural ops: move-row, move-column, swap-rows, swap-columns, cat-vertically, cat-horizontally
 
   * operators: +, -, *, **, ⋅, dot, ⊗, x, | |, || ||
 
@@ -225,12 +225,17 @@ Boolean Properties
 
 ### equal
 
-    Checks two matrices for equality. They have to be of same size and
-    every element of the first matrix on a particular position has to be equal
-    to the element (on the same position) of the second matrix.
+Checks two matrices for equality. They have to be of same size and every element of the first matrix on a particular position has to be equal to the element (on the same position) of the second matrix.
 
     if $matrixa.equal( $matrixb ) {
     if $matrixa ~~ $matrixb {
+
+### elem
+
+Checks if this value is element of the matrix.
+
+    Math::Matrix.new( [[1,2],[3,4]] ).elem(4)     # True
+    Math::Matrix.new( [[1,2],[3,4]] ).elem(3..5)  # True (range variant)
 
 ### is-square
 
@@ -641,7 +646,13 @@ Similar to reduce-rows, this method reduces each column to one value in the resu
 Structural Matrix Operations
 ----------------------------
 
-### cat-vertically
+### move-row
+
+### move-column
+
+### swap-rows
+
+### swap-columns
 
 ### cat-vertically
 

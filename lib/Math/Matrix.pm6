@@ -709,6 +709,14 @@ method tensorProduct(Math::Matrix:D: Math::Matrix $b  --> Math::Matrix:D) {
 # end of math matrix operations - start list like matrix operations
 ################################################################################
 
+multi method elem (Math::Matrix:D: Numeric $e  --> Bool) {
+    self.map( {return True if $_ == $e});
+    False;
+}
+multi method elem (Math::Matrix:D: Range $r  --> Bool) {
+    self.map( {return True if $_ ~~ $r});
+    False;
+}
 
 method map(Math::Matrix:D: &coderef --> Math::Matrix:D) {
     Math::Matrix.new( [ @!rows.map: {
