@@ -10,7 +10,7 @@ Math::Matrix - create, compare, compute and measure 2D matrices
 VERSION
 =======
 
-0.1.8
+0.2.0
 
 SYNOPSIS
 ========
