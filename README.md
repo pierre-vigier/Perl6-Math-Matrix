@@ -645,24 +645,26 @@ Structural Matrix Operations
 
 ### prepend-vertically
 
-    Math::Matrix.new([[1,2],[3,4]])
-                .prepend-vertically( Math::Matrix.new([[5,6],[7,8]]) );
+Both variants work equally and also all other prepend/append operations. They can not be combined and work only if proper matrix dimensions do match.
+
+    Math::Matrix.new([[1,2],[3,4]]).prepend-vertically( Math::Matrix.new([[5,6],[7,8]]) );
+    Math::Matrix.new([[1,2],[3,4]]).prepend-vertically(                  [[5,6],[7,8]]  );
 
     5 6  ~  1 2  =  5 6 1 2
     7 8     3 4     7 8 3 4
 
 ### append-vertically
 
-    Math::Matrix.new([[1,2],[3,4]])
-                .append-vertically( Math::Matrix.new([[5,6],[7,8]]) );
+    Math::Matrix.new([[1,2],[3,4]]).append-vertically( Math::Matrix.new([[5,6],[7,8]]));
+    Math::Matrix.new([[1,2],[3,4]]).append-vertically(                  [[5,6],[7,8]] );
 
     1 2  ~  5 6  =  1 2 5 6
     3 4     7 8     3 4 7 8
 
 ### prepend-horizontally
 
-    Math::Matrix.new([[1,2],[3,4]])
-                .prepend-horizontally( Math::Matrix.new([[5,6],[7,8]]) );
+    Math::Matrix.new([[1,2],[3,4]]).prepend-horizontally( Math::Matrix.new([[5,6],[7,8]]));
+    Math::Matrix.new([[1,2],[3,4]]).prepend-horizontally(                  [[5,6],[7,8]] );
 
     5 6
     7 8
@@ -671,8 +673,8 @@ Structural Matrix Operations
 
 ### append-horizontally
 
-    Math::Matrix.new([[1,2],[3,4]])
-                .append-horizontally( Math::Matrix.new([[5,6],[7,8]]) );
+    Math::Matrix.new([[1,2],[3,4]]).append-horizontally( Math::Matrix.new([[5,6],[7,8]]));
+    Math::Matrix.new([[1,2],[3,4]]).append-horizontally(                  [[5,6],[7,8]] );
 
     1 2
     3 4
