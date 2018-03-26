@@ -630,6 +630,60 @@ method decompositionCholesky(Math::Matrix:D: --> Math::Matrix:D) {
 method equal(Math::Matrix:D: Math::Matrix $b --> Bool)           { @!rows ~~ $b!rows }
 multi method ACCEPTS(Math::Matrix:D: Math::Matrix:D $b --> Bool) { self.equal( $b )  }
 
+method elems (Math::Matrix:D: --> Int)               {  $!row-count * $!column-count }
+
+multi method elem (Math::Matrix:D: Numeric $e  --> Bool) {
+    self.map( {return True if $_ == $e});
+    False;
+}
+multi method elem (Math::Matrix:D: Range $r  --> Bool) {
+    self.map( {return True if $_ ~~ $r});
+    False;
+}
+
+method map(Math::Matrix:D: &coderef --> Math::Matrix:D) {
+    Math::Matrix.new( [ @!rows.map: {
+            [ $_.map( &coderef ) ]
+    } ] );
+}
+
+method map-row(Math::Matrix:D: Int $row, &coderef --> Math::Matrix:D ) {
+    self.check_row_index($row);
+    my @m = self!clone_rows;
+    @m[$row] = @m[$row].map(&coderef);
+    Math::Matrix.new( @m );
+}
+
+method map-column(Math::Matrix:D: Int $col, &coderef --> Math::Matrix:D ) {
+    self.check_column_index($col);
+    my @m = self!clone_rows;
+    (^$!row-count).map:{ @m[$_;$col] = &coderef( @m[$_;$col] ) };
+    Math::Matrix.new( @m );
+}
+
+method map-cell(Math::Matrix:D: Int $row, Int $col, &coderef --> Math::Matrix:D ) {
+    self.check_index($row, $col);
+    my @m = self!clone_rows;
+    @m[$row;$col] = &coderef( @m[$row;$col] );
+    Math::Matrix.new( @m );
+}
+
+method reduce(Math::Matrix:D: &coderef ) {
+    (@!rows.map: {$_.flat}).flat.reduce( &coderef )
+}
+
+method reduce-rows (Math::Matrix:D: &coderef){
+    @!rows.map: { $_.flat.reduce( &coderef ) }
+}
+
+method reduce-columns (Math::Matrix:D: &coderef){
+    (^$!column-count).map: { self.column($_).reduce( &coderef ) }
+}
+
+################################################################################
+# end of list like operations - start structural matrix operations
+################################################################################
+
 multi method move-row (Math::Matrix:D: Pair $p --> Math::Matrix:D) {
     self.move-row($p.key, $p.value) 
 }
@@ -731,60 +785,6 @@ multi method append-horizontally (Math::Matrix:D: Array $b --> Math::Matrix:D){
 }
 
 # method split (){ }
-
-################################################################################
-# end of list like operations - start structural matrix operations
-################################################################################
-
-method elems (Math::Matrix:D: --> Int)          {  $!row-count * $!column-count }
-
-multi method elem (Math::Matrix:D: Numeric $e  --> Bool) {
-    self.map( {return True if $_ == $e});
-    False;
-}
-multi method elem (Math::Matrix:D: Range $r  --> Bool) {
-    self.map( {return True if $_ ~~ $r});
-    False;
-}
-
-method map(Math::Matrix:D: &coderef --> Math::Matrix:D) {
-    Math::Matrix.new( [ @!rows.map: {
-            [ $_.map( &coderef ) ]
-    } ] );
-}
-
-method map-row(Math::Matrix:D: Int $row, &coderef --> Math::Matrix:D ) {
-    self.check_row_index($row);
-    my @m = self!clone_rows;
-    @m[$row] = @m[$row].map(&coderef);
-    Math::Matrix.new( @m );
-}
-
-method map-column(Math::Matrix:D: Int $col, &coderef --> Math::Matrix:D ) {
-    self.check_column_index($col);
-    my @m = self!clone_rows;
-    (^$!row-count).map:{ @m[$_;$col] = &coderef( @m[$_;$col] ) };
-    Math::Matrix.new( @m );
-}
-
-method map-cell(Math::Matrix:D: Int $row, Int $col, &coderef --> Math::Matrix:D ) {
-    self.check_index($row, $col);
-    my @m = self!clone_rows;
-    @m[$row;$col] = &coderef( @m[$row;$col] );
-    Math::Matrix.new( @m );
-}
-
-method reduce(Math::Matrix:D: &coderef ) {
-    (@!rows.map: {$_.flat}).flat.reduce( &coderef )
-}
-
-method reduce-rows (Math::Matrix:D: &coderef){
-    @!rows.map: { $_.flat.reduce( &coderef ) }
-}
-
-method reduce-columns (Math::Matrix:D: &coderef){
-    (^$!column-count).map: { self.column($_).reduce( &coderef ) }
-}
 
 ################################################################################
 # end of structural matrix operations - start matrix math operations
