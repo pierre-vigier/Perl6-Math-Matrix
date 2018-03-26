@@ -584,13 +584,12 @@ concatinated result in matrix c.
 
 =head3 elem
 
-Asks if certain value is present in cells (treating the matrix like a Bag),
+Asks if certain value is present in cells (treating the matrix like a baggy set),
 or if there is one value within a cetain range.
 
     Math::Matrix.new([[1,2],[3,4]]).elem(1);     # True
     Math::Matrix.new([[1,2],[3,4]]).elem(5);     # False
     Math::Matrix.new([[1,2],[3,4]]).elem(3..7);  # True
-
 
 =head3 map
 
