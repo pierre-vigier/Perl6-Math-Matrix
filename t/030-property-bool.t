@@ -62,6 +62,7 @@ ok $diagonal.is-symmetric, "Is a symmetric matrix";
 ok $symmetric.is-symmetric,"Is a symmetric matrix";
 nok $matrixa.is-symmetric, "Is not a symmetric matrix";
 
+                               
 ok Math::Matrix.new-zero(3).is-antisymmetric, "Zero matrix is antisymmetric";
 ok Math::Matrix.new([[0,1][-1,0]]).is-antisymmetric, "Special matrix is antisymmetric";
 nok $symmetric.is-antisymmetric,              "Symmetric is not antisymmetric matrix";
@@ -74,7 +75,6 @@ nok $ut.is-self-adjoint,      "a triangular matrix can not be hermetian";
 ok $identity.is-unitary,      "Identity matrix is unitary";
 ok $matrixu.is-unitary,       "special matrix is unitary";
 
-
 ok $identity.is-orthogonal, "Is a orthogonal matrix";
 nok $matrixa.is-orthogonal, "Is not a orthogonal matrix";
 
@@ -84,7 +84,7 @@ ok $diagonal.is-invertible, "A full ranked square matrix is invertible";
 nok $zero.is-invertible,    "Zero matrix is not invertible";
 nok $matrixd.is-invertible, "Matrix with defect Is not invertible";
 
-ok $identity.is-positive-definite, "Identity matrix is positive definite."
-ok $identity.is-positive-semidefinite, "Identity matrix is positive semidefinite."
-ok Math::Matrix.new([[2,-1,0],[-1,2,-1][0,-1,2]]).is-positive-definite, "Special matrix is positive definite."
-nok $zero.is-positive-definite,    "zero matrix is not positive definite."
+ok $identity.is-positive-definite, "Identity matrix is positive definite.";
+ok $identity.is-positive-semidefinite, "Identity matrix is positive semidefinite.";
+ok Math::Matrix.new([[2,-1,0],[-1,2,-1][0,-1,2]]).is-positive-definite, "Special matrix is positive definite.";
+nok $zero.is-positive-definite,    "zero matrix is not positive definite.";
