@@ -611,7 +611,7 @@ Works analogous to add - it's just for convenance.
 
 ### add-row
 
-Add a vector (row or col of some matrix) to a row of the matrix. In this example we add (2,3) to the second row.
+Add a vector (row or col of some matrix) to a row of the matrix. In this example we add (2,3) to the second row. Instead of a matrix you can also give as parameter the raw data of a matrix as new would receive it.
 
     Math::Matrix.new( [[1,2],[3,4]] ).add-row(1,(2,3));
 
