@@ -2,9 +2,10 @@ use Test;
 use Math::Matrix;
 plan 8;
 
+my $matrix = Math::Matrix.new([[1,2],[3,4]]);
+
 subtest {
     plan 8;
-    my $matrix = Math::Matrix.new([[1,2],[3,4]]);
     my $expected1 = Math::Matrix.new([[3,5],[3,4]]);
     my $expected2 = Math::Matrix.new([[1,2],[5,7]]);
     my $expected3 = Math::Matrix.new([[3,2],[6,4]]);
@@ -21,9 +22,9 @@ subtest {
     dies-ok { $matrix.add-column(1,(1))   },    "column size out of bound";
 }, "Vector Addition";
 
+
 subtest {
     plan 5;
-    my $matrix = Math::Matrix.new([[1,2],[3,4]]);
     my $matrix2 = Math::Matrix.new([[4,3],[2,1]]);
     my $expected = Math::Matrix.new([[5,5],[5,5]]);
 
@@ -35,9 +36,9 @@ subtest {
     dies-ok { $matrix.add(Math::Matrix.new([[1]]))}, "matrix size out of bound";
 }, "Matrix Addition";
 
+
 subtest {
     plan 3;
-    my $matrix = Math::Matrix.new([[1,2],[3,4]]);
     my $matrix2 = Math::Matrix.new([[4,3],[2,1]]);
     my $expected = Math::Matrix.new([[ -3 , -1 ],[ 1 , 3 ]]);
 
@@ -46,9 +47,9 @@ subtest {
     dies-ok { $matrix.subtract(Math::Matrix.new([[1]]))}, "matrix size out of bound";
 }, "Subtraction";
 
+
 subtest {
     plan 6;
-    my $matrix = Math::Matrix.new([[1,2],[3,4]]);
     my $expected1 = Math::Matrix.new([[3,6],[3,4]]);
     my $expected2 = Math::Matrix.new([[1,2],[9,12]]);
     my $expected3 = Math::Matrix.new([[3,2],[9,4]]);
@@ -103,6 +104,7 @@ subtest {
     dies-ok { $a ⋅ $c } , "Matrices can't be multiplied, first matrix column count should be equal to second matrix row count";
     dies-ok { $a.dotProduct( $c ) } , "Matrices can't be multiplied, first matrix column count should be equal to second matrix row count";
 }, "Dot Product";
+
 
 subtest {
     plan 4;

@@ -2,9 +2,9 @@ use Test;
 use Math::Matrix;
 plan 4;
 
-    my $a = Math::Matrix.new( [[1,2,3],[2,3,4],[3,4,5]] );
-    my $b = Math::Matrix.new( [[7,8],[9,10],[11,12]] );
-    my $i = Math::Matrix.new-identity( 3 );
+my $a = Math::Matrix.new( [[1,2,3],[2,3,4],[3,4,5]] );
+my $b = Math::Matrix.new( [[7,8],[9,10],[11,12]] );
+my $i = Math::Matrix.new-identity( 3 );
 
 subtest {
     plan 8;

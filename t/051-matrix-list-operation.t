@@ -15,19 +15,21 @@ subtest {
     nok $a.elem(7..12),         "There are no cells within asked range";
 }, "Elem";
 
+
 subtest {
     plan 2;
     ok $a.elems == 6,           "right number of elements";
     ok $i.elems == 9,           "right number of elements too";
 }, "Elems";
 
+
 subtest {
     plan 5;
     ok $a.map( * - 1 )              ~~ Math::Matrix.new([[0,1,2],[3,4,5]]), "simple mapping";
     ok $a.map({$^v %% 2 ?? 1 !! 0}) ~~ Math::Matrix.new([[0,1,0],[1,0,1]]), "constructing binary map";
     ok $a.map-row(1, {$_ + 1})      ~~ Math::Matrix.new([[1,2,3],[5,6,7]]), "mapping row";
-    ok $a.map-column(0, {0})        ~~ Math::Matrix.new([[0,2,3],[0,5,6]]), "mapping row";
-    ok $a.map-cell(0,2,{$_*2})      ~~ Math::Matrix.new([[1,2,6],[4,5,6]]), "mapping cell";
+    ok $a.map-column(0, {0})        ~~ Math::Matrix.new([[0,2,3],[0,5,6]]), "mapping column";
+    ok $a.map-cell(0, 2, {$_*2})    ~~ Math::Matrix.new([[1,2,6],[4,5,6]]), "mapping cell";
 }, "Map";
 
 

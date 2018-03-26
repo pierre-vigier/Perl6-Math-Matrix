@@ -738,7 +738,7 @@ method map-row(Math::Matrix:D: Int $row, &coderef --> Math::Matrix:D ) {
 method map-column(Math::Matrix:D: Int $col, &coderef --> Math::Matrix:D ) {
     self.check_column_index($col);
     my @m = self!clone_rows;
-    (^$!column-count).map:{ @m[$_;$col] = &coderef( @m[$_;$col] ) };
+    (^$!row-count).map:{ @m[$_;$col] = &coderef( @m[$_;$col] ) };
     Math::Matrix.new( @m );
 }
 
