@@ -325,7 +325,6 @@ method !build_is-symmetric(Math::Matrix:D: --> Bool) {
     }
     True;
 }
-
 method !build_is-antisymmetric(Math::Matrix:D: --> Bool) {
     return False unless self.is-square;
     return True if $!row-count < 2;

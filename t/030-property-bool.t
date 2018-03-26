@@ -1,6 +1,6 @@
 use Test;
 use Math::Matrix;
-plan 52;
+plan 53;
 
 my $matrixa = Math::Matrix.new([[1,2],[3,4]]);
 my $matrixc = Math::Matrix.new([[8,8],[8,8]]);
@@ -14,10 +14,10 @@ my $identity = Math::Matrix.new-identity(3);
 my $diagonal = Math::Matrix.new-diagonal(1,2,3);
 my $ut = Math::Matrix.new([[1,2,3],[0,5,6],[0,0,6]]);
 my $lt = Math::Matrix.new([[1,0,0],[4,5,0],[4,5,6]]);
-my $symmetric = Math::Matrix.new([  [   1   ,   2   ,   3   ,   4   ],
-                                    [   2   ,   1   ,   5   ,   6   ],
-                                    [   3   ,   5   ,   1   ,   7   ],
-                                    [   4   ,   6   ,   7   ,   1   ]   ]   );
+my $symmetric = Math::Matrix.new([[ 1, 2, 3, 4 ],
+                                  [ 2, 1, 5, 6 ],
+                                  [ 3, 5, 1, 7 ],
+                                  [ 4, 6, 7, 1 ]]);
 
 
 ok $matrixa.is-square,    "Is a square matrix";
@@ -63,7 +63,7 @@ ok $symmetric.is-symmetric,"Is a symmetric matrix";
 nok $matrixa.is-symmetric, "Is not a symmetric matrix";
 
 ok Math::Matrix.new-zero(3).is-antisymmetric, "Zero matrix is antisymmetric";
-ok Math::Matrix.new([[0,1][-1,0]]).is-antisymmetric, "Special matrix is antisymmetric";
+ok Math::Matrix.new([[0,1],[-1,0]]).is-antisymmetric, "Special matrix is antisymmetric";
 nok $symmetric.is-antisymmetric,              "Symmetric is not antisymmetric matrix";
 nok $matrixa.is-antisymmetric,                "Default 1 to 4 matrix is not antisymmetric";
 
@@ -85,5 +85,5 @@ nok $matrixd.is-invertible, "Matrix with defect Is not invertible";
 
 ok $identity.is-positive-definite, "Identity matrix is positive definite.";
 ok $identity.is-positive-semidefinite, "Identity matrix is positive semidefinite.";
-ok Math::Matrix.new([[2,-1,0],[-1,2,-1][0,-1,2]]).is-positive-definite, "Special matrix is positive definite.";
+ok Math::Matrix.new([[2,-1,0],[-1,2,-1],[0,-1,2]]).is-positive-definite, "Special matrix is positive definite.";
 nok $zero.is-positive-definite,    "zero matrix is not positive definite.";
