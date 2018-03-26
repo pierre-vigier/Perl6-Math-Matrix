@@ -1,6 +1,6 @@
 
  0.2.0:
-    - 2018.
+    - 2018.3.26
     - add methods: add-row, add-column, multiply-row, multiply-column, map-row, map-column
     - add methods move-row, move-column, swap-rows, swap-columns, 
           prepend-vertically, append-vertically, prepend-horizontally, append-horizontally

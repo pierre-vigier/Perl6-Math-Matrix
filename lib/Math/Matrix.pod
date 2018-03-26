@@ -37,7 +37,7 @@ Matrices are readonly - all operations and derivatives are new objects.
 =item numeric properties: size, density, trace, determinant, rank, kernel, norm, condition
 =item derived matrices: transposed, negated, conjugated, inverted, reduced-row-echelon-form
 =item decompositions: decompositionLUCrout, decompositionLU, decompositionCholesky
-=item list like ops: equal, elems, elem, map, map-row, map-column, map-cell, reduce, reduce-rows, reduce-columns
+=item list like ops: elems, elem, equal, map, map-row, map-column, map-cell, reduce, reduce-rows, reduce-columns
 =item structural ops: move-row, move-column, swap-rows, swap-columns, prepend-vertically, append-vertically, prepend-horizontally, append-horizontally
 =item matrix math ops: add, subtract, add-row, add-column, multiply, multiply-row, multiply-column, dotProduct, tensorProduct
 =item operators:   +,   -,   *,   **,   ⋅,  dot,  ⊗,  x,  | |,   || ||
@@ -322,13 +322,6 @@ List of two values: number of rows and number of columns.
     say $matrix.size();
     my $dim = min $matrix.size();  
 
-=head3 elems
-
-Number (count) of elements.
-
-    say $matrix.elems();
-    say +$matrix;                       # same thing
-
 =head3 density
 
 Density is the percentage of cell which are not zero.
@@ -453,14 +446,13 @@ This decomposition works only on symmetric and definite positive matrices.
 
 
 =head2 List Like Matrix Operations
-=head3 equal
 
-Checks two matrices for equality. They have to be of same size and every element
-of the first matrix on a particular position has to be equal to the element
-(on the same position) of the second matrix.
-    
-    if $matrixa.equal( $matrixb ) {
-    if $matrixa ~~ $matrixb {
+=head3 elems
+
+Number (count) of elements.
+
+    say $matrix.elems();
+    say +$matrix;                       # same thing
 
 =head3 elem
 
@@ -470,6 +462,15 @@ or if there is one value within a cetain range.
     Math::Matrix.new([[1,2],[3,4]]).elem(1);     # True
     Math::Matrix.new([[1,2],[3,4]]).elem(5);     # False
     Math::Matrix.new([[1,2],[3,4]]).elem(3..7);  # True
+
+=head3 equal
+
+Checks two matrices for equality. They have to be of same size and every element
+of the first matrix on a particular position has to be equal to the element
+(on the same position) of the second matrix.
+    
+    if $matrixa.equal( $matrixb ) {
+    if $matrixa ~~ $matrixb {
 
 =head3 map
 

@@ -46,7 +46,7 @@ METHODS
 
   * decompositions: decompositionLUCrout, decompositionLU, decompositionCholesky
 
-  * list like ops: equal, elems, elem, map, map-row, map-column, map-cell, reduce, reduce-rows, reduce-columns
+  * list like ops: elems, elem, equal, map, map-row, map-column, map-cell, reduce, reduce-rows, reduce-columns
 
   * structural ops: move-row, move-column, swap-rows, swap-columns, prepend-vertically, append-vertically, prepend-horizontally, append-horizontally
 
@@ -315,13 +315,6 @@ List of two values: number of rows and number of columns.
     say $matrix.size();
     my $dim = min $matrix.size();
 
-### elems
-
-Number (count) of elements.
-
-    say $matrix.elems();
-    say +$matrix;                       # same thing
-
 ### density
 
 Density is the percentage of cell which are not zero.
@@ -438,12 +431,12 @@ This decomposition works only on symmetric and definite positive matrices.
 List Like Matrix Operations
 ---------------------------
 
-### equal
+### elems
 
-Checks two matrices for equality. They have to be of same size and every element of the first matrix on a particular position has to be equal to the element (on the same position) of the second matrix.
+Number (count) of elements.
 
-    if $matrixa.equal( $matrixb ) {
-    if $matrixa ~~ $matrixb {
+    say $matrix.elems();
+    say +$matrix;                       # same thing
 
 ### elem
 
@@ -452,6 +445,13 @@ Asks if certain value is present in cells (treating the matrix like a baggy set)
     Math::Matrix.new([[1,2],[3,4]]).elem(1);     # True
     Math::Matrix.new([[1,2],[3,4]]).elem(5);     # False
     Math::Matrix.new([[1,2],[3,4]]).elem(3..7);  # True
+
+### equal
+
+Checks two matrices for equality. They have to be of same size and every element of the first matrix on a particular position has to be equal to the element (on the same position) of the second matrix.
+
+    if $matrixa.equal( $matrixb ) {
+    if $matrixa ~~ $matrixb {
 
 ### map
 
