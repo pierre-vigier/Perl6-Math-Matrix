@@ -265,9 +265,6 @@ multi σ_permutations ([$x, *@xs]) {
 # end of type conversion and handy shortcuts - start boolean matrix properties
 ################################################################################
 
-method equal(Math::Matrix:D: Math::Matrix $b --> Bool)           { @!rows ~~ $b!rows }
-multi method ACCEPTS(Math::Matrix:D: Math::Matrix:D $b --> Bool) { self.equal( $b )  }
-
 method !build_is-square(Math::Matrix:D: --> Bool) { $!column-count == $!row-count }
 
 method !build_is-zero(Math::Matrix:D: --> Bool)   { self.density() == 0 }
@@ -768,6 +765,9 @@ method reduce-columns (Math::Matrix:D: &coderef){
 # end of list like matrix operations - start structural matrix operations
 ################################################################################
 
+method equal(Math::Matrix:D: Math::Matrix $b --> Bool)           { @!rows ~~ $b!rows }
+multi method ACCEPTS(Math::Matrix:D: Math::Matrix:D $b --> Bool) { self.equal( $b )  }
+
 multi method move-row (Math::Matrix:D: Pair $p --> Math::Matrix:D) {
     self.move-row($p.key, $p.value) 
 }
@@ -865,8 +865,6 @@ multi method append-horizontally (Math::Matrix:D: Array $b --> Math::Matrix:D){
 }
 
 # method split (){ }
-# method join (){ }
-
 
 ################################################################################
 # end of structural matrix operations - start operators
