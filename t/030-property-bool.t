@@ -62,11 +62,10 @@ ok $diagonal.is-symmetric, "Is a symmetric matrix";
 ok $symmetric.is-symmetric,"Is a symmetric matrix";
 nok $matrixa.is-symmetric, "Is not a symmetric matrix";
 
-                               
 ok Math::Matrix.new-zero(3).is-antisymmetric, "Zero matrix is antisymmetric";
 ok Math::Matrix.new([[0,1][-1,0]]).is-antisymmetric, "Special matrix is antisymmetric";
 nok $symmetric.is-antisymmetric,              "Symmetric is not antisymmetric matrix";
-nok $matrixa.is-antisymmetric,                "Default 1..4 matrix is not antisymmetric";
+nok $matrixa.is-antisymmetric,                "Default 1 to 4 matrix is not antisymmetric";
 
 ok $diagonal.is-self-adjoint, "diagonal matrix is also hermetian";
 ok $matrixh.is-self-adjoint,  "this special matrix is hermetian";
