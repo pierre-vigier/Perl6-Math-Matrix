@@ -277,7 +277,7 @@ True if every cell above the diagonal (where row index is smaller than column in
 
 ### is-symmetric
 
-Is True if every cell with coordinates x y has same value as the cell on y x. In other words: $matrix and $matrix.transposed (alias T) are the same.
+True if every cell with coordinates x y has same value as the cell on y x. In other words: $matrix and $matrix.transposed (alias T) are the same.
 
     Example:    1 2 3
                 2 5 4
@@ -560,6 +560,14 @@ The tensor product between a matrix a of size (m,n) and a matrix b of size (p,q)
 
 List Like Matrix Operations
 ---------------------------
+
+### elem
+
+Asks if certain value is present in cells (treating the matrix like a Bag), or if there is one value within a cetain range.
+
+    Math::Matrix.new([[1,2],[3,4]]).elem(1);     # True
+    Math::Matrix.new([[1,2],[3,4]]).elem(5);     # False
+    Math::Matrix.new([[1,2],[3,4]]).elem(3..7);  # True
 
 ### map
 

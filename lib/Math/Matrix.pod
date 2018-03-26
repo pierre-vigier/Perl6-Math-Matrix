@@ -282,7 +282,7 @@ True if every cell above the diagonal (where row index is smaller than column in
 
 =head3 is-symmetric
 
-Is True if every cell with coordinates x y has same value as the cell on y x.
+True if every cell with coordinates x y has same value as the cell on y x.
 In other words: $matrix and $matrix.transposed (alias T) are the same.
 
     Example:    1 2 3
@@ -581,6 +581,17 @@ concatinated result in matrix c.
     my $c = $a ⊗ $b;                # unicode operator alias
 
 =head2 List Like Matrix Operations
+
+=head3 elem
+
+Asks if certain value is present in cells (treating the matrix like a Bag),
+or if there is one value within a cetain range.
+
+    Math::Matrix.new([[1,2],[3,4]]).elem(1);     # True
+    Math::Matrix.new([[1,2],[3,4]]).elem(5);     # False
+    Math::Matrix.new([[1,2],[3,4]]).elem(3..7);  # True
+
+
 =head3 map
 
 Like the built in map it iterates over all elements, running a code block.
