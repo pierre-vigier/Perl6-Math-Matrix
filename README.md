@@ -38,7 +38,7 @@ METHODS
 
   * conversion: Bool, Numeric, Str, perl, list-rows, list-columns, gist, full
 
-  * boolean properties: equal, is-zero, is-identity, is-square, is-diagonal, is-diagonally-dominant, is-upper-triangular, is-lower-triangular, is-invertible, is-symmetric, is- antisymmetric, is-unitary, is-self-adjoint, is-orthogonal, is-positive-definite, is-positive-semidefinite
+  * boolean properties: is-zero, is-identity, is-square, is-diagonal, is-diagonally-dominant, is-upper-triangular, is-lower-triangular, is-invertible, is-symmetric, is- antisymmetric, is-unitary, is-self-adjoint, is-orthogonal, is-positive-definite, is-positive-semidefinite
 
   * numeric properties: size, density, trace, determinant, rank, kernel, norm, condition
 
@@ -46,11 +46,11 @@ METHODS
 
   * decompositions: decompositionLUCrout, decompositionLU, decompositionCholesky
 
-  * matrix math ops: add, subtract, add-row, add-column, multiply, multiply-row, multiply-column, dotProduct, tensorProduct
-
-  * list like ops: elems, elem, map, map-row, map-column, map-cell, reduce, reduce-rows, reduce-columns
+  * list like ops: equal, elems, elem, map, map-row, map-column, map-cell, reduce, reduce-rows, reduce-columns
 
   * structural ops: move-row, move-column, swap-rows, swap-columns, prepend-vertically, append-vertically, prepend-horizontally, append-horizontally
+
+  * matrix math ops: add, subtract, add-row, add-column, multiply, multiply-row, multiply-column, dotProduct, tensorProduct
 
   * operators: +, -, *, **, ⋅, dot, ⊗, x, | |, || ||
 
@@ -208,20 +208,6 @@ Full tabular view (all rows and columns) for the shell or file output.
 
 Boolean Properties
 ------------------
-
-### equal
-
-Checks two matrices for equality. They have to be of same size and every element of the first matrix on a particular position has to be equal to the element (on the same position) of the second matrix.
-
-    if $matrixa.equal( $matrixb ) {
-    if $matrixa ~~ $matrixb {
-
-### elem
-
-Checks if this value is element of the matrix.
-
-    Math::Matrix.new( [[1,2],[3,4]] ).elem(4)     # True
-    Math::Matrix.new( [[1,2],[3,4]] ).elem(3..5)  # True (range variant)
 
 ### is-square
 
@@ -449,121 +435,19 @@ This decomposition works only on symmetric and definite positive matrices.
     my $D = $matrix.decompositionCholesky( );  # $D is a left triangular matrix
     $D dot $D.T eq $matrix;                    # True
 
-Matrix Math Operations
-----------------------
-
-### add
-
-    Example:    1 2  +  5    =  6 7 
-                3 4             8 9
-
-                1 2  +  2 3  =  3 5
-                3 4     4 5     7 9
-
-    my $sum = $matrix.add( $matrix2 );  # cell wise addition of 2 same sized matrices
-    my $s = $matrix + $matrix2;         # works too
-
-    my $sum = $matrix.add( $number );   # adds number from every cell 
-    my $s = $matrix + $number;          # works too
-
-### subtract
-
-Works analogous to add - it's just for convenance.
-
-    my $diff = $matrix.subtract( $number );   # subtracts number from every cell (scalar subtraction)
-    my $sd = $matrix - $number;               # works too
-    my $sd = $number - $matrix ;              # works too
-
-    my $diff = $matrix.subtract( $matrix2 );  # cell wise subraction of 2 same sized matrices
-    my $d = $matrix - $matrix2;               # works too
-
-### add-row
-
-Add a vector (row or col of some matrix) to a row of the matrix. In this example we add (2,3) to the second row.
-
-    Math::Matrix.new( [[1,2],[3,4]] ).add-row(1,(2,3));
-
-    Example:    1 2  +       =  1 2
-                3 4    2 3      5 7
-
-### add-column
-
-    Math::Matrix.new( [[1,2],[3,4]] ).add-column(1,(2,3));
-
-    Example:    1 2  +   2   =  1 4
-                3 4      3      3 7
-
-### multiply
-
-In scalar multiplication each cell of the matrix gets multiplied with the same number (scalar). In addition to that, this method can multiply two same sized matrices, by multipling the cells with the came coordinates from each operand.
-
-    Example:    1 2  *  5    =   5 10 
-                3 4             15 20
-
-                1 2  *  2 3  =   2  6
-                3 4     4 5     12 20
-
-    my $product = $matrix.multiply( $number );   # multiply every cell with number
-    my $p = $matrix * $number;                   # works too
-
-    my $product = $matrix.multiply( $matrix2 );  # cell wise multiplication of same size matrices
-    my $p = $matrix * $matrix2;                  # works too
-
-### multiply-row
-
-Multiply scalar number to each cell of a row.
-
-    Math::Matrix.new( [[1,2],[3,4]] ).multiply-row(0,2);
-
-    Example:    1 2  * 2     =  2 4
-                3 4             3 4
-
-### multiply-column
-
-Multiply scalar number to each cell of a column.
-
-    Math::Matrix.new( [[1,2],[3,4]] ).multiply-row(0,2);
-
-    Example:    1 2          =  2 2
-                3 4             6 4
-            
-               *2
-
-### dotProduct
-
-Matrix multiplication of two fitting matrices (colums left == rows right).
-
-    Example:    1 2  *  2 3  =  10 13  =  1*2+2*4  1*3+2*5
-                3 4     4 5     22 29     3*2+4*4  3*3+4*5
-
-    my $product = $matrix1.dotProduct( $matrix2 )
-    my $c = $a dot $b;              # works too as operator alias
-    my $c = $a ⋅ $b;                # unicode operator alias
-
-    A shortcut for multiplication is the power - operator **
-    my $c = $a **  3;               # same as $a dot $a dot $a
-    my $c = $a ** -3;               # same as ($a dot $a dot $a).inverted
-    my $c = $a **  0;               # created an right sized identity matrix
-
-### tensorProduct
-
-The tensor product between a matrix a of size (m,n) and a matrix b of size (p,q) is a matrix c of size (m*p,n*q). All matrices you get by multiplying an element (cell) of matrix a with matrix b (as in $a.multiply($b.cell(..,..)) concatinated result in matrix c. (Or replace in a each cell with its product with b.)
-
-    Example:    1 2  *  2 3   =  1*[2 3] 2*[2 3]  =  2  3  4  6
-                3 4     4 5        [4 5]   [4 5]     4  5  8 10
-                                 3*[2 3] 4*[2 3]     6  9  8 12
-                                   [4 5]   [4 5]     8 15 16 20
-
-    my $c = $matrixa.tensorProduct( $matrixb );
-    my $c = $a x $b;                # works too as operator alias
-    my $c = $a ⊗ $b;                # unicode operator alias
-
 List Like Matrix Operations
 ---------------------------
 
+### equal
+
+Checks two matrices for equality. They have to be of same size and every element of the first matrix on a particular position has to be equal to the element (on the same position) of the second matrix.
+
+    if $matrixa.equal( $matrixb ) {
+    if $matrixa ~~ $matrixb {
+
 ### elem
 
-Asks if certain value is present in cells (treating the matrix like a Bag), or if there is one value within a cetain range.
+Asks if certain value is present in cells (treating the matrix like a baggy set), or if there is one value within a cetain range.
 
     Math::Matrix.new([[1,2],[3,4]]).elem(1);     # True
     Math::Matrix.new([[1,2],[3,4]]).elem(5);     # False
@@ -696,6 +580,115 @@ Both variants work equally and also all other prepend/append operations. They ca
     3 4
     5 6
     7 8
+
+Matrix Math Operations
+----------------------
+
+### add
+
+    Example:    1 2  +  5    =  6 7 
+                3 4             8 9
+
+                1 2  +  2 3  =  3 5
+                3 4     4 5     7 9
+
+    my $sum = $matrix.add( $matrix2 );  # cell wise addition of 2 same sized matrices
+    my $s = $matrix + $matrix2;         # works too
+
+    my $sum = $matrix.add( $number );   # adds number from every cell 
+    my $s = $matrix + $number;          # works too
+
+### subtract
+
+Works analogous to add - it's just for convenance.
+
+    my $diff = $matrix.subtract( $number );   # subtracts number from every cell (scalar subtraction)
+    my $sd = $matrix - $number;               # works too
+    my $sd = $number - $matrix ;              # works too
+
+    my $diff = $matrix.subtract( $matrix2 );  # cell wise subraction of 2 same sized matrices
+    my $d = $matrix - $matrix2;               # works too
+
+### add-row
+
+Add a vector (row or col of some matrix) to a row of the matrix. In this example we add (2,3) to the second row.
+
+    Math::Matrix.new( [[1,2],[3,4]] ).add-row(1,(2,3));
+
+    Example:    1 2  +       =  1 2
+                3 4    2 3      5 7
+
+### add-column
+
+    Math::Matrix.new( [[1,2],[3,4]] ).add-column(1,(2,3));
+
+    Example:    1 2  +   2   =  1 4
+                3 4      3      3 7
+
+### multiply
+
+In scalar multiplication each cell of the matrix gets multiplied with the same number (scalar). In addition to that, this method can multiply two same sized matrices, by multipling the cells with the came coordinates from each operand.
+
+    Example:    1 2  *  5    =   5 10 
+                3 4             15 20
+
+                1 2  *  2 3  =   2  6
+                3 4     4 5     12 20
+
+    my $product = $matrix.multiply( $number );   # multiply every cell with number
+    my $p = $matrix * $number;                   # works too
+
+    my $product = $matrix.multiply( $matrix2 );  # cell wise multiplication of same size matrices
+    my $p = $matrix * $matrix2;                  # works too
+
+### multiply-row
+
+Multiply scalar number to each cell of a row.
+
+    Math::Matrix.new( [[1,2],[3,4]] ).multiply-row(0,2);
+
+    Example:    1 2  * 2     =  2 4
+                3 4             3 4
+
+### multiply-column
+
+Multiply scalar number to each cell of a column.
+
+    Math::Matrix.new( [[1,2],[3,4]] ).multiply-row(0,2);
+
+    Example:    1 2          =  2 2
+                3 4             6 4
+            
+               *2
+
+### dotProduct
+
+Matrix multiplication of two fitting matrices (colums left == rows right).
+
+    Example:    1 2  *  2 3  =  10 13  =  1*2+2*4  1*3+2*5
+                3 4     4 5     22 29     3*2+4*4  3*3+4*5
+
+    my $product = $matrix1.dotProduct( $matrix2 )
+    my $c = $a dot $b;              # works too as operator alias
+    my $c = $a ⋅ $b;                # unicode operator alias
+
+    A shortcut for multiplication is the power - operator **
+    my $c = $a **  3;               # same as $a dot $a dot $a
+    my $c = $a ** -3;               # same as ($a dot $a dot $a).inverted
+    my $c = $a **  0;               # created an right sized identity matrix
+
+### tensorProduct
+
+The tensor product between a matrix a of size (m,n) and a matrix b of size (p,q) is a matrix c of size (m*p,n*q). All matrices you get by multiplying an element (cell) of matrix a with matrix b (as in $a.multiply($b.cell(..,..)) concatinated result in matrix c. (Or replace in a each cell with its product with b.)
+
+    Example:    1 2  *  2 3   =  1*[2 3] 2*[2 3]  =  2  3  4  6
+                3 4     4 5        [4 5]   [4 5]     4  5  8 10
+                                 3*[2 3] 4*[2 3]     6  9  8 12
+                                   [4 5]   [4 5]     8 15 16 20
+
+    my $c = $matrixa.tensorProduct( $matrixb );
+    my $c = $a x $b;                # works too as operator alias
+    my $c = $a ⊗ $b;                # unicode operator alias
 
 Operators
 =========
