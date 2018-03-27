@@ -902,6 +902,10 @@ multi sub infix:<dot>(::?CLASS $a, ::?CLASS $b --> ::?CLASS:D ) is looser(&infix
     $a.dotProduct( $b );
 }
 
+multi sub infix:<÷>(::?CLASS $a,::?CLASS $b --> ::?CLASS:D ) is export { 
+    $a.dotProduct( $b.inverted );
+}
+
 multi sub infix:<⊗>( ::?CLASS $a, ::?CLASS $b --> ::?CLASS:D ) is looser(&infix:<*>) is export {
     $a.tensorProduct( $b );
 }

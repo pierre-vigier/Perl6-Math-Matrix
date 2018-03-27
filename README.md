@@ -52,7 +52,7 @@ METHODS
 
   * matrix math ops: add, subtract, add-row, add-column, multiply, multiply-row, multiply-column, dotProduct, tensorProduct
 
-  * operators: +, -, *, **, ⋅, dot, ⊗, x, | |, || ||
+  * operators: +, -, *, **, ⋅, dot, ÷, ⊗, x, | |, || ||
 
 Constructors
 ------------
@@ -333,10 +333,9 @@ Density is the percentage of cell which are not zero.
 
 ### trace
 
-    The trace of a square matrix is the sum of the cells on the main diagonal.
-    In other words: sum of cells which row and column value is identical.
+The trace of a square matrix is the sum of the cells on the main diagonal. In other words: sum of cells which row and column value is identical.
 
-       my $tr = $matrix.trace( );
+    my $tr = $matrix.trace( );
 
 ### determinant, alias det
 
@@ -388,10 +387,6 @@ Returns a new, transposed Matrix, where rows became colums and vice versa.
                [4 5 6]       2 5
                              3 6
 
-### inverted
-
-Inverse matrix regarding to matrix multiplication. The dot product of a matrix with its inverted results in a identity matrix (neutral element in this group). Matrices that have a square form and a full rank can be inverted. Check this with the method .is-invertible.
-
 ### negated
 
     my $new = $matrix.negated();    # invert sign of all cells
@@ -401,6 +396,10 @@ Inverse matrix regarding to matrix multiplication. The dot product of a matrix w
 
     my $c = $matrix.conjugated();    # change every value to its complex conjugated
     my $c = $matrix.conj();          # works too (official Perl 6 name)
+
+### inverted
+
+Matrices that have a square form and a full rank can be inverted (see .is-invertible). Inverse matrix regarding to matrix multiplication. The dot product of a matrix with its inverted results in a identity matrix (neutral element in this group).
 
 ### reduced-row-echelon-form, alias rref
 
@@ -721,15 +720,16 @@ The Module overloads or uses a range of well and less known ops. +, -, * and ~~ 
     my $p   =  $matrixa * $matrixb;  # cell wise product of two same sized matrices
     my $sp  =  $matrix  * $number;   # multiply number to every cell
 
-    my $tp  =  $a x $b;              # tensor product 
-    my $tp  =  $a ⊗ $b;              # tensor product, unicode alias
-
     my $dp  =  $a dot $b;            # dot product of two fitting matrices (cols a = rows b)
     my $dp  =  $a ⋅ $b;              # dot product, unicode alias
+    my $dp  =  $a ÷ $b;              # alias to $a dot $b.inverted
 
     my $c   =  $a **  3;             # $a to the power of 3, same as $a dot $a dot $a
     my $c   =  $a ** -3;             # alias to ($a dot $a dot $a).inverted
     my $c   =  $a **  0;             # creats an right sized identity matrix
+
+    my $tp  =  $a x $b;              # tensor product 
+    my $tp  =  $a ⊗ $b;              # tensor product, unicode alias
 
      | $matrix |                     # determinant
     || $matrix ||                    # Euclidean (L2) norm
