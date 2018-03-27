@@ -185,14 +185,14 @@ object later. ( "Math::Matrix.new([[..,..,...],[...],...])" )
 
 Returns a list of lists, reflecting the row-wise content of the matrix.
     
-    Math::Matrix.new( [[1,2],[3,4]] ).list-rows ~~ ((1 2) (3 4))     # True
-    Math::Matrix.new( [[1,2],[3,4]] ).list-rows.flat ~~ (1 2 3 4)    # True
+    say Math::Matrix.new( [[1,2],[3,4]] ).list-rows     : ((1 2) (3 4))
+    say Math::Matrix.new( [[1,2],[3,4]] ).list-rows.flat : (1 2 3 4)
 
 =head3 list-columns
 
 Returns a list of lists, reflecting the row-wise content of the matrix.
     
-    Math::Matrix.new( [[1,2],[3,4]] ).list-columns ~~ ((1 3) (2 4)) # True
+    say Math::Matrix.new( [[1,2],[3,4]] ).list-columns : ((1 3) (2 4))
 
 =head3 gist
 
