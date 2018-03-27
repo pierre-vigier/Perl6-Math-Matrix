@@ -68,13 +68,18 @@ The default constructor, takes arrays of arrays of numbers. Each second level ar
 
 ### new-zero
 
-This method is a constructor that returns an zero matrix of the size given in parameter. If only one parameter is given, the matrix is quadratic. All the cells are set to 0.
+This method is a constructor that returns an empty matrix of the size given in parameter. If only one parameter is given, the matrix is quadratic. All the cells are set to 0.
 
     say Math::Matrix.new-zero( 3, 4 ) :
 
     0 0 0 0
     0 0 0 0
     0 0 0 0
+
+    say Math::Matrix.new-zero( 2 ) :
+
+    0 0
+    0 0
 
 ### new-identity
 
@@ -174,9 +179,9 @@ Conversion into String context. Returns content of all cells in the data structu
 
 ### perl
 
-Conversion into String like context that can reevaluated into the same object later. ( "Math::Matrix.new([[..,..,...],[...],...])" )
+Conversion into String that can reevaluated into the same object later.
 
-    my $clone = eval $matrix.perl;
+    my $clone = eval $matrix.perl;       # same as: $matrix.clone
 
 ### list-rows
 
@@ -193,7 +198,7 @@ Returns a list of lists, reflecting the row-wise content of the matrix.
 
 ### gist
 
-Limited tabular view for the shell output. Just cuts off excessive rows and columns. Implicitly called while:
+Limited tabular view, optimized for shell output. Just cuts off excessive columns that do not fit into standard terminal and also stops after 20 rows. Several dots will hint that something is missing. It is implicitly called when:
 
     say $matrix;      # output when matrix has more than 100 cells
 
@@ -206,6 +211,10 @@ Limited tabular view for the shell output. Just cuts off excessive rows and colu
 Full tabular view (all rows and columns) for the shell or file output.
 
     say $matrix.full;
+
+    1 2 3 4 5 11 12 13 14 15 21 22 23 24 25
+    3 4 5 6 7 13 14 15 16 17 23 24 25 26 27
+    5 6 7 8 9 15 16 17 18 19 25 26 27 28 29
 
 Boolean Properties
 ------------------
