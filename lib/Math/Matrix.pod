@@ -9,7 +9,7 @@ Math::Matrix - create, compare, compute and measure 2D matrices
 
 =head1 SYNOPSIS
 
-Matrices are tables with rows (counting from 0) and columns of numbers: 
+Matrices are tables with rows and columns (counting from 0) of numbers (Numeric): 
 
  transpose, invert, negate, add, subtract, multiply, dot product, size, determinant, 
  rank, kernel, trace, norm, decompositions and so on
@@ -186,6 +186,7 @@ object later. ( "Math::Matrix.new([[..,..,...],[...],...])" )
 Returns a list of lists, reflecting the row-wise content of the matrix.
     
     Math::Matrix.new( [[1,2],[3,4]] ).list-rows ~~ ((1 2) (3 4))     # True
+    Math::Matrix.new( [[1,2],[3,4]] ).list-rows.flat ~~ (1 2 3 4)    # True
 
 =head3 list-columns
 
