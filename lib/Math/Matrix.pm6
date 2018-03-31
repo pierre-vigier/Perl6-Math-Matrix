@@ -100,8 +100,8 @@ method new-identity(Math::Matrix:U: PosInt $size ) {
                 is-square => True, is-diagonal => True, is-symmetric => True );
 }
 
-method new-diagonal(Math::Matrix:U: NumList @diag ){
-    fail "Expect an List of Number" unless @diag and [and] @diag >>~~>> Numeric;
+method new-diagonal(Math::Matrix:U: *@diag ){
+    fail "Expect an List of Number" unless @diag ~~ NumList;
     my Int $size = +@diag;
     my @d = zero_array($size, $size);
     (^$size).map: { @d[$_][$_] = @diag[$_] };
@@ -816,7 +816,7 @@ multi method subtract(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b!
     Math::Matrix.new( @subtract );
 }
 
-method add-row(Math::Matrix:D: Int $row, @row where {.all ~~ Numeric} --> Math::Matrix:D ) {
+method add-row(Math::Matrix:D: Int $row, NumList @row --> Math::Matrix:D ) {
     self.check_row_index($row);
     fail "Matrix has $!column-count columns, but got "~ +@row ~ "element row." unless $!column-count == +@row;
     my @m = self!clone_rows;
@@ -824,7 +824,7 @@ method add-row(Math::Matrix:D: Int $row, @row where {.all ~~ Numeric} --> Math::
     Math::Matrix.new( @m );
 }
 
-method add-column(Math::Matrix:D: Int $col, @col where {.all ~~ Numeric} --> Math::Matrix:D ) {
+method add-column(Math::Matrix:D: Int $col, NumList @col --> Math::Matrix:D ) {
     self.check_column_index($col);
     fail "Matrix has $!row-count rows, but got "~ +@col ~ "element column." unless $!row-count == +@col;
     my @m = self!clone_rows;
