@@ -121,7 +121,7 @@ method !new-upper-triangular(Math::Matrix:U: @m ) {
     self.bless( rows => @m, is-upper-triangular => True );
 }
 
-method new-vector-product (Math::Matrix:U: NumList @column_vector, NumList @row_vector ){
+method new-vector-product (Math::Matrix:U: NumArray @column_vector, NumArray @row_vector ){
     fail "Expect two Lists of Number" unless [and](@column_vector >>~~>> Numeric) and [and](@row_vector >>~~>> Numeric);
     my @p;
     for ^+@column_vector X ^+@row_vector -> ($r, $c) { 
@@ -816,7 +816,7 @@ multi method subtract(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b!
     Math::Matrix.new( @subtract );
 }
 
-method add-row(Math::Matrix:D: Int $row, NumList @row --> Math::Matrix:D ) {
+method add-row(Math::Matrix:D: Int $row, NumArray @row --> Math::Matrix:D ) {
     self.check_row_index($row);
     fail "Matrix has $!column-count columns, but got "~ +@row ~ "element row." unless $!column-count == +@row;
     my @m = self!clone_rows;
@@ -824,7 +824,7 @@ method add-row(Math::Matrix:D: Int $row, NumList @row --> Math::Matrix:D ) {
     Math::Matrix.new( @m );
 }
 
-method add-column(Math::Matrix:D: Int $col, NumList @col --> Math::Matrix:D ) {
+method add-column(Math::Matrix:D: Int $col, NumArray @col --> Math::Matrix:D ) {
     self.check_column_index($col);
     fail "Matrix has $!row-count rows, but got "~ +@col ~ "element column." unless $!row-count == +@col;
     my @m = self!clone_rows;

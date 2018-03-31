@@ -5,7 +5,7 @@ plan 8;
 my $matrix = Math::Matrix.new([[1,2],[3,4]]);
 
 subtest {
-    plan 8;
+    plan 10;
     my $expected1 = Math::Matrix.new([[3,5],[3,4]]);
     my $expected2 = Math::Matrix.new([[1,2],[5,7]]);
     my $expected3 = Math::Matrix.new([[3,2],[6,4]]);
@@ -13,13 +13,15 @@ subtest {
 
     ok $matrix.add-row(0,(2,3)) ~~ $expected1,  "add a row";
     ok $matrix.add-row(1,(2,3)) ~~ $expected2,  "add another row";
-    dies-ok { $matrix.add-row(3,(1,2)) },       "row index out of bound";
-    dies-ok { $matrix.add-row(1,(1))   },       "row size out of bound";
+    dies-ok { $matrix.add-column(1,(1,2)) },    "row is not array";
+    dies-ok { $matrix.add-row(3,[1,2]) },       "row index out of bound";
+    dies-ok { $matrix.add-row(1,[1])   },       "row size out of bound";
 
     ok $matrix.add-column(0,(2,3))~~ $expected3,"add a column";
     ok $matrix.add-column(1,(2,3))~~ $expected4,"add another column";
-    dies-ok { $matrix.add-column(3,(1,2)) },    "column index out of bound";
-    dies-ok { $matrix.add-column(1,(1))   },    "column size out of bound";
+    dies-ok { $matrix.add-column(1,(1,2)) },    "column is not array";
+    dies-ok { $matrix.add-column(3,[1,2]) },    "column index out of bound";
+    dies-ok { $matrix.add-column(1,[1])   },    "column size out of bound";
 }, "Vector Addition";
 
 

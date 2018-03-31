@@ -651,14 +651,14 @@ In this example we add (2,3) to the second row.
 Instead of a matrix you can also give as parameter the raw data of a matrix as
 new would receive it.
 
-    Math::Matrix.new( [[1,2],[3,4]] ).add-row(1,(2,3));
+    Math::Matrix.new( [[1,2],[3,4]] ).add-row(1,[2,3]);
 
     Example:    1 2  +       =  1 2
                 3 4    2 3      5 7
 
 =head3 add-column
 
-    Math::Matrix.new( [[1,2],[3,4]] ).add-column(1,(2,3));
+    Math::Matrix.new( [[1,2],[3,4]] ).add-column(1,[2,3]);
 
     Example:    1 2  +   2   =  1 4
                 3 4      3      3 7
