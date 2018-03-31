@@ -121,7 +121,7 @@ method !new-upper-triangular(Math::Matrix:U: @m ) {
     self.bless( rows => @m, is-upper-triangular => True );
 }
 
-method new-vector-product (Math::Matrix:U: @column_vector, NumArray @row_vector ){
+method new-vector-product (Math::Matrix:U: @column_vector, @row_vector ){
     fail "Expect two Arrays of Number" unless @column_vector ~~ NumArray and @row_vector ~~ NumArray;
     my @p;
     for ^+@column_vector X ^+@row_vector -> ($r, $c) { 
