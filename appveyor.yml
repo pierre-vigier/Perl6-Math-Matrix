@@ -1,0 +1,23 @@
+os: Visual Studio 2015
+
+platform: x64
+
+build: off
+
+install:
+  - '"C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x64'
+  - choco install strawberryperl --allow-empty-checksums
+  - SET PATH=C:\strawberry\c\bin;C:\strawberry\perl\site\bin;C:\strawberry\perl\bin;%PATH%
+  - git clone https://github.com/tadzik/rakudobrew %USERPROFILE%\rakudobrew
+  - SET PATH=%USERPROFILE%\rakudobrew\bin;%PATH%
+  - rakudobrew build moar 2018.01
+  - rakudobrew build zef
+  - cd %APPVEYOR_BUILD_FOLDER%
+  - zef install Test::META
+  - zef install AttrX::Lazy
+  - zef build .
+
+test_script:
+  - prove6 -l --loose -v t
+
+shallow_clone: true
