@@ -33,7 +33,7 @@ has Int $!kernel is lazy;
 method !rows       { @!rows }
 method !clone_rows  { AoA_clone(@!rows) }
 method !row-count    { $!row-count }
-method !column-count  { $!column-count }
+method !column-coount  { $!column-count }
 
 subset Positive_Int of Int where * > 0;
 #subset Row_Index of Int where {0 <= $_ < $!row-count} ;
@@ -450,7 +450,7 @@ method !build_kernel(Math::Matrix:D: --> Int) {
     min(self.size) - self.rank;
 }
 
-multi method norm(Math::Matrix:D: Positive_Int :$p = 2, Positive_Int :$q = 1 --> Numeric) {
+multi method norm(Math::Matrix:D: PosInt :$p = 2, PosInt :$q = 1 --> Numeric) {
     my $norm = 0;
     for ^$!column-count -> $c {
         my $col_sum = 0;
@@ -815,16 +815,18 @@ multi method subtract(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b!
     Math::Matrix.new( @subtract );
 }
 
-method add-row(Math::Matrix:D: Int $row, @row where {.all ~~ Numeric} --> Math::Matrix:D ) {
+method add-row(Math::Matrix:D: Int $row, @row --> Math::Matrix:D ) {
     self.check_row_index($row);
+    fail "Expect Array of Number as second parameter" unless @row ~~ NumArray;
     fail "Matrix has $!column-count columns, but got "~ +@row ~ "element row." unless $!column-count == +@row;
     my @m = self!clone_rows;
     @m[$row] = @m[$row] <<+>> @row;
     Math::Matrix.new( @m );
 }
 
-method add-column(Math::Matrix:D: Int $col, @col where {.all ~~ Numeric} --> Math::Matrix:D ) {
+method add-column(Math::Matrix:D: Int $col, @col --> Math::Matrix:D ) {
     self.check_column_index($col);
+    fail "Expect Array of Number as second parameter" unless @row ~~ NumArray;
     fail "Matrix has $!row-count rows, but got "~ +@col ~ "element column." unless $!row-count == +@col;
     my @m = self!clone_rows;
     @col.keys.map:{ @m[$_][$col] += @col[$_] };
