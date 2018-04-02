@@ -33,7 +33,7 @@ has Int $!kernel is lazy;
 method !rows       { @!rows }
 method !clone_rows  { AoA_clone(@!rows) }
 method !row-count    { $!row-count }
-method !column-coount  { $!column-count }
+method !column-count  { $!column-count }
 
 subset Positive_Int of Int where * > 0;
 #subset Row_Index of Int where {0 <= $_ < $!row-count} ;
