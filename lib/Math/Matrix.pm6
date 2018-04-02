@@ -33,10 +33,11 @@ has Int $!kernel is lazy;
 method !rows       { @!rows }
 method !clone_rows  { AoA_clone(@!rows) }
 method !row-count    { $!row-count }
-method !column-coount  { $!column-count }
+method !column-count  { $!column-count }
 
-subset Positive_Int of Int where * > 0;
-#subset Row_Index of Int where {0 <= $_ < $!row-count} ;
+subset PosInt of Int where * > 0;
+subset NumList of List where { .all ~~ Numeric };
+subset NumArray of Array where { .all ~~ Numeric };
 
 ################################################################################
 # start constructors
@@ -49,7 +50,7 @@ method new( @m ) {
     self.bless( rows => @m );
 }
 
-method clone { self.bless( rows => @!rows ) }
+# method clone { self.bless( rows => @!rows ) }
 
 sub AoA_clone (@m)  {  map {[ map {$^cell.clone}, $^row.flat ]}, @m }
 
@@ -71,28 +72,28 @@ submethod BUILD( :@rows!, :$diagonal, :$density, :$trace, :$determinant, :$rank,
     $!is-lower-triangular = $is-lower-triangular if $is-lower-triangular.defined;
 }
 
-sub zero_array( Positive_Int $rows, Positive_Int $cols = $rows ) {
+sub zero_array( PosInt $rows, PosInt $cols = $rows ) {
     return [ [ 0 xx $cols ] xx $rows ];
 }
-multi method new-zero(Math::Matrix:U: Positive_Int $size) {
+multi method new-zero(Math::Matrix:U: PosInt $size) {
     self.bless( rows => zero_array($size, $size),
             determinant => 0, rank => 0, kernel => $size, density => 0.0, trace => 0,
             is-zero => True, is-identity => False, is-diagonal => True, 
             is-square => True, is-symmetric => True  );
 }
-multi method new-zero(Math::Matrix:U: Positive_Int $rows, Positive_Int $cols) {
+multi method new-zero(Math::Matrix:U: PosInt $rows, PosInt $cols) {
     self.bless( rows => zero_array($rows, $cols),
             determinant => 0, rank => 0, kernel => min($rows, $cols), density => 0.0, trace => 0,
             is-zero => True, is-identity => False, is-diagonal => ($cols == $rows),  );
 }
 
-sub identity_array( Positive_Int $size ) {
+sub identity_array( PosInt $size ) {
     my @identity;
     for ^$size X ^$size -> ($r, $c) { @identity[$r][$c] = ($r == $c ?? 1 !! 0) }
     return @identity;
 }
 
-method new-identity(Math::Matrix:U: Positive_Int $size ) {
+method new-identity(Math::Matrix:U: PosInt $size ) {
     self.bless( rows => identity_array($size), diagonal => (1) xx $size, 
                 determinant => 1, rank => $size, kernel => 0, density => 1/$size, trace => $size,
                 is-zero => False, is-identity => True, 
@@ -100,7 +101,7 @@ method new-identity(Math::Matrix:U: Positive_Int $size ) {
 }
 
 method new-diagonal(Math::Matrix:U: *@diag ){
-    fail "Expect an List of Number" unless @diag and [and] @diag >>~~>> Numeric;
+    fail "Expect an List of Number" unless @diag ~~ NumList;
     my Int $size = +@diag;
     my @d = zero_array($size, $size);
     (^$size).map: { @d[$_][$_] = @diag[$_] };
@@ -121,7 +122,7 @@ method !new-upper-triangular(Math::Matrix:U: @m ) {
 }
 
 method new-vector-product (Math::Matrix:U: @column_vector, @row_vector ){
-    fail "Expect two Lists of Number" unless [and](@column_vector >>~~>> Numeric) and [and](@row_vector >>~~>> Numeric);
+    fail "Expect two Arrays of Number" unless @column_vector ~~ NumArray and @row_vector ~~ NumArray;
     my @p;
     for ^+@column_vector X ^+@row_vector -> ($r, $c) { 
         @p[$r][$c] = @column_vector[$r] * @row_vector[$c] 
