@@ -827,7 +827,7 @@ method add-row(Math::Matrix:D: Int $row, @row --> Math::Matrix:D ) {
 
 method add-column(Math::Matrix:D: Int $col, @col --> Math::Matrix:D ) {
     self.check_column_index($col);
-    fail "Expect Array of Number as second parameter" unless @row ~~ NumArray;
+    fail "Expect Array of Number as second parameter" unless @col ~~ NumArray;
     fail "Matrix has $!row-count rows, but got "~ +@col ~ "element column." unless $!row-count == +@col;
     my @m = self!clone_rows;
     @col.keys.map:{ @m[$_][$col] += @col[$_] };
