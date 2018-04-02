@@ -1,6 +1,4 @@
-# Perl6-Math-Matrix
-
-[![Build Status](https://travis-ci.org/pierre-vigier/Perl6-Math-Matrix.svg?branch=master)](https://travis-ci.org/pierre-vigier/Perl6-Math-Matrix)
+[![Build status](https://ci.appveyor.com/api/projects/status/github/Perl6-Math-Matrix/Perl6-Math-Matrix?svg=true)](https://ci.appveyor.com/project/pierre-vigier/Perl6-Math-Matrix/branch/master)
 
 NAME
 ====
@@ -622,14 +620,14 @@ Works analogous to add - it's just for convenance.
 
 Add a vector (row or col of some matrix) to a row of the matrix. In this example we add (2,3) to the second row. Instead of a matrix you can also give as parameter the raw data of a matrix as new would receive it.
 
-    Math::Matrix.new( [[1,2],[3,4]] ).add-row(1,(2,3));
+    Math::Matrix.new( [[1,2],[3,4]] ).add-row(1,[2,3]);
 
     Example:    1 2  +       =  1 2
                 3 4    2 3      5 7
 
 ### add-column
 
-    Math::Matrix.new( [[1,2],[3,4]] ).add-column(1,(2,3));
+    Math::Matrix.new( [[1,2],[3,4]] ).add-column(1,[2,3]);
 
     Example:    1 2  +   2   =  1 4
                 3 4      3      3 7
