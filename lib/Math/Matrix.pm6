@@ -50,7 +50,7 @@ method new( @m ) {
     self.bless( rows => @m );
 }
 
-# method clone { self.bless( rows => @!rows ) }
+method clone { self.bless( rows => @!rows ) }
 
 sub AoA_clone (@m)  {  map {[ map {$^cell.clone}, $^row.flat ]}, @m }
 
@@ -100,7 +100,7 @@ method new-identity(Math::Matrix:U: PosInt $size ) {
                 is-square => True, is-diagonal => True, is-symmetric => True );
 }
 
-method new-diagonal(Math::Matrix:U: *@diag ){
+method new-diagonal(Math::Matrix:U: Numeric *@diag ){
     fail "Expect an List of Number" unless @diag ~~ NumList;
     my Int $size = +@diag;
     my @d = zero_array($size, $size);
@@ -144,7 +144,7 @@ multi submethod check_index (Int $row, Int $col) {
     fail X::OutOfRange.new(:what<Column Index>,:got($col),:range(0 .. $!column-count - 1))
         unless 0 <= $col < $!column-count;
 }
-multi submethod check_index (@rows, @cols) {
+multi submethod check_index (Int @rows, Int @cols) {
     fail X::OutOfRange.new(
         :what<Row index> , :got(@rows), :range("0..{$!row-count -1 }")
     ) unless 0 <= all(@rows) < $!row-count;
@@ -816,18 +816,16 @@ multi method subtract(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b!
     Math::Matrix.new( @subtract );
 }
 
-method add-row(Math::Matrix:D: Int $row, @row --> Math::Matrix:D ) {
+method add-row(Math::Matrix:D: Int $row, Numeric @row --> Math::Matrix:D ) {
     self.check_row_index($row);
-    fail "Expect Array of Number as second parameter" unless @row ~~ NumArray;
     fail "Matrix has $!column-count columns, but got "~ +@row ~ "element row." unless $!column-count == +@row;
     my @m = self!clone_rows;
     @m[$row] = @m[$row] <<+>> @row;
     Math::Matrix.new( @m );
 }
 
-method add-column(Math::Matrix:D: Int $col, @col --> Math::Matrix:D ) {
+method add-column(Math::Matrix:D: Int $col, Numeric @col --> Math::Matrix:D ) {
     self.check_column_index($col);
-    fail "Expect Array of Number as second parameter" unless @col ~~ NumArray;
     fail "Matrix has $!row-count rows, but got "~ +@col ~ "element column." unless $!row-count == +@col;
     my @m = self!clone_rows;
     @col.keys.map:{ @m[$_][$col] += @col[$_] };
