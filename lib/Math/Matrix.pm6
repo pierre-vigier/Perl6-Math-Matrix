@@ -139,12 +139,15 @@ multi submethod check_row_index       (    @row) { self.check_index(@row, ()) }
 multi submethod check_column_index    (Int $col) { self.check_index(0, $col)  }
 multi submethod check_column_index    (    @col) { self.check_index((), @col) }
 multi submethod check_index (Int $row, Int $col) {
+    
     fail X::OutOfRange.new(:what<Row Index>,   :got($row),:range(0 .. $!row-count - 1))
         unless 0 <= $row < $!row-count;
     fail X::OutOfRange.new(:what<Column Index>,:got($col),:range(0 .. $!column-count - 1))
         unless 0 <= $col < $!column-count;
 }
-multi submethod check_index (Int @rows, Int @cols) {
+multi submethod check_index (@rows, @cols) {
+    fail "Row index has to be an Int." unless all(@rows) ~~ Int;
+    fail "Column index has to be an Int." unless all(@cols) ~~ Int;
     fail X::OutOfRange.new(
         :what<Row index> , :got(@rows), :range("0..{$!row-count -1 }")
     ) unless 0 <= all(@rows) < $!row-count;
@@ -185,7 +188,7 @@ multi method submatrix(Math::Matrix:D: Int:D $row-min, Int:D $col-min, Int:D $ro
     fail "Minimum column has to be smaller than maximum column" if $col-min > $col-max;
     self.submatrix(($row-min .. $row-max).list, ($col-min .. $col-max).list);
 }
-multi method submatrix(Math::Matrix:D: @rows where .all ~~ Int, @cols where .all ~~ Int --> Math::Matrix:D ){
+multi method submatrix(Math::Matrix:D: @rows, @cols --> Math::Matrix:D ){
     self.check_index(@rows, @cols);
     Math::Matrix.new([ @rows.map( { [ @!rows[$_][|@cols] ] } ) ]);
 }
