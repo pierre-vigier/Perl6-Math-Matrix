@@ -43,7 +43,7 @@ subset NumArray of Array where { .all ~~ Numeric };
 # start constructors
 ################################################################################
 
-method new( Math::Matrix:U: @m ) {
+method new( @m ) {
     die "Expect an Array of Array" unless all @m ~~ Array;
     die "All Row must contains the same number of elements" unless @m[0] == all @m[*];
     die "All Row must contains only numeric values" unless all( @m[*;*] ) ~~ Numeric;
@@ -75,7 +75,7 @@ submethod BUILD( :@rows!, :$diagonal, :$density, :$trace, :$determinant, :$rank,
 sub zero_array( PosInt $rows, PosInt $cols = $rows ) {
     return [ [ 0 xx $cols ] xx $rows ];
 }
-multi method new-zero(Math::Matrix:U: PosInt $size) {
+multi method new-zero(PosInt $size) {
     self.bless( rows => zero_array($size, $size),
             determinant => 0, rank => 0, kernel => $size, density => 0.0, trace => 0,
             is-zero => True, is-identity => False, is-diagonal => True, 
@@ -93,14 +93,14 @@ sub identity_array( PosInt $size ) {
     return @identity;
 }
 
-method new-identity(Math::Matrix:U: PosInt $size ) {
+method new-identity( PosInt $size ) {
     self.bless( rows => identity_array($size), diagonal => (1) xx $size, 
                 determinant => 1, rank => $size, kernel => 0, density => 1/$size, trace => $size,
                 is-zero => False, is-identity => True, 
                 is-square => True, is-diagonal => True, is-symmetric => True );
 }
 
-method new-diagonal(Math::Matrix:U: *@diag ){
+method new-diagonal( *@diag ){
     fail "Expect an List of Number" unless @diag ~~ NumList;
     my Int $size = +@diag;
     my @d = zero_array($size, $size);
@@ -111,17 +111,17 @@ method new-diagonal(Math::Matrix:U: *@diag ){
                 is-square => True, is-diagonal => True, is-symmetric => True  );
 }
 
-method !new-lower-triangular(Math::Matrix:U: @m ) {
+method !new-lower-triangular( @m ) {
     #don't want to trust outside of the class that a matrix is really triangular
     self.bless( rows => @m, is-lower-triangular => True );
 }
 
-method !new-upper-triangular(Math::Matrix:U: @m ) {
+method !new-upper-triangular( @m ) {
     #don't want to trust outside of the class that a matrix is really triangular
     self.bless( rows => @m, is-upper-triangular => True );
 }
 
-method new-vector-product (Math::Matrix:U: @column_vector, @row_vector){
+method new-vector-product (@column_vector, @row_vector){
     fail "Expect two Arrays of Number" unless @column_vector ~~ NumArray and @row_vector ~~ NumArray;
     my @p;
     for ^+@column_vector X ^+@row_vector -> ($r, $c) { 

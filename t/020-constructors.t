@@ -11,6 +11,7 @@ dies-ok  { my $matrix = Math::Matrix.new([[1,2],[3,"a"]]); }, "All elements have
 
 my $matrixa = Math::Matrix.new([[1,2],[3,4]]);
 ok $matrixa ~~ Math::Matrix        , "object was created of right type";
+# dies-ok  { my $matrixa.new([[1,2],[1,2,3]]); }, "can not call new on existing matrix";
 
 my $from-perl = EVAL($matrixa.perl);
 ok $from-perl ~~ $matrixa          , ".perl result can be evaled in a similar object";
