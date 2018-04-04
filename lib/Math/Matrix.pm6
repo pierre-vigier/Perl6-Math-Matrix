@@ -43,7 +43,7 @@ subset NumArray of Array where { .all ~~ Numeric };
 # start constructors
 ################################################################################
 
-method new( @m ) {
+method new( Math::Matrix:U: @m ) {
     die "Expect an Array of Array" unless all @m ~~ Array;
     die "All Row must contains the same number of elements" unless @m[0] == all @m[*];
     die "All Row must contains only numeric values" unless all( @m[*;*] ) ~~ Numeric;
@@ -121,7 +121,8 @@ method !new-upper-triangular(Math::Matrix:U: @m ) {
     self.bless( rows => @m, is-upper-triangular => True );
 }
 
-method new-vector-product (Math::Matrix:U: Numeric @column_vector, Numeric @row_vector ){
+method new-vector-product (Math::Matrix:U: @column_vector, @row_vector){
+    fail "Expect two Arrays of Number" unless @column_vector ~~ NumArray and @row_vector ~~ NumArray;
     my @p;
     for ^+@column_vector X ^+@row_vector -> ($r, $c) { 
         @p[$r][$c] = @column_vector[$r] * @row_vector[$c] 
