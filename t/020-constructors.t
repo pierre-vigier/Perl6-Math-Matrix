@@ -1,20 +1,26 @@
 use Test;
 use Math::Matrix;
-plan 21;
+plan 26;
 
-lives-ok { my $matrix = Math::Matrix.new([[1,2],[3,4]]); }  , "Able to create a materix";
+lives-ok { my $matrix = Math::Matrix.new([[1,2],[3,4]]); }  , "Able to create a int matrix";
+lives-ok { my $matrix = Math::Matrix.new([[.1,2.11111],[3/5,4e-2]]); }, "created a rational matrix";
+lives-ok { my $matrix = Math::Matrix.new([[1,2],[3,4]]); }  , "Able to create a complex matrix";
 dies-ok  { my $matrix = Math::Matrix.new([[1,2],[1,2,3]]); }, "Different nuber of elements per line";
 dies-ok  { my $matrix = Math::Matrix.new(); }               , "Constructor need params";
 dies-ok  { my $matrix = Math::Matrix.new([[1,2],[3,"a"]]); }, "All elements have to be Numeric";
 
 my $matrixa = Math::Matrix.new([[1,2],[3,4]]);
+ok $matrixa ~~ Math::Matrix  , "object was created of right type";
+is ~$matrixa, "[[1 2] [3 4]]", "content is correct in string context";
+is +$matrixa, 4              , "content is correct in numeric context";
+is ?$matrixa, True           , "content is correct in bool context";
+
+
 my $matrixb = Math::Matrix.new([[1,2],[3,4]]);
 my $matrixc = Math::Matrix.new([[8,8],[8,8]]);
 my $matrixd = Math::Matrix.new([[ 1.0 , 2.0 ],[ 3.0 , 4.0 ]]);
-
-is $matrixa.cell(0,0) , 1, "Accessor cell is working";
-is $matrixd.cell(1,1) , 4.0, "Accessor cell is working with Real";
-
+my $matrixr = Math::Matrix.new([[ 1.1 , 2.2 ],[ 3.3 , 4.4 ]]);
+is ~$matrixr, "[[1.1 2.2] [3.3 4.4]]",  "corect content or real values in string context";
 
 ok $matrixa.equal( $matrixb ), " equal method working";
 ok $matrixa ~~ $matrixb ,     " ~~ operator working";
