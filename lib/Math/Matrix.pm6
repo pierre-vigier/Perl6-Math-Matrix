@@ -100,7 +100,7 @@ method new-identity(Math::Matrix:U: PosInt $size ) {
                 is-square => True, is-diagonal => True, is-symmetric => True );
 }
 
-method new-diagonal(Math::Matrix:U: Numeric *@diag ){
+method new-diagonal(Math::Matrix:U: *@diag ){
     fail "Expect an List of Number" unless @diag ~~ NumList;
     my Int $size = +@diag;
     my @d = zero_array($size, $size);
@@ -121,8 +121,7 @@ method !new-upper-triangular(Math::Matrix:U: @m ) {
     self.bless( rows => @m, is-upper-triangular => True );
 }
 
-method new-vector-product (Math::Matrix:U: @column_vector, @row_vector ){
-    fail "Expect two Arrays of Number" unless @column_vector ~~ NumArray and @row_vector ~~ NumArray;
+method new-vector-product (Math::Matrix:U: Numeric @column_vector, Numeric @row_vector ){
     my @p;
     for ^+@column_vector X ^+@row_vector -> ($r, $c) { 
         @p[$r][$c] = @column_vector[$r] * @row_vector[$c] 
