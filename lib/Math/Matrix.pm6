@@ -819,16 +819,18 @@ multi method subtract(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b!
     Math::Matrix.new( @subtract );
 }
 
-method add-row(Math::Matrix:D: Int $row, Numeric @row --> Math::Matrix:D ) {
+method add-row(Math::Matrix:D: Int $row, @row --> Math::Matrix:D ) {
     self.check_row_index($row);
+    fail "Expect Array of Number as second parameter" unless @row ~~ NumArray;
     fail "Matrix has $!column-count columns, but got "~ +@row ~ "element row." unless $!column-count == +@row;
     my @m = self!clone_rows;
     @m[$row] = @m[$row] <<+>> @row;
     Math::Matrix.new( @m );
 }
 
-method add-column(Math::Matrix:D: Int $col, Numeric @col --> Math::Matrix:D ) {
+method add-column(Math::Matrix:D: Int $col, @col --> Math::Matrix:D ) {
     self.check_column_index($col);
+    fail "Expect Array of Number as second parameter" unless @col ~~ NumArray;
     fail "Matrix has $!row-count rows, but got "~ +@col ~ "element column." unless $!row-count == +@col;
     my @m = self!clone_rows;
     @col.keys.map:{ @m[$_][$col] += @col[$_] };
