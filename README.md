@@ -16,10 +16,10 @@ VERSION
 SYNOPSIS
 ========
 
-Matrices are tables with rows and columns (counting from 0) of numbers (Numeric): 
+Matrices are tables with rows and columns (index counting from 0) of numbers (Numeric type): 
 
-    transpose, invert, negate, add, subtract, multiply, dot product, size, determinant, 
-    rank, kernel, trace, norm, decompositions and so on
+    transpose, invert, negate, add, multiply, dot product, tensor product, determinant, 
+    rank, trace, norm, 15 boolean properties, decompositions, append, submatrix, map, reduce and more
 
 DESCRIPTION
 ===========
@@ -39,7 +39,7 @@ METHODS
 
   * conversion: Bool, Numeric, Str, perl, list-rows, list-columns, gist, full
 
-  * boolean properties: is-zero, is-identity, is-square, is-diagonal, is-diagonally-dominant, is-upper-triangular, is-lower-triangular, is-invertible, is-symmetric, is- antisymmetric, is-unitary, is-self-adjoint, is-orthogonal, is-positive-definite, is-positive-semidefinite
+  * boolean properties: is-zero, is-identity, is-square, is-diagonal, is-diagonally-dominant, is-upper-triangular, is-lower-triangular, is-invertible, is-symmetric, is-antisymmetric, is-unitary, is-self-adjoint, is-orthogonal, is-positive-definite, is-positive-semidefinite
 
   * numeric properties: size, density, trace, determinant, rank, kernel, norm, condition
 

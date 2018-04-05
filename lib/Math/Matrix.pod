@@ -11,8 +11,8 @@ Math::Matrix - create, compare, compute and measure 2D matrices
 
 Matrices are tables with rows and columns (index counting from 0) of numbers (Numeric type): 
 
- transpose, invert, negate, add, multiply, dot product, tensor produc, determinant, 
- rank, trace, norm, decompositions, append, map, reduce and so on
+ transpose, invert, negate, add, multiply, dot product, tensor product, determinant, 
+ rank, trace, norm, 15 boolean properties, decompositions, append, submatrix, map, reduce and more
 
 =head1 DESCRIPTION
 
@@ -32,7 +32,7 @@ Matrices are readonly - all operations and derivatives are new objects.
 =item conversion: Bool, Numeric, Str, perl, list-rows, list-columns, gist, full
 =item boolean properties: is-zero, is-identity, is-square, is-diagonal,
     is-diagonally-dominant, is-upper-triangular, is-lower-triangular, is-invertible,
-    is-symmetric, is- antisymmetric, is-unitary, is-self-adjoint, is-orthogonal,
+    is-symmetric, is-antisymmetric, is-unitary, is-self-adjoint, is-orthogonal,
     is-positive-definite, is-positive-semidefinite
 =item numeric properties: size, density, trace, determinant, rank, kernel, norm, condition
 =item derived matrices: transposed, negated, conjugated, inverted, reduced-row-echelon-form
