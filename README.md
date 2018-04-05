@@ -123,7 +123,7 @@ Accessors
 
 Gets value of element in row (first parameter) and column (second parameter). (counting always from 0)
 
-    say Math::Matrix.new( [[1,2],[3,4]] ).cell(0,1):
+    say Math::Matrix.new([[1,2],[3,4]]).cell(0,1):
 
     2
 
@@ -131,7 +131,7 @@ Gets value of element in row (first parameter) and column (second parameter). (c
 
 Gets values of specified row (first required parameter) as a list.
 
-    say Math::Matrix.new( [[1,2],[3,4]] ).row(0):
+    say Math::Matrix.new([[1,2],[3,4]]).row(0):
 
     (1, 2)
 
@@ -139,7 +139,7 @@ Gets values of specified row (first required parameter) as a list.
 
 Gets values of specified column (first required parameter) as a list.
 
-    say Math::Matrix.new( [[1,2],[3,4]] ).column(0);
+    say Math::Matrix.new([[1,2],[3,4]]).column(0);
 
     (1, 3)
 
@@ -147,28 +147,39 @@ Gets values of specified column (first required parameter) as a list.
 
 Gets values of diagonal elements as a list. 
 
-    say Math::Matrix.new( [[1,2],[3,4]] ).diagonal:
+    say Math::Matrix.new([[1,2],[3,4]]).diagonal:
 
     (1, 4)
 
 ### submatrix
 
-Subset of cells of a given matrix by deleting rows and/or columns. The first and simplest usage is by choosing a cell (by coordinates). Row and column of that cell will be removed.
+Matrix built by a subset of cells of a given matrix.
 
-    my $m = Math::Matrix.new([[1,2,3,4][2,3,4,5],[3,4,5,6]]);     # 1 2 3 4
-                                                                    2 3 4 5
-                                                                    3 4 5 6
-    say $m.submatrix(1,2);     # 1 2 4
-                                 3 4 6
+The first and simplest usage is by choosing a cell (by coordinates like .cell()). Row and column of that cell will be removed. The remaining cells form the submatrix.
 
-If you provide two pairs of coordinates (row column), these will be counted as left upper and right lower corner of and area inside the original matrix, which will the resulting submatrix.
+    say $m:
 
-    say $m.submatrix(1,1,1,3); # 2 3 4
+    1 2 3 4
+    2 3 4 5
+    3 4 5 6
+
+    say $m.submatrix(1,2):
+
+    1 2 4
+    3 4 6
+
+If you provide two pairs of coordinates (row1, column1, row2, column2), these will be counted as left upper and right lower corner of and area inside the original matrix, which will the resulting submatrix.
+
+    say $m.submatrix(1,1,1,3):
+
+    3 4 5
 
 When provided with two lists of values (one for the rows - one for columns) a new matrix will be created with the old rows and columns in that new order.
 
-    $m.submatrix((3,2),(1,2)); # 4 5
-                                 3 4
+    $m.submatrix((3,2),(1,2)):
+
+    4 5
+    3 4
 
 Type Conversion And Output Flavour
 ----------------------------------
@@ -179,13 +190,14 @@ Conversion into Bool context. Returns False if matrix is zero (all cells equal z
 
     $matrix.Bool
     ? $matrix           # alias
-    if $matrix          # Bool context too
+    if $matrix          # matrix in Bool context too
 
 ### Numeric
 
 Conversion into Numeric context. Returns number (amount) of cells (as .elems). Please note, only prefix a prefix + (as in: + $matrix) will call this Method. A infix (as in $matrix + $number) calls .add($number).
 
-    $matrix.Numeric   or      + $matrix
+    $matrix.Numeric
+    + $matrix           # alias op
 
 ### Str
 
