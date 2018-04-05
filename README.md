@@ -67,6 +67,10 @@ The default constructor, takes arrays of arrays of numbers. Each second level ar
     1 2
     3 4
 
+    Math::Matrix.new( [[1]] );      # one cell 1*1 matrix 
+    Math::Matrix.new( [[1,2,3],] ); # one row 1*3 matrix, mind the trailing comma
+    Math::Matrix.new( [[1],[2]] );  # one column 2*1 matrix
+
 ### new-zero
 
 This method is a constructor that returns an empty matrix of the size given in parameter. If only one parameter is given, the matrix is quadratic. All the cells are set to 0.

@@ -55,9 +55,9 @@ That is why their length has to be the same.
    1 2
    3 4
 
-   Math::Matrix.new( [[1]] );      # 1*1 matrix 
-   Math::Matrix.new( [[1,2,3],] ); # one row matrix
-   Math::Matrix.new( [[1],[2]] );  # one column matrix
+   Math::Matrix.new( [[1]] );      # one cell 1*1 matrix 
+   Math::Matrix.new( [[1,2,3],] ); # one row 1*3 matrix, mind the trailing comma
+   Math::Matrix.new( [[1],[2]] );  # one column 2*1 matrix
 
 =head3 new-zero
 
