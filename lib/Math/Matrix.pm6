@@ -45,12 +45,8 @@ subset NumArray of Array where { .all ~~ Numeric };
 
 method new( @m ) {
     die "Expect an Array of Array" unless all @m ~~ Array;
-    if @m[0] ~~ Numeric {
-        die "Matrix must contain only numeric values" unless all( @m ) ~~ Numeric;
-    } else {
-        die "All rows must contains the same number of elements" unless @m == 1 or @m[0] == all @m[*];
-        die "All rows must contain only numeric values" unless all( @m[*;*] ) ~~ Numeric;
-    }
+    die "All rows must contains the same number of elements" unless @m[0] == all @m[*];
+    die "All rows must contain only numeric values" unless all( @m[*;*] ) ~~ Numeric;
     self.bless( rows => @m );
 }
 
@@ -162,12 +158,12 @@ multi submethod check_index (@rows, @cols) {
 
 method cell(Math::Matrix:D: Int:D $row, Int:D $column --> Numeric ) {
     self.check_index($row, $column);
-    return @!rows[$row][$column];
+    @!rows[$row][$column];
 }
 
 method row(Math::Matrix:D: Int:D $row  --> List) {
     self.check_row_index($row);
-    return @!rows[$row].list;
+    |@!rows[$row];
 }
 
 method column(Math::Matrix:D: Int:D $column --> List) {
