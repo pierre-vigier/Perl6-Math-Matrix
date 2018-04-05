@@ -55,6 +55,10 @@ That is why their length has to be the same.
    1 2
    3 4
 
+   Math::Matrix.new( [[1]] );      # 1*1 matrix 
+   Math::Matrix.new( [[1,2,3],] ); # one row matrix
+   Math::Matrix.new( [[1],[2]] );  # one column matrix
+
 =head3 new-zero
 
 This method is a constructor that returns an empty matrix of the size given in parameter.
