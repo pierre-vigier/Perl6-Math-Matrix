@@ -9,10 +9,10 @@ Math::Matrix - create, compare, compute and measure 2D matrices
 
 =head1 SYNOPSIS
 
-Matrices are tables with rows and columns (counting from 0) of numbers (Numeric): 
+Matrices are tables with rows and columns (index counting from 0) of numbers (Numeric type): 
 
- transpose, invert, negate, add, subtract, multiply, dot product, size, determinant, 
- rank, kernel, trace, norm, decompositions and so on
+ transpose, invert, negate, add, multiply, dot product, tensor produc, determinant, 
+ rank, trace, norm, decompositions, append, map, reduce and so on
 
 =head1 DESCRIPTION
 
