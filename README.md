@@ -110,35 +110,46 @@ This method is a constructor that returns an diagonal matrix of the size given b
 
 This method is a constructor that returns a matrix which is a result of the matrix product (method dotProduct, or operator dot) of a column vector (first argument) and a row vector (second argument).
 
-    my $matrixp = Math::Matrix.new-vector-product([1,2,3],[2,3,4]);
-    my $matrix = Math::Matrix.new([2,3,4],[4,6,8],[6,9,12]);       # same matrix
+    say Math::Matrix.new-vector-product([1,2,3],[2,3,4]):
+
+    2  3  4
+    4  6  8
+    6  9 12
 
 Accessors
 ---------
 
 ### cell
 
-Gets value of element in third row and fourth column. (counting always from 0)
+Gets value of element in row (first parameter) and column (second parameter). (counting always from 0)
 
-    my $value = $matrix.cell(2,3);
+    say Math::Matrix.new( [[1,2],[3,4]] ).cell(0,1):
+
+    2
 
 ### row
 
-Gets values of specified row (first required parameter) as a list. That would be (1, 2) if matrix is [[1,2][3,4]].
+Gets values of specified row (first required parameter) as a list.
 
-    my @values = $matrix.row(0);
+    say Math::Matrix.new( [[1,2],[3,4]] ).row(0):
+
+    (1, 2)
 
 ### column
 
-Gets values of specified column (first required parameter) as a list. That would be (1, 4) if matrix is [[1,2][3,4]].
+Gets values of specified column (first required parameter) as a list.
 
-    my @values = $matrix.column(0);
+    say Math::Matrix.new( [[1,2],[3,4]] ).column(0);
+
+    (1, 3)
 
 ### diagonal
 
-Gets values of diagonal elements. That would be (1, 4) if matrix is [[1,2][3,4]].
+Gets values of diagonal elements as a list. 
 
-    my @values = $matrix.diagonal();
+    say Math::Matrix.new( [[1,2],[3,4]] ).diagonal:
+
+    (1, 4)
 
 ### submatrix
 
