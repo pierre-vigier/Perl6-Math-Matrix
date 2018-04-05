@@ -45,7 +45,7 @@ subset NumArray of Array where { .all ~~ Numeric };
 
 method new( @m ) {
     die "Expect an Array of Array" unless all @m ~~ Array;
-    die "All Row must contains the same number of elements" unless @m[0] == all @m[*];
+    die "All Row must contains the same number of elements" unless @m == 1 or @m[0] == all @m[*];
     die "All Row must contains only numeric values" unless all( @m[*;*] ) ~~ Numeric;
     self.bless( rows => @m );
 }
