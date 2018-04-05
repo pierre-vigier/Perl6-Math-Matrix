@@ -302,7 +302,8 @@ method !build_is-diagonal(Math::Matrix:D: --> Bool) {
     return $.is-upper-triangular && $.is-lower-triangular;
 }
 
-method is-diagonally-dominant(Math::Matrix:D: Bool :$strict = False, Str :$along where {$^orient eq any <column row both>} = 'column' --> Bool) {
+method is-diagonally-dominant(Math::Matrix:D: Bool :$strict = False, 
+                              Str :$along where {$^orient eq any <column row both>} = 'column' --> Bool) {
     return False unless self.is-square;
     my $greater = $strict ?? &[>] !! &[>=];
     my Bool $colwise;
@@ -582,8 +583,10 @@ multi method decompositionLU(Math::Matrix:D: Bool :$pivot = True, :$diagonal = F
             push @D, @U[$c][$c];
             @U[$c][$c] = 1;
         }
-        $pivot ?? (Math::Matrix!new-lower-triangular(@L), Math::Matrix.new-diagonal(@D), Math::Matrix!new-upper-triangular(@U), Math::Matrix.new(@P))
-               !! (Math::Matrix!new-lower-triangular(@L), Math::Matrix.new-diagonal(@D), Math::Matrix!new-upper-triangular(@U));
+        $pivot ?? (Math::Matrix!new-lower-triangular(@L), Math::Matrix.new-diagonal(@D), 
+                   Math::Matrix!new-upper-triangular(@U), Math::Matrix.new(@P))
+               !! (Math::Matrix!new-lower-triangular(@L), Math::Matrix.new-diagonal(@D),
+                   Math::Matrix!new-upper-triangular(@U));
     }
     $pivot ?? (Math::Matrix!new-lower-triangular(@L), Math::Matrix!new-upper-triangular(@U), Math::Matrix.new(@P))
            !! (Math::Matrix!new-lower-triangular(@L), Math::Matrix!new-upper-triangular(@U));
@@ -799,7 +802,8 @@ multi method add(Math::Matrix:D: Numeric $r --> Math::Matrix:D ) {
     self.map( * + $r );
 }
 
-multi method add(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b!row-count and $!column-count == $b!column-count } --> Math::Matrix:D ) {
+multi method add(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b!row-count and 
+                                                         $!column-count == $b!column-count } --> Math::Matrix:D ) {
     my @sum;
     for ^$!row-count X ^$!column-count -> ($r, $c) {
         @sum[$r][$c] = @!rows[$r][$c] + $b!rows[$r][$c];
@@ -811,7 +815,8 @@ multi method subtract(Math::Matrix:D: Numeric $r --> Math::Matrix:D ) {
     self.map( * - $r );
 }
 
-multi method subtract(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b!row-count and $!column-count == $b!column-count } --> Math::Matrix:D ) {
+multi method subtract(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b!row-count and 
+                                                              $!column-count == $b!column-count } --> Math::Matrix:D ) {
     my @subtract;
     for ^$!row-count X ^$!column-count -> ($r, $c) {
         @subtract[$r][$c] = @!rows[$r][$c] - $b!rows[$r][$c];
@@ -841,7 +846,8 @@ multi method multiply(Math::Matrix:D: Numeric $r --> Math::Matrix:D ) {
     self.map( * * $r );
 }
 
-multi method multiply(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b!row-count and $!column-count == $b!column-count } --> Math::Matrix:D ) {
+multi method multiply(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b!row-count and 
+                                                              $!column-count == $b!column-count } --> Math::Matrix:D ) {
     my @multiply;
     for ^$!row-count X ^$!column-count -> ($r, $c) {
         @multiply[$r][$c] = @!rows[$r][$c] * $b!rows[$r][$c];
