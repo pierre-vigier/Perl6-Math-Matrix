@@ -29,7 +29,7 @@ Matrices are readonly - all operations and derivatives are new objects.
 =head1 METHODS
 =item constructors: new, new-zero, new-identity, new-diagonal, new-vector-product
 =item accessors: cell, row, column, diagonal, submatrix
-=item conversion: Bool, Numeric, Str, perl, list, list-rows, list-columns, gist, full
+=item conversion: Bool, Numeric, Str, perl, Array, list, list-rows, list-columns, gist, full
 =item boolean properties: is-zero, is-identity, is-square, is-diagonal,
     is-diagonally-dominant, is-upper-triangular, is-lower-triangular, is-invertible,
     is-symmetric, is-antisymmetric, is-unitary, is-self-adjoint, is-orthogonal,
@@ -204,10 +204,7 @@ A infix (as in $matrix + $number) calls .add($number).
 
 =head3 Str
 
-Conversion into String context. Returns content of all cells in the
-data structure form like "[[..,..,...],[...],...]"
-    
-    put $matrix     or      print $matrix
+All values separated by one whitespace. Is called implicitly by put and print.
 
 =head3 perl
 
@@ -215,6 +212,10 @@ Conversion into String that can reevaluated into the same object later.
      
     my $clone = eval $matrix.perl;       # same as: $matrix.clone
     
+
+=head3 Array
+
+All cells as an array of arrays (basically what was put into new(...)).
 
 =head3 list
 

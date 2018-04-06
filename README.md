@@ -37,7 +37,7 @@ METHODS
 
   * accessors: cell, row, column, diagonal, submatrix
 
-  * conversion: Bool, Numeric, Str, perl, list, list-rows, list-columns, gist, full
+  * conversion: Bool, Numeric, Str, perl, Array, list, list-rows, list-columns, gist, full
 
   * boolean properties: is-zero, is-identity, is-square, is-diagonal, is-diagonally-dominant, is-upper-triangular, is-lower-triangular, is-invertible, is-symmetric, is-antisymmetric, is-unitary, is-self-adjoint, is-orthogonal, is-positive-definite, is-positive-semidefinite
 
@@ -203,15 +203,17 @@ Conversion into Numeric context. Returns number (amount) of cells (as .elems). P
 
 ### Str
 
-Conversion into String context. Returns content of all cells in the data structure form like "[[..,..,...],[...],...]"
-
-    put $matrix     or      print $matrix
+All values separated by one whitespace. Is called implicitly by put and print.
 
 ### perl
 
 Conversion into String that can reevaluated into the same object later.
 
     my $clone = eval $matrix.perl;       # same as: $matrix.clone
+
+### Array
+
+All cells as an array of arrays (basically what was put into new(...)).
 
 ### list
 
