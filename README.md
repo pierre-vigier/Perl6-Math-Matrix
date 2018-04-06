@@ -108,13 +108,13 @@ This method is a constructor that returns an diagonal matrix of the size given b
 
 ### new-vector-product
 
-This method is a constructor that returns a matrix which is a result of the matrix product (method dotProduct, or operator dot) of a column vector (first argument) and a row vector (second argument).
+This method is a constructor that returns a matrix which is a result of the matrix product (method dotProduct, or operator dot) of a column vector (first argument) and a row vector (second argument). It can also be understood as a tensor product of row and column.
 
     say Math::Matrix.new-vector-product([1,2,3],[2,3,4]):
 
-    2  3  4
-    4  6  8
-    6  9 12
+    2  3  4     1*2  1*3  1*4
+    4  6  8  =  2*2  2*3  2*4
+    6  9 12     3*2  3*3  3*4
 
 Accessors
 ---------
