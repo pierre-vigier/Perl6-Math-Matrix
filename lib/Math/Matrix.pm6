@@ -52,7 +52,7 @@ method new( @m ) {
 
 method clone { self.bless( rows => @!rows ) }
 
-sub AoA_clone (@m)  {  map {[ map {$^cell.clone}, $^row.flat ]}, @m }
+sub AoA_clone (@m)  {[ map {[ map {$^cell.clone}, $^row.flat ]}, @m ]}
 
 submethod BUILD( :@rows!, :$diagonal, :$density, :$trace, :$determinant, :$rank, :$kernel,
                  :$is-zero, :$is-identity, :$is-symmetric, :$is-upper-triangular, :$is-lower-triangular ) {
@@ -203,6 +203,8 @@ method Numeric (Math::Matrix:D: --> Int)  {   self.elems   }
 method Str(Math::Matrix:D: --> Str)       {   @!rows.Str   }
 
 multi method perl(Math::Matrix:D: --> Str){ self.WHAT.perl ~ ".new(" ~ @!rows.perl ~ ")" }
+
+method Array(Math::Matrix:D: --> Array)   { self!clone_rows }
 
 method list(Math::Matrix:D: --> List)     { self.list-rows.flat }
 

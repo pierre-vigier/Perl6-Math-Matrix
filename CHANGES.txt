@@ -1,6 +1,8 @@
  0.2.1:
     - 2018
-    - added insert-vertically and insert-horizontally
+    - added insert-vertically, insert-horizontally - replacing prepend-* and append-*
+    - added own methods for .list (flat) and .Array context
+    - added proper .gist for Math::Matrix type objects
     - redone .gist and .full allows now complex numbers and scientific notation
     - refreshed doc synopsis, improved docs overall
 
