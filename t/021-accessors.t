@@ -7,8 +7,8 @@ subtest {
     plan 4;
     my $matrix =   Math::Matrix.new([[4,0,1],[2,1,0],[2,2,3]]);
 
-    ok $matrix.cell(0,0) ~~ 4, "first cell";
-    ok $matrix.cell(2,1) ~~ 2, "first cell";
+    ok $matrix.cell(0,0) == 4, "first cell";
+    ok $matrix.cell(2,1) == 2, "first cell";
     dies-ok { my $cell = $matrix.cell(5,0); }, "Out of range row";
     dies-ok { my $cell = $matrix.cell(0,5); }, "Out of range column";
 
@@ -18,7 +18,7 @@ subtest {
     plan 2;
     my $matrix =   Math::Matrix.new([[4,0,1],[2,1,0],[2,2,3]]);
 
-    ok $matrix.row(1) ~~ (2,1,0), "got second row";
+    ok $matrix.row(1) == (2,1,0), "got second row";
     dies-ok { $matrix.row(5) },   "tried none existing row";
 }, "Row";
 
@@ -26,7 +26,7 @@ subtest {
     plan 2;
     my $matrix =   Math::Matrix.new([[4,0,1],[2,1,0],[2,2,3]]);
 
-    ok $matrix.column(1) ~~ (0,1,2), "got second column";
+    ok $matrix.column(1) == (0,1,2), "got second column";
     dies-ok { $matrix.column(5) },   "tried none existing column";
 }, "Column";
 

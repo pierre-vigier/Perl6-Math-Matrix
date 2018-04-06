@@ -1,7 +1,7 @@
 # Perl6-Math-Matrix
 
 [![Build Status](https://travis-ci.org/pierre-vigier/Perl6-Math-Matrix.svg?branch=master)](https://travis-ci.org/pierre-vigier/Perl6-Math-Matrix)
-[![Build status](https://ci.appveyor.com/api/projects/status/github/pierre-vigier/Perl6-Math-Matrix?branch=master?&passingText=Windows%20-%20OK&failingText=Windows%20-%20FAIL&pendingText=Windows%20-%20pending?svg=true)](https://ci.appveyor.com/project/pierre-vigier/Perl6-Math-Matrix/branch/master)
+[![Build status](https://ci.appveyor.com/api/projects/status/github/pierre-vigier/Perl6-Math-Matrix?svg=true)](https://ci.appveyor.com/project/pierre-vigier/Perl6-Math-Matrix/branch/master)
 
 NAME
 ====
@@ -16,10 +16,10 @@ VERSION
 SYNOPSIS
 ========
 
-Matrices are tables with rows and columns (counting from 0) of numbers (Numeric): 
+Matrices are tables with rows and columns (index counting from 0) of numbers (Numeric type): 
 
-    transpose, invert, negate, add, subtract, multiply, dot product, size, determinant, 
-    rank, kernel, trace, norm, decompositions and so on
+    transpose, invert, negate, add, multiply, dot product, tensor product, determinant, 
+    rank, trace, norm, 15 boolean properties, decompositions, append, submatrix, map, reduce and more
 
 DESCRIPTION
 ===========
@@ -37,9 +37,9 @@ METHODS
 
   * accessors: cell, row, column, diagonal, submatrix
 
-  * conversion: Bool, Numeric, Str, perl, list-rows, list-columns, gist, full
+  * conversion: Bool, Numeric, Str, perl, Array, list, list-rows, list-columns, gist, full
 
-  * boolean properties: is-zero, is-identity, is-square, is-diagonal, is-diagonally-dominant, is-upper-triangular, is-lower-triangular, is-invertible, is-symmetric, is- antisymmetric, is-unitary, is-self-adjoint, is-orthogonal, is-positive-definite, is-positive-semidefinite
+  * boolean properties: is-zero, is-identity, is-square, is-diagonal, is-diagonally-dominant, is-upper-triangular, is-lower-triangular, is-invertible, is-symmetric, is-antisymmetric, is-unitary, is-self-adjoint, is-orthogonal, is-positive-definite, is-positive-semidefinite
 
   * numeric properties: size, density, trace, determinant, rank, kernel, norm, condition
 
@@ -60,16 +60,22 @@ Constructors
 
 ### new( [[...],...,[...]] )
 
-The default constructor, takes arrays of arrays of numbers. Each second level array represents a row in the matrix. That is why their length has to be the same.
+The default constructor, takes arrays of arrays of numbers os only required parameter. Each second level array represents a row in the matrix. That is why their length has to be the same.
 
     Math::Matrix.new( [[1,2],[3,4]] ) creates:
 
     1 2
     3 4
 
+    Math::Matrix.new([<1 2>,<3 4>]); # does the same
+    Math::Matrix.new( [[1]] );       # one cell 1*1 matrix 
+    Math::Matrix.new( [[1,2,3],] );  # one row 1*3 matrix, mind the trailing comma
+    Math::Matrix.new( [$[1,2,3]] );  # does the same, if you don't like trailing comma
+    Math::Matrix.new( [[1],[2]] );   # one column 2*1 matrix
+
 ### new-zero
 
-This method is a constructor that returns an empty matrix of the size given in parameter. If only one parameter is given, the matrix is quadratic. All the cells are set to 0.
+This method is an constructor that returns an zero (sometimes empty) matrix (as checked by is-zero) of the size given in parameter. If only one parameter is given, the matrix is quadratic. All the cells are set to 0.
 
     say Math::Matrix.new-zero( 3, 4 ) :
 
@@ -84,7 +90,7 @@ This method is a constructor that returns an empty matrix of the size given in p
 
 ### new-identity
 
-This method is a constructor that returns an identity matrix of the size given in parameter All the cells are set to 0 except the top/left to bottom/right diagonale, set to 1
+This method is a constructor that returns an identity matrix (as checked by is-identity) of the size given in the only and required parameter. All the cells are set to 0 except the top/left to bottom/right diagonale is set to 1.
 
     say Math::Matrix.new-identity( 3 ):
       
@@ -94,7 +100,7 @@ This method is a constructor that returns an identity matrix of the size given i
 
 ### new-diagonal
 
-This method is a constructor that returns an diagonal matrix of the size given by count of the parameter. All the cells are set to 0 except the top/left to bottom/right diagonal, set to given values.
+This method is a constructor that returns an diagonal matrix (as checked by is-diagonal) of the size given by count of the parameter. All the cells are set to 0 except the top/left to bottom/right diagonal, set to given values.
 
     say Math::Matrix.new-diagonal( 2, 4, 5 ):
 
@@ -104,56 +110,78 @@ This method is a constructor that returns an diagonal matrix of the size given b
 
 ### new-vector-product
 
-This method is a constructor that returns a matrix which is a result of the matrix product (method dotProduct, or operator dot) of a column vector (first argument) and a row vector (second argument).
+This method is a constructor that returns a matrix which is a result of the matrix product (method dotProduct, or operator dot) of a column vector (first argument) and a row vector (second argument). It can also be understood as a tensor product of row and column.
 
-    my $matrixp = Math::Matrix.new-vector-product([1,2,3],[2,3,4]);
-    my $matrix = Math::Matrix.new([2,3,4],[4,6,8],[6,9,12]);       # same matrix
+    say Math::Matrix.new-vector-product([1,2,3],[2,3,4]):
+
+    2  3  4     1*2  1*3  1*4
+    4  6  8  =  2*2  2*3  2*4
+    6  9 12     3*2  3*3  3*4
 
 Accessors
 ---------
 
 ### cell
 
-Gets value of element in third row and fourth column. (counting always from 0)
+Gets value of element in row (first parameter) and column (second parameter). (counting always from 0)
 
-    my $value = $matrix.cell(2,3);
+    say Math::Matrix.new([[1,2],[3,4]]).cell(0,1):
+
+    2
 
 ### row
 
-Gets values of specified row (first required parameter) as a list. That would be (1, 2) if matrix is [[1,2][3,4]].
+Gets values of specified row (first required parameter) as a list.
 
-    my @values = $matrix.row(0);
+    say Math::Matrix.new([[1,2],[3,4]]).row(0):
+
+    (1, 2)
 
 ### column
 
-Gets values of specified column (first required parameter) as a list. That would be (1, 4) if matrix is [[1,2][3,4]].
+Gets values of specified column (first required parameter) as a list.
 
-    my @values = $matrix.column(0);
+    say Math::Matrix.new([[1,2],[3,4]]).column(0);
+
+    (1, 3)
 
 ### diagonal
 
-Gets values of diagonal elements. That would be (1, 4) if matrix is [[1,2][3,4]].
+Gets values of diagonal elements as a list. 
 
-    my @values = $matrix.diagonal();
+    say Math::Matrix.new([[1,2],[3,4]]).diagonal:
+
+    (1, 4)
 
 ### submatrix
 
-Subset of cells of a given matrix by deleting rows and/or columns. The first and simplest usage is by choosing a cell (by coordinates). Row and column of that cell will be removed.
+Matrix built by a subset of cells of a given matrix.
 
-    my $m = Math::Matrix.new([[1,2,3,4][2,3,4,5],[3,4,5,6]]);     # 1 2 3 4
-                                                                    2 3 4 5
-                                                                    3 4 5 6
-    say $m.submatrix(1,2);     # 1 2 4
-                                 3 4 6
+The first and simplest usage is by choosing a cell (by coordinates like .cell()). Row and column of that cell will be removed. The remaining cells form the submatrix.
 
-If you provide two pairs of coordinates (row column), these will be counted as left upper and right lower corner of and area inside the original matrix, which will the resulting submatrix.
+    say $m:
 
-    say $m.submatrix(1,1,1,3); # 2 3 4
+    1 2 3 4
+    2 3 4 5
+    3 4 5 6
+
+    say $m.submatrix(1,2):
+
+    1 2 4
+    3 4 6
+
+If you provide two pairs of coordinates (row1, column1, row2, column2), these will be counted as left upper and right lower corner of and area inside the original matrix, which will the resulting submatrix.
+
+    say $m.submatrix(1,1,1,3):
+
+    3 4 5
 
 When provided with two lists of values (one for the rows - one for columns) a new matrix will be created with the old rows and columns in that new order.
 
-    $m.submatrix((3,2),(1,2)); # 4 5
-                                 3 4
+    $m.submatrix((3,2),(1,2)):
+
+    4 5
+    3 4
 
 Type Conversion And Output Flavour
 ----------------------------------
@@ -164,25 +192,32 @@ Conversion into Bool context. Returns False if matrix is zero (all cells equal z
 
     $matrix.Bool
     ? $matrix           # alias
-    if $matrix          # Bool context too
+    if $matrix          # matrix in Bool context too
 
 ### Numeric
 
 Conversion into Numeric context. Returns number (amount) of cells (as .elems). Please note, only prefix a prefix + (as in: + $matrix) will call this Method. A infix (as in $matrix + $number) calls .add($number).
 
-    $matrix.Numeric   or      + $matrix
+    $matrix.Numeric
+    + $matrix           # alias op
 
 ### Str
 
-Conversion into String context. Returns content of all cells in the data structure form like "[[..,..,...],[...],...]"
-
-    put $matrix     or      print $matrix
+All values separated by one whitespace. Is called implicitly by put and print.
 
 ### perl
 
 Conversion into String that can reevaluated into the same object later.
 
     my $clone = eval $matrix.perl;       # same as: $matrix.clone
+
+### Array
+
+All cells as an array of arrays (basically what was put into new(...)).
+
+### list
+
+Same as .list-rows.flat
 
 ### list-rows
 
@@ -296,17 +331,17 @@ A Hermitian or self-adjoint matrix is equal to its transposed and conjugated.
                 2   5   4
                 3-i 4   7
 
-### is-unitary
+### is-invertible
 
-An unitery matrix multiplied (dotProduct) with its concjugate transposed derivative (.conj.T) is an identity matrix, or said differently: the concjugate transposed matrix equals the inversed matrix.
+Is True if number of rows and colums are the same (is-square) and determinant is not zero. All rows or colums have to be independent vectors.
 
 ### is-orthogonal
 
-An orthogonal matrix multiplied (dotProduct) with its transposed derivative (T) is an identity matrix or in other words transosed and inverted matrices are equal.
+An orthogonal matrix multiplied (dotProduct) with its transposed derivative (T) is an identity matrix or in other words: transposed and inverted matrices are equal.
 
-### is-invertible
+### is-unitary
 
-Is True if number of rows and colums are the same (is-square) and determinant is not zero. All rows or colums have to be Independent vectors.
+An unitery matrix multiplied (dotProduct) with its concjugate transposed derivative (.conj.T) is an identity matrix, or said differently: the concjugate transposed matrix equals the inverted matrix.
 
 ### is-positive-definite
 
