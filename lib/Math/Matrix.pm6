@@ -44,9 +44,9 @@ subset NumArray of Array where { .all ~~ Numeric };
 ################################################################################
 
 method new( @m ) {
-    die "Expect an Array of Array" unless all @m ~~ Array;
-    die "All rows must contains the same number of elements" unless @m[0] == all @m[*];
-    die "All rows must contain only numeric values" unless all( @m[*;*] ) ~~ Numeric;
+    fail "Expect an Array of Array" unless all @m ~~ Array;
+    fail "All rows must contains the same number of elements" unless @m[0] == all @m[*];
+    fail "All rows must contain only numeric values" unless all( @m[*;*] ) ~~ Numeric;
     self.bless( rows => @m );
 }
 
@@ -198,15 +198,15 @@ multi method submatrix(Math::Matrix:D: @rows, @cols --> Math::Matrix:D ){
 # end of accessors - start with type conversion and handy shortcuts
 ################################################################################
 
-method Bool(Math::Matrix:D: --> Bool)    { ! self.is-zero }
-method Numeric (Math::Matrix:D: --> Int) {   self.elems   }
-method Str(Math::Matrix:D: --> Str)      {   @!rows.gist  }
+method Bool(Math::Matrix:D: --> Bool)     { ! self.is-zero }
+method Numeric (Math::Matrix:D: --> Int)  {   self.elems   }
+method Str(Math::Matrix:D: --> Str)       {   @!rows.gist  }
 
-multi method perl(Math::Matrix:D: --> Str) {
-  self.WHAT.perl ~ ".new(" ~ @!rows.perl ~ ")";
-}
+multi method perl(Math::Matrix:D: --> Str){ self.WHAT.perl ~ ".new(" ~ @!rows.perl ~ ")" }
 
-method list-rows(Math::Matrix:D: --> List) {
+method list(Math::Matrix:D: --> List)     { self.list-rows.flat }
+
+method list-rows(Math::Matrix:D: --> List){
     (@!rows.map: {$_.flat}).list;
 }
 
@@ -214,7 +214,8 @@ method list-columns(Math::Matrix:D: --> List) {
     ((0 .. $!column-count - 1).map: {self.column($_)}).list;
 }
 
-method gist(Math::Matrix:D: --> Str) {
+multi method gist(Math::Matrix:U: --> Str) { "({self.^name})" }
+multi method gist(Math::Matrix:D: --> Str) {
     my $max-rows = 20;
     my $max-chars = 80;
     my $max-nr-char;               # maximal pre digit char in cell
