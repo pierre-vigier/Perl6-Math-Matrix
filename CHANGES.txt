@@ -1,6 +1,8 @@
  0.2.1:
     - 2018
-    - refreshed doc synopsis
+    - added insert-vertically and insert-horizontally
+    - redone .gist and .full allows now complex numbers and scientific notation
+    - refreshed doc synopsis, improved docs overall
 
  0.2.0:
     - 2018.3.26

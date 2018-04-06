@@ -67,8 +67,10 @@ The default constructor, takes arrays of arrays of numbers os only required para
     1 2
     3 4
 
+    Math::Matrix.new([<1 2>,<3 4>]);# does the same
     Math::Matrix.new( [[1]] );      # one cell 1*1 matrix 
     Math::Matrix.new( [[1,2,3],] ); # one row 1*3 matrix, mind the trailing comma
+    Math::Matrix.new( [$[1,2,3]] ); # does the same, if you don't like trailing comma
     Math::Matrix.new( [[1],[2]] );  # one column 2*1 matrix
 
 ### new-zero
