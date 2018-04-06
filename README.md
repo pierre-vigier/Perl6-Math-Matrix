@@ -60,7 +60,7 @@ Constructors
 
 ### new( [[...],...,[...]] )
 
-The default constructor, takes arrays of arrays of numbers. Each second level array represents a row in the matrix. That is why their length has to be the same.
+The default constructor, takes arrays of arrays of numbers os only required parameter. Each second level array represents a row in the matrix. That is why their length has to be the same.
 
     Math::Matrix.new( [[1,2],[3,4]] ) creates:
 
@@ -73,7 +73,7 @@ The default constructor, takes arrays of arrays of numbers. Each second level ar
 
 ### new-zero
 
-This method is a constructor that returns an empty matrix of the size given in parameter. If only one parameter is given, the matrix is quadratic. All the cells are set to 0.
+This method is an constructor that returns an zero (sometimes empty) matrix (as checked by is-zero) of the size given in parameter. If only one parameter is given, the matrix is quadratic. All the cells are set to 0.
 
     say Math::Matrix.new-zero( 3, 4 ) :
 
@@ -88,7 +88,7 @@ This method is a constructor that returns an empty matrix of the size given in p
 
 ### new-identity
 
-This method is a constructor that returns an identity matrix of the size given in parameter All the cells are set to 0 except the top/left to bottom/right diagonale, set to 1
+This method is a constructor that returns an identity matrix (as checked by is-identity) of the size given in the only and required parameter. All the cells are set to 0 except the top/left to bottom/right diagonale is set to 1.
 
     say Math::Matrix.new-identity( 3 ):
       
@@ -98,7 +98,7 @@ This method is a constructor that returns an identity matrix of the size given i
 
 ### new-diagonal
 
-This method is a constructor that returns an diagonal matrix of the size given by count of the parameter. All the cells are set to 0 except the top/left to bottom/right diagonal, set to given values.
+This method is a constructor that returns an diagonal matrix (as checked by is-diagonal) of the size given by count of the parameter. All the cells are set to 0 except the top/left to bottom/right diagonal, set to given values.
 
     say Math::Matrix.new-diagonal( 2, 4, 5 ):
 
@@ -323,17 +323,17 @@ A Hermitian or self-adjoint matrix is equal to its transposed and conjugated.
                 2   5   4
                 3-i 4   7
 
-### is-unitary
+### is-invertible
 
-An unitery matrix multiplied (dotProduct) with its concjugate transposed derivative (.conj.T) is an identity matrix, or said differently: the concjugate transposed matrix equals the inversed matrix.
+Is True if number of rows and colums are the same (is-square) and determinant is not zero. All rows or colums have to be independent vectors.
 
 ### is-orthogonal
 
-An orthogonal matrix multiplied (dotProduct) with its transposed derivative (T) is an identity matrix or in other words transosed and inverted matrices are equal.
+An orthogonal matrix multiplied (dotProduct) with its transposed derivative (T) is an identity matrix or in other words: transposed and inverted matrices are equal.
 
-### is-invertible
+### is-unitary
 
-Is True if number of rows and colums are the same (is-square) and determinant is not zero. All rows or colums have to be Independent vectors.
+An unitery matrix multiplied (dotProduct) with its concjugate transposed derivative (.conj.T) is an identity matrix, or said differently: the concjugate transposed matrix equals the inverted matrix.
 
 ### is-positive-definite
 
