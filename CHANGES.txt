@@ -1,10 +1,12 @@
  0.2.1:
-    - 2018
-    - added insert-vertically, insert-horizontally - replacing prepend-* and append-*
+    - 2018.4.
+    - added splice-rows and splice-columns replacing prepend-*, append-* 
+      and planned insert-* and delete-*
     - added own methods for .list (flat) and .Array context
-    - added proper .gist for Math::Matrix type objects
+    - added proper .gist for type object (like all types have) showing (Math::Matrix)
     - redone .gist and .full allows now complex numbers and scientific notation
     - refreshed doc synopsis, improved docs overall
+    - added .appveyor.yml file: win CI support to github project
 
  0.2.0:
     - 2018.3.26
@@ -15,9 +17,8 @@
     - new property: antisymmetric
     - new category: list like ops
     - submatrix with 2 Int parameter works now as expected
-    - accessor column gets faster
+    - accessor column becomes faster
     - move docs into Matrix.pod
-    - move parts of code into roles (ops and deompost)
     - added docs
 
  0.1.8:
