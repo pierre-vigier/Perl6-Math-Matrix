@@ -1,6 +1,6 @@
 use Test;
 use Math::Matrix;
-plan 27;
+plan 20;
 
 lives-ok { my $matrix = Math::Matrix.new([[1,2],[3,4]]); }  , "Able to create a int matrix";
 lives-ok { my $matrix = Math::Matrix.new([[.1,2.11111],[3/5,4e-2]]); }, "created a rational matrix";
@@ -13,9 +13,6 @@ my $matrixa = Math::Matrix.new([[1,2],[3,4]]);
 ok $matrixa ~~ Math::Matrix        , "object was created of right type";
 # dies-ok  { my $matrixa.new([[1,2],[1,2,3]]); }, "can not call new on existing matrix";
 
-my $from-perl = EVAL($matrixa.perl);
-ok $from-perl ~~ $matrixa          , ".perl result can be evaled in a similar object";
-
 my $data   =   [[1,3],[3,25]];
 my $samedata = [[1,3],[3,25]];
 my $dataMatrix = Math::Matrix.new($data);;
@@ -23,17 +20,10 @@ my $samedataMatrix = Math::Matrix.new($samedata);;
 $data[0][0] = 0;
 ok $dataMatrix ~~ $samedataMatrix  , "no bleed from input data to matrix";
 
-ok $matrixa.Str().WHAT ~~ Str      , "Method Str should return a String";
-is $matrixa.Str(), "[[1 2] [3 4]]" , "value is correct in Str context ";
-is ~$matrixa, "[[1 2] [3 4]]"      , "content is correct in string context by prefix op";
-is +$matrixa, 4                    , "content is correct in numeric context by prefix op";
-is ?$matrixa, True                 , "content is correct in bool context by prefix op";
 
 my $matrixb = Math::Matrix.new([[1,2],[3,4]]);
 my $matrixc = Math::Matrix.new([[8,8],[8,8]]);
 my $matrixd = Math::Matrix.new([[ 1.0, 2.0 ],[ 3.0 , 4.0 ]]);
-my $matrixr = Math::Matrix.new([[ 1.1, 2.2 ],[ 3.3 , 4.4 ]]);
-is ~$matrixr, "[[1.1 2.2] [3.3 4.4]]",  "correct content of real values in string context";
 
 ok $matrixa.equal( $matrixb ), "equal method working";
 ok $matrixa ~~ $matrixb      , "~~ operator working";
