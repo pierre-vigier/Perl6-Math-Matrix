@@ -17,9 +17,9 @@ is ?$matrixa, True                 , "content is correct in bool context by pref
 
 is ~$matrixr, "1.1 2.2 3.3 4.4"    , "correct content of real values in string context";
 
-ok $matrixa.list == (1 2 3 4)      , "list context";
-ok $matrixa.list-rows == ((1 2) (3 4))   , "vertical list of lists context";
-ok $matrixa.list-columns == ((1 3) (2 4)) , "horizontal list of lists context";
+ok $matrixa.list == (1, 2, 3, 4)   , "list context";
+ok $matrixa.list-rows == ((1, 2), (3, 4)), "vertical list of lists context";
+ok $matrixa.list-columns == ((1,3),(2,4)), "horizontal list of lists context";
 
 ok $matrixa.Array == [[1, 2], [3, 4]]    , "Array context";
 
