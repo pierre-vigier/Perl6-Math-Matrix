@@ -37,7 +37,7 @@ METHODS
 
   * accessors: cell, row, column, diagonal, submatrix
 
-  * conversion: Bool, Numeric, Str, perl, list-rows, list-columns, gist, full
+  * conversion: Bool, Numeric, Str, perl, list, list-rows, list-columns, gist, full
 
   * boolean properties: is-zero, is-identity, is-square, is-diagonal, is-diagonally-dominant, is-upper-triangular, is-lower-triangular, is-invertible, is-symmetric, is-antisymmetric, is-unitary, is-self-adjoint, is-orthogonal, is-positive-definite, is-positive-semidefinite
 
@@ -67,11 +67,11 @@ The default constructor, takes arrays of arrays of numbers os only required para
     1 2
     3 4
 
-    Math::Matrix.new([<1 2>,<3 4>]);# does the same
-    Math::Matrix.new( [[1]] );      # one cell 1*1 matrix 
-    Math::Matrix.new( [[1,2,3],] ); # one row 1*3 matrix, mind the trailing comma
-    Math::Matrix.new( [$[1,2,3]] ); # does the same, if you don't like trailing comma
-    Math::Matrix.new( [[1],[2]] );  # one column 2*1 matrix
+    Math::Matrix.new([<1 2>,<3 4>]); # does the same
+    Math::Matrix.new( [[1]] );       # one cell 1*1 matrix 
+    Math::Matrix.new( [[1,2,3],] );  # one row 1*3 matrix, mind the trailing comma
+    Math::Matrix.new( [$[1,2,3]] );  # does the same, if you don't like trailing comma
+    Math::Matrix.new( [[1],[2]] );   # one column 2*1 matrix
 
 ### new-zero
 
@@ -212,6 +212,10 @@ Conversion into String context. Returns content of all cells in the data structu
 Conversion into String that can reevaluated into the same object later.
 
     my $clone = eval $matrix.perl;       # same as: $matrix.clone
+
+### list
+
+Same as .list-rows.flat
 
 ### list-rows
 

@@ -29,7 +29,7 @@ Matrices are readonly - all operations and derivatives are new objects.
 =head1 METHODS
 =item constructors: new, new-zero, new-identity, new-diagonal, new-vector-product
 =item accessors: cell, row, column, diagonal, submatrix
-=item conversion: Bool, Numeric, Str, perl, list-rows, list-columns, gist, full
+=item conversion: Bool, Numeric, Str, perl, list, list-rows, list-columns, gist, full
 =item boolean properties: is-zero, is-identity, is-square, is-diagonal,
     is-diagonally-dominant, is-upper-triangular, is-lower-triangular, is-invertible,
     is-symmetric, is-antisymmetric, is-unitary, is-self-adjoint, is-orthogonal,
@@ -55,11 +55,11 @@ That is why their length has to be the same.
    1 2
    3 4
 
-   Math::Matrix.new([<1 2>,<3 4>]);# does the same
-   Math::Matrix.new( [[1]] );      # one cell 1*1 matrix 
-   Math::Matrix.new( [[1,2,3],] ); # one row 1*3 matrix, mind the trailing comma
-   Math::Matrix.new( [$[1,2,3]] ); # does the same, if you don't like trailing comma
-   Math::Matrix.new( [[1],[2]] );  # one column 2*1 matrix
+   Math::Matrix.new([<1 2>,<3 4>]); # does the same
+   Math::Matrix.new( [[1]] );       # one cell 1*1 matrix 
+   Math::Matrix.new( [[1,2,3],] );  # one row 1*3 matrix, mind the trailing comma
+   Math::Matrix.new( [$[1,2,3]] );  # does the same, if you don't like trailing comma
+   Math::Matrix.new( [[1],[2]] );   # one column 2*1 matrix
 
 =head3 new-zero
 
@@ -215,6 +215,10 @@ Conversion into String that can reevaluated into the same object later.
      
     my $clone = eval $matrix.perl;       # same as: $matrix.clone
     
+
+=head3 list
+
+Same as .list-rows.flat
 
 =head3 list-rows
 
