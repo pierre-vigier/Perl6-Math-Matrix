@@ -23,4 +23,4 @@ ok $matrixa.list-columns == ((1,3),(2,4)), "horizontal list of lists context";
 
 ok $matrixa.Array == [[1, 2], [3, 4]]    , "Array context";
 
-ok Math::Matrix.gist eq "(Math::Matrix)" , gist of type object
+ok Math::Matrix.gist eq "(Math::Matrix)" , "gist of type object";
