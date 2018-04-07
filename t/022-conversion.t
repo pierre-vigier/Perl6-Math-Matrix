@@ -8,7 +8,7 @@ my $matrixc = Math::Matrix.new([[ 1.1+i, 2.2-i ],[ 3.3+2i , 4.4-3.4i ]]);
 
 
 my $from-perl = EVAL($matrixi.perl);
-ok $from-perl ~~ $matrixa          , ".perl result can be evaled in a similar object";
+ok $from-perl ~~ $matrixi          , ".perl result can be evaled in a similar object";
 
 ok $matrixi.Str().WHAT ~~ Str      , "Method Str should return a String";
 is $matrixi.Str(), "1 2 | 3 4"     , "value is correct in Str context ";
