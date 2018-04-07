@@ -12,7 +12,7 @@ ok $from-perl ~~ $matrixi          , ".perl result can be evaled in a similar ob
 
 ok $matrixi.Str().WHAT ~~ Str      , "Method Str should return a String";
 is $matrixi.Str(), "1 2 | 3 4"     , "value is correct in Str context ";
-is ~$matrixi, "1 2 3 4"            , "content is correct in string context by prefix op";
+is ~$matrixi, "1 2 | 3 4"          , "content is correct in string context by prefix op";
 is +$matrixi, 4                    , "content is correct in numeric context by prefix op";
 is ?$matrixi, True                 , "content is correct in bool context by prefix op";
 

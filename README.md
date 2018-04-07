@@ -1,8 +1,5 @@
-# Perl6-Math-Matrix
-
-[![Build Status](https://travis-ci.org/pierre-vigier/Perl6-Math-Matrix.svg?branch=master)](https://travis-ci.org/pierre-vigier/Perl6-Math-Matrix)
-[![Build status](https://ci.appveyor.com/api/projects/status/github/pierre-vigier/Perl6-Math-Matrix?svg=true)](https://ci.appveyor.com/project/pierre-vigier/Perl6-Math-Matrix/branch/master)
-
+# Perl6-Math-Matrix\n\n[![Build Status](https://travis-ci.org/pierre-vigier/Perl6-Math-Matrix.svg?branch=master)](https://travis-ci.org/pierre-vigier/Perl6-Math-Matrix)
+[![Build status](https://ci.appveyor.com/api/projects/status/github/pierre-vigier/Perl6-Math-Matrix?svg=true)](https://ci.appveyor.com/project/pierre-vigier/Perl6-Math-Matrix/branch/master)\n
 NAME
 ====
 
@@ -203,17 +200,17 @@ Conversion into Numeric context. Returns number (amount) of cells (as .elems). P
 
 ### Str
 
-All values separated by one whitespace. Is called implicitly by put and print.
+All values separated by one whitespace, rows by horizontal line. It is called implicitly by put and print.
+
+### Array
+
+All cells as an array of arrays (basically what was put into new(...)).
 
 ### perl
 
 Conversion into String that can reevaluated into the same object later.
 
     my $clone = eval $matrix.perl;       # same as: $matrix.clone
-
-### Array
-
-All cells as an array of arrays (basically what was put into new(...)).
 
 ### list
 
