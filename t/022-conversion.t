@@ -8,7 +8,6 @@ my $matrixr = Math::Matrix.new([[ 1.1, 2.2 ],[ 3.3 , 4.4 ]]);
 my $from-perl = EVAL($matrixa.perl);
 ok $from-perl ~~ $matrixa          , ".perl result can be evaled in a similar object";
 
-
 ok $matrixa.Str().WHAT ~~ Str      , "Method Str should return a String";
 is $matrixa.Str(), "1 2 3 4"       , "value is correct in Str context ";
 is ~$matrixa, "1 2 3 4"            , "content is correct in string context by prefix op";

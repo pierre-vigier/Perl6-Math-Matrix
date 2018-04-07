@@ -206,7 +206,7 @@ multi method perl(Math::Matrix:D: --> Str){ self.WHAT.perl ~ ".new(" ~ @!rows.pe
 
 method Array(Math::Matrix:D: --> Array)   { self!clone_rows }
 
-method list(Math::Matrix:D: --> List)     { self.list-rows.flat }
+method list(Math::Matrix:D: --> List)     { self.list-rows.flat.list }
 
 method list-rows(Math::Matrix:D: --> List){
     (@!rows.map: {$_.flat}).list;
