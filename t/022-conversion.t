@@ -17,7 +17,7 @@ is +$matrixi, 4                    , "content is correct in numeric context by p
 is ?$matrixi, True                 , "content is correct in bool context by prefix op";
 
 is ~$matrixr, "1.1 2.2 | 3.3 4.4"  , "correct content of real values in string context";
-is ~$matrixc, "1.1+1i 2.2-1i | 3.3+2i  4.4-3.4i", "correct content of complex values in Str context";
+is ~$matrixc, "1.1+1i 2.2-1i | 3.3+2i 4.4-3.4i", "correct content of complex values in Str context";
 
 ok $matrixi.list == (1, 2, 3, 4)   , "list context";
 ok $matrixi.list-rows == ((1, 2), (3, 4)), "vertical list of lists context";
