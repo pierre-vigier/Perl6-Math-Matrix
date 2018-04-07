@@ -19,16 +19,18 @@ SYNOPSIS
 Matrices are tables with rows and columns (index counting from 0) of numbers (Numeric type): 
 
     transpose, invert, negate, add, multiply, dot product, tensor product, determinant, 
-    rank, trace, norm, 15 boolean properties, decompositions, append, submatrix, map, reduce and more
+    rank, trace, norm, 15 boolean properties, decompositions, submatrix, splice, map, reduce and more
 
 DESCRIPTION
 ===========
 
-Perl6 already provide a lot of tools to work with array, shaped array, and so on, however, even hyper operators does not seem to be enough to do matrix calculation Purpose of that library is to propose some tools for Matrix calculation.
+Because the list based, functional toolbox of Perl 6 is not enough to calculate matrices comfortably, there is a need for a dedicated data type. The aim is to provide a full featured of set structural and mathematical operations that integrate fully with the Perl 6 conventions.
 
-I should probably use shaped array for the implementation, but i am encountering some issues for now. Problem being it might break the syntax for creation of a Matrix, use with consideration...
+Matrices are readonly - all operations and functions do create new objects.
 
-Matrices are readonly - all operations and derivatives are new objects.
+All computation heavy properties will be calculated lazily and all below listed operators will be exported automatically.
+
+This module is pure perl and we plan to use native shaped arrays one day.
 
 METHODS
 =======
