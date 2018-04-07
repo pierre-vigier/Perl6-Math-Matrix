@@ -26,7 +26,7 @@ DESCRIPTION
 
 Because the list based, functional toolbox of Perl 6 is not enough to calculate matrices comfortably, there is a need for a dedicated data type. The aim is to provide a full featured of set structural and mathematical operations that integrate fully with the Perl 6 conventions.
 
-Matrices are readonly - all operations and functions do create new objects. All methods return readonly data or deep clones. In that sense the library is thread safe.
+Matrices are readonly - all operations and functions do create new matrix objects. All methods return readonly data or deep clones - also the constructor does a deep clone of provided data. In that sense the library is thread safe.
 
 All computation heavy properties will be calculated lazily and all below listed operators will be exported automatically.
 
@@ -784,12 +784,10 @@ The Module overloads or uses a range of well and less known ops. +, -, * and ~~ 
 Author
 ======
 
-Pierre VIGIER
+Pierre VIGIER Herbert Breunung
 
 Contributors
 ============
-
-Herbert Breunung
 
 License
 =======

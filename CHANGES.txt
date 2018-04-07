@@ -5,7 +5,7 @@
     - added own methods for .list (flat) and .Array context
     - added proper .gist for type object (like all types have) showing (Math::Matrix)
     - redone .gist and .full allows now complex numbers and scientific notation
-    - refreshed doc synopsis, improved docs overall
+    - refreshed doc synopsis and description, improved docs overall
     - added .appveyor.yml file: win CI support to github project
 
  0.2.0:
