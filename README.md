@@ -178,12 +178,12 @@ If you provide two pairs of coordinates (row1, column1, row2, column2), these wi
 
     3 4 5
 
-When provided with two lists of values (one for the rows - one for columns) a new matrix will be created with the old rows and columns in that new order.
+When provided with two lists of values (first for the rows - second for columns) a new matrix will be created with the old rows and columns in that new order.
 
-    $m.submatrix((3,2),(1,2)):
+    $m.submatrix((1,2),(3,2)):
 
-    4 5
-    3 4
+    5 4
+    6 5
 
 Type Conversion And Output Flavour
 ----------------------------------
