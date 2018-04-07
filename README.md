@@ -26,7 +26,7 @@ DESCRIPTION
 
 Because the list based, functional toolbox of Perl 6 is not enough to calculate matrices comfortably, there is a need for a dedicated data type. The aim is to provide a full featured of set structural and mathematical operations that integrate fully with the Perl 6 conventions.
 
-Matrices are readonly - all operations and functions do create new objects.
+Matrices are readonly - all operations and functions do create new objects. All methods return readonly data or deep clones. In that sense the library is thread safe.
 
 All computation heavy properties will be calculated lazily and all below listed operators will be exported automatically.
 
