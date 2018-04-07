@@ -47,7 +47,7 @@ subtest {
     ok $a.splice-rows(0,0,[[1,0,0],[0,1,0],[0,0,1]]) ~~ $answer1,       "prepend rows of data";
 
     dies-ok { $a.splice-rows(10) },                                     "splicing from out of bound index";
-    dies-ok { $a.splice-rows(1,20) },                                   "try to splice too much";
+    dies-ok { $a.splice-rows(1,-20) },                                  "try to splice too little";
     dies-ok { $a.splice-rows(0,0,$b) },                                 "can not splice rows with matrix with different size";
     dies-ok { $a.splice-rows(0,0,[[1]])},                               "can not splice rows with data matrix with different size";
 
@@ -68,11 +68,11 @@ subtest {
     my $answer4 = Math::Matrix.new([[1,2,3,1,0,0],[2,3,4,0,1,0],[3,4,5,0,0,1]]);
 
     plan 12;
-    ok $a.splice-columnss(0,0,$i)                        ~~ $answer1,   "prepend columns of a matrix";
-    ok $a.splice-columnss(0,0,[[1,0,0],[0,1,0],[0,0,1]]) ~~ $answer1,   "prepend columns of data";
+    ok $a.splice-columns(0,0,$i)                        ~~ $answer1,    "prepend columns of a matrix";
+    ok $a.splice-columns(0,0,[[1,0,0],[0,1,0],[0,0,1]]) ~~ $answer1,    "prepend columns of data";
 
     dies-ok { $a.splice-columns(10) },                                  "splicing from out of bound index";
-    dies-ok { $a.splice-columns(1,20) },                                "try to splice too much";
+    dies-ok { $a.splice-columns(1,-20) },                               "try to splice too little";
     dies-ok { $a.splice-columns(0,0,$b) },                              "can not splice columns with matrix with different size";
     dies-ok { $a.splice-columns(0,0,[[1]])},                            "can not splice columns with data matrix of different size";
 
