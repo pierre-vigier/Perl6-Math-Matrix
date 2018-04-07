@@ -37,7 +37,7 @@ METHODS
 
   * accessors: cell, row, column, diagonal, submatrix
 
-  * conversion: Bool, Numeric, Str, perl, Array, list, list-rows, list-columns, gist, full
+  * conversion: Bool, Numeric, Str, Array, list, list-rows, list-columns, gist, full, perl
 
   * boolean properties: is-zero, is-identity, is-square, is-diagonal, is-diagonally-dominant, is-upper-triangular, is-lower-triangular, is-invertible, is-symmetric, is-antisymmetric, is-unitary, is-self-adjoint, is-orthogonal, is-positive-definite, is-positive-semidefinite
 
@@ -49,7 +49,7 @@ METHODS
 
   * list like ops: elems, elem, equal, map, map-row, map-column, map-cell, reduce, reduce-rows, reduce-columns
 
-  * structural ops: move-row, move-column, swap-rows, swap-columns, prepend-vertically, append-vertically, prepend-horizontally, append-horizontally
+  * structural ops: move-row, move-column, swap-rows, swap-columns, splice-rows, splice-columns
 
   * matrix math ops: add, subtract, add-row, add-column, multiply, multiply-row, multiply-column, dotProduct, tensorProduct
 
@@ -209,12 +209,6 @@ All values separated by one whitespace, rows by horizontal line. It is called im
 
 All cells as an array of arrays (basically what was put into new(...)).
 
-### perl
-
-Conversion into String that can reevaluated into the same object later.
-
-    my $clone = eval $matrix.perl;       # same as: $matrix.clone
-
 ### list
 
 Same as .list-rows.flat
@@ -251,6 +245,12 @@ Full tabular view (all rows and columns) for the shell or file output.
     1 2 3 4 5 11 12 13 14 15 21 22 23 24 25
     3 4 5 6 7 13 14 15 16 17 23 24 25 26 27
     5 6 7 8 9 15 16 17 18 19 25 26 27 28 29
+
+### perl
+
+Conversion into String that can reevaluated into the same object later using default constructor.
+
+    my $clone = eval $matrix.perl;       # same as: $matrix.clone
 
 Boolean Properties
 ------------------
@@ -588,43 +588,52 @@ Structural Matrix Operations
     4 5 6    ==>    6 5 4
     7 8 9           9 8 7
 
-### prepend-vertically
+### slpice-rows
 
-Both variants work equally and also all other prepend/append operations. They can not be combined and work only if proper matrix dimensions do match.
+Like the splice for lists: the first two parameter are position and amount (optional) of rows to be deleted. The third and alos optional parameter will be an array of arrays (line .new would accept), that fitting row lengths. These rows will be inserted before the row with the number of first parameter. The third parameter can also be a fitting Math::Matrix.
 
-    Math::Matrix.new([[1,2],[3,4]]).prepend-vertically( Math::Matrix.new([[5,6],[7,8]]) );
-    Math::Matrix.new([[1,2],[3,4]]).prepend-vertically(                  [[5,6],[7,8]]  );
+    Math::Matrix.new([[1,2],[3,4]]).splice-rows(0,0, Math::Matrix.new([[5,6],[7,8]]) ); # aka prepend
+    Math::Matrix.new([[1,2],[3,4]]).splice-rows(0,0,                  [[5,6],[7,8]]  ); # same result
 
-    5 6  ~  1 2  =  5 6 1 2
-    7 8     3 4     7 8 3 4
+    5 6
+    7 8 
+    1 2
+    3 4
 
-### append-vertically
+    Math::Matrix.new([[1,2],[3,4]]).splice-rows(1,0, Math::Matrix.new([[5,6],[7,8]]) ); # aka insert
+    Math::Matrix.new([[1,2],[3,4]]).splice-rows(1,0,                  [[5,6],[7,8]]  ); # same result
 
-    Math::Matrix.new([[1,2],[3,4]]).append-vertically( Math::Matrix.new([[5,6],[7,8]]));
-    Math::Matrix.new([[1,2],[3,4]]).append-vertically(                  [[5,6],[7,8]] );
+    1 2
+    5 6
+    7 8
+    3 4
+
+    Math::Matrix.new([[1,2],[3,4]]).splice-rows(1,1, Math::Matrix.new([[5,6],[7,8]]) ); # aka replace
+    Math::Matrix.new([[1,2],[3,4]]).splice-rows(1,1,                  [[5,6],[7,8]]  ); # same result
+
+    1 2
+    5 6 
+    7 8
+
+    Math::Matrix.new([[1,2],[3,4]]).splice-rows(2,0, Math::Matrix.new([[5,6],[7,8]]) ); # aka append
+    Math::Matrix.new([[1,2],[3,4]]).splice-rows(2,0,                  [[5,6],[7,8]]  ); # same result
+    Math::Matrix.new([[1,2],[3,4]]).splice-rows(-1,0,                 [[5,6],[7,8]]  ); # with negative index
+
+    1 2 
+    3 4     
+    5 6
+    7 8
+
+### splice-columns
+
+Same as splice-rows, just horizontally.
+
+    Math::Matrix.new([[1,2],[3,4]]).splice-columns(2,0, Math::Matrix.new([[5,6],[7,8]]) ); # aka append
+    Math::Matrix.new([[1,2],[3,4]]).splice-columns(2,0,                  [[5,6],[7,8]]  ); # same result
+    Math::Matrix.new([[1,2],[3,4]]).splice-columns(-1,0,                 [[5,6],[7,8]]  ); # with negative index
 
     1 2  ~  5 6  =  1 2 5 6
     3 4     7 8     3 4 7 8
-
-### prepend-horizontally
-
-    Math::Matrix.new([[1,2],[3,4]]).prepend-horizontally( Math::Matrix.new([[5,6],[7,8]]));
-    Math::Matrix.new([[1,2],[3,4]]).prepend-horizontally(                  [[5,6],[7,8]] );
-
-    5 6
-    7 8
-    1 2
-    3 4
-
-### append-horizontally
-
-    Math::Matrix.new([[1,2],[3,4]]).append-horizontally( Math::Matrix.new([[5,6],[7,8]]));
-    Math::Matrix.new([[1,2],[3,4]]).append-horizontally(                  [[5,6],[7,8]] );
-
-    1 2
-    3 4
-    5 6
-    7 8
 
 Matrix Math Operations
 ----------------------
