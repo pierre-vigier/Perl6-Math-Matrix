@@ -68,8 +68,8 @@ subtest {
     my $answer4 = Math::Matrix.new([[1,2,3,1,0,0],[2,3,4,0,1,0],[3,4,5,0,0,1]]);
 
     plan 12;
-    ok $a.splice-cows(0,0,$i)                        ~~ $answer1,       "prepend columns of a matrix";
-    ok $a.splice-cows(0,0,[[1,0,0],[0,1,0],[0,0,1]]) ~~ $answer1,       "prepend columns of data";
+    ok $a.splice-columnss(0,0,$i)                        ~~ $answer1,   "prepend columns of a matrix";
+    ok $a.splice-columnss(0,0,[[1,0,0],[0,1,0],[0,0,1]]) ~~ $answer1,   "prepend columns of data";
 
     dies-ok { $a.splice-columns(10) },                                  "splicing from out of bound index";
     dies-ok { $a.splice-columns(1,20) },                                "try to splice too much";
