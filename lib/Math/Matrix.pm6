@@ -43,16 +43,21 @@ subset NumArray of Array where { .all ~~ Numeric };
 # start constructors
 ################################################################################
 
-method new( @m ) {
+
+sub check_data_matrix (@m) {
     fail "Expect an Array of Array" unless all @m ~~ Array;
     fail "All rows must contains the same number of elements" unless @m[0] == all @m[*];
     fail "All rows must contain only numeric values" unless all( @m[*;*] ) ~~ Numeric;
+}
+
+method new( @m ) {
+    check_data_matrix( @m ); 
     self.bless( rows => @m );
 }
 
 method clone { self.bless( rows => @!rows ) }
 
-sub AoA_clone (@m)  {[ map {[ map {$^cell.clone}, $^row.flat ]}, @m ]}
+sub AoA_clone (@m)  { [ map {[ map {$^cell.clone}, $^row.flat ]}, @m ]}
 
 submethod BUILD( :@rows!, :$diagonal, :$density, :$trace, :$determinant, :$rank, :$kernel,
                  :$is-zero, :$is-identity, :$is-symmetric, :$is-upper-triangular, :$is-lower-triangular ) {
@@ -71,6 +76,7 @@ submethod BUILD( :@rows!, :$diagonal, :$density, :$trace, :$determinant, :$rank,
     $!is-upper-triangular = $is-upper-triangular if $is-upper-triangular.defined;
     $!is-lower-triangular = $is-lower-triangular if $is-lower-triangular.defined;
 }
+
 
 sub zero_array( PosInt $rows, PosInt $cols = $rows ) {
     return [ [ 0 xx $cols ] xx $rows ];
@@ -136,17 +142,17 @@ method new-vector-product (@column_vector, @row_vector){
 ################################################################################
 
 multi submethod check_row_index       (Int $row) { self.check_index($row, 0) }
-multi submethod check_row_index       (    @row) { self.check_index(@row, ()) }
-multi submethod check_column_index    (Int $col) { self.check_index(0, $col)  }
-multi submethod check_column_index    (    @col) { self.check_index((), @col) }
+multi submethod check_row_index       (    @row) { self.check_index(@row,()) }
+multi submethod check_column_index    (Int $col) { self.check_index(0, $col) }
+multi submethod check_column_index    (    @col) { self.check_index((),@col) }
 multi submethod check_index (Int $row, Int $col) {
-    
+
     fail X::OutOfRange.new(:what<Row Index>,   :got($row),:range(0 .. $!row-count - 1))
         unless 0 <= $row < $!row-count;
     fail X::OutOfRange.new(:what<Column Index>,:got($col),:range(0 .. $!column-count - 1))
         unless 0 <= $col < $!column-count;
 }
-multi submethod check_index (@rows, @cols) {
+multi submethod check_index (@rows, @cols)       {
     fail "Row index has to be an Int." unless all(@rows) ~~ Int;
     fail "Column index has to be an Int." unless all(@cols) ~~ Int;
     fail X::OutOfRange.new(
@@ -742,70 +748,38 @@ method swap-columns (Math::Matrix:D: Int $cola, Int $colb --> Math::Matrix:D) {
     self.submatrix((^$!row-count).list, @cols);
 }
 
-
-multi method prepend-vertically (Math::Matrix:D: $b --> Math::Matrix:D) {
-    $b.append-vertically(self);
+multi method splice-rows(Math::Matrix:D: Int $row, Int $elems, Math::Matrix $replacement --> Math::Matrix:D){
+    self.splice-rows($row, $elems, $replacement.Array );
 }
-multi method prepend-vertically (Math::Matrix:D: Array $b --> Math::Matrix:D) {
-    my @m;
-    for $b.list -> $row {
-        fail "Number of columns in matrix and data has to be same." unless $row.elems == $!column-count;
-        fail "Data has to consist of numbers!" unless all($row.list) ~~ Numeric;
-        @m.append( $row );
+multi method splice-rows(Math::Matrix:D: Int $row, Int $elems = ($!row-count - $row), Array $replacement = [] --> Math::Matrix:D){
+    my $pos = $row >= 0 ?? $row !! $!row-count + $row + 1;
+    fail "Row index (first parameter) is outside of matrix size!" unless 0 <= $pos <= $!row-count;
+    fail "Number of elements to delete (second parameter) has to be zero or more!)" if $elems < 0;
+    if $replacement.elems > 0 {
+        fail "Number of columns in and original matrix and replacement has to be same" unless $replacement[0].elems == $!column-count;
+        check_data_matrix( @$replacement );
     }
-    Math::Matrix.new( @m.append(self!clone_rows.list) );
-}
-
-multi method append-vertically (Math::Matrix:D: Math::Matrix:D $b --> Math::Matrix:D) {
-    fail "Number of columns in both matrices has to be same" unless $!column-count == $b!column-count;
     my @m = self!clone_rows;
-    Math::Matrix.new( @m.append( $b!rows.list ) );
-}
-multi method append-vertically (Math::Matrix:D: Array $b --> Math::Matrix:D) {
-    my @m = self!clone_rows;
-    for $b.list -> $row {
-        fail "Number of columns in matrix and data has to be same." unless $row.elems == $!column-count;
-        fail "Data has to consist of numbers!  $row" unless all($row.list) ~~ Numeric;
-        @m.append( $row );
-    }
+    @m.splice($pos, $elems, $replacement.list);
     Math::Matrix.new(@m);
 }
 
-multi method prepend-horizontally (Math::Matrix:D: Math::Matrix:D $b --> Math::Matrix:D) {
-    $b.append-horizontally(self);
-}
-multi method prepend-horizontally (Math::Matrix:D: Array $b --> Math::Matrix:D){
-    fail "Number of rows in matrix and data has to be same." unless $b.elems == $!row-count;
-    my $col = $b.elems[0].elems;
-    my @m;
-    for $b.kv -> $i, $row {
-        fail "All rows in data need to have the same length" unless $row.elems == $row;
-        fail "Data has to consist of numbers!  $row" unless all($row.list) ~~ Numeric;
-        @m[$i] = $row.list.append( self!rows[$i].list );
-    }
-    Math::Matrix.new( @m );
-}
 
-multi method append-horizontally (Math::Matrix:D: Math::Matrix:D $b --> Math::Matrix:D){
-    fail "Number of rows in both matrices has to be same" unless $!row-count == $b!row-count;
+multi method splice-columns(Math::Matrix:D: Int $col, Int $elems, Math::Matrix $replacement --> Math::Matrix:D){
+    self.splice-columns($col, $elems, $replacement.Array );
+}
+multi method splice-columns(Math::Matrix:D: Int $col, Int $elems = ($!column-count - $col), Array $replacement = ([[] xx $!row-count]) --> Math::Matrix:D){
+    my $pos = $col >= 0 ?? $col !! $!column-count + $col + 1;
+    fail "Column index (first parameter) is outside of matrix size!" unless 0 <= $pos <= $!column-count;
+    fail "Number of elements to delete (second parameter) has to be zero or more!)" if $elems < 0;
+    fail "Number of rows in original matrix and replacement has to be same" unless $replacement.elems == $!row-count;
+    check_data_matrix( @$replacement );
     my @m = self!clone_rows;
-    @m.keys.map:{ @m[$_].append($b!rows[$_].list) };
-    Math::Matrix.new( @m );
-}
-multi method append-horizontally (Math::Matrix:D: Array $b --> Math::Matrix:D){
-    fail "Number of rows in matrix and data has to be same." unless $b.elems == $!row-count;
-    my $col = $b.elems[0].elems;
-    my @m = self!clone_rows;
-    for $b.kv -> $i, $row {
-        fail "All rows in data need to have the same length" unless $row.elems == $row;
-        fail "Data has to consist of numbers!  $row" unless all($row.list) ~~ Numeric;
-        @m[$i].append( $row.list );
-    }
-    Math::Matrix.new( @m );
+    @m.keys.map:{ @m[$_].splice($pos, $elems, $replacement[$_]) };
+    Math::Matrix.new(@m);
 }
 
-# method split (){ }
-
+# method split (Math::Matrix:D:  @rows, @cols){ }
 ################################################################################
 # end of structural matrix operations - start matrix math operations
 ################################################################################
