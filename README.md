@@ -592,7 +592,7 @@ Structural Matrix Operations
     4 5 6    ==>    6 5 4
     7 8 9           9 8 7
 
-### slpice-rows
+### splice-rows
 
 Like the splice for lists: the first two parameter are position and amount (optional) of rows to be deleted. The third and alos optional parameter will be an array of arrays (line .new would accept), that fitting row lengths. These rows will be inserted before the row with the number of first parameter. The third parameter can also be a fitting Math::Matrix.
 
