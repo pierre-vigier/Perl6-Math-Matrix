@@ -822,8 +822,8 @@ The Module overloads or uses a range of well and less known ops.
 
 =head1 Author
 
-Pierre VIGIER
-Herbert Breunung
+=item Pierre VIGIER
+=item Herbert Breunung
 
 =head1 Contributors
 

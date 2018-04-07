@@ -784,7 +784,9 @@ The Module overloads or uses a range of well and less known ops. +, -, * and ~~ 
 Author
 ======
 
-Pierre VIGIER Herbert Breunung
+  * Pierre VIGIER
+
+  * Herbert Breunung
 
 Contributors
 ============
