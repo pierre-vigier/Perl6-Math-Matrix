@@ -38,35 +38,49 @@ subtest {
 
 subtest {
     my $answer1 = Math::Matrix.new([[1,0,0],[0,1,0],[0,0,1],[1,2,3],[2,3,4],[3,4,5]]);
-    my $answer2 = Math::Matrix.new([[1,0,0,1,2,3],[0,1,0,2,3,4],[0,0,1,3,4,5]]);
+    my $answer2 = Math::Matrix.new([[1,2,3],[1,0,0],[0,1,0],[0,0,1],[2,3,4],[3,4,5]]);
+    my $answer3 = Math::Matrix.new([[1,2,3],[1,0,0],[0,1,0],[0,0,1],[3,4,5]]);
+    my $answer4 = Math::Matrix.new([[1,2,3],[2,3,4],[3,4,5],[1,0,0],[0,1,0],[0,0,1]]);
 
-    plan 8;
-    ok $a.prepend-vertically($i)                        ~~ $answer1,        "prepend vertically matrix";
-    ok $a.prepend-vertically([[1,0,0],[0,1,0],[0,0,1]]) ~~ $answer1,        "prepend vertically data";
-    dies-ok { $a.prepend-vertically($b) },                                  "can not prepend vertically matrix with different size";
-    dies-ok { $a.prepend-vertically([[1]]) },                               "can not prepend vertically data matrix with different size";
+    plan 12;
+    ok $a.splice-rows(0,0,$i)                        ~~ $answer1,       "prepend rows of a matrix";
+    ok $a.splice-rows(0,0,[[1,0,0],[0,1,0],[0,0,1]]) ~~ $answer1,       "prepend rows of data";
 
-    ok $a.prepend-horizontally($i)                        ~~ $answer2,      "prepend horizontally matrix";
-    ok $a.prepend-horizontally([[1,0,0],[0,1,0],[0,0,1]]) ~~ $answer2,      "prepend horizontally data";
-    dies-ok { $a.prepend-horizontally($b) },                                "can not prepend horizontally matrix with different size";
-    dies-ok { $a.prepend-horizontally([[1]]) },                             "can not prepend horizontally data matrix with different size";
+    dies-ok { $a.splice-rows(10) },                                     "splicing from out of bound index";
+    dies-ok { $a.splice-rows(1,20) },                                   "try to splice too much";
+    dies-ok { $a.splice-rows(0,0,$b) },                                 "can not splice rows with matrix with different size";
+    dies-ok { $a.splice-rows(0,0,[[1]])},                               "can not splice rows with data matrix with different size";
 
-}, "Prepend";
+    ok $a.splice-rows(1,0,$i)                         ~~ $answer2,      "insert rows of matrix";
+    ok $a.splice-rows(1,0,[[1,0,0],[0,1,0],[0,0,1]])  ~~ $answer2,      "insert rows of data";
+    ok $a.splice-rows(1,1,$i)                         ~~ $answer3,      "replace rows of matrix";
+    ok $a.splice-rows(1,1,[[1,0,0],[0,1,0],[0,0,1]])  ~~ $answer3,      "replace rows of data";
+    ok $a.splice-rows(-1,0,$i)                        ~~ $answer4,      "append rows of matrix";
+    ok $a.splice-rows(-1,0,[[1,0,0],[0,1,0],[0,0,1]]) ~~ $answer4,      "append rows of data";
+
+}, "Splice Rows";
 
 
 subtest {
-    my $answer1 = Math::Matrix.new([[1,2,3],[2,3,4],[3,4,5],[1,0,0],[0,1,0],[0,0,1]]);
-    my $answer2 = Math::Matrix.new([[1,2,3,1,0,0],[2,3,4,0,1,0],[3,4,5,0,0,1]]);
- 
-    plan 8;
-    ok $a.append-vertically($i)                        ~~ $answer1,         "append vertically matrix";
-    ok $a.append-vertically([[1,0,0],[0,1,0],[0,0,1]]) ~~ $answer1,         "append vertically data";
-    dies-ok { $a.append-vertically($b) },                                   "can not append vertically matrix with different size";
-    dies-ok { $a.append-vertically([[1]]) },                                "can not append vertically data matrix with different size";
+    my $answer1 = Math::Matrix.new([[1,0,0,1,2,3],[0,1,0,2,3,4],[0,0,1,3,4,5]]);
+    my $answer2 = Math::Matrix.new([[1,1,0,0,2,3],[2,0,1,0,3,4],[3,0,0,1,4,5]]);
+    my $answer3 = Math::Matrix.new([[1,1,0,0,  3],[2,0,1,0,  4],[3,0,0,1,  5]]);
+    my $answer4 = Math::Matrix.new([[1,2,3,1,0,0],[2,3,4,0,1,0],[3,4,5,0,0,1]]);
 
-    ok $a.append-horizontally($i)                        ~~ $answer2,       "append horizontally matrix";
-    ok $a.append-horizontally([[1,0,0],[0,1,0],[0,0,1]]) ~~ $answer2,       "append horizontally data";
-    dies-ok { $a.append-horizontally($b) },                                 "can not append horizontally matrix with different size";
-    dies-ok { $a.append-horizontally([[1]]) },                              "can not append horizontally data matrix with different size";
+    plan 12;
+    ok $a.splice-cows(0,0,$i)                        ~~ $answer1,       "prepend columns of a matrix";
+    ok $a.splice-cows(0,0,[[1,0,0],[0,1,0],[0,0,1]]) ~~ $answer1,       "prepend columns of data";
 
-}, "Append";
+    dies-ok { $a.splice-columns(10) },                                  "splicing from out of bound index";
+    dies-ok { $a.splice-columns(1,20) },                                "try to splice too much";
+    dies-ok { $a.splice-columns(0,0,$b) },                              "can not splice columns with matrix with different size";
+    dies-ok { $a.splice-columns(0,0,[[1]])},                            "can not splice columns with data matrix of different size";
+
+    ok $a.splice-columns(1,0,$i)                         ~~ $answer2,   "insert columns of matrix";
+    ok $a.splice-columns(1,0,[[1,0,0],[0,1,0],[0,0,1]])  ~~ $answer2,   "insert columns of data";
+    ok $a.splice-columns(1,1,$i)                         ~~ $answer3,   "replace columns of matrix";
+    ok $a.splice-columns(1,1,[[1,0,0],[0,1,0],[0,0,1]])  ~~ $answer3,   "replace columns of data";
+    ok $a.splice-columns(-1,0,$i)                        ~~ $answer4,   "append columns of matrix";
+    ok $a.splice-columns(-1,0,[[1,0,0],[0,1,0],[0,0,1]]) ~~ $answer4,   "append columns of data";
+
+}, "Splice Columns";
