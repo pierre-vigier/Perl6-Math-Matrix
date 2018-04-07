@@ -204,18 +204,20 @@ A infix (as in $matrix + $number) calls .add($number).
 
 =head3 Str
 
-All values separated by one whitespace. Is called implicitly by put and print.
-
-=head3 perl
-
-Conversion into String that can reevaluated into the same object later.
-     
-    my $clone = eval $matrix.perl;       # same as: $matrix.clone
-    
+All values separated by one whitespace, rows by horizontal line.
+It is called implicitly by put and print.
 
 =head3 Array
 
 All cells as an array of arrays (basically what was put into new(...)).
+
+
+=head3 perl
+
+Conversion into String that can reevaluated into the same object later.
+
+    my $clone = eval $matrix.perl;       # same as: $matrix.clone
+
 
 =head3 list
 

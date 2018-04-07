@@ -200,7 +200,7 @@ multi method submatrix(Math::Matrix:D: @rows, @cols --> Math::Matrix:D ){
 
 method Bool(Math::Matrix:D: --> Bool)     { ! self.is-zero }
 method Numeric (Math::Matrix:D: --> Int)  {   self.elems   }
-method Str(Math::Matrix:D: --> Str)       {   @!rows.Str   }
+method Str(Math::Matrix:D: --> Str)       {   join(' | ', @!rows.map:{.Str}) }
 
 multi method perl(Math::Matrix:D: --> Str){ self.WHAT.perl ~ ".new(" ~ @!rows.perl ~ ")" }
 

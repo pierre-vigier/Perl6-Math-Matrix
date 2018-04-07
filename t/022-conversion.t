@@ -9,7 +9,7 @@ my $from-perl = EVAL($matrixa.perl);
 ok $from-perl ~~ $matrixa          , ".perl result can be evaled in a similar object";
 
 ok $matrixa.Str().WHAT ~~ Str      , "Method Str should return a String";
-is $matrixa.Str(), "1 2 3 4"       , "value is correct in Str context ";
+is $matrixa.Str(), "1 2 | 3 4"     , "value is correct in Str context ";
 is ~$matrixa, "1 2 3 4"            , "content is correct in string context by prefix op";
 is +$matrixa, 4                    , "content is correct in numeric context by prefix op";
 is ?$matrixa, True                 , "content is correct in bool context by prefix op";
