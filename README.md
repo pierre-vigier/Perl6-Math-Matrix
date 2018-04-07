@@ -178,12 +178,14 @@ If you provide two pairs of coordinates (row1, column1, row2, column2), these wi
 
     3 4 5
 
-When provided with two lists of values (first for the rows - second for columns) a new matrix will be created with the old rows and columns in that new order.
+When provided with two lists of values (first for the rows - second for columns) a new matrix will be created with that selection of the old rows and columns in that new order.
 
     $m.submatrix((1,2),(3,2)):
 
     5 4
     6 5
+
+In that example we have second and third row in previous order, but selcted only third and fourth column in reversed order.
 
 Type Conversion And Output Flavour
 ----------------------------------
