@@ -60,6 +60,8 @@ METHODS
 Constructors
 ------------
 
+Methods that create a new Math::Matrix object. The .new is optimized for speed and uniformity - the other are there for convenience and to optimize property calculation.
+
 ### new( [[...],...,[...]] )
 
 The default constructor, takes arrays of arrays of numbers os only required parameter. Each second level array represents a row in the matrix. That is why their length has to be the same.
@@ -122,6 +124,8 @@ This method is a constructor that returns a matrix which is a result of the matr
 
 Accessors
 ---------
+
+Methods that return the content of selected elements (cells).
 
 ### cell
 
@@ -189,6 +193,8 @@ In that example we have second and third row in previous order, but selcted only
 
 Type Conversion And Output Flavour
 ----------------------------------
+
+Methods that convert a matrix into other types or allow different views on the overall content.
 
 ### Bool
 
@@ -258,6 +264,8 @@ Conversion into String that can reevaluated into the same object later using def
 
 Boolean Properties
 ------------------
+
+These are mathematical properties a matrix can have or not.
 
 ### is-square
 
@@ -358,6 +366,8 @@ True if all main minors or all Eigenvalues are greater equal zero.
 Numeric Properties
 ------------------
 
+Matrix properties that are expressed with a single number.
+
 ### size
 
 List of two values: number of rows and number of columns.
@@ -417,6 +427,8 @@ Condition number of a matrix is L2 norm * L2 of inverted matrix.
 Derivative Matrices
 -------------------
 
+Single matrices that can be computed with only our original matrix as input.
+
 ### transposed, alias T
 
 Returns a new, transposed Matrix, where rows became colums and vice versa.
@@ -451,6 +463,8 @@ Return the reduced row echelon form of a matrix, a.k.a. row canonical form
 Decompositions
 --------------
 
+Methods that return lists of matrices, which in their product or otherwise can be recombined to the original matrix. In case of cholesky only one matrix is returned, becasue the other one is its transposed.
+
 ### decompositionLU
 
     my ($L, $U, $P) = $matrix.decompositionLU( );
@@ -479,6 +493,8 @@ This decomposition works only on symmetric and definite positive matrices.
 
 List Like Matrix Operations
 ---------------------------
+
+Selection of methods that are also provided by Lists and Arrays and make also sense in context a 2D matrix. 
 
 ### elems
 
@@ -557,6 +573,8 @@ Similar to reduce-rows, this method reduces each column to one value in the resu
 
 Structural Matrix Operations
 ----------------------------
+
+Methods that reorder the rows and columns, delete some or even add new. The accessor .submatrix is also useful for that purpose.
 
 ### move-row
 
@@ -641,6 +659,8 @@ Same as splice-rows, just horizontally.
 
 Matrix Math Operations
 ----------------------
+
+Matrix math methods an full matrixes and also parts (for gaussian table operations).
 
 ### add
 
