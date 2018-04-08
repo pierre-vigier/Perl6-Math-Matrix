@@ -66,7 +66,7 @@ Methods that create a new Math::Matrix object. The .new is optimized for speed a
 
 The default constructor, takes arrays of arrays of numbers os only required parameter. Each second level array represents a row in the matrix. That is why their length has to be the same.
 
-    Math::Matrix.new( [[1,2],[3,4]] ) creates:
+    say Math::Matrix.new( [[1,2],[3,4]] ) :
 
     1 2
     3 4
@@ -96,7 +96,7 @@ This method is an constructor that returns an zero (sometimes empty) matrix (as 
 
 This method is a constructor that returns an identity matrix (as checked by is-identity) of the size given in the only and required parameter. All the cells are set to 0 except the top/left to bottom/right diagonale is set to 1.
 
-    say Math::Matrix.new-identity( 3 ):
+    say Math::Matrix.new-identity( 3 ) :
       
     1 0 0
     0 1 0
@@ -106,7 +106,7 @@ This method is a constructor that returns an identity matrix (as checked by is-i
 
 This method is a constructor that returns an diagonal matrix (as checked by is-diagonal) of the size given by count of the parameter. All the cells are set to 0 except the top/left to bottom/right diagonal, set to given values.
 
-    say Math::Matrix.new-diagonal( 2, 4, 5 ):
+    say Math::Matrix.new-diagonal( 2, 4, 5 ) :
 
     2 0 0
     0 4 0
@@ -116,7 +116,7 @@ This method is a constructor that returns an diagonal matrix (as checked by is-d
 
 This method is a constructor that returns a matrix which is a result of the matrix product (method dotProduct, or operator dot) of a column vector (first argument) and a row vector (second argument). It can also be understood as a tensor product of row and column.
 
-    say Math::Matrix.new-vector-product([1,2,3],[2,3,4]):
+    say Math::Matrix.new-vector-product([1,2,3],[2,3,4]) :
 
     2  3  4     1*2  1*3  1*4
     4  6  8  =  2*2  2*3  2*4
@@ -310,6 +310,7 @@ True if every cell above the diagonal (where row index is smaller than column in
 ### is-diagonal
 
     True if only cells on the diagonal differ from 0.
+    .is-upper-triangular and .is-lower-triangular would also be True.
 
      Example:    1 0 0
                  0 3 0
@@ -317,8 +318,8 @@ True if every cell above the diagonal (where row index is smaller than column in
 
 ### is-diagonally-dominant
 
-    True if cells on the diagonal have a bigger or equal absolute value than the
-    sum of the other absolute values in the column.
+    True if cells on the diagonal have a bigger (strict) or equal absolute value than the
+    sum of the other absolute values in the column or row.
 
     if $matrix.is-diagonally-dominant {
     $matrix.is-diagonally-dominant(:!strict)   # same thing (default)
@@ -345,7 +346,7 @@ Means the transposed and negated matrix are the same.
 
 ### is-self-adjoint
 
-A Hermitian or self-adjoint matrix is equal to its transposed and conjugated.
+A Hermitian or self-adjoint matrix is equal to its transposed and complex conjugated.
 
     Example:    1   2   3+i
                 2   5   4
@@ -353,11 +354,11 @@ A Hermitian or self-adjoint matrix is equal to its transposed and conjugated.
 
 ### is-invertible
 
-Is True if number of rows and colums are the same (is-square) and determinant is not zero. All rows or colums have to be independent vectors.
+Is True if number of rows and colums are the same (.is-square) and .determinant is not zero. All rows or colums have to be independent vectors. Please use this method before $matrix.inverted, or you will get an exception.
 
 ### is-orthogonal
 
-An orthogonal matrix multiplied (dotProduct) with its transposed derivative (T) is an identity matrix or in other words: transposed and inverted matrices are equal.
+An orthogonal matrix multiplied (dotProduct) with its transposed derivative (T) is an identity matrix or in other words: .transposed and .inverted matrices are equal.
 
 ### is-unitary
 
@@ -668,7 +669,7 @@ Same as splice-rows, just horizontally.
 Matrix Math Operations
 ----------------------
 
-Matrix math methods an full matrixes and also parts (for gaussian table operations).
+Matrix math methods on full matrices and also parts (for gaussian table operations).
 
 ### add
 

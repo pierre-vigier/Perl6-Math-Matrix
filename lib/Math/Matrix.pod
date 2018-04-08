@@ -56,7 +56,7 @@ The default constructor, takes arrays of arrays of numbers os only required para
 Each second level array represents a row in the matrix.
 That is why their length has to be the same.
 
-   Math::Matrix.new( [[1,2],[3,4]] ) creates:
+   say Math::Matrix.new( [[1,2],[3,4]] ) :
 
    1 2
    3 4
@@ -90,7 +90,7 @@ This method is a constructor that returns an identity matrix (as checked by is-i
 of the size given in the only and required parameter.
 All the cells are set to 0 except the top/left to bottom/right diagonale is set to 1.
 
-    say Math::Matrix.new-identity( 3 ):
+    say Math::Matrix.new-identity( 3 ) :
   
     1 0 0
     0 1 0
@@ -102,7 +102,7 @@ This method is a constructor that returns an diagonal matrix (as checked by is-d
 of the size given by count of the parameter.
 All the cells are set to 0 except the top/left to bottom/right diagonal, set to given values.
 
-    say Math::Matrix.new-diagonal( 2, 4, 5 ):
+    say Math::Matrix.new-diagonal( 2, 4, 5 ) :
 
     2 0 0
     0 4 0
@@ -115,7 +115,7 @@ the matrix product (method dotProduct, or operator dot) of a column vector
 (first argument) and a row vector (second argument). It can also be understood
 as a tensor product of row and column.
 
-    say Math::Matrix.new-vector-product([1,2,3],[2,3,4]):
+    say Math::Matrix.new-vector-product([1,2,3],[2,3,4]) :
 
     2  3  4     1*2  1*3  1*4
     4  6  8  =  2*2  2*3  2*4
@@ -714,7 +714,7 @@ Same as splice-rows, just horizontally.
 
 =head2 Matrix Math Operations
 
-Matrix math methods an full matrixes and also parts (for gaussian table operations).
+Matrix math methods on full matrices and also parts (for gaussian table operations).
 
 =head3 add
 
