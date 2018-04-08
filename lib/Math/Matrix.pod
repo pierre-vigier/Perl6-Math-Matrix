@@ -319,6 +319,7 @@ True if every cell above the diagonal (where row index is smaller than column in
 =head3 is-diagonal
 
    True if only cells on the diagonal differ from 0.
+   .is-upper-triangular and .is-lower-triangular would also be True.
 
     Example:    1 0 0
                 0 3 0
@@ -326,8 +327,8 @@ True if every cell above the diagonal (where row index is smaller than column in
 
 =head3 is-diagonally-dominant
 
-   True if cells on the diagonal have a bigger or equal absolute value than the
-   sum of the other absolute values in the column.
+   True if cells on the diagonal have a bigger (strict) or equal absolute value than the
+   sum of the other absolute values in the column or row.
 
    if $matrix.is-diagonally-dominant {
    $matrix.is-diagonally-dominant(:!strict)   # same thing (default)
@@ -356,7 +357,7 @@ Means the transposed and negated matrix are the same.
 
 =head3 is-self-adjoint
 
-A Hermitian or self-adjoint matrix is equal to its transposed and conjugated.
+A Hermitian or self-adjoint matrix is equal to its transposed and complex conjugated.
 
     Example:    1   2   3+i
                 2   5   4
@@ -364,13 +365,14 @@ A Hermitian or self-adjoint matrix is equal to its transposed and conjugated.
 
 =head3 is-invertible
 
-Is True if number of rows and colums are the same (is-square) and determinant is not zero.
-All rows or colums have to be independent vectors.
+Is True if number of rows and colums are the same (.is-square) and .determinant is not zero.
+All rows or colums have to be independent vectors. Please use this method before $matrix.inverted,
+or you will get an exception.
 
 =head3 is-orthogonal
 
 An orthogonal matrix multiplied (dotProduct) with its transposed derivative (T)
-is an identity matrix or in other words: transposed and inverted matrices are equal.
+is an identity matrix or in other words: .transposed and .inverted matrices are equal.
 
 =head3 is-unitary
 
