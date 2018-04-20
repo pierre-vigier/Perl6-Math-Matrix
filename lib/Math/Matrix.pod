@@ -17,7 +17,7 @@ Matrices are tables with rows and columns (index counting from 0) of numbers (Nu
 =head1 DESCRIPTION
 
 Because the list based, functional toolbox of Perl 6 is not enough to calculate matrices comfortably,
-there is a need for a dedicated data type. The aim is to provide a full featured of set structural and 
+there is a need for a dedicated data type. The aim is to provide a full featured set of structural and 
 mathematical operations that integrate fully with the Perl 6 conventions.
 
 Matrices are readonly - all operations and functions do create new matrix objects.
