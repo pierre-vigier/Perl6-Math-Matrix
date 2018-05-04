@@ -24,7 +24,7 @@ Matrices are tables with rows and columns (index counting from 0) of numbers (Nu
 DESCRIPTION
 ===========
 
-Because the list based, functional toolbox of Perl 6 is not enough to calculate matrices comfortably, there is a need for a dedicated data type. The aim is to provide a full featured of set structural and mathematical operations that integrate fully with the Perl 6 conventions.
+Because the list based, functional toolbox of Perl 6 is not enough to calculate matrices comfortably, there is a need for a dedicated data type. The aim is to provide a full featured set of structural and mathematical operations that integrate fully with the Perl 6 conventions.
 
 Matrices are readonly - all operations and functions do create new matrix objects. All methods return readonly data or deep clones - also the constructor does a deep clone of provided data. In that sense the library is thread safe.
 
@@ -553,20 +553,20 @@ Changes value of one cell on row (first parameter) and column (second) with code
 
 Like the built in reduce method, it iterates over all elements and joins them into one value, by applying the given operator or method to the previous result and the next element. I starts with the cell [0][0] and moving from left to right in the first row and continue with the first cell of the next row.
 
-    Math::Matrix.new( [[1,2],[3,4]] ).reduce(&[+]): 10
-    Math::Matrix.new( [[1,2],[3,4]] ).reduce(&[*]): 10
+    Math::Matrix.new([[1,2],[3,4]]).reduce(&[+]): 10
+    Math::Matrix.new([[1,2],[3,4]]).reduce(&[*]): 10
 
 ### reduce-rows
 
 Reduces (as described above) every row into one value, so the overall result will be a list. In this example we calculate the sum of all cells in a row:
 
-    say Math::Matrix.new( [[1,2],[3,4]] ).reduce-rows(&[+]): (3, 7)
+    say Math::Matrix.new([[1,2],[3,4]]).reduce-rows(&[+]): (3, 7)
 
 ### reduce-columns
 
 Similar to reduce-rows, this method reduces each column to one value in the resulting list:
 
-    say Math::Matrix.new( [[1,2],[3,4]] ).reduce-columns(&[*]): (3, 8)
+    say Math::Matrix.new([[1,2],[3,4]]).reduce-columns(&[*]): (3, 8)
 
 Structural Matrix Operations
 ----------------------------
@@ -575,8 +575,8 @@ Methods that reorder the rows and columns, delete some or even add new. The acce
 
 ### move-row
 
-    Math::Matrix.new( [[1,2,3],[4,5,6],[7,8,9]] ).move-row(0,1);  # move row 0 to 1
-    Math::Matrix.new( [[1,2,3],[4,5,6],[7,8,9]] ).move-row(0=>1); # same
+    Math::Matrix.new([[1,2,3],[4,5,6],[7,8,9]]).move-row(0,1);  # move row 0 to 1
+    Math::Matrix.new([[1,2,3],[4,5,6],[7,8,9]]).move-row(0=>1); # same
 
     1 2 3           4 5 6
     4 5 6    ==>    1 2 3
@@ -584,8 +584,8 @@ Methods that reorder the rows and columns, delete some or even add new. The acce
 
 ### move-column
 
-    Math::Matrix.new( [[1,2,3],[4,5,6],[7,8,9]] ).move-column(2,1);
-    Math::Matrix.new( [[1,2,3],[4,5,6],[7,8,9]] ).move-column(2=>1); # same
+    Math::Matrix.new([[1,2,3],[4,5,6],[7,8,9]]).move-column(2,1);
+    Math::Matrix.new([[1,2,3],[4,5,6],[7,8,9]]).move-column(2=>1); # same
 
     1 2 3           1 3 2
     4 5 6    ==>    4 6 5
@@ -593,7 +593,7 @@ Methods that reorder the rows and columns, delete some or even add new. The acce
 
 ### swap-rows
 
-    Math::Matrix.new( [[1,2,3],[4,5,6],[7,8,9]] ).swap-rows(2,0);
+    Math::Matrix.new([[1,2,3],[4,5,6],[7,8,9]]).swap-rows(2,0);
 
     1 2 3           7 8 9
     4 5 6    ==>    4 5 6
@@ -601,7 +601,7 @@ Methods that reorder the rows and columns, delete some or even add new. The acce
 
 ### swap-columns
 
-    Math::Matrix.new( [[1,2,3],[4,5,6],[7,8,9]] ).swap-columns(0,2);
+    Math::Matrix.new([[1,2,3],[4,5,6],[7,8,9]]).swap-columns(0,2);
 
     1 2 3           3 2 1
     4 5 6    ==>    6 5 4
@@ -688,14 +688,14 @@ Works analogous to add - it's just for convenance.
 
 Add a vector (row or col of some matrix) to a row of the matrix. In this example we add (2,3) to the second row. Instead of a matrix you can also give as parameter the raw data of a matrix as new would receive it.
 
-    Math::Matrix.new( [[1,2],[3,4]] ).add-row(1,[2,3]);
+    Math::Matrix.new([[1,2],[3,4]]).add-row(1,[2,3]);
 
     Example:    1 2  +       =  1 2
                 3 4    2 3      5 7
 
 ### add-column
 
-    Math::Matrix.new( [[1,2],[3,4]] ).add-column(1,[2,3]);
+    Math::Matrix.new([[1,2],[3,4]]).add-column(1,[2,3]);
 
     Example:    1 2  +   2   =  1 4
                 3 4      3      3 7
@@ -720,7 +720,7 @@ In scalar multiplication each cell of the matrix gets multiplied with the same n
 
 Multiply scalar number to each cell of a row.
 
-    Math::Matrix.new( [[1,2],[3,4]] ).multiply-row(0,2);
+    Math::Matrix.new([[1,2],[3,4]]).multiply-row(0,2);
 
     Example:    1 2  * 2     =  2 4
                 3 4             3 4
@@ -729,10 +729,10 @@ Multiply scalar number to each cell of a row.
 
 Multiply scalar number to each cell of a column.
 
-    Math::Matrix.new( [[1,2],[3,4]] ).multiply-row(0,2);
+    Math::Matrix.new([[1,2],[3,4]]).multiply-row(0,2);
 
-    Example:    1 2          =  2 2
-                3 4             6 4
+    Example:    1 2   =  2 2
+                3 4      6 4
             
                *2
 
@@ -740,8 +740,13 @@ Multiply scalar number to each cell of a column.
 
 Matrix multiplication of two fitting matrices (colums left == rows right).
 
-    Example:    1 2  *  2 3  =  10 13  =  1*2+2*4  1*3+2*5
-                3 4     4 5     22 29     3*2+4*4  3*3+4*5
+    Math::Matrix.new( [[1,2],[3,4]] ).dotProduct(  Math::Matrix.new([[2,3],[4,5]]) );
+
+    Example:    2  3
+           *    4  5
+
+         1 2   10 13  =  1*2+2*4  1*3+2*5
+         3 4   22 29     3*2+4*4  3*3+4*5
 
     my $product = $matrix1.dotProduct( $matrix2 )
     my $c = $a dot $b;              # works too as operator alias
