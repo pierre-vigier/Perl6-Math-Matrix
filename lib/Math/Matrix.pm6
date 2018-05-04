@@ -914,3 +914,5 @@ multi sub infix:<x>( ::?CLASS $a, ::?CLASS $b --> ::?CLASS:D ) is looser(&infix:
 
 multi sub circumfix:<| |>(::?CLASS $a --> Numeric) is equiv(&prefix:<!>) is export { $a.determinant }
 multi sub circumfix:<|| ||>(::?CLASS $a --> Numeric) is equiv(&prefix:<!>) is export { $a.norm }
+
+multi sub prefix:<MM>(Array $m --> ::?CLASS:D) is export(:MM) { Math::Matrix.new(@$m) }
