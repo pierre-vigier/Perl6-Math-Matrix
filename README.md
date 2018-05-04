@@ -55,7 +55,7 @@ METHODS
 
   * matrix math ops: add, subtract, add-row, add-column, multiply, multiply-row, multiply-column, dotProduct, tensorProduct
 
-  * operators: +, -, *, **, ⋅, dot, ÷, ⊗, x, | |, || ||
+  * operators: MM, +, -, *, **, ⋅, dot, ÷, ⊗, x, | |, || ||
 
 Constructors
 ------------
@@ -76,6 +76,9 @@ The default constructor, takes arrays of arrays of numbers os only required para
     Math::Matrix.new( [[1,2,3],] );  # one row 1*3 matrix, mind the trailing comma
     Math::Matrix.new( [$[1,2,3]] );  # does the same, if you don't like trailing comma
     Math::Matrix.new( [[1],[2]] );   # one column 2*1 matrix
+
+    use Math::Matrix :MM;
+    MM[[1,2],[3,4]]                  # shortcut
 
 ### new-zero
 
@@ -775,6 +778,8 @@ Operators
 
 The Module overloads or uses a range of well and less known ops. +, -, * and ~~ are commutative.
 
+The only exception is MM, a shortcut to create a matrix. That has to be importet explicitly with the tag :MM or :ALL.
+
     my $a   = +$matrix               # Num context, amount (count) of cells
     my $b   = ?$matrix               # Bool context, True if any cell has a none zero value
     my $str = ~$matrix               # String context, matrix content as data structure
@@ -804,6 +809,8 @@ The Module overloads or uses a range of well and less known ops. +, -, * and ~~ 
 
      | $matrix |                     # determinant
     || $matrix ||                    # Euclidean (L2) norm
+
+    MM [[1]]                         # a new matrix
 
 Author
 ======
