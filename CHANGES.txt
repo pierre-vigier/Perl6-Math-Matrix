@@ -1,6 +1,7 @@
 
  0.2.1:
     - 2018.4.
+    - added MM operator as shortcut for Math::Matrix.new()
     - added splice-rows and splice-columns replacing prepend-*, append-* 
       and planned insert-* and delete-*
     - added own methods for .list (flat) and .Array context
