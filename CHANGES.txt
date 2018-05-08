@@ -1,12 +1,13 @@
 
- 0.2.1:
-    - 2018.4.
+ 0.3.0:
+    - 2018.5.
     - added MM operator as shortcut for Math::Matrix.new()
     - added splice-rows and splice-columns replacing prepend-*, append-* 
       and planned insert-* and delete-*
     - added own methods for .list (flat) and .Array context
     - added proper .gist for type object (like all types have) showing (Math::Matrix)
     - redone .gist and .full allows now complex numbers and scientific notation
+    - new property type return widest cell type
     - refreshed doc synopsis and description, improved docs overall
     - added .appveyor.yml file: win CI support to github project
 

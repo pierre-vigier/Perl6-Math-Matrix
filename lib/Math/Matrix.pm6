@@ -24,11 +24,16 @@ has Bool $!is-invertible is lazy;
 has Bool $!is-positive-definite is lazy;
 has Bool $!is-positive-semidefinite is lazy;
 
-has Numeric $!trace is lazy;
-has Numeric $!determinant is lazy;
-has Rat $!density is lazy;
 has Int $!rank is lazy;
 has Int $!kernel is lazy;
+has Rat $!density is lazy;
+
+has Numeric $!trace is lazy;
+has Numeric $!determinant is lazy;
+has Numeric $!type is lazy;
+
+#has Str $!format is lazy;
+
 
 method !rows       { @!rows }
 method !clone_rows  { AoA_clone(@!rows) }
@@ -99,7 +104,7 @@ sub identity_array( PosInt $size ) {
     return @identity;
 }
 
-method new-identity( PosInt $size ) {
+method new-identity( Int $size where * > 0 ) {
     self.bless( rows => identity_array($size), diagonal => (1) xx $size, 
                 determinant => 1, rank => $size, kernel => 0, density => 1/$size, trace => $size,
                 is-zero => False, is-identity => True, 
@@ -118,12 +123,12 @@ method new-diagonal( *@diag ){
                 is-square => True, is-diagonal => True, is-symmetric => True  );
 }
 
-method !new-lower-triangular( @m ) {
+method new-lower-triangular( @m ) {
     #don't want to trust outside of the class that a matrix is really triangular
     self.bless( rows => @m, is-lower-triangular => True );
 }
 
-method !new-upper-triangular( @m ) {
+method new-upper-triangular( @m ) {
     #don't want to trust outside of the class that a matrix is really triangular
     self.bless( rows => @m, is-upper-triangular => True );
 }
@@ -287,6 +292,8 @@ multi σ_permutations ([$x, *@xs]) {
 ################################################################################
 # end of type conversion and handy shortcuts - start boolean matrix properties
 ################################################################################
+
+
 
 method !build_is-square(Math::Matrix:D: --> Bool) { $!column-count == $!row-count }
 
@@ -496,6 +503,13 @@ method condition(Math::Matrix:D: --> Numeric) {
     self.norm() * self.inverted().norm();
 }
 
+method !build_type(Math::Matrix:D: --> Numeric){
+    return Complex if any( @!rows[*;*] ) ~~ Complex;
+    return Num   if any( @!rows[*;*] ) ~~ Num;
+    return Rat if any( @!rows[*;*] ) ~~ Rat;
+    Int;
+}
+
 ################################################################################
 # end of numeric matrix properties - start create derivative matrices
 ################################################################################
@@ -601,13 +615,13 @@ multi method decompositionLU(Math::Matrix:D: Bool :$pivot = True, :$diagonal = F
             push @D, @U[$c][$c];
             @U[$c][$c] = 1;
         }
-        $pivot ?? (Math::Matrix!new-lower-triangular(@L), Math::Matrix.new-diagonal(@D), 
-                   Math::Matrix!new-upper-triangular(@U), Math::Matrix.new(@P))
-               !! (Math::Matrix!new-lower-triangular(@L), Math::Matrix.new-diagonal(@D),
-                   Math::Matrix!new-upper-triangular(@U));
+        $pivot ?? (Math::Matrix.new-lower-triangular(@L), Math::Matrix.new-diagonal(@D), 
+                   Math::Matrix.new-upper-triangular(@U), Math::Matrix.new(@P))
+               !! (Math::Matrix.new-lower-triangular(@L), Math::Matrix.new-diagonal(@D),
+                   Math::Matrix.new-upper-triangular(@U));
     }
-    $pivot ?? (Math::Matrix!new-lower-triangular(@L), Math::Matrix!new-upper-triangular(@U), Math::Matrix.new(@P))
-           !! (Math::Matrix!new-lower-triangular(@L), Math::Matrix!new-upper-triangular(@U));
+    $pivot ?? (Math::Matrix.new-lower-triangular(@L), Math::Matrix.new-upper-triangular(@U), Math::Matrix.new(@P))
+           !! (Math::Matrix.new-lower-triangular(@L), Math::Matrix.new-upper-triangular(@U));
 }
 
 method decompositionLUCrout(Math::Matrix:D: ) {
@@ -646,7 +660,7 @@ method decompositionCholesky(Math::Matrix:D: --> Math::Matrix:D) {
     }
     for ^$!row-count X ^$!column-count -> ($r, $c) { @D[$r][$c] = 0 if $r < $c }
     #return Math::Matrix.BUILD( rows => @D, is-lower-triangular => True );
-    return Math::Matrix!new-lower-triangular( @D );
+    return Math::Matrix.new-lower-triangular( @D );
 }
 
 ################################################################################
@@ -894,25 +908,14 @@ multi sub infix:<**>(::?CLASS $a where { $a.is-square }, Int $e --> ::?CLASS:D )
     $p;
 }
 
-multi sub infix:<⋅>( ::?CLASS $a, ::?CLASS $b --> ::?CLASS:D ) is looser(&infix:<*>) is export {
-    $a.dotProduct( $b );
-}
-multi sub infix:<dot>(::?CLASS $a, ::?CLASS $b --> ::?CLASS:D ) is looser(&infix:<*>) is export {
-    $a.dotProduct( $b );
-}
+multi sub infix:<⋅>( ::?CLASS $a, ::?CLASS $b --> ::?CLASS:D ) is looser(&infix:<*>) is export { $a.dotProduct( $b ) }
+multi sub infix:<dot>(::?CLASS $a, ::?CLASS $b --> ::?CLASS:D ) is looser(&infix:<*>) is export {$a.dotProduct( $b ) }
+multi sub infix:<÷>(::?CLASS $a,::?CLASS $b --> ::?CLASS:D ) is looser(&infix:<*>) is export { $a.dotProduct( $b.inverted ) }
 
-multi sub infix:<÷>(::?CLASS $a,::?CLASS $b --> ::?CLASS:D ) is export { 
-    $a.dotProduct( $b.inverted );
-}
+multi sub infix:<⊗>( ::?CLASS $a, ::?CLASS $b --> ::?CLASS:D ) is looser(&infix:<*>) is export { $a.tensorProduct( $b ) }
+multi sub infix:<x>( ::?CLASS $a, ::?CLASS $b --> ::?CLASS:D ) is looser(&infix:<*>) is export { $a.tensorProduct( $b ) }
 
-multi sub infix:<⊗>( ::?CLASS $a, ::?CLASS $b --> ::?CLASS:D ) is looser(&infix:<*>) is export {
-    $a.tensorProduct( $b );
-}
-multi sub infix:<x>( ::?CLASS $a, ::?CLASS $b --> ::?CLASS:D ) is looser(&infix:<*>) is export {
-    $a.tensorProduct( $b );
-}
-
-multi sub circumfix:<| |>(::?CLASS $a --> Numeric) is equiv(&prefix:<!>) is export { $a.determinant }
+multi sub circumfix:<| |>(::?CLASS $a --> Numeric) is equiv(&prefix:<!>) is export   { $a.determinant }
 multi sub circumfix:<|| ||>(::?CLASS $a --> Numeric) is equiv(&prefix:<!>) is export { $a.norm }
 
-multi sub prefix:<MM>(Array $m --> ::?CLASS:D) is export(:MM) { ::?CLASS.new(@$m) }
+multi sub prefix:<MM>(Array $m --> ::?CLASS:D) is looser(&infix:<+>) is export(:MM) { ::?CLASS.new(@$m) }

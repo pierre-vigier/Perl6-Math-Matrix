@@ -43,7 +43,7 @@ METHODS
 
   * boolean properties: is-zero, is-identity, is-square, is-diagonal, is-diagonally-dominant, is-upper-triangular, is-lower-triangular, is-invertible, is-symmetric, is-antisymmetric, is-unitary, is-self-adjoint, is-orthogonal, is-positive-definite, is-positive-semidefinite
 
-  * numeric properties: size, density, trace, determinant, rank, kernel, norm, condition
+  * numeric properties: type, size, density, trace, determinant, rank, kernel, norm, condition
 
   * derived matrices: transposed, negated, conjugated, inverted, reduced-row-echelon-form
 
@@ -71,7 +71,7 @@ The default constructor, takes arrays of arrays of numbers os only required para
     1 2
     3 4
 
-    Math::Matrix.new([<1 2>,<3 4>]); # does the same
+    Math::Matrix.new([<1 2>,<3 4>]); # does the same, WARNING: doesn't work with complex numbers
     Math::Matrix.new( [[1]] );       # one cell 1*1 matrix 
     Math::Matrix.new( [[1,2,3],] );  # one row 1*3 matrix, mind the trailing comma
     Math::Matrix.new( [$[1,2,3]] );  # does the same, if you don't like trailing comma
@@ -423,6 +423,10 @@ Kernel of matrix, number of dependent rows or columns (rank + kernel = dim).
 Condition number of a matrix is L2 norm * L2 of inverted matrix.
 
     my $c = $matrix.condition( );
+
+### type
+
+Matrix cells can be of type (Int), (Rat), (Num) or (Complex). The widest type of any cell will returned as type object.
 
 Derivative Matrices
 -------------------
