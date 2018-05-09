@@ -32,7 +32,7 @@ has Numeric $!trace is lazy;
 has Numeric $!determinant is lazy;
 has Numeric $!type is lazy;
 
-has Str $!format is lazy;
+#has Str $!format is lazy;
 
 
 method !rows       { @!rows }
