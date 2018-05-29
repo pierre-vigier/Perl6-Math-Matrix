@@ -232,25 +232,23 @@ multi method gist(Math::Matrix:D: --> Str) {
     my $max-rows = 20;
     my $max-chars = 80;
     my $max-nr-char;               # maximal pre digit char in cell
-    my $cell_with;                 #
+    my $cell_with = 6;             #
     my $fmt;
-    if all( @!rows[*;*] ) ~~ Int {
-        $max-nr-char = max( @!rows[*;*] ).Int.chars;
-        $fmt = " %{$max-nr-char}d ";
-        $cell_with = $max-nr-char + 2;
-    } elsif all( @!rows[*;*] ) ~~ Real {
-        my $max-decimal = max( @!rows[*;*].map( { ( .split(/\./)[1] // '' ).chars } ) );
-        $max-decimal = 5 if $max-decimal > 5; #more than that is not readable
-        $max-nr-char = max( @!rows[*;*] ).Int.chars + $max-decimal + 1;
-        $fmt = " \%{$max-nr-char}.{$max-decimal}f ";
-        $cell_with = $max-nr-char + 3 + $max-decimal;
-    } else {  # complex
-        # TODO
-        my $max-decimal = max( @!rows[*;*].map( { ( .split(/\./)[1] // '' ).chars } ) );
-        $max-decimal = 5 if $max-decimal > 5; #more than that is not readable
-        $max-nr-char = 7;
-        $cell_with = 9;
-        $fmt = " \%{$max-nr-char}.{$max-decimal}c";
+    given self.type() {
+        when Int {
+            $max-nr-char = max( @!rows[*;*] ).Int.chars;
+            $fmt = " %{$max-nr-char}d ";
+            $cell_with = $max-nr-char + 2;
+        }
+        when Rat {
+            my $max-decimal = max( @!rows[*;*].map( { ( .split(/\./)[1] // '' ).chars } ) );
+            $max-decimal = 5 if $max-decimal > 5; #more than that is not readable
+            $max-nr-char = max( @!rows[*;*] ).Int.chars + $max-decimal + 1;
+            $fmt = " \%{$max-nr-char}.{$max-decimal}f ";
+            $cell_with = $max-nr-char + 3 + $max-decimal;
+        }
+        when Complex {
+        }
     }
     my $rows = min $!row-count, $max-rows;
     my $cols = min $!column-count, $max-chars div $cell_with;
