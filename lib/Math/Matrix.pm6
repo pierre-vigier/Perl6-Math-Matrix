@@ -49,14 +49,26 @@ subset NumArray of Array where { .all ~~ Numeric };
 ################################################################################
 
 
-sub check_data_matrix (@m) {
+sub check_matrix_data (@m) {
     fail "Expect an Array of Array" unless all @m ~~ Array;
-    fail "All rows must contains the same number of elements" unless @m[0] == all @m[*];
+    fail "All rows must contains the same number of elements" unless @m.elems == 1 or @m[0] == all @m[*];
     fail "All rows must contain only numeric values" unless all( @m[*;*] ) ~~ Numeric;
 }
 
-method new( @m ) {
-    check_data_matrix( @m ); 
+multi method new (Str $m){
+    my @m = $m.lines.map: { [ $_.words.map: {$_.Numeric} ] };
+say " -- new str ",@m.WHAT,' ',@m[0].WHAT,' ',@m[0][0].WHAT;
+say " -- new str ",@m,' ',@m[0];
+
+    check_matrix_data( @m );
+    self.bless( rows => @m );
+}
+
+multi method new( @m ) {
+    check_matrix_data( @m );
+say " -- new a ",@m.WHAT,' ',@m[0].WHAT;
+say " -- new a ",@m,' ',@m[0];
+
     self.bless( rows => @m );
 }
 
@@ -769,7 +781,7 @@ multi method splice-rows(Math::Matrix:D: Int $row, Int $elems = ($!row-count - $
     fail "Number of elements to delete (second parameter) has to be zero or more!)" if $elems < 0;
     if $replacement.elems > 0 {
         fail "Number of columns in and original matrix and replacement has to be same" unless $replacement[0].elems == $!column-count;
-        check_data_matrix( @$replacement );
+        check_matrix_data( @$replacement );
     }
     my @m = self!clone_rows;
     @m.splice($pos, $elems, $replacement.list);
@@ -785,7 +797,7 @@ multi method splice-columns(Math::Matrix:D: Int $col, Int $elems = ($!column-cou
     fail "Column index (first parameter) is outside of matrix size!" unless 0 <= $pos <= $!column-count;
     fail "Number of elements to delete (second parameter) has to be zero or more!)" if $elems < 0;
     fail "Number of rows in original matrix and replacement has to be same" unless $replacement.elems == $!row-count;
-    check_data_matrix( @$replacement );
+    check_matrix_data( @$replacement );
     my @m = self!clone_rows;
     @m.keys.map:{ @m[$_].splice($pos, $elems, $replacement[$_]) };
     Math::Matrix.new(@m);
@@ -916,4 +928,5 @@ multi sub infix:<x>( ::?CLASS $a, ::?CLASS $b --> ::?CLASS:D ) is looser(&infix:
 multi sub circumfix:<| |>(::?CLASS $a --> Numeric) is equiv(&prefix:<!>) is export   { $a.determinant }
 multi sub circumfix:<|| ||>(::?CLASS $a --> Numeric) is equiv(&prefix:<!>) is export { $a.norm }
 
+multi sub prefix:<MM>(Str   $m --> ::?CLASS:D) is looser(&infix:<+>) is export(:MM) { ::?CLASS.new($m) }
 multi sub prefix:<MM>(Array $m --> ::?CLASS:D) is looser(&infix:<+>) is export(:MM) { ::?CLASS.new(@$m) }

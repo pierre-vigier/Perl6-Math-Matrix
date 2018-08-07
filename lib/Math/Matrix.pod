@@ -62,13 +62,27 @@ That is why their length has to be the same.
    3 4
 
    Math::Matrix.new([<1 2>,<3 4>]); # does the same, WARNING: doesn't work with complex numbers
-   Math::Matrix.new( [[1]] );       # one cell 1*1 matrix 
+   Math::Matrix.new( [[1]] );       # one cell 1*1 matrix (exception where you don't have to mind comma)
    Math::Matrix.new( [[1,2,3],] );  # one row 1*3 matrix, mind the trailing comma
    Math::Matrix.new( [$[1,2,3]] );  # does the same, if you don't like trailing comma
    Math::Matrix.new( [[1],[2]] );   # one column 2*1 matrix
 
-   use Math::Matrix :MM;
-   MM[[1,2],[3,4]]                  # shortcut
+   use Math::Matrix :MM;            # tag :ALL works too
+   MM [[1,2],[3,4]];                # shortcut
+
+=head3 new( "..." )
+
+Alternatively you can define the matrix as string, which makes most sense while using heredocs.
+
+   Math::Matrix.new("1 2 \n 3 4"); # our demo matrix as string
+   Math::Matrix.new: q:to/END/;    # indent as you wish
+       1 2
+       3 4
+     END
+
+   use Math::Matrix :ALL;          # 
+   MM '1';                         # this case begs for a shortcut
+
 
 =head3 new-zero
 
