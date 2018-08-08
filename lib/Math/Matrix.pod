@@ -36,7 +36,7 @@ This module is pure perl and we plan to use native shaped arrays one day.
     is-diagonally-dominant, is-upper-triangular, is-lower-triangular, is-invertible,
     is-symmetric, is-antisymmetric, is-unitary, is-self-adjoint, is-orthogonal,
     is-positive-definite, is-positive-semidefinite
-=item numeric properties: type, size, density, trace, determinant, rank, kernel, norm, condition
+=item numeric properties: cell-type, size, density, trace, determinant, rank, kernel, norm, condition
 =item derived matrices: transposed, negated, conjugated, inverted, reduced-row-echelon-form
 =item decompositions: decompositionLUCrout, decompositionLU, decompositionCholesky
 =item list like ops: elems, elem, equal, map, map-row, map-column, map-cell, reduce, reduce-rows, reduce-columns
@@ -458,7 +458,7 @@ Condition number of a matrix is L2 norm * L2 of inverted matrix.
 
     my $c = $matrix.condition( );        
 
-=head3 type
+=head3 cell-type
 
 Matrix cells can be of type (Int), (Rat), (Num) or (Complex). 
 The widest type of any cell will returned as type object.

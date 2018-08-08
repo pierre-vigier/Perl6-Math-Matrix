@@ -30,7 +30,7 @@ has Rat $!density is lazy;
 
 has Numeric $!trace is lazy;
 has Numeric $!determinant is lazy;
-has Numeric $!type is lazy;
+has Numeric $!cell-type is lazy;
 
 #has Str $!format is lazy;
 
@@ -57,18 +57,12 @@ sub check_matrix_data (@m) {
 
 multi method new (Str $m){
     my @m = $m.lines.map: { [ $_.words.map: {$_.Numeric} ] };
-say " -- new str ",@m.WHAT,' ',@m[0].WHAT,' ',@m[0][0].WHAT;
-say " -- new str ",@m,' ',@m[0];
-
     check_matrix_data( @m );
     self.bless( rows => @m );
 }
 
 multi method new( @m ) {
     check_matrix_data( @m );
-say " -- new a ",@m.WHAT,' ',@m[0].WHAT;
-say " -- new a ",@m,' ',@m[0];
-
     self.bless( rows => @m );
 }
 
@@ -246,7 +240,7 @@ multi method gist(Math::Matrix:D: --> Str) {
     my $max-nr-char;               # maximal pre digit char in cell
     my $cell_with = 6;             #
     my $fmt;
-    given self.type() {
+    given self.cell-type() {
         when Int {
             $max-nr-char = max( @!rows[*;*] ).Int.chars;
             $fmt = " %{$max-nr-char}d ";
@@ -513,7 +507,7 @@ method condition(Math::Matrix:D: --> Numeric) {
     self.norm() * self.inverted().norm();
 }
 
-method !build_type(Math::Matrix:D: --> Numeric){
+method !build_cell-type(Math::Matrix:D: --> Numeric){
     return Complex if any( @!rows[*;*] ) ~~ Complex;
     return Num   if any( @!rows[*;*] ) ~~ Num;
     return Rat if any( @!rows[*;*] ) ~~ Rat;
