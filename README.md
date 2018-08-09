@@ -82,7 +82,7 @@ The default constructor, takes arrays of arrays of numbers os only required para
 
 ### new( "..." )
 
-Alternatively you can define the matrix as string, which makes most sense while using heredocs.
+Alternatively you can define the matrix from a string, which makes most sense while using heredocs.
 
     Math::Matrix.new("1 2 \n 3 4"); # our demo matrix as string
     Math::Matrix.new: q:to/END/;    # indent as you wish

@@ -56,7 +56,7 @@ sub check_matrix_data (@m) {
 }
 
 multi method new (Str $m){
-    my @m = $m.lines.map: { [ $_.words.map: {$_.Numeric} ] };
+    my @m = $m.lines.map: { [ .words.map: {.Numeric} ] };
     check_matrix_data( @m );
     self.bless( rows => @m );
 }
@@ -226,14 +226,14 @@ method Array(Math::Matrix:D: --> Array)   { self!clone_rows }
 method list(Math::Matrix:D: --> List)     { self.list-rows.flat.list }
 
 method list-rows(Math::Matrix:D: --> List){
-    (@!rows.map: {$_.flat}).list;
+    (@!rows.map: {.flat}).list;
 }
 
 method list-columns(Math::Matrix:D: --> List) {
     ((0 .. $!column-count - 1).map: {self.column($_)}).list;
 }
 
-multi method gist(Math::Matrix:U: --> Str) { "({self.^name})" }
+multi method gist(Math::Matrix:U:  --> Str) { "({self.^name})" }
 multi method gist(Math::Matrix:D: --> Str) {
     my $max-rows = 20;
     my $max-chars = 80;
@@ -509,8 +509,8 @@ method condition(Math::Matrix:D: --> Numeric) {
 
 method !build_cell-type(Math::Matrix:D: --> Numeric){
     return Complex if any( @!rows[*;*] ) ~~ Complex;
-    return Num   if any( @!rows[*;*] ) ~~ Num;
-    return Rat if any( @!rows[*;*] ) ~~ Rat;
+    return Num    if any( @!rows[*;*] ) ~~ Num;
+    return Rat   if any( @!rows[*;*] ) ~~ Rat;
     Int;
 }
 
@@ -676,11 +676,12 @@ multi method ACCEPTS(Math::Matrix:D: Math::Matrix:D $b --> Bool) { self.equal( $
 
 method elems (Math::Matrix:D: --> Int)               {  $!row-count * $!column-count }
 
-multi method elem (Math::Matrix:D: Numeric $e  --> Bool) {
+multi method cont (Math::Matrix:D: Numeric $e  --> Bool) {
     self.map( {return True if $_ == $e});
     False;
 }
-multi method elem (Math::Matrix:D: Range $r  --> Bool) {
+
+multi method cont (Math::Matrix:D: Range $r  --> Bool) {
     self.map( {return True if $_ ~~ $r});
     False;
 }
@@ -922,5 +923,5 @@ multi sub infix:<x>( ::?CLASS $a, ::?CLASS $b --> ::?CLASS:D ) is looser(&infix:
 multi sub circumfix:<| |>(::?CLASS $a --> Numeric) is equiv(&prefix:<!>) is export   { $a.determinant }
 multi sub circumfix:<|| ||>(::?CLASS $a --> Numeric) is equiv(&prefix:<!>) is export { $a.norm }
 
-multi sub prefix:<MM>(Str   $m --> ::?CLASS:D) is looser(&infix:<+>) is export(:MM) { ::?CLASS.new($m) }
-multi sub prefix:<MM>(Array $m --> ::?CLASS:D) is looser(&infix:<+>) is export(:MM) { ::?CLASS.new(@$m) }
+multi sub prefix:<MM>(Str   $m --> ::?CLASS:D) is tighter(&infix:<*>) is export(:MM) { ::?CLASS.new($m) }
+multi sub prefix:<MM>(Array $m --> ::?CLASS:D) is tighter(&infix:<*>) is export(:MM) { ::?CLASS.new(@$m) }

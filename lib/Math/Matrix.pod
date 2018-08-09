@@ -39,7 +39,7 @@ This module is pure perl and we plan to use native shaped arrays one day.
 =item numeric properties: cell-type, size, density, trace, determinant, rank, kernel, norm, condition
 =item derived matrices: transposed, negated, conjugated, inverted, reduced-row-echelon-form
 =item decompositions: decompositionLUCrout, decompositionLU, decompositionCholesky
-=item list like ops: elems, elem, equal, map, map-row, map-column, map-cell, reduce, reduce-rows, reduce-columns
+=item list like ops: elems, cont, equal, map, map-row, map-column, map-cell, reduce, reduce-rows, reduce-columns
 =item structural ops: move-row, move-column, swap-rows, swap-columns, splice-rows, splice-columns
 =item matrix math ops: add, subtract, add-row, add-column, multiply, multiply-row, multiply-column, dotProduct, tensorProduct
 =item operators:  MM,  +,   -,   *,  **,  ⋅,  dot,  ÷,  ⊗,  x,  | |,   || ||
@@ -72,7 +72,7 @@ That is why their length has to be the same.
 
 =head3 new( "..." )
 
-Alternatively you can define the matrix as string, which makes most sense while using heredocs.
+Alternatively you can define the matrix from a string, which makes most sense while using heredocs.
 
    Math::Matrix.new("1 2 \n 3 4"); # our demo matrix as string
    Math::Matrix.new: q:to/END/;    # indent as you wish
@@ -549,14 +549,16 @@ Number (count) of elements.
     say $matrix.elems();
     say +$matrix;                       # same thing
 
-=head3 elem
+=head3 cont
 
-Asks if certain value is present in cells (treating the matrix like a baggy set),
+Asks if certain value is containted in cells (treating the matrix like a baggy set),
 or if there is one value within a cetain range.
 
-    Math::Matrix.new([[1,2],[3,4]]).elem(1) :   True
-    Math::Matrix.new([[1,2],[3,4]]).elem(5) :   False
-    Math::Matrix.new([[1,2],[3,4]]).elem(3..7): True
+    Math::Matrix.new([[1,2],[3,4]]).cont(1) :   True
+    Math::Matrix.new([[1,2],[3,4]]).cont(5) :   False
+    Math::Matrix.new([[1,2],[3,4]]).cont(3..7): True
+    
+    MM [[1,2],[3,4]] (cont) 1           # True too
 
 =head3 equal
 
