@@ -9,11 +9,11 @@ my $i = Math::Matrix.new-identity( 3 );
 
 subtest {
     plan 4;
-    ok $a.elem( 3 ),            "value 3 is in a matrix cell";
-    nok $a.elem( 7 ),           "value 7 is in a matrix cell";
-    ok $a.elem(2..4),           "There are cells within asked range";
-    nok $a.elem(7..12),         "There are no cells within asked range";
-}, "Elem";
+    ok $a.cont( 3 ),            "value 3 is in a matrix cell";
+    nok $a.cont( 7 ),           "value 7 is in a matrix cell";
+    ok $a.cont(2..4),           "There are cells within asked range";
+    nok $a.cont(7..12),         "There are no cells within asked range";
+}, "Cont";
 
 
 subtest {

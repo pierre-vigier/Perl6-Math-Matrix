@@ -49,7 +49,7 @@ METHODS
 
   * decompositions: decompositionLUCrout, decompositionLU, decompositionCholesky
 
-  * list like ops: elems, elem, equal, map, map-row, map-column, map-cell, reduce, reduce-rows, reduce-columns
+  * list like ops: elems, cont, equal, map, map-row, map-column, map-cell, reduce, reduce-rows, reduce-columns
 
   * structural ops: move-row, move-column, swap-rows, swap-columns, splice-rows, splice-columns
 
@@ -520,13 +520,15 @@ Number (count) of elements.
     say $matrix.elems();
     say +$matrix;                       # same thing
 
-### elem
+### cont
 
-Asks if certain value is present in cells (treating the matrix like a baggy set), or if there is one value within a cetain range.
+Asks if certain value is containted in cells (treating the matrix like a baggy set), or if there is one value within a cetain range.
 
-    Math::Matrix.new([[1,2],[3,4]]).elem(1) :   True
-    Math::Matrix.new([[1,2],[3,4]]).elem(5) :   False
-    Math::Matrix.new([[1,2],[3,4]]).elem(3..7): True
+    Math::Matrix.new([[1,2],[3,4]]).cont(1) :   True
+    Math::Matrix.new([[1,2],[3,4]]).cont(5) :   False
+    Math::Matrix.new([[1,2],[3,4]]).cont(3..7): True
+
+    MM [[1,2],[3,4]] (cont) 1           # True too
 
 ### equal
 
