@@ -676,20 +676,19 @@ multi method ACCEPTS(Math::Matrix:D: Math::Matrix:D $b --> Bool) { self.equal( $
 
 method elems (Math::Matrix:D: --> Int)               {  $!row-count * $!column-count }
 
-multi method cont (Math::Matrix:D: Numeric $e  --> Bool) {
+multi method cont (Math::Matrix:D: Numeric $e  --> Bool) { # matrix contains element ?
     self.map( {return True if $_ == $e});
     False;
 }
-
 multi method cont (Math::Matrix:D: Range $r  --> Bool) {
     self.map( {return True if $_ ~~ $r});
     False;
 }
 
 method map(Math::Matrix:D: &coderef --> Math::Matrix:D) {
-    Math::Matrix.new( [ @!rows.map: {
-            [ $_.map( &coderef ) ]
-    } ] );
+    Math::Matrix.new( [ @!rows.map: 
+        { [ .map( &coderef ) ] }
+    ] );
 }
 
 method map-row(Math::Matrix:D: Int $row, &coderef --> Math::Matrix:D ) {
@@ -798,7 +797,6 @@ multi method splice-columns(Math::Matrix:D: Int $col, Int $elems = ($!column-cou
     Math::Matrix.new(@m);
 }
 
-# method split (Math::Matrix:D:  @rows, @cols){ }
 ################################################################################
 # end of structural matrix operations - start matrix math operations
 ################################################################################
