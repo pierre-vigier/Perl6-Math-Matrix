@@ -1,14 +1,25 @@
 {
-    "perl"          : "6.c",
-    "name"          : "Math::Matrix",
-    "license"       : "Artistic-2.0",
-    "version"       : "0.2.0",
-    "authors"       : [ "github:pierre-vigier", "github:lichtkind" ],
-    "description"   : "create, compare, compute and measure matrices",
-    "depends"       : [ "AttrX::Lazy" ],
-    "tags"          : [ "Math" ],
-    "provides" : {
-        "Math::Matrix"    : "lib/Math/Matrix.pm6"
-    },
-    "source-url"    : "git://github.com/pierre-vigier/Perl6-Math-Matrix.git"
+  "auth" : "github:pierre-vigier",
+  "authors" : [
+    "github:pierre-vigier",
+    "github:lichtkind"
+  ],
+  "build-depends" : [ ],
+  "depends" : [
+    "AttrX::Lazy"
+  ],
+  "description" : "create, compare, compute and measure matrices",
+  "license" : "Artistic-2.0",
+  "name" : "Math::Matrix",
+  "perl" : "6.c",
+  "provides" : {
+    "Math::Matrix" : "lib/Math/Matrix.pm6"
+  },
+  "resources" : [ ],
+  "source-url" : "git://github.com/pierre-vigier/Perl6-Math-Matrix.git",
+  "tags" : [
+    "Math"
+  ],
+  "test-depends" : [ ],
+  "version" : "0.2.0"
 }
