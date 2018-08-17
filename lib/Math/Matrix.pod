@@ -859,7 +859,8 @@ explicitly with the tag :MM or :ALL.
     my $b   = ?$matrix               # Bool context, True if any cell has a none zero value
     my $str = ~$matrix               # String context, matrix content as data structure
 
-    $matrixa ~~ $matrixb             # check if both have same size and they are cell wise equal
+    $matrixa == $matrixb             # check if both have same size and they are cell wise equal
+    $matrixa ~~ $matrixb             # same thing
 
     my $sum =  $matrixa + $matrixb;  # cell wise sum of two same sized matrices
     my $sum =  $matrix  + $number;   # add number to every cell
