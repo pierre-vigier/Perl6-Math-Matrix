@@ -55,7 +55,7 @@ METHODS
 
   * matrix math ops: add, subtract, add-row, add-column, multiply, multiply-row, multiply-column, dotProduct, tensorProduct
 
-  * operators: MM, +, -, *, **, ⋅, dot, ÷, ⊗, x, | |, || ||
+  * operators: MM, +, -, *, **, ⋅, dot, ÷, ⊗, x, | |, || ||, ‖ ‖
 
 Constructors
 ------------
@@ -417,6 +417,7 @@ Kernel of matrix, number of dependent rows or columns (rank + kernel = dim).
 
     my $norm = $matrix.norm( );           # euclidian norm (L2, p = 2)
     my $norm = ||$matrix||;               # operator shortcut to do the same
+    my $norm = ‖ $matrix ‖;               # unicode op shortcut
     my $norm = $matrix.norm(1);           # p-norm, L1 = sum of all cells
     my $norm = $matrix.norm(p:<4>,q:<3>); # p,q - norm, p = 4, q = 3
     my $norm = $matrix.norm(p:<2>,q:<2>); # Frobenius norm
@@ -823,6 +824,7 @@ The only exception is MM, a shortcut to create a matrix. That has to be importet
 
      | $matrix |                     # determinant
     || $matrix ||                    # Euclidean (L2) norm
+     ‖ $matrix ‖                     # unicode alias
 
     MM [[1]]                         # a new matrix
 
