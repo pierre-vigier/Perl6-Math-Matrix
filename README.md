@@ -1,3 +1,5 @@
+# Perl6-Math-Matrix
+
 [![Build Status](https://travis-ci.org/pierre-vigier/Perl6-Math-Matrix.svg?branch=master)](https://travis-ci.org/pierre-vigier/Perl6-Math-Matrix)
 [![Build status](https://ci.appveyor.com/api/projects/status/github/pierre-vigier/Perl6-Math-Matrix?svg=true)](https://ci.appveyor.com/project/pierre-vigier/Perl6-Math-Matrix/branch/master)
 
@@ -37,7 +39,7 @@ METHODS
 
   * accessors: cell, row, column, diagonal, submatrix
 
-  * conversion: Bool, Numeric, Str, Array, list, list-rows, list-columns, gist, full, perl
+  * conversion: Bool, Numeric, Str, Array, list, list-rows, list-columns, gist, perl
 
   * boolean properties: is-zero, is-identity, is-square, is-diagonal, is-diagonally-dominant, is-upper-triangular, is-lower-triangular, is-invertible, is-symmetric, is-antisymmetric, is-unitary, is-self-adjoint, is-orthogonal, is-positive-definite, is-positive-semidefinite
 
@@ -219,9 +221,12 @@ Conversion into Numeric context. Returns number (amount) of cells (as .elems). P
 
 ### Str
 
-All values separated by one whitespace, rows by horizontal line. It is called implicitly by put and print.
+All values separated by one whitespace, rows by new line. It is called implicitly by put and print. A shortened version is provided by .gist 
 
-    say Math::Matrix.new([[1,2],[3,4]]).Str : 1 2 | 3 4
+    say Math::Matrix.new([[1,2],[3,4]]).Str:
+
+    1 2                 # meaning: "1 2\n3 4"
+    3 4
 
 ### Array
 
@@ -248,23 +253,13 @@ Returns a list of lists, reflecting the row-wise content of the matrix.
 
 ### gist
 
-Limited tabular view, optimized for shell output. Just cuts off excessive columns that do not fit into standard terminal and also stops after 20 rows. Several dots will hint that something is missing. It is implicitly called when:
+Limited tabular view, optimized for shell output. Just cuts off excessive columns that do not fit into standard terminal and also stops after 20 rows. Several dots will hint that something is missing. It is implicitly called by say. For a full view use .Str
 
     say $matrix;      # output when matrix has more than 100 cells
 
     1 2 3 4 5 ..
     3 4 5 6 7 ..
     ...
-
-### full
-
-Full tabular view (all rows and columns) for the shell or file output.
-
-    say $matrix.full;
-
-    1 2 3 4 5 11 12 13 14 15 21 22 23 24 25
-    3 4 5 6 7 13 14 15 16 17 23 24 25 26 27
-    5 6 7 8 9 15 16 17 18 19 25 26 27 28 29
 
 ### perl
 
@@ -533,6 +528,7 @@ Asks if certain value is containted in cells (treating the matrix like a baggy s
 Checks two matrices for equality. They have to be of same size and every element of the first matrix on a particular position has to be equal to the element (on the same position) of the second matrix.
 
     if $matrixa.equal( $matrixb ) {
+    if $matrixa == $matrixb {
     if $matrixa ~~ $matrixb {
 
 ### map
@@ -801,7 +797,8 @@ The only exception is MM, a shortcut to create a matrix. That has to be importet
     my $b   = ?$matrix               # Bool context, True if any cell has a none zero value
     my $str = ~$matrix               # String context, matrix content as data structure
 
-    $matrixa ~~ $matrixb             # check if both have same size and they are cell wise equal
+    $matrixa == $matrixb             # check if both have same size and they are cell wise equal
+    $matrixa ~~ $matrixb             # same thing
 
     my $sum =  $matrixa + $matrixb;  # cell wise sum of two same sized matrices
     my $sum =  $matrix  + $number;   # add number to every cell
