@@ -567,6 +567,7 @@ of the first matrix on a particular position has to be equal to the element
 (on the same position) of the second matrix.
     
     if $matrixa.equal( $matrixb ) {
+    if $matrixa == $matrixb {
     if $matrixa ~~ $matrixb {
 
 =head3 map
