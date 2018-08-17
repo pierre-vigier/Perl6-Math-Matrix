@@ -217,7 +217,7 @@ multi method submatrix(Math::Matrix:D: @rows, @cols --> Math::Matrix:D ){
 
 method Bool(Math::Matrix:D: --> Bool)     { ! self.is-zero }
 method Numeric (Math::Matrix:D: --> Int)  {   self.elems   }
-method Str(Math::Matrix:D: --> Str)       {   join(' | ', @!rows.map:{.Str}) }
+method Str(Math::Matrix:D: --> Str)       {   join("\n", @!rows.map: *.Str) }
 
 multi method perl(Math::Matrix:D: --> Str){ self.WHAT.perl ~ ".new(" ~ @!rows.perl ~ ")" }
 
@@ -265,24 +265,6 @@ multi method gist(Math::Matrix:D: --> Str) {
     }
     $str ~= " ...\n" if $!row-count > $max-rows;
     $str.chomp;
-}
-
-method full (Math::Matrix:D: --> Str) {
-    my $max-char = max( @!rows[*;*] ).Int.chars;
-    my $fmt;
-    if all( @!rows[*;*] ) ~~ Int {
-        $fmt = " %{$max-char}d ";
-    } else {
-        my $max-decimal = max( @!rows[*;*].map( { ( .split(/\./)[1] // '' ).chars } ) );
-        $max-decimal = 5 if $max-decimal > 5; #more than that is not readable
-        $max-char += $max-decimal + 1;
-        $fmt = " \%{$max-char}.{$max-decimal}f ";
-    }
-    my $str;
-    for @!rows -> $r {
-        $str ~= ( [~] $r.map( { $_.fmt($fmt) } ) ) ~ "\n";
-    }
-    $str;
 }
 
 sub insert ($x, @xs) { ([flat @xs[0 ..^ $_], $x, @xs[$_ .. *]] for 0 .. @xs) }
