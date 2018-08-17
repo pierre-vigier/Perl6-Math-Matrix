@@ -1,8 +1,19 @@
 use Test;
 use Math::Matrix;
-plan 8;
+plan 10;
 
 my $matrix = Math::Matrix.new([[1,2],[3,4]]);
+
+subtest {
+   plan 1;
+   ok (| $matrix | == -2), 'ascii determinant operator';
+}, "Determinant";
+
+subtest {
+   plan 2;
+   ok || $matrix || == 30, 'ascii norm operator';
+   ok ‖ $matrix ‖ == 30, 'unicode norm operator';
+}, "L2 Norm";
 
 subtest {
     plan 10;

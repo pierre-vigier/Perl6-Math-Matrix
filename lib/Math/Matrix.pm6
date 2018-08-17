@@ -468,6 +468,7 @@ method !build_kernel(Math::Matrix:D: --> Int) {
 
 multi method norm(Math::Matrix:D: PosInt :$p = 2, PosInt :$q = 1 --> Numeric) {
     my $norm = 0;
+# say "norm $p $q";
     for ^$!column-count -> $c {
         my $col_sum = 0;
         for ^$!row-count -> $r {  $col_sum += abs(@!rows[$r][$c]) ** $p }
@@ -893,16 +894,16 @@ multi sub infix:<**>(::?CLASS $a where { $a.is-square }, Int $e --> ::?CLASS:D )
     $p;
 }
 
-multi sub infix:<⋅>( ::?CLASS $a, ::?CLASS $b --> ::?CLASS:D ) is looser(&infix:<*>) is export { $a.dotProduct( $b ) }
-multi sub infix:<dot>(::?CLASS $a, ::?CLASS $b --> ::?CLASS:D ) is looser(&infix:<*>) is export {$a.dotProduct( $b ) }
-multi sub infix:<÷>(::?CLASS $a,::?CLASS $b --> ::?CLASS:D ) is looser(&infix:<*>) is export { $a.dotProduct( $b.inverted ) }
+multi sub infix:<⋅>( ::?CLASS:D $a, ::?CLASS $b --> ::?CLASS:D ) is looser(&infix:<*>) is export { $a.dotProduct( $b ) }
+multi sub infix:<dot>(::?CLASS:D $a, ::?CLASS $b --> ::?CLASS:D ) is looser(&infix:<*>) is export {$a.dotProduct( $b ) }
+multi sub infix:<÷>( ::?CLASS:D $a, ::?CLASS $b --> ::?CLASS:D ) is looser(&infix:<*>) is export { $a.dotProduct( $b.inverted ) }
 
-multi sub infix:<⊗>( ::?CLASS $a, ::?CLASS $b --> ::?CLASS:D ) is looser(&infix:<*>) is export { $a.tensorProduct( $b ) }
-multi sub infix:<x>( ::?CLASS $a, ::?CLASS $b --> ::?CLASS:D ) is looser(&infix:<*>) is export { $a.tensorProduct( $b ) }
+multi sub infix:<⊗>( ::?CLASS:D $a, ::?CLASS:D $b --> ::?CLASS:D ) is looser(&infix:<*>) is export { $a.tensorProduct( $b ) }
+multi sub infix:<x>( ::?CLASS:D $a, ::?CLASS:D $b --> ::?CLASS:D ) is looser(&infix:<*>) is export { $a.tensorProduct( $b ) }
 
-multi sub circumfix:<| |>(::?CLASS $a --> Numeric) is equiv(&prefix:<!>) is export   { $a.determinant }
-multi sub circumfix:<|| ||>(::?CLASS $a --> Numeric) is equiv(&prefix:<!>) is export { $a.norm }
-multi sub circumfix:<‖ ‖>(::?CLASS $a --> Numeric) is equiv(&prefix:<!>) is export { $a.norm }
+multi sub circumfix:<| |>(::?CLASS:D $a --> Numeric)  is equiv(&prefix:<!>)  is export { $a.determinant }
+multi sub circumfix:<|| ||>(::?CLASS:D $a --> Numeric) is equiv(&prefix:<!>) is export { $a.norm }
+multi sub circumfix:<‖ ‖>(::?CLASS:D $a --> Numeric)  is equiv(&prefix:<!>)  is export { $a.norm }
 
 multi sub prefix:<MM>(Str   $m --> ::?CLASS:D) is tighter(&postcircumfix:<[ ]>) is export(:MM) { ::?CLASS.new($m) }
 multi sub prefix:<MM>(Array $m --> ::?CLASS:D) is tighter(&postcircumfix:<[ ]>) is export(:MM) { ::?CLASS.new(@$m) }
