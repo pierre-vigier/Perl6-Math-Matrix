@@ -493,13 +493,13 @@ multi method norm(Math::Matrix:D: PosInt :$p = 2, PosInt :$q = 1 --> Numeric) {
     }
     $norm ** (1/$q);
 }
-multi method norm(Math::Matrix:D: Str $which where * eq 'row-sum' --> Numeric) {
+multi method norm(Math::Matrix:D: 'row-sum' --> Numeric) {
     max map {[+] map {abs $_}, @$_}, @!rows;
 }
-multi method norm(Math::Matrix:D: Str $which where * eq 'column-sum' --> Numeric) {
+multi method norm(Math::Matrix:D: 'column-sum' --> Numeric) {
     max map {my $c = $_; [+](map {abs $_[$c]}, @!rows) }, ^$!column-count;
 }
-multi method norm(Math::Matrix:D: Str $which where * eq 'max' --> Numeric) {
+multi method norm(Math::Matrix:D: 'max' --> Numeric) {
     max map {max map {abs $_},  @$_}, @!rows;
 }
 
