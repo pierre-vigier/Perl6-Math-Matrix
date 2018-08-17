@@ -466,9 +466,8 @@ method !build_kernel(Math::Matrix:D: --> Int) {
     min(self.size) - self.rank;
 }
 
-multi method norm(Math::Matrix:D: PosInt :$p = 2, PosInt :$q = 1 --> Numeric) {
+multi method norm(Math::Matrix:D: PosInt :$p = 2, PosInt :$q = $p --> Numeric) {
     my $norm = 0;
-# say "norm $p $q";
     for ^$!column-count -> $c {
         my $col_sum = 0;
         for ^$!row-count -> $r {  $col_sum += abs(@!rows[$r][$c]) ** $p }
@@ -476,6 +475,8 @@ multi method norm(Math::Matrix:D: PosInt :$p = 2, PosInt :$q = 1 --> Numeric) {
     }
     $norm ** (1/$q);
 }
+multi method norm(Math::Matrix:D: PosInt $p --> Numeric) { self.norm(:p<$p>,:q<$p>)}
+
 multi method norm(Math::Matrix:D: 'row-sum' --> Numeric) {
     max map {[+] map {abs $_}, @$_}, @!rows;
 }
@@ -485,6 +486,8 @@ multi method norm(Math::Matrix:D: 'column-sum' --> Numeric) {
 multi method norm(Math::Matrix:D: 'max' --> Numeric) {
     max map {max map {abs $_},  @$_}, @!rows;
 }
+multi method norm(Math::Matrix:D: 'frobenius' --> Numeric) { self.norm(:p<2>,:q<2>)}
+multi method norm(Math::Matrix:D: 'euclidean' --> Numeric) { self.norm(:p<2>,:q<2>)}
 
 method condition(Math::Matrix:D: --> Numeric) {
     self.norm() * self.inverted().norm();

@@ -415,6 +415,8 @@ Kernel of matrix, number of dependent rows or columns (rank + kernel = dim).
 
 ### norm
 
+    A norm is a single number, which is an abstraction to the concept of size.
+
     my $norm = $matrix.norm( );           # euclidian norm (L2, p = 2)
     my $norm = ||$matrix||;               # operator shortcut to do the same
     my $norm = ‖ $matrix ‖;               # unicode op shortcut
