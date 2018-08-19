@@ -221,7 +221,7 @@ Conversion into Numeric context. Returns number (amount) of cells (as .elems). P
 
 ### Str
 
-All values separated by one whitespace, rows by new line. It is called implicitly by put and print. A shortened version is provided by .gist 
+All values separated by one whitespace, rows by new line. It is called implicitly by put and print. A shortened version is provided by .gist Same as the input of new.
 
     say Math::Matrix.new([[1,2],[3,4]]).Str:
 
@@ -230,13 +230,16 @@ All values separated by one whitespace, rows by new line. It is called implicitl
 
 ### Array
 
-All cells as an array of arrays (basically what was put into new(...)).
+All cells as an array of arrays (same as what was put into Math::Matrix.new([...])).
 
     say Math::Matrix.new([[1,2],[3,4]]).Array : [[1 2] [3 4]]
 
 ### list
 
-Same as $matrix.list-rows.flat.list : (1 2 3 4)
+Returns a flat list with all cells (same as .list-rows.flat.list).
+
+    say $matrix.list    : (1 2 3 4)
+    say |$matrix        # alias op
 
 ### list-rows
 
