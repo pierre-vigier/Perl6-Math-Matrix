@@ -11,7 +11,7 @@ Math::Matrix - create, compare, compute and measure 2D matrices
 VERSION
 =======
 
-0.2.0
+0.2.5
 
 SYNOPSIS
 ========
@@ -55,7 +55,7 @@ METHODS
 
   * matrix math ops: add, subtract, add-row, add-column, multiply, multiply-row, multiply-column, dotProduct, tensorProduct
 
-  * operators: MM, +, -, *, **, ⋅, dot, ÷, ⊗, x, | |, || ||, ‖ ‖
+  * operators: MM, +, -, *, **, ⋅, dot, ÷, ⊗, x, ❘ ❘, ‖ ‖
 
 Constructors
 ------------
@@ -402,7 +402,7 @@ If you see the columns as vectors, that describe the edges of a solid, the deter
 
     my $det = $matrix.determinant( );
     my $d = $matrix.det( );             # same thing
-    my $d = |$matrix|;                  # operator shortcut
+    my $d = ❘ $matrix ❘;                # unicode operator shortcut
 
 ### rank
 
@@ -418,14 +418,15 @@ Kernel of matrix, number of dependent rows or columns (rank + kernel = dim).
 
 ### norm
 
-    A norm is a single number, which is an abstraction to the concept of size.
+A norm is a single positive number, which is an abstraction to the concept of size. Most common form for matrices is the p-norm, where in step 1 the absolute value of every cell is taken to the power of p. The sum of these results is taken to the power of 1/p. The p-q-Norm extents this process. In his step 2 every column-sum is taken to the power of (p/q). In step 3 the sum of these are taken to the power of (1/q).
 
     my $norm = $matrix.norm( );           # euclidian norm (L2, p = 2)
-    my $norm = ||$matrix||;               # operator shortcut to do the same
     my $norm = ‖ $matrix ‖;               # unicode op shortcut
-    my $norm = $matrix.norm(1);           # p-norm, L1 = sum of all cells
+    my $norm = $matrix.norm(1);           # p-norm, L1 = sum of all cells absolute values
     my $norm = $matrix.norm(p:<4>,q:<3>); # p,q - norm, p = 4, q = 3
-    my $norm = $matrix.norm(p:<2>,q:<2>); # Frobenius norm
+    my $norm = $matrix.norm(p:<2>,q:<2>); # L2 aka Euclidean aka Frobenius norm
+    my $norm = $matrix.norm('euclidean'); # same thing, more expressive to some
+    my $norm = $matrix.norm('frobenius'); # same thing, more expressive to some
     my $norm = $matrix.norm('max');       # maximum norm - biggest absolute value of a cell
     $matrix.norm('row-sum');              # row sum norm - biggest abs. value-sum of a row
     $matrix.norm('column-sum');           # column sum norm - same column wise
@@ -795,9 +796,9 @@ The tensor product between a matrix a of size (m,n) and a matrix b of size (p,q)
 Operators
 =========
 
-The Module overloads or uses a range of well and less known ops. +, -, * and ~~ are commutative.
+The Module overloads or uses a range of well and less known ops. +, -, * and ~~ are commutative. They are always exported (with flag :DEFAULT).
 
-The only exception is MM, a shortcut to create a matrix. That has to be importet explicitly with the tag :MM or :ALL.
+The only exception is MM-operator, a shortcut to create a matrix. That has to be importet explicitly with the tag :MM or :ALL. (Warning: just using: :MM exports only, nothing else!)
 
     my $a   = +$matrix               # Num context, amount (count) of cells
     my $b   = ?$matrix               # Bool context, True if any cell has a none zero value
@@ -817,21 +818,21 @@ The only exception is MM, a shortcut to create a matrix. That has to be importet
     my $sp  =  $matrix  * $number;   # multiply number to every cell
 
     my $dp  =  $a dot $b;            # dot product of two fitting matrices (cols a = rows b)
-    my $dp  =  $a ⋅ $b;              # dot product, unicode alias
-    my $dp  =  $a ÷ $b;              # alias to $a dot $b.inverted
+    my $dp  =  $a ⋅ $b;              # dot product, unicode (U+022C5)
+    my $dp  =  $a ÷ $b;              # alias to $a dot $b.inverted, (U+000F7) 
 
     my $c   =  $a **  3;             # $a to the power of 3, same as $a dot $a dot $a
     my $c   =  $a ** -3;             # alias to ($a dot $a dot $a).inverted
     my $c   =  $a **  0;             # creats an right sized identity matrix
 
     my $tp  =  $a x $b;              # tensor product 
-    my $tp  =  $a ⊗ $b;              # tensor product, unicode alias
+    my $tp  =  $a ⊗ $b;              # tensor product, unicode (U+02297)
 
-     | $matrix |                     # determinant
-    || $matrix ||                    # Euclidean (L2) norm
-     ‖ $matrix ‖                     # unicode alias
+     ｜ $matrix ｜                   # determinant, unicode (U+0FF5C)
+     ‖ $matrix ‖                     # L2 norm (euclidean p=2 to the square), (U+02016)
 
     MM [[1]]                         # a new matrix
+    MM '1'                           # string alias
 
 Author
 ======

@@ -1,7 +1,10 @@
 
- 0.3.0:
-    - 2018.5.
+ 0.2.5:
+    - 2018.8.20
     - added MM operator as shortcut for Math::Matrix.new()
+    - added constructor that takes a string
+    - .Str outputs now same format and constructor takes
+    - removed .full
     - added splice-rows and splice-columns replacing prepend-*, append-* 
       and planned insert-* and delete-*
     - added own methods for .list (flat) and .Array context

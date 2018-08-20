@@ -1,6 +1,6 @@
 use v6.c;
 
-unit class Math::Matrix:ver<0.2.0>:auth<github:pierre-vigier>;
+unit class Math::Matrix:ver<0.2.5>:auth<github:pierre-vigier>;
 use AttrX::Lazy;
 
 has @!rows is required;
