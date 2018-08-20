@@ -3,16 +3,17 @@ use Math::Matrix;
 plan 10;
 
 my $matrix = Math::Matrix.new([[1,2],[3,4]]);
+my $m1 = Math::Matrix.new([[1]]);
 
 subtest {
    plan 1;
-   ok (| $matrix | == -2), 'ascii determinant operator';
+   ok (｜$matrix ｜ == -2), 'ascii determinant operator';
 }, "Determinant";
 
 subtest {
    plan 2;
-   ok || $matrix || == 30, 'ascii norm operator';
-   ok ‖ $matrix ‖ == 30, 'unicode norm operator';
+   ok ‖ $m1 ‖ == 1, 'norm on simplest matrix';
+   ok ‖ $matrix ‖ == 5.477225575051661, 'norm on default matrix';
 }, "L2 Norm";
 
 subtest {

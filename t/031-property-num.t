@@ -86,18 +86,18 @@ subtest {
     my $diagonal = Math::Matrix.new-diagonal([1,2,3]);
     my $matrix = Math::Matrix.new([[1,2,3],[2,4,6],[3,6,9]]);
 
-    dies-ok { $zero.norm(0) }       ,"there is no 0 norm";
-    dies-ok { $zero.norm(1,0) }     ,"there is no n,0 norm";
-    dies-ok { $zero.norm(0.1) }     ,"p accepts only whole numbers";
-    dies-ok { $zero.norm(1,0.1) }   ,"q accepts only whole numbers";
-    ok $zero.norm == 0              ,"Zero matrix is 0 in any norm";
-    ok $identity.norm == 3          ,"Identity matrix norm equals rank";
-    ok $diagonal.norm == 6          ,"Norm of diagonal matrix is equal trace in euclid space";
-    ok $diagonal.norm(:p<2>) == 6   ,"2,1 Norm with one default value";
+    dies-ok { $zero.norm(0) }         ,"there is no 0 norm";
+    dies-ok { $zero.norm(1,0) }       ,"there is no n,0 norm";
+    dies-ok { $zero.norm(0.1) }       ,"p accepts only whole numbers";
+    dies-ok { $zero.norm(1,0.1) }     ,"q accepts only whole numbers";
+    ok $zero.norm == 0                ,"Zero matrix is 0 in any norm";
+    ok $identity.norm == sqrt(3)      ,"Identity matrix norm equals rank";
+    ok $diagonal.norm == sqrt(14)     ,"Norm of diagonal matrix is equal trace in euclid space";
+    ok $diagonal.norm(:p<2>) == sqrt(14), "2,1 Norm with one default value";
     ok $diagonal.norm(:p<2>,:q<1>) == 6,"2,1 Norm with no default value";
-    ok $zero.norm(:p<1>,:q<1>) == 0 ,"Zero matrix is 0 in any norm";
-    ok $matrix.norm(:p<1>,:q<1>)== 36,"1,1 norm is just sum of elements";
-    ok $zero.norm(:p<2>,:q<2>) == 0 ,"Zero matrix is 0 in 2,2 norm too";
+    ok $zero.norm(:p<1>,:q<1>) == 0   ,"Zero matrix is 0 in any norm";
+    ok $matrix.norm(:p<1>,:q<1>)== 36 ,"1,1 norm is just sum of elements";
+    ok $zero.norm(:p<2>,:q<2>) == 0   ,"Zero matrix is 0 in 2,2 norm too";
     ok $diagonal.norm(:p<2>,:q<2>) == sqrt(14),"Frobenius norm";
 
     ok $zero.norm('max') == 0         ,"max norm of zero == 0";

@@ -904,9 +904,8 @@ multi sub infix:<÷>(  Math::Matrix:D $a, Math::Matrix:D $b --> Math::Matrix:D) 
 multi sub infix:<⊗>( Math::Matrix:D $a, Math::Matrix:D $b --> Math::Matrix:D) is equiv(&infix:<x>) is export { $a.tensorProduct( $b ) }
 multi sub infix:<x>( Math::Matrix:D $a, Math::Matrix:D $b --> Math::Matrix:D) is equiv(&infix:<x>) is export { $a.tensorProduct( $b ) }
 
-multi sub circumfix:<| |>(  Math::Matrix:D $m --> Numeric) is equiv(&prefix:<!>) is export { $m.determinant }
-multi sub circumfix:<|| ||>(Math::Matrix:D $m --> Numeric) is equiv(&prefix:<!>) is export { $m.norm }
-multi sub circumfix:<‖ ‖>(  Math::Matrix:D $m --> Numeric) is equiv(&prefix:<!>) is export { $m.norm }
+multi sub circumfix:<｜ ｜>( Math::Matrix:D $m --> Numeric) is equiv(&prefix:<!>) is export { $m.determinant }
+multi sub circumfix:<‖ ‖>( Math::Matrix:D $m --> Numeric)  is equiv(&prefix:<!>) is export { $m.norm }
 
 multi sub prefix:<MM>(Str   $m --> Math::Matrix:D) is tighter(&postcircumfix:<[ ]>) is export(:MM) { Math::Matrix.new($m) }
 multi sub prefix:<MM>(Array $m --> Math::Matrix:D) is tighter(&postcircumfix:<[ ]>) is export(:MM) { Math::Matrix.new(@$m) }
