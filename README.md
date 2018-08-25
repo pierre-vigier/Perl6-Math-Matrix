@@ -95,7 +95,7 @@ Alternatively you can define the matrix from a string, which makes most sense wh
 
 ### new-zero
 
-This method is a constructor that returns an zero (sometimes called empty) matrix (as checked by is-zero) of the size given in parameter. If only one parameter is given, the matrix is quadratic. All the cells are set to 0.
+This method is a constructor that returns an zero (sometimes called empty) matrix (as checked by is-zero) of the size given by parameter. If only one parameter is given, the matrix is quadratic. All the cells are set to 0.
 
     say Math::Matrix.new-zero( 3, 4 ) :
 
@@ -209,28 +209,30 @@ Methods that convert a matrix into other types or allow different views on the o
 Conversion into Bool context. Returns False if matrix is zero (all cells equal zero as in is-zero), otherwise True.
 
     $matrix.Bool
-    ? $matrix           # alias
+    ? $matrix           # alias op
     if $matrix          # matrix in Bool context too
 
 ### Numeric
 
-Conversion into Numeric context. Returns number (amount) of cells (as .elems). Please note, only prefix a prefix + (as in: + $matrix) will call this Method. A infix (as in $matrix + $number) calls .add($number).
+Conversion into Numeric context. Returns number (amount) of cells (as .elems). Please note, only a prefix operator + (as in: + $matrix) will call this Method. An infix (as in $matrix + $number) calls $matrix.add($number).
 
     $matrix.Numeric
     + $matrix           # alias op
 
 ### Str
 
-All values separated by one whitespace, rows by new line. It is called implicitly by put and print. A shortened version is provided by .gist Same as the input of new.
+Returns all cell values separated by one whitespace, rows by new line. This is the same format as expected by Math::Matrix.new(""). Str is called implicitly by put and print. A shortened version is provided by .gist
 
     say Math::Matrix.new([[1,2],[3,4]]).Str:
 
     1 2                 # meaning: "1 2\n3 4"
-    3 4
+    3 4                
+
+    ~$matrix            # alias op
 
 ### Array
 
-All cells as an array of arrays (same as what was put into Math::Matrix.new([...])).
+Content of all cells as an array of arrays (same format that was put into Math::Matrix.new([...])).
 
     say Math::Matrix.new([[1,2],[3,4]]).Array : [[1 2] [3 4]]
 
@@ -256,7 +258,7 @@ Returns a list of lists, reflecting the row-wise content of the matrix.
 
 ### gist
 
-Limited tabular view, optimized for shell output. Just cuts off excessive columns that do not fit into standard terminal and also stops after 20 rows. Several dots will hint that something is missing. It is implicitly called by say. For a full view use .Str
+Limited tabular view, optimized for shell output. Just cuts off excessive columns that do not fit into standard terminal and also stops after 20 rows. Might even not show all decimals. Several dots will hint that something is missing. It is implicitly called by say. For a full view use .Str
 
     say $matrix;      # output when matrix has more than 100 cells
 
