@@ -1,3 +1,4 @@
+use lib "lib";
 use Test;
 use Math::Matrix;
 plan 10;
@@ -7,7 +8,7 @@ my $m1 = Math::Matrix.new([[1]]);
 
 subtest {
    plan 1;
-   ok (｜$matrix ｜ == -2), 'ascii determinant operator';
+   ok( ( ｜ $matrix ｜  == -2), 'unicode determinant operator');
 }, "Determinant";
 
 subtest {
