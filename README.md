@@ -95,7 +95,7 @@ Alternatively you can define the matrix from a string, which makes most sense wh
 
 ### new-zero
 
-This method is an constructor that returns an zero (sometimes empty) matrix (as checked by is-zero) of the size given in parameter. If only one parameter is given, the matrix is quadratic. All the cells are set to 0.
+This method is a constructor that returns an zero (sometimes called empty) matrix (as checked by is-zero) of the size given in parameter. If only one parameter is given, the matrix is quadratic. All the cells are set to 0.
 
     say Math::Matrix.new-zero( 3, 4 ) :
 
