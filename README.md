@@ -830,7 +830,7 @@ The only exception is MM-operator, a shortcut to create a matrix. That has to be
     my $tp  =  $a x $b;              # tensor product 
     my $tp  =  $a ⊗ $b;              # tensor product, unicode (U+02297)
 
-     ｜ $matrix ｜                   # determinant, unicode (U+0FF5C)
+     ｜ $matrix ｜                     # determinant, unicode (U+0FF5C)
      ‖ $matrix ‖                     # L2 norm (euclidean p=2 to the square), (U+02016)
 
     MM [[1]]                         # a new matrix
