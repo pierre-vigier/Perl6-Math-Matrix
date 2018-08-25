@@ -439,7 +439,9 @@ Condition number of a matrix is L2 norm * L2 of inverted matrix.
 
 ### cell-type
 
-Matrix cells can be of type (Int), (Rat), (Num) or (Complex). The widest type of any cell will returned as type object.
+Matrix cells can be of type (Bool), (Int), (Rat), (Num) or (Complex). The widest type of any cell will returned as type object. In this case you get true, because no cell of our default matrix has wider type than (Int) and cells can be safely treated as such.
+
+    if $matrix.cell-type ~~ Int { ...
 
 Derivative Matrices
 -------------------
