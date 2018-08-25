@@ -157,7 +157,6 @@ multi submethod check_row_index       (    @row) { self.check_index(@row,()) }
 multi submethod check_column_index    (Int $col) { self.check_index(0, $col) }
 multi submethod check_column_index    (    @col) { self.check_index((),@col) }
 multi submethod check_index (Int $row, Int $col) {
-
     fail X::OutOfRange.new(:what<Row Index>,   :got($row),:range(0 .. $!row-count - 1))
         unless 0 <= $row < $!row-count;
     fail X::OutOfRange.new(:what<Column Index>,:got($col),:range(0 .. $!column-count - 1))
@@ -172,6 +171,12 @@ multi submethod check_index (@rows, @cols)       {
     fail X::OutOfRange.new(
         :what<Column index> , :got(@cols), :range("0..{$!column-count -1 }")
     ) unless 0 <= all(@cols) < $!column-count;
+}
+
+
+multi method AT-POS (Math::Matrix:D: Int:D $row){
+    self.check_row_index($row);
+    @!rows[$row];
 }
 
 method cell(Math::Matrix:D: Int:D $row, Int:D $column --> Numeric ) {

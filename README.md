@@ -37,7 +37,7 @@ METHODS
 
   * constructors: new, new-zero, new-identity, new-diagonal, new-vector-product
 
-  * accessors: cell, row, column, diagonal, submatrix
+  * accessors: cell, row, column, diagonal, submatrix, AT-POS
 
   * conversion: Bool, Numeric, Str, Array, Hash, list, list-rows, list-columns, gist, perl
 
@@ -147,7 +147,13 @@ Methods that return the content of selected elements (cells).
 
 Gets value of element in row (first parameter) and column (second parameter). (counting always from 0)
 
-    say Math::Matrix.new([[1,2],[3,4]]).cell(0,1) : 2
+    my $matrix = Math::Matrix.new([[1,2],[3,4]]);
+    say $matrix.cell(0,1)               : 2
+    say $matrix[0][1]                   # array syntax alias
+
+### AT-POS
+
+Gets row as array to enable direct postcircumfix syntax as shown in last example. $matrix.AT-POS(0) : [1,2] $matrix[0] # operator alias
 
 ### row
 
@@ -844,6 +850,8 @@ The only exception is MM-operator, a shortcut to create a matrix. That has to be
 
      ｜$matrix ｜                     # determinant, unicode (U+0FF5C)
      ‖ $matrix ‖                     # L2 norm (euclidean p=2 to the square), (U+02016)
+
+       $matrix[1][2]                 # cell in second row and third column
 
     MM [[1]]                         # a new matrix
     MM '1'                           # string alias
