@@ -1,3 +1,4 @@
+use lib "lib";
 use Test;
 use Math::Matrix;
 plan 5;

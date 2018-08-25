@@ -3,18 +3,18 @@
     - redone .gist allows now complex numbers and scientific notation
     - cell-type can now be Bool
     - added converter to hash context
+    - support now .AT-POS and $matrix[1][2] syntax
 
  0.2.5:
     - 2018.8.20
     - added MM operator as shortcut for Math::Matrix.new()
     - added constructor that takes a string
-    - .Str outputs now same format and constructor takes
+    - .Str outputs now same format that constructor takes
     - removed .full
-    - added splice-rows and splice-columns replacing prepend-*, append-* 
-      and planned insert-* and delete-*
+    - added splice-rows and splice-columns replacing prepend-*, append-* and planned insert-* and delete-*
     - added own methods for .list (flat) and .Array context
     - added proper .gist for type object (like all types have) showing (Math::Matrix)
-    - new property type return widest cell type
+    - new property cell-type return widest cell type
     - refreshed doc synopsis and description, improved docs overall
     - added .appveyor.yml file: win CI support to github project
 
