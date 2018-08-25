@@ -31,7 +31,7 @@ This module is pure perl and we plan to use native shaped arrays one day.
 =head1 METHODS
 =item constructors: new, new-zero, new-identity, new-diagonal, new-vector-product
 =item accessors: cell, row, column, diagonal, submatrix
-=item conversion: Bool, Numeric, Str, Array, list, list-rows, list-columns, gist, perl
+=item conversion: Bool, Numeric, Str, Array, Hash, list, list-rows, list-columns, gist, perl
 =item boolean properties: is-zero, is-identity, is-square, is-diagonal,
     is-diagonally-dominant, is-upper-triangular, is-lower-triangular, is-invertible,
     is-symmetric, is-antisymmetric, is-unitary, is-self-adjoint, is-orthogonal,
