@@ -497,7 +497,8 @@ method !build_cell-type(Math::Matrix:D: --> Numeric){
     return Complex if any( @!rows[*;*] ) ~~ Complex;
     return Num    if any( @!rows[*;*] ) ~~ Num;
     return Rat   if any( @!rows[*;*] ) ~~ Rat;
-    Int;
+    return Int  if any( @!rows[*;*] ) ~~ Int;
+    Bool;
 }
 
 ################################################################################
