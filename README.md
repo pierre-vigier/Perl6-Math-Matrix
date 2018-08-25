@@ -256,6 +256,13 @@ Returns a list of lists, reflecting the row-wise content of the matrix.
 
     say Math::Matrix.new( [[1,2],[3,4]] ).list-columns : ((1 3) (2 4))
 
+### Hash
+
+Gets you a nested key - value hash.
+
+    say $matrix.Hash : { 0 => { 0 => 1, 1 => 2}, 1 => {0 => 3, 1 => 4} } 
+    say %$matrix     # alias op
+
 ### gist
 
 Limited tabular view, optimized for shell output. Just cuts off excessive columns that do not fit into standard terminal and also stops after 20 rows. Might even not show all decimals. Several dots will hint that something is missing. It is implicitly called by say. For a full view use .Str
@@ -806,7 +813,10 @@ The only exception is MM-operator, a shortcut to create a matrix. That has to be
 
     my $a   = +$matrix               # Num context, amount (count) of cells
     my $b   = ?$matrix               # Bool context, True if any cell has a none zero value
-    my $str = ~$matrix               # String context, matrix content as data structure
+    my $str = ~$matrix               # String context, matrix content, space and new line separated
+    my $l   = |$matrix               # list context, list of all cells, row-wise
+    my $a   = @$matrix               # same thing
+    my $h   = %$matrix               # hash context, similar to .kv
 
     $matrixa == $matrixb             # check if both have same size and they are cell wise equal
     $matrixa ~~ $matrixb             # same thing

@@ -2,6 +2,7 @@
  0.3.0:
     - redone .gist allows now complex numbers and scientific notation
     - cell-type can now be Bool
+    - added converter to hash context
 
  0.2.5:
     - 2018.8.20
