@@ -55,13 +55,12 @@ sub check_matrix_data (@m) {
     fail "All rows must contain only numeric values" unless all( @m[*;*] ) ~~ Numeric;
 }
 
-multi method new (Str $m){
-    my @m = $m.lines.map: { [ .words.map: {.Numeric} ] };
+multi method new( @m ) {
     check_matrix_data( @m );
     self.bless( rows => @m );
 }
-
-multi method new( @m ) {
+multi method new (Str $m){
+    my @m = $m.lines.map: { [ .words.map: {.Numeric} ] };
     check_matrix_data( @m );
     self.bless( rows => @m );
 }
