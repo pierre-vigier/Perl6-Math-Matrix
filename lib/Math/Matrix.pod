@@ -25,8 +25,11 @@ All methods return readonly data or deep clones - also the constructor does a de
 In that sense the library is thread safe.
 
 All computation heavy properties will be calculated lazily and will be cached.
-All operators listed below (except MM) will be exported automatically.
-Acceptable export tags are :MANDATORY (nothing is exported), :DEFAULT (same as no tag, most ops), :MM (only MM), :ALL.
+Acceptable export tags are: 
+=item :MANDATORY (nothing is exported)
+=item :DEFAULT (same as no tag, most ops will be exported)
+=item :MM (only MM op exported)
+=item :ALL
 
 This module is pure perl and we plan to use native shaped arrays one day.
 

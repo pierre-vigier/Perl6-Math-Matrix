@@ -28,7 +28,15 @@ Because the list based, functional toolbox of Perl 6 is not enough to calculate 
 
 Matrices are readonly - all operations and functions do create new matrix objects. All methods return readonly data or deep clones - also the constructor does a deep clone of provided data. In that sense the library is thread safe.
 
-All computation heavy properties will be calculated lazily and will be cached. All operators listed below (except MM) will be exported automatically. Acceptable export tags are :MANDATORY (nothing is exported), :DEFAULT (same as no tag, most ops), :MM (only MM), :ALL.
+All computation heavy properties will be calculated lazily and will be cached. Acceptable export tags are: 
+
+  * :MANDATORY (nothing is exported)
+
+  * :DEFAULT (same as no tag, most ops will be exported)
+
+  * :MM (only MM op exported)
+
+  * :ALL
 
 This module is pure perl and we plan to use native shaped arrays one day.
 
