@@ -26,7 +26,7 @@ In that sense the library is thread safe.
 
 All computation heavy properties will be calculated lazily and will be cached.
 All operators listed below (except MM) will be exported automatically.
-Acceptable export tags are :MANDATORY (nothing is exported) :DEFAULT :MM :ALL.
+Acceptable export tags are :MANDATORY (nothing is exported), :DEFAULT (same as no tag, most ops), :MM (only MM), :ALL.
 
 This module is pure perl and we plan to use native shaped arrays one day.
 
