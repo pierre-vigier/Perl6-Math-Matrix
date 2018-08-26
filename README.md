@@ -28,7 +28,7 @@ Because the list based, functional toolbox of Perl 6 is not enough to calculate 
 
 Matrices are readonly - all operations and functions do create new matrix objects. All methods return readonly data or deep clones - also the constructor does a deep clone of provided data. In that sense the library is thread safe.
 
-All computation heavy properties will be calculated lazily and all below listed operators will be exported automatically.
+All computation heavy properties will be calculated lazily and will be cached. All operators listed below (except MM) will be exported automatically. Acceptable export tags are :MANDATORY (nothing is exported) :DEFAULT :MM :ALL.
 
 This module is pure perl and we plan to use native shaped arrays one day.
 
@@ -55,7 +55,7 @@ METHODS
 
   * matrix math ops: add, subtract, add-row, add-column, multiply, multiply-row, multiply-column, dotProduct, tensorProduct
 
-  * operators: MM, +, -, *, **, ⋅, dot, ÷, ⊗, x, ❘ ❘, ‖ ‖
+  * operators: MM, +, -, *, **, ⋅, dot, ÷, ⊗, x, ❘ ❘, ‖ ‖, [ ]
 
 Constructors
 ------------
@@ -813,9 +813,9 @@ The tensor product between a matrix a of size (m,n) and a matrix b of size (p,q)
 Operators
 =========
 
-The Module overloads or uses a range of well and less known ops. +, -, * and ~~ are commutative. They are always exported (with flag :DEFAULT).
+The Module overloads or uses a range of well and lesser known ops. +, -, *, ⋅, dot, x, ⊗ and ~~ are commutative. They are always exported (with flag :DEFAULT or :ALL, not under :MANDATORY or :MM).
 
-The only exception is MM-operator, a shortcut to create a matrix. That has to be importet explicitly with the tag :MM or :ALL. (Warning: just using: :MM exports only, nothing else!)
+The only exception is MM-operator, a shortcut to create a matrix. That has to be importet explicitly with the tag :MM or :ALL. The postcircumfix [] - op will always work.
 
     my $a   = +$matrix               # Num context, amount (count) of cells
     my $b   = ?$matrix               # Bool context, True if any cell has a none zero value
@@ -851,7 +851,7 @@ The only exception is MM-operator, a shortcut to create a matrix. That has to be
      ｜$matrix ｜                     # determinant, unicode (U+0FF5C)
      ‖ $matrix ‖                     # L2 norm (euclidean p=2 to the square), (U+02016)
 
-       $matrix[1][2]                 # cell in second row and third column
+       $matrix[1][2]                 # cell in second row and third column, works even when used :MANDATORY tag
 
     MM [[1]]                         # a new matrix
     MM '1'                           # string alias

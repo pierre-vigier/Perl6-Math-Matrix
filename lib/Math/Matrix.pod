@@ -24,7 +24,9 @@ Matrices are readonly - all operations and functions do create new matrix object
 All methods return readonly data or deep clones - also the constructor does a deep clone of provided data.
 In that sense the library is thread safe.
 
-All computation heavy properties will be calculated lazily and all below listed operators will be exported automatically.
+All computation heavy properties will be calculated lazily and will be cached.
+All operators listed below (except MM) will be exported automatically.
+Acceptable export tags are :MANDATORY (nothing is exported) :DEFAULT :MM :ALL.
 
 This module is pure perl and we plan to use native shaped arrays one day.
 
@@ -42,7 +44,7 @@ This module is pure perl and we plan to use native shaped arrays one day.
 =item list like ops: elems, cont, equal, map, map-row, map-column, map-cell, reduce, reduce-rows, reduce-columns
 =item structural ops: move-row, move-column, swap-rows, swap-columns, splice-rows, splice-columns
 =item matrix math ops: add, subtract, add-row, add-column, multiply, multiply-row, multiply-column, dotProduct, tensorProduct
-=item operators:  MM,  +,   -,   *,   **,   ⋅,   dot,   ÷,   ⊗,   x,   ❘ ❘,   ‖ ‖
+=item operators:  MM,  +,   -,   *,   **,   ⋅,   dot,   ÷,   ⊗,   x,   ❘ ❘,   ‖ ‖,   [ ]
 
 
 =head2 Constructors
@@ -880,12 +882,13 @@ concatinated result in matrix c.
 
 =head1 Operators
 
-The Module overloads or uses a range of well and less known ops.
-+, -, * and ~~ are commutative. They are always exported (with flag :DEFAULT).
+The Module overloads or uses a range of well and lesser known ops.
++, -, *, ⋅, dot, x, ⊗ and ~~ are commutative. 
+They are always exported (with flag :DEFAULT or :ALL, not under :MANDATORY or :MM).
 
 The only exception is MM-operator, a shortcut to create a matrix.
 That has to be importet explicitly with the tag :MM or :ALL.
-(Warning: just using: :MM exports only, nothing else!)
+The postcircumfix [] - op will always work.
 
     my $a   = +$matrix               # Num context, amount (count) of cells
     my $b   = ?$matrix               # Bool context, True if any cell has a none zero value
@@ -921,7 +924,7 @@ That has to be importet explicitly with the tag :MM or :ALL.
      ｜$matrix ｜                     # determinant, unicode (U+0FF5C)
      ‖ $matrix ‖                     # L2 norm (euclidean p=2 to the square), (U+02016)
 
-       $matrix[1][2]                 # cell in second row and third column
+       $matrix[1][2]                 # cell in second row and third column, works even when used :MANDATORY tag
 
     MM [[1]]                         # a new matrix
     MM '1'                           # string alias
