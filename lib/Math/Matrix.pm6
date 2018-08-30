@@ -60,7 +60,7 @@ multi method new( @m ) {
     self.bless( rows => @m );
 }
 multi method new (Str $m){
-    my @m = $m.lines.map: { [ .words.map: {.Numeric} ] };
+    my @m = $m.lines.map: { .words.map: {.Bool.Str eq $_ ?? .Bool !! .Numeric} };
     check_matrix_data( @m );
     self.bless( rows => @m );
 }
@@ -262,7 +262,7 @@ multi method gist(Math::Matrix:D: --> Str) {
             $fmt = " \%{$max-nr-char}.{$max-decimal}f ";
             $cell_with = $max-nr-char + 3 + $max-decimal;
         }
-        when Complex {
+;        when Complex {
         }
     }
     my $rows = min $!row-count, $max-rows;
