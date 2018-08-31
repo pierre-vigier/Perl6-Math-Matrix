@@ -49,7 +49,7 @@ METHODS
 
   * boolean properties: is-zero, is-identity, is-square, is-diagonal, is-diagonally-dominant, is-upper-triangular, is-lower-triangular, is-invertible, is-symmetric, is-antisymmetric, is-unitary, is-self-adjoint, is-orthogonal, is-positive-definite, is-positive-semidefinite
 
-  * numeric properties: narrowest-cell-type, widest-cell-type, size, density, trace, determinant, rank, kernel, norm, condition
+  * numeric properties: size, density, trace, determinant, rank, kernel, norm, condition, narrowest-cell-type, widest-cell-type
 
   * derived matrices: transposed, negated, conjugated, inverted, reduced-row-echelon-form
 
@@ -465,6 +465,10 @@ Matrix cells can be (from most narrow to widest), of type (Bool), (Int), (Num), 
 In the next example the smartmatch returns true, because no cell of our default example matrix has wider type than (Int). After such a test all cells can be safely treated as Int or Bool.
 
     if $matrix.widest-cell-type ~~ Int { ...
+
+You can also check if all cells have the same type:
+
+    if $matrix.widest-cell-type eqv $matrix.narrowest-cell-type
 
 Derivative Matrices
 -------------------

@@ -4,7 +4,12 @@ use Math::Matrix;
 plan 8;
 
 subtest {
-    ok 1, 'good';
+    my $matrixa = Math::Matrix.new([[1,2],[3,4]]);
+    my $matrixm = Math::Matrix.new([[Bool,2],[3-i, 4]]);
+    ok $matrixa.narrowest-cell-type ~~ Int, "got narrowest type of default example correct";
+    ok $matrixa.widest-cell-type ~~ Int, "got widest type of default example correct";
+    ok $matrixm.narrowest-cell-type ~~ Bool, "got narrowest type of mixed matrix correct";
+    ok $matrixm.widest-cell-type ~~ Complex, "got widest type of mixed matrix correct";
 }, 'Cell Type';
 
 subtest {
