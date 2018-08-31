@@ -40,13 +40,13 @@ Acceptable export tags are:
     is-diagonally-dominant, is-upper-triangular, is-lower-triangular, is-invertible,
     is-symmetric, is-antisymmetric, is-unitary, is-self-adjoint, is-orthogonal,
     is-positive-definite, is-positive-semidefinite
-=item numeric properties: cell-type, size, density, trace, determinant, rank, kernel, norm, condition
+=item numeric properties: narrowest-cell-type, widest-cell-type, size, density, trace, determinant, rank, kernel, norm, condition
 =item derived matrices: transposed, negated, conjugated, inverted, reduced-row-echelon-form
 =item decompositions: decompositionLUCrout, decompositionLU, decompositionCholesky
 =item list like ops: elems, cont, equal, map, map-row, map-column, map-cell, reduce, reduce-rows, reduce-columns
 =item structural ops: move-row, move-column, swap-rows, swap-columns, splice-rows, splice-columns
 =item matrix math ops: add, subtract, add-row, add-column, multiply, multiply-row, multiply-column, dotProduct, tensorProduct
-=item operators:  MM,  +,   -,   *,   **,   ⋅,   dot,   ÷,   ⊗,   x,   ❘ ❘,   ‖ ‖,   [ ]
+=item operators:   MM,   +,   -,   *,   **,   dot,   ⋅,   ÷,   x,   ⊗,   ❘ ❘,   ‖ ‖,   [ ]
 
 
 =head2 Constructors
@@ -488,14 +488,19 @@ Condition number of a matrix is L2 norm * L2 of inverted matrix.
 
     my $c = $matrix.condition( );        
 
-=head3 cell-type
+=head3 narrowest-cell-type, widest-cell-type
 
-Matrix cells can be of type (Bool), (Int), (Rat), (Num) or (Complex). 
+Matrix cells can be (from most narrow to widest), of type (Bool), (Int), (Num), (Rat), (FatRat) or (Complex). 
 The widest type of any cell will returned as type object.
-In this case you get true, because no cell of our default matrix has wider type
-than (Int) and cells can be safely treated as such.
 
-    if $matrix.cell-type ~~ Int { ...
+In the next example the smartmatch returns true, because no cell of our default example matrix has wider type
+than (Int). After such a test all cells can be safely treated as Int or Bool.
+
+    if $matrix.widest-cell-type ~~ Int { ...
+
+You can also check if all cells have the same type:
+
+    if $matrix.widest-cell-type eqv $matrix.narrowest-cell-type
 
 =head2 Derivative Matrices
 

@@ -30,7 +30,8 @@ has Rat $!density is lazy;
 
 has Numeric $!trace is lazy;
 has Numeric $!determinant is lazy;
-has Numeric $!cell-type is lazy;
+has Numeric $!narrowest-cell-type is lazy;
+has Numeric $!widest-cell-type is lazy;
 
 #has Str $!format is lazy;
 
@@ -262,7 +263,7 @@ multi method gist(Math::Matrix:D: --> Str) {
             $fmt = " \%{$max-nr-char}.{$max-decimal}f ";
             $cell_with = $max-nr-char + 3 + $max-decimal;
         }
-;        when Complex {
+        when Complex {
         }
     }
     my $rows = min $!row-count, $max-rows;
@@ -502,11 +503,20 @@ method condition(Math::Matrix:D: --> Numeric) {
     self.norm() * self.inverted().norm();
 }
 
-method !build_cell-type(Math::Matrix:D: --> Numeric){
-    return Complex if any( @!rows[*;*] ) ~~ Complex;
-    return Num    if any( @!rows[*;*] ) ~~ Num;
-    return Rat   if any( @!rows[*;*] ) ~~ Rat;
+method !build_narrowest-cell-type(Math::Matrix:D: --> Numeric){
+    return Bool if any( @!rows[*;*] ) ~~ Bool;
     return Int  if any( @!rows[*;*] ) ~~ Int;
+    return Num  if any( @!rows[*;*] ) ~~ Num;
+    return Rat  if any( @!rows[*;*] ) ~~ Rat;
+    return FatRat if any( @!rows[*;*] ) ~~ FatRat;
+    Complex;
+}
+method !build_widest-cell-type(Math::Matrix:D: --> Numeric){
+    return Complex if any( @!rows[*;*] ) ~~ Complex;
+    return FatRat if any( @!rows[*;*] ) ~~ FatRat;
+    return Rat   if any( @!rows[*;*] ) ~~ Rat;
+    return Num  if any( @!rows[*;*] ) ~~ Num;
+    return Int if any( @!rows[*;*] ) ~~ Int;
     Bool;
 }
 

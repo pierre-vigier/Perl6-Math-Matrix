@@ -1,8 +1,11 @@
 use lib "lib";
 use Test;
 use Math::Matrix;
-plan 7;
+plan 8;
 
+subtest {
+    ok 1, 'good';
+}, 'Cell Type';
 
 subtest {
     plan 4;

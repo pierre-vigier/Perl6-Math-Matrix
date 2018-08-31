@@ -49,7 +49,7 @@ METHODS
 
   * boolean properties: is-zero, is-identity, is-square, is-diagonal, is-diagonally-dominant, is-upper-triangular, is-lower-triangular, is-invertible, is-symmetric, is-antisymmetric, is-unitary, is-self-adjoint, is-orthogonal, is-positive-definite, is-positive-semidefinite
 
-  * numeric properties: cell-type, size, density, trace, determinant, rank, kernel, norm, condition
+  * numeric properties: narrowest-cell-type, widest-cell-type, size, density, trace, determinant, rank, kernel, norm, condition
 
   * derived matrices: transposed, negated, conjugated, inverted, reduced-row-echelon-form
 
@@ -61,7 +61,7 @@ METHODS
 
   * matrix math ops: add, subtract, add-row, add-column, multiply, multiply-row, multiply-column, dotProduct, tensorProduct
 
-  * operators: MM, +, -, *, **, ⋅, dot, ÷, ⊗, x, ❘ ❘, ‖ ‖, [ ]
+  * operators: MM, +, -, *, **, dot, ⋅, ÷, x, ⊗, ❘ ❘, ‖ ‖, [ ]
 
 Constructors
 ------------
@@ -458,11 +458,13 @@ Condition number of a matrix is L2 norm * L2 of inverted matrix.
 
     my $c = $matrix.condition( );
 
-### cell-type
+### narrowest-cell-type, widest-cell-type
 
-Matrix cells can be of type (Bool), (Int), (Rat), (Num) or (Complex). The widest type of any cell will returned as type object. In this case you get true, because no cell of our default matrix has wider type than (Int) and cells can be safely treated as such.
+Matrix cells can be (from most narrow to widest), of type (Bool), (Int), (Num), (Rat), (FatRat) or (Complex). The widest type of any cell will returned as type object.
 
-    if $matrix.cell-type ~~ Int { ...
+In the next example the smartmatch returns true, because no cell of our default example matrix has wider type than (Int). After such a test all cells can be safely treated as Int or Bool.
+
+    if $matrix.widest-cell-type ~~ Int { ...
 
 Derivative Matrices
 -------------------
