@@ -24,16 +24,15 @@ has Bool $!is-invertible is lazy;
 has Bool $!is-positive-definite is lazy;
 has Bool $!is-positive-semidefinite is lazy;
 
-has Int $!rank is lazy;
-has Int $!kernel is lazy;
-has Rat $!density is lazy;
-
+has Int     $!rank is lazy;
+has Int     $!kernel is lazy;
+has Rat     $!density is lazy;
 has Numeric $!trace is lazy;
 has Numeric $!determinant is lazy;
 has Numeric $!narrowest-cell-type is lazy;
 has Numeric $!widest-cell-type is lazy;
 
-#has Str $!format is lazy;
+has Str     $!gist;
 
 
 method !rows       { @!rows }
@@ -243,38 +242,40 @@ method list-columns(Math::Matrix:D: --> List) {
     ((0 .. $!column-count - 1).map: {self.column($_)}).list;
 }
 
-multi method gist(Math::Matrix:U:  --> Str) { "({self.^name})" }
-multi method gist(Math::Matrix:D: --> Str) {
-    my $max-rows = 20;
-    my $max-chars = 80;
-    my $max-nr-char;               # maximal pre digit char in cell
-    my $cell_with = 6;             #
-    my $fmt;
-    given self.cell-type() {
-        when Int {
-            $max-nr-char = max( @!rows[*;*] ).Int.chars;
-            $fmt = " %{$max-nr-char}d ";
-            $cell_with = $max-nr-char + 2;
+multi method gist(Math::Matrix:U: --> Str) { "({self.^name})" }
+multi method gist(Math::Matrix:D: Int:D $max-chars = 80, Int:D $max-rows = 20 --> Str) {
+    unless $!gist.defined {
+        my @col-width;                 # comma im total
+        my $max-nr-char;               # maximal pre digit char in cell
+        my $cell_with = 6;             #
+        my $fmt;
+        given self.widest-cell-type() {
+            when Int {
+                $max-nr-char = max( @!rows[*;*] ).Int.chars;
+                $fmt = " %{$max-nr-char}d ";
+                $cell_with = $max-nr-char + 2;
+            }
+            when Rat {
+                my $max-decimal = max( @!rows[*;*].map( { ( .split(/\./)[1] // '' ).chars } ) );
+                $max-decimal = 5 if $max-decimal > 5; #more than that is not readable
+                $max-nr-char = max( @!rows[*;*] ).Int.chars + $max-decimal + 1;
+                $fmt = " \%{$max-nr-char}.{$max-decimal}f ";
+                $cell_with = $max-nr-char + 3 + $max-decimal;
+            }
+            when Complex {
+            }
         }
-        when Rat {
-            my $max-decimal = max( @!rows[*;*].map( { ( .split(/\./)[1] // '' ).chars } ) );
-            $max-decimal = 5 if $max-decimal > 5; #more than that is not readable
-            $max-nr-char = max( @!rows[*;*] ).Int.chars + $max-decimal + 1;
-            $fmt = " \%{$max-nr-char}.{$max-decimal}f ";
-            $cell_with = $max-nr-char + 3 + $max-decimal;
+        my $rows = min $!row-count, $max-rows;
+        my $cols = min $!column-count, $max-chars div $cell_with;
+        my $row-addon = $!column-count > $cols ?? '..' !! '';
+        my $str;
+        for @!rows[0 .. $rows-1] -> $r {
+            $str ~= ( [~] $r.[0..$cols-1].map( { $_.fmt($fmt) } ) ) ~ "$row-addon\n";
         }
-        when Complex {
-        }
+        $str ~= " ...\n" if $!row-count > $max-rows;
+        $!gist = $str.chomp;
     }
-    my $rows = min $!row-count, $max-rows;
-    my $cols = min $!column-count, $max-chars div $cell_with;
-    my $row-addon = $!column-count > $cols ?? '..' !! '';
-    my $str;
-    for @!rows[0 .. $rows-1] -> $r {
-        $str ~= ( [~] $r.[0..$cols-1].map( { $_.fmt($fmt) } ) ) ~ "$row-addon\n";
-    }
-    $str ~= " ...\n" if $!row-count > $max-rows;
-    $str.chomp;
+    $!gist;
 }
 
 sub insert ($x, @xs) { ([flat @xs[0 ..^ $_], $x, @xs[$_ .. *]] for 0 .. @xs) }

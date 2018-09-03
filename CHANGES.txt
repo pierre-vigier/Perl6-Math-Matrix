@@ -5,6 +5,7 @@
     - added converter to hash context
     - cell-type can now be Bool and FatRat
     - cell-type changed into narrowest-cell-type and widest-cell-type
+    - making width and height of the table gist displayy optional arguments
 
  0.2.5:
     - 2018.8.20
