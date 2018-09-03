@@ -277,13 +277,15 @@ Gets you a nested key - value hash.
 
 ### gist
 
-Limited tabular view, optimized for shell output. Just cuts off excessive columns that do not fit into standard terminal and also stops after 20 rows. Might even not show all decimals. Several dots will hint that something is missing. It is implicitly called by say. For a full view use .Str
+Limited tabular view, optimized for shell output. Just cuts off excessive columns that do not fit into standard terminal and also stops after 20 rows. If you call it explicitly, you can add width and height (char count) as optional arguments. Might even not show all decimals. Several dots will hint that something is missing. It is implicitly called by say. For a full view use .Str
 
     say $matrix;      # output when matrix has more than 100 cells
 
     1 2 3 4 5 ..
     3 4 5 6 7 ..
     ...
+
+    say $matrix.gist(100);  # show it on wide (100 char) terminal
 
 ### perl
 
