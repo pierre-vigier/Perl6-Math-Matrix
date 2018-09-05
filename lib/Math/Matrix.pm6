@@ -49,19 +49,19 @@ subset NumArray of Array where { .all ~~ Numeric };
 ################################################################################
 
 
-sub check_matrix_data (@m) {
+sub check-matrix-data (@m) {
     fail "Expect an Array of Array" unless all @m ~~ Array;
     fail "All rows must contains the same number of elements" unless @m.elems == 1 or @m[0] == all @m[*];
     fail "All rows must contain only numeric values" unless all( @m[*;*] ) ~~ Numeric;
 }
 
 multi method new( @m ) {
-    check_matrix_data( @m );
+    check-matrix-data( @m );
     self.bless( rows => @m );
 }
 multi method new (Str $m){
     my @m = $m.lines.map: { .words.map: {.Bool.Str eq $_ ?? .Bool !! .Numeric} };
-    check_matrix_data( @m );
+    check-matrix-data( @m );
     self.bless( rows => @m );
 }
 
@@ -151,17 +151,20 @@ method new-vector-product (@column_vector, @row_vector){
 # end of constructor - start accessors
 ################################################################################
 
-multi submethod check_row_index       (Int $row) { self.check_index($row, 0) }
-multi submethod check_row_index       (    @row) { self.check_index(@row,()) }
-multi submethod check_column_index    (Int $col) { self.check_index(0, $col) }
-multi submethod check_column_index    (    @col) { self.check_index((),@col) }
-multi submethod check_index (Int $row, Int $col) {
-    fail X::OutOfRange.new(:what<Row Index>,   :got($row),:range(0 .. $!row-count - 1))
-        unless 0 <= $row < $!row-count;
-    fail X::OutOfRange.new(:what<Column Index>,:got($col),:range(0 .. $!column-count - 1))
-        unless 0 <= $col < $!column-count;
+multi submethod check-row-index       (Int $row) { 
+    fail X::OutOfRange.new(:what<Row Index>, :got($row), :range(0 .. $!row-count - 1)) unless 0 <= $row < $!row-count
 }
-multi submethod check_index (@rows, @cols)       {
+multi submethod check-column-index    (Int $col) { 
+    fail X::OutOfRange.new(:what<Column Index>,:got($col),:range(0 .. $!column-count - 1)) unless 0 <= $col < $!column-count
+}
+multi submethod check-index (Int $row, Int $col) { 
+    self.check-row-index($row); 
+    self.check-column-index($col);
+}
+
+multi submethod check-row-index       (    @row) { self.check-index(@row,()) }
+multi submethod check-column-index    (    @col) { self.check-index((),@col) }
+multi submethod check-index (@rows, @cols)       {
     fail "Row index has to be an Int." unless all(@rows) ~~ Int;
     fail "Column index has to be an Int." unless all(@cols) ~~ Int;
     fail X::OutOfRange.new(
@@ -174,22 +177,22 @@ multi submethod check_index (@rows, @cols)       {
 
 
 multi method AT-POS (Math::Matrix:D: Int:D $row){
-    self.check_row_index($row);
+    self.check-row-index($row);
     @!rows[$row];
 }
 
 method cell(Math::Matrix:D: Int:D $row, Int:D $column --> Numeric ) {
-    self.check_index($row, $column);
+    self.check-index($row, $column);
     @!rows[$row][$column];
 }
 
 method row(Math::Matrix:D: Int:D $row  --> List) {
-    self.check_row_index($row);
+    self.check-row-index($row);
     |@!rows[$row];
 }
 
 method column(Math::Matrix:D: Int:D $column --> List) {
-    self.check_column_index($column);
+    self.check-column-index($column);
     (@!rows.keys.map:{ @!rows[$_;$column] }).list;
 }
 
@@ -200,7 +203,7 @@ method !build_diagonal(Math::Matrix:D: --> List){
 
 
 multi method submatrix(Math::Matrix:D: Int:D $row, Int:D $column --> Math::Matrix:D ){
-    self.check_index($row, $column);
+    self.check-index($row, $column);
     my @rows = ^$!row-count;     @rows.splice($row,1);
     my @cols = ^$!column-count;  @cols.splice($column,1);
     self.submatrix(@rows ,@cols);
@@ -211,7 +214,7 @@ multi method submatrix(Math::Matrix:D: Int:D $row-min, Int:D $col-min, Int:D $ro
     self.submatrix(($row-min .. $row-max).list, ($col-min .. $col-max).list);
 }
 multi method submatrix(Math::Matrix:D: @rows, @cols --> Math::Matrix:D ){
-    self.check_index(@rows, @cols);
+    self.check-index(@rows, @cols);
     Math::Matrix.new([ @rows.map( { [ @!rows[$_][|@cols] ] } ) ]);
 }
 
@@ -488,11 +491,10 @@ multi method norm(Math::Matrix:D: PosInt :$p = 2, PosInt :$q = $p --> Numeric) {
 }
 multi method norm(Math::Matrix:D: PosInt $p --> Numeric) { self.norm(:p<$p>,:q<$p>)}
 
-multi method norm(Math::Matrix:D: 'row-sum' --> Numeric) {
-    max map {[+] map {abs $_}, @$_}, @!rows;
-}
+multi method norm(Math::Matrix:D: 'row-sum' --> Numeric) { max map {[+] map {abs $_}, @$_}, @!rows }
+
 multi method norm(Math::Matrix:D: 'column-sum' --> Numeric) {
-    max map {my $c = $_; [+](map {abs $_[$c]}, @!rows) }, ^$!column-count;
+    max map {self.column() }, ^$!column-count
 }
 multi method norm(Math::Matrix:D: 'max' --> Numeric) {
     max map {max map {abs $_},  @$_}, @!rows;
@@ -699,21 +701,21 @@ method map(Math::Matrix:D: &coderef --> Math::Matrix:D) {
 }
 
 method map-row(Math::Matrix:D: Int $row, &coderef --> Math::Matrix:D ) {
-    self.check_row_index($row);
+    self.check-row-index($row);
     my @m = self!clone_rows;
     @m[$row] = @m[$row].map(&coderef);
     Math::Matrix.new( @m );
 }
 
 method map-column(Math::Matrix:D: Int $col, &coderef --> Math::Matrix:D ) {
-    self.check_column_index($col);
+    self.check-column-index($col);
     my @m = self!clone_rows;
     (^$!row-count).map:{ @m[$_;$col] = &coderef( @m[$_;$col] ) };
     Math::Matrix.new( @m );
 }
 
 method map-cell(Math::Matrix:D: Int $row, Int $col, &coderef --> Math::Matrix:D ) {
-    self.check_index($row, $col);
+    self.check-index($row, $col);
     my @m = self!clone_rows;
     @m[$row;$col] = &coderef( @m[$row;$col] );
     Math::Matrix.new( @m );
@@ -739,7 +741,7 @@ multi method move-row (Math::Matrix:D: Pair $p --> Math::Matrix:D) {
     self.move-row($p.key, $p.value) 
 }
 multi method move-row (Math::Matrix:D: Int $from, Int $to --> Math::Matrix:D) {
-    self.check_row_index([$from, $to]);
+    self.check-row-index([$from, $to]);
     return self if $from == $to;
     my @rows = (^$!row-count).list;
     @rows.splice($to,0,@rows.splice($from,1));
@@ -750,7 +752,7 @@ multi method move-column (Math::Matrix:D: Pair $p --> Math::Matrix:D) {
     self.move-column($p.key, $p.value) 
 }
 multi method move-column (Math::Matrix:D: Int $from, Int $to --> Math::Matrix:D) {
-    self.check_column_index([$from, $to]);
+    self.check-column-index([$from, $to]);
     return self if $from == $to;
     my @cols = (^$!column-count).list;
     @cols.splice($to,0,@cols.splice($from,1));
@@ -758,7 +760,7 @@ multi method move-column (Math::Matrix:D: Int $from, Int $to --> Math::Matrix:D)
 }
 
 method swap-rows (Math::Matrix:D: Int $rowa, Int $rowb --> Math::Matrix:D) {
-    self.check_row_index([$rowa, $rowb]);
+    self.check-row-index([$rowa, $rowb]);
     return self if $rowa == $rowb;
     my @rows = (^$!row-count).list;
     (@rows.[$rowa], @rows.[$rowb]) = (@rows.[$rowb], @rows.[$rowa]);
@@ -766,7 +768,7 @@ method swap-rows (Math::Matrix:D: Int $rowa, Int $rowb --> Math::Matrix:D) {
 }
 
 method swap-columns (Math::Matrix:D: Int $cola, Int $colb --> Math::Matrix:D) {
-    self.check_column_index([$cola, $colb]);
+    self.check-column-index([$cola, $colb]);
     return self if $cola == $colb;
     my @cols = (^$!column-count).list;
     (@cols.[$cola], @cols.[$colb]) = (@cols.[$colb], @cols.[$cola]);
@@ -782,7 +784,7 @@ multi method splice-rows(Math::Matrix:D: Int $row, Int $elems = ($!row-count - $
     fail "Number of elements to delete (second parameter) has to be zero or more!)" if $elems < 0;
     if $replacement.elems > 0 {
         fail "Number of columns in and original matrix and replacement has to be same" unless $replacement[0].elems == $!column-count;
-        check_matrix_data( @$replacement );
+        check-matrix-data( @$replacement );
     }
     my @m = self!clone_rows;
     @m.splice($pos, $elems, $replacement.list);
@@ -798,7 +800,7 @@ multi method splice-columns(Math::Matrix:D: Int $col, Int $elems = ($!column-cou
     fail "Column index (first parameter) is outside of matrix size!" unless 0 <= $pos <= $!column-count;
     fail "Number of elements to delete (second parameter) has to be zero or more!)" if $elems < 0;
     fail "Number of rows in original matrix and replacement has to be same" unless $replacement.elems == $!row-count;
-    check_matrix_data( @$replacement );
+    check-matrix-data( @$replacement );
     my @m = self!clone_rows;
     @m.keys.map:{ @m[$_].splice($pos, $elems, $replacement[$_]) };
     Math::Matrix.new(@m);
@@ -835,7 +837,7 @@ multi method subtract(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b!
 }
 
 method add-row(Math::Matrix:D: Int $row, @row --> Math::Matrix:D ) {
-    self.check_row_index($row);
+    self.check-row-index($row);
     fail "Expect Array of Number as second parameter" unless @row ~~ NumArray;
     fail "Matrix has $!column-count columns, but got "~ +@row ~ "element row." unless $!column-count == +@row;
     my @m = self!clone_rows;
@@ -844,7 +846,7 @@ method add-row(Math::Matrix:D: Int $row, @row --> Math::Matrix:D ) {
 }
 
 method add-column(Math::Matrix:D: Int $col, @col --> Math::Matrix:D ) {
-    self.check_column_index($col);
+    self.check-column-index($col);
     fail "Expect Array of Number as second parameter" unless @col ~~ NumArray;
     fail "Matrix has $!row-count rows, but got "~ +@col ~ "element column." unless $!row-count == +@col;
     my @m = self!clone_rows;
@@ -866,7 +868,7 @@ multi method multiply(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b!
 }
 
 method multiply-row(Math::Matrix:D: Int $row, Numeric $factor --> Math::Matrix:D ) {
-    self.check_row_index($row);
+    self.check-row-index($row);
     self.map-row($row,{$_ * $factor});
 }
 
