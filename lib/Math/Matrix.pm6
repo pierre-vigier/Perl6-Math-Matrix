@@ -1,6 +1,7 @@
 use v6.c;
+need Math::Matrix::Util;
 
-unit class Math::Matrix:ver<0.2.5>:auth<github:pierre-vigier>;
+unit class Math::Matrix:ver<0.2.5>:auth<github:pierre-vigier> does Math::Matrix::Util;
 use AttrX::Lazy;
 
 has @!rows is required;
@@ -489,21 +490,16 @@ multi method norm(Math::Matrix:D: PosInt :$p = 2, PosInt :$q = $p --> Numeric) {
     }
     $norm ** (1/$q);
 }
-multi method norm(Math::Matrix:D: PosInt $p --> Numeric) { self.norm(:p<$p>,:q<$p>)}
+multi method norm(Math::Matrix:D: PosInt $p   --> Numeric){ self.norm(:p<$p>,:q<$p>)}
+multi method norm(Math::Matrix:D: 'frobenius' --> Numeric){ self.norm(:p<2>, :q<2>)}
+multi method norm(Math::Matrix:D: 'euclidean' --> Numeric){ self.norm(:p<2>, :q<2>)}
 
-multi method norm(Math::Matrix:D: 'row-sum' --> Numeric) { max map {[+] map {abs $_}, @$_}, @!rows }
-
-multi method norm(Math::Matrix:D: 'column-sum' --> Numeric) {
-    max map {self.column() }, ^$!column-count
-}
-multi method norm(Math::Matrix:D: 'max' --> Numeric) {
-    max map {max map {abs $_},  @$_}, @!rows;
-}
-multi method norm(Math::Matrix:D: 'frobenius' --> Numeric) { self.norm(:p<2>,:q<2>)}
-multi method norm(Math::Matrix:D: 'euclidean' --> Numeric) { self.norm(:p<2>,:q<2>)}
+multi method norm(Math::Matrix:D: 'max' --> Numeric)      { max            @!rows.map: {max .map: *.abs} }
+multi method norm(Math::Matrix:D: 'row-sum' --> Numeric)  { max            @!rows.map: {[+] .map: *.abs} }
+multi method norm(Math::Matrix:D: 'column-sum'--> Numeric){ max (^$!column-count).map: {[+] self.column($_).map: *.abs} }
 
 method condition(Math::Matrix:D: --> Numeric) {
-    self.norm() * self.inverted().norm();
+    self.norm() * self.inverted().norm()
 }
 
 method !build_narrowest-cell-type(Math::Matrix:D: --> Numeric){
