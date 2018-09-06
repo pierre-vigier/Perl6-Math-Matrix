@@ -34,8 +34,8 @@ Acceptable export tags are:
 
 =head1 METHODS
 =item constructors: new, new-zero, new-identity, new-diagonal, new-vector-product
-=item accessors: cell, row, column, diagonal, submatrix, AT-POS
-=item conversion: Bool, Numeric, Str, Array, Hash, list, list-rows, list-columns, L<#gist>, perl
+=item accessors: cell, row, column, L<diagonal|#diagonal>, L<submatrix|#submatrix>, L<AT-POS|#AT-POS>
+=item conversion: Bool, Numeric, Str, Array, Hash, list, list-rows, list-columns, L<gist|#gist>, L<perl|#perl>
 =item boolean properties: is-zero, is-identity, is-square, is-diagonal,
     is-diagonally-dominant, is-upper-triangular, is-lower-triangular, is-invertible,
     is-symmetric, is-antisymmetric, is-unitary, is-self-adjoint, is-orthogonal,
@@ -45,8 +45,8 @@ Acceptable export tags are:
 =item decompositions: decompositionLUCrout, decompositionLU, decompositionCholesky
 =item list like ops: elems, cont, equal, map, map-row, map-column, map-cell, reduce, reduce-rows, reduce-columns
 =item structural ops: move-row, move-column, swap-rows, swap-columns, splice-rows, splice-columns
-=item matrix math ops: add, subtract, add-row, add-column, multiply, multiply-row, multiply-column, dotProduct, tensorProduct
-=item operators:   MM,   +,   -,   *,   **,   dot,   ⋅,   ÷,   x,   ⊗,   ❘ ❘,   ‖ ‖,   [ ]
+=item matrix math ops: L<add|#add>, L<subtract|#subtract>, add-row, add-column, multiply, multiply-row, multiply-column, dotProduct, tensorProduct
+=item L<operators|#Operators>:   MM,   +,   -,   *,   **,   dot,   ⋅,   ÷,   x,   ⊗,   ❘ ❘,   ‖ ‖,   [ ]
 
 
 =head2 Constructors
@@ -911,10 +911,10 @@ The postcircumfix [] - op will always work.
 
     my $a   = +$matrix               # Num context, amount (count) of cells
     my $b   = ?$matrix               # Bool context, True if any cell has a none zero value
-    my $str = ~$matrix               # String context, matrix content, space and new line separated
+    my $str = ~$matrix               # String context, matrix content, space and new line separated as table
     my $l   = |$matrix               # list context, list of all cells, row-wise
-    my $a   = @$matrix               # same thing
-    my $h   = %$matrix               # hash context, similar to .kv
+    my $a   = @$matrix               # same thing, but as Array
+    my $h   = %$matrix               # hash context, similar to .kv, so that %$matrix{0}{0} is first cell
 
     $matrixa == $matrixb             # check if both have same size and they are cell wise equal
     $matrixa ~~ $matrixb             # same thing

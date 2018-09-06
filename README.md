@@ -43,9 +43,9 @@ METHODS
 
   * constructors: new, new-zero, new-identity, new-diagonal, new-vector-product
 
-  * accessors: cell, row, column, diagonal, submatrix, AT-POS
+  * accessors: cell, row, column, [diagonal](#diagonal), [submatrix](#submatrix), [AT-POS](#AT-POS)
 
-  * conversion: Bool, Numeric, Str, Array, Hash, list, list-rows, list-columns, [gist](#gist), perl
+  * conversion: Bool, Numeric, Str, Array, Hash, list, list-rows, list-columns, [gist](#gist), [perl](#perl)
 
   * boolean properties: is-zero, is-identity, is-square, is-diagonal, is-diagonally-dominant, is-upper-triangular, is-lower-triangular, is-invertible, is-symmetric, is-antisymmetric, is-unitary, is-self-adjoint, is-orthogonal, is-positive-definite, is-positive-semidefinite
 
@@ -59,9 +59,9 @@ METHODS
 
   * structural ops: move-row, move-column, swap-rows, swap-columns, splice-rows, splice-columns
 
-  * matrix math ops: add, subtract, add-row, add-column, multiply, multiply-row, multiply-column, dotProduct, tensorProduct
+  * matrix math ops: [add](#add), [subtract](#subtract), add-row, add-column, multiply, multiply-row, multiply-column, dotProduct, tensorProduct
 
-  * operators: MM, +, -, *, **, dot, ⋅, ÷, x, ⊗, ❘ ❘, ‖ ‖, [ ]
+  * [operators](#Operators): MM, +, -, *, **, dot, ⋅, ÷, x, ⊗, ❘ ❘, ‖ ‖, [ ]
 
 Constructors
 ------------
@@ -839,10 +839,10 @@ The only exception is MM-operator, a shortcut to create a matrix. That has to be
 
     my $a   = +$matrix               # Num context, amount (count) of cells
     my $b   = ?$matrix               # Bool context, True if any cell has a none zero value
-    my $str = ~$matrix               # String context, matrix content, space and new line separated
+    my $str = ~$matrix               # String context, matrix content, space and new line separated as table
     my $l   = |$matrix               # list context, list of all cells, row-wise
-    my $a   = @$matrix               # same thing
-    my $h   = %$matrix               # hash context, similar to .kv
+    my $a   = @$matrix               # same thing, but as Array
+    my $h   = %$matrix               # hash context, similar to .kv, so that %$matrix{0}{0} is first cell
 
     $matrixa == $matrixb             # check if both have same size and they are cell wise equal
     $matrixa ~~ $matrixb             # same thing
