@@ -45,7 +45,7 @@ METHODS
 
   * accessors: [cell](#cell), [row](#row), [column](#column), [diagonal](#diagonal), [submatrix](#submatrix), [AT-POS](#at-pos)
 
-  * conversion: [Bool](#bool), [Numeric](#numeric), [Str](#str), [Array](#array), [Hash](#hash), [list](#list), list-rows, list-columns, [gist](#gist), [perl](#perl)
+  * conversion: [Bool](#bool), [Numeric](#numeric), [Str](#str), [Array](#array), [Hash](#hash), [list](#list), [list-rows](#list-rows), [list-columns](#list-columns), [gist](#gist), [perl](#perl)
 
   * boolean properties: [is-zero](#is-zero), [is-identity](#is-identity), [is-square](#is-square), [is-diagonal](#is-diagonal), [is-diagonally-dominant](#is-diagonally-dominant), [is-upper-triangular](#is-upper-triangular), [is-lower-triangular](#is-lower-triangular), [is-invertible](#is-invertible), [is-symmetric](#is-symmetric), [is-antisymmetric](#is-antisymmetric), [is-unitary](#is-unitary), [is-self-adjoint](#is-self-adjoint), [is-orthogonal](#is-orthogonal), [is-positive-definite](#is-positive-definite), [is-positive-semidefinite](#is-positive-semidefinite)
 
@@ -466,7 +466,9 @@ Condition number of a matrix is L2 norm * L2 of inverted matrix.
 
     my $c = $matrix.condition( );
 
-### narrowest-cell-type, widest-cell-type
+### narrowest-cell-type
+
+### widest-cell-type
 
 Matrix cells can be (from most narrow to widest), of type (Bool), (Int), (Num), (Rat), (FatRat) or (Complex). The widest type of any cell will returned as type object.
 
