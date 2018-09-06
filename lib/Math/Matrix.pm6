@@ -861,11 +861,18 @@ method tensorProduct(Math::Matrix:D: Math::Matrix $b  --> Math::Matrix:D) {
 # end of matrix math operations - start operators
 ################################################################################
 
+multi sub prefix:<@>( Math::Matrix:D $m --> Array)          is export { $m.Array }
+multi sub prefix:<%>( Math::Matrix:D $m --> Hash)           is export { $m.Hash }
+multi sub prefix:<->( Math::Matrix:D $m --> Math::Matrix:D) is export { $m.negated }
+
+multi sub circumfix:<｜ ｜>( Math::Matrix:D $m --> Numeric) is equiv(&prefix:<!>) is export { $m.determinant }
+multi sub circumfix:<‖ ‖>( Math::Matrix:D $m --> Numeric)  is equiv(&prefix:<!>) is export { $m.norm }
+
+
 multi sub infix:<+>( Math::Matrix:D $a, Numeric $n        --> Math::Matrix:D) is export { $a.add($n) }
 multi sub infix:<+>( Numeric $n,        Math::Matrix:D $a --> Math::Matrix:D) is export { $a.add($n) }
 multi sub infix:<+>( Math::Matrix:D $a, Math::Matrix:D $b --> Math::Matrix:D) is export { $a.add($b) }
 
-multi sub prefix:<->( Math::Matrix:D $a                   --> Math::Matrix:D) is export { $a.negated() }
 multi sub infix:<->( Numeric $n,        Math::Matrix:D $a --> Math::Matrix:D) is export { $a.negated.add($n) }
 multi sub infix:<->( Math::Matrix:D $a, Numeric $n        --> Math::Matrix:D) is export { $a.add(-$n)  }
 multi sub infix:<->( Math::Matrix:D $a, Math::Matrix:D $b --> Math::Matrix:D) is export { $a.subtract($b) }
@@ -887,9 +894,6 @@ multi sub infix:<÷>(  Math::Matrix:D $a, Math::Matrix:D $b --> Math::Matrix:D) 
 
 multi sub infix:<⊗>( Math::Matrix:D $a, Math::Matrix:D $b --> Math::Matrix:D) is equiv(&infix:<x>) is export { $a.tensorProduct( $b ) }
 multi sub infix:<x>( Math::Matrix:D $a, Math::Matrix:D $b --> Math::Matrix:D) is equiv(&infix:<x>) is export { $a.tensorProduct( $b ) }
-
-multi sub circumfix:<｜ ｜>( Math::Matrix:D $m --> Numeric) is equiv(&prefix:<!>) is export { $m.determinant }
-multi sub circumfix:<‖ ‖>( Math::Matrix:D $m --> Numeric)  is equiv(&prefix:<!>) is export { $m.norm }
 
 multi sub prefix:<MM>(Str   $m --> Math::Matrix:D) is tighter(&postcircumfix:<[ ]>) is export(:MM) { Math::Matrix.new($m) }
 multi sub prefix:<MM>(Array $m --> Math::Matrix:D) is tighter(&postcircumfix:<[ ]>) is export(:MM) { Math::Matrix.new(@$m) }
