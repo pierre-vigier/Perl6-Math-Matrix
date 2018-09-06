@@ -210,12 +210,14 @@ method list-columns(Math::Matrix:D: --> List) {
 }
 
 multi method gist(Math::Matrix:U: --> Str) { "({self.^name})" }
-multi method gist(Math::Matrix:D: Int:D $max-chars = 80, Int:D $max-rows = 20 --> Str) {
-    unless $!gist.defined {
+multi method gist(Math::Matrix:D: Int :$max-chars?, Int :$max-rows? --> Str) {
+    if not $!gist.defined or ($max-chars.defined or $max-rows.defined) {
+        my $max-width = (not $max-chars.defined or $max-chars < 5) ?? 80 !! $max-chars;
+        my $max-heigth = (not $max-rows.defined or $max-rows < 2) ?? 20 !! $max-rows;
         my @col-width;                 # comma im total
         my $max-nr-char;               # maximal pre digit char in cell
         my $cell_with = 6;             #
-        my $fmt;
+        my $fmt;# cell-width re im
         given self.widest-cell-type() {
             when Int {
                 $max-nr-char = max( @!rows[*;*] ).Int.chars;
@@ -232,18 +234,20 @@ multi method gist(Math::Matrix:D: Int:D $max-chars = 80, Int:D $max-rows = 20 --
             when Complex {
             }
         }
-        my $rows = min $!row-count, $max-rows;
-        my $cols = min $!column-count, $max-chars div $cell_with;
+        my $rows = min $!row-count, $max-heigth;
+        my $cols = min $!column-count, $max-width div $cell_with;
         my $row-addon = $!column-count > $cols ?? '..' !! '';
         my $str;
         for @!rows[0 .. $rows-1] -> $r {
             $str ~= ( [~] $r.[0..$cols-1].map( { $_.fmt($fmt) } ) ) ~ "$row-addon\n";
         }
-        $str ~= " ...\n" if $!row-count > $max-rows;
+        $str ~= " ...\n" if $!row-count > $max-heigth;
         $!gist = $str.chomp;
     }
     $!gist;
 }
+
+
 
 ################################################################################
 # end of type conversion and handy shortcuts - start boolean matrix properties

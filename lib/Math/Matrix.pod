@@ -300,7 +300,16 @@ It is implicitly called by say. For a full view use .Str
     3 4 5 6 7 ..
     ...
 
-    say $matrix.gist(100);  # show it on wide (100 char) terminal
+    say $matrix.gist(max-chars => 100, max-rows => 5 );
+    
+max-chars is the maximum amount of characters in any row of output (default is 80).
+max-rows is the maximum amount of rows gist will put out (default is 20).
+After gist ist called once (with or without arguments) the output will be cached.
+So next time you call:
+
+    say $matrix       # 100 x 5 is still the max
+
+You change the cache by calling gist with arguments again.
 
 =head3 perl
 
