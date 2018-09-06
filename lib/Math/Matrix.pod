@@ -33,19 +33,19 @@ Acceptable export tags are:
 =item :ALL
 
 =head1 METHODS
-=item constructors: L<new []|#new-->, L<new ''|#new---1>, new-zero, new-identity, new-diagonal, new-vector-product
+=item constructors: L<new []|#new-->, L<new ''|#new---1>, L<new-zero|#new-zero>, L<new-identity|#new-identity>, L<new-diagonal|#new-diagonal>, L<new-vector-product|#new-vector-product>
 =item accessors: L<cell|#cell>, L<row|#row>, L<column|#column>, L<diagonal|#diagonal>, L<submatrix|#submatrix>, L<AT-POS|#at-pos>
 =item conversion: L<Bool|#bool>, L<Numeric|#numeric>, L<Str|#str>, L<Array|#array>, L<Hash|#hash>, L<list|#list>, list-rows, list-columns, L<gist|#gist>, L<perl|#perl>
-=item boolean properties: is-zero, is-identity, is-square, is-diagonal,
+=item boolean properties: L<is-zero|#is-zero>, is-identity, is-square, L<is-diagonal|#is-diagonal>,
     is-diagonally-dominant, is-upper-triangular, is-lower-triangular, is-invertible,
     is-symmetric, is-antisymmetric, is-unitary, is-self-adjoint, is-orthogonal,
-    is-positive-definite, is-positive-semidefinite
+    L<is-positive-definite|#is-positive-definite>, L<is-positive-semidefinite|#is-positive-semidefinite>
 =item numeric properties: L<size|#size>, L<density|#density>, L<trace|#trace>, L<determinant|#determinant>, L<rank|#rank>, L<kernel|#kernel>, L<norm|#norm>, L<condition|#condition>, L<narrowest-cell-type|#narrowest-cell-type>, L<widest-cell-type|#widest-cell-type>
-=item derived matrices: transposed, negated, conjugated, inverted, reduced-row-echelon-form
-=item decompositions: decompositionLUCrout, decompositionLU, decompositionCholesky
-=item list like ops: L<elems|#elems>, L<cont|#cont>, L<equal|#equal>, L<map|#map>, map-row, map-column, map-cell, reduce, reduce-rows, reduce-columns
+=item derived matrices: L<transposed|#transposed>, L<negated|#negated>, L<conjugated|#conjugated>, L<inverted|#inverted>, L<reduced-row-echelon-form|#reduced-row-echelon-form>
+=item decompositions: L<decompositionLUCrout|#decompositionlucrout>, L<decompositionLU|#decompositionlu>, L<decompositionCholesky|#decompositioncholesky>
+=item list like ops: L<elems|#elems>, L<cont|#cont>, L<equal|#equal>, L<map|#map>, L<map-row|#map-row>, L<map-column|#map-column>, L<map-cell|#map-cell>, L<reduce|#reduce>, L<reduce-rows|#reduce-rows>, L<reduce-columns|#reduce-columns>
 =item structural ops: move-row, move-column, swap-rows, swap-columns, splice-rows, splice-columns
-=item matrix math ops: L<add|#add>, L<subtract|#subtract>, add-row, add-column, multiply, multiply-row, multiply-column, dotProduct, tensorProduct
+=item matrix math ops: L<add|#add>, L<subtract|#subtract>, L<add-row|#add-row>, L<add-column|#add-column>, L<multiply|#multiply>, L<multiply-row|#multiply-row>, L<multiply-column|#multiply-column>, L<dotProduct|#dotProduct>, L<tensorProduct|#tensorProduct>
 =item L<operators|#operators>:   MM,   +,   -,   *,   **,   dot,   ⋅,   ÷,   x,   ⊗,   ❘ ❘,   ‖ ‖,   [ ]
 
 

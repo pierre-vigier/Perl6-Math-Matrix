@@ -41,25 +41,25 @@ All computation heavy properties will be calculated lazily and will be cached. A
 METHODS
 =======
 
-  * constructors: [new []](#new--), [new ''](#new---1), new-zero, new-identity, new-diagonal, new-vector-product
+  * constructors: [new []](#new--), [new ''](#new---1), [new-zero](#new-zero), [new-identity](#new-identity), [new-diagonal](#new-diagonal), [new-vector-product](#new-vector-product)
 
   * accessors: [cell](#cell), [row](#row), [column](#column), [diagonal](#diagonal), [submatrix](#submatrix), [AT-POS](#at-pos)
 
   * conversion: [Bool](#bool), [Numeric](#numeric), [Str](#str), [Array](#array), [Hash](#hash), [list](#list), list-rows, list-columns, [gist](#gist), [perl](#perl)
 
-  * boolean properties: is-zero, is-identity, is-square, is-diagonal, is-diagonally-dominant, is-upper-triangular, is-lower-triangular, is-invertible, is-symmetric, is-antisymmetric, is-unitary, is-self-adjoint, is-orthogonal, is-positive-definite, is-positive-semidefinite
+  * boolean properties: [is-zero](#is-zero), is-identity, is-square, [is-diagonal](#is-diagonal), is-diagonally-dominant, is-upper-triangular, is-lower-triangular, is-invertible, is-symmetric, is-antisymmetric, is-unitary, is-self-adjoint, is-orthogonal, [is-positive-definite](#is-positive-definite), [is-positive-semidefinite](#is-positive-semidefinite)
 
   * numeric properties: [size](#size), [density](#density), [trace](#trace), [determinant](#determinant), [rank](#rank), [kernel](#kernel), [norm](#norm), [condition](#condition), [narrowest-cell-type](#narrowest-cell-type), [widest-cell-type](#widest-cell-type)
 
-  * derived matrices: transposed, negated, conjugated, inverted, reduced-row-echelon-form
+  * derived matrices: [transposed](#transposed), [negated](#negated), [conjugated](#conjugated), [inverted](#inverted), [reduced-row-echelon-form](#reduced-row-echelon-form)
 
-  * decompositions: decompositionLUCrout, decompositionLU, decompositionCholesky
+  * decompositions: [decompositionLUCrout](#decompositionlucrout), [decompositionLU](#decompositionlu), [decompositionCholesky](#decompositioncholesky)
 
-  * list like ops: [elems](#elems), [cont](#cont), [equal](#equal), [map](#map), map-row, map-column, map-cell, reduce, reduce-rows, reduce-columns
+  * list like ops: [elems](#elems), [cont](#cont), [equal](#equal), [map](#map), [map-row](#map-row), [map-column](#map-column), [map-cell](#map-cell), [reduce](#reduce), [reduce-rows](#reduce-rows), [reduce-columns](#reduce-columns)
 
   * structural ops: move-row, move-column, swap-rows, swap-columns, splice-rows, splice-columns
 
-  * matrix math ops: [add](#add), [subtract](#subtract), add-row, add-column, multiply, multiply-row, multiply-column, dotProduct, tensorProduct
+  * matrix math ops: [add](#add), [subtract](#subtract), [add-row](#add-row), [add-column](#add-column), [multiply](#multiply), [multiply-row](#multiply-row), [multiply-column](#multiply-column), [dotProduct](#dotProduct), [tensorProduct](#tensorProduct)
 
   * [operators](#operators): MM, +, -, *, **, dot, ⋅, ÷, x, ⊗, ❘ ❘, ‖ ‖, [ ]
 
