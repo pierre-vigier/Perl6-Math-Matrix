@@ -47,7 +47,7 @@ METHODS
 
   * conversion: [Bool](#bool), [Numeric](#numeric), [Str](#str), [Array](#array), [Hash](#hash), [list](#list), list-rows, list-columns, [gist](#gist), [perl](#perl)
 
-  * boolean properties: [is-zero](#is-zero), is-identity, is-square, [is-diagonal](#is-diagonal), is-diagonally-dominant, is-upper-triangular, is-lower-triangular, is-invertible, is-symmetric, is-antisymmetric, is-unitary, is-self-adjoint, is-orthogonal, [is-positive-definite](#is-positive-definite), [is-positive-semidefinite](#is-positive-semidefinite)
+  * boolean properties: [is-zero](#is-zero), [is-identity](#is-identity), [is-square](#is-square), [is-diagonal](#is-diagonal), [is-diagonally-dominant](#is-diagonally-dominant), [is-upper-triangular](#is-upper-triangular), [is-lower-triangular](#is-lower-triangular), [is-invertible](#is-invertible), [is-symmetric](#is-symmetric), [is-antisymmetric](#is-antisymmetric), [is-unitary](#is-unitary), [is-self-adjoint](#is-self-adjoint), [is-orthogonal](#is-orthogonal), [is-positive-definite](#is-positive-definite), [is-positive-semidefinite](#is-positive-semidefinite)
 
   * numeric properties: [size](#size), [density](#density), [trace](#trace), [determinant](#determinant), [rank](#rank), [kernel](#kernel), [norm](#norm), [condition](#condition), [narrowest-cell-type](#narrowest-cell-type), [widest-cell-type](#widest-cell-type)
 
@@ -57,7 +57,7 @@ METHODS
 
   * list like ops: [elems](#elems), [cont](#cont), [equal](#equal), [map](#map), [map-row](#map-row), [map-column](#map-column), [map-cell](#map-cell), [reduce](#reduce), [reduce-rows](#reduce-rows), [reduce-columns](#reduce-columns)
 
-  * structural ops: move-row, move-column, swap-rows, swap-columns, splice-rows, splice-columns
+  * structural ops: [move-row](#move-row), [move-column](#move-column), [swap-rows](#swap-rows), [swap-columns](#swap-columns), [splice-rows](#splice-rows), [splice-columns](#splice-columns)
 
   * matrix math ops: [add](#add), [subtract](#subtract), [add-row](#add-row), [add-column](#add-column), [multiply](#multiply), [multiply-row](#multiply-row), [multiply-column](#multiply-column), [dotProduct](#dotProduct), [tensorProduct](#tensorProduct)
 
@@ -483,7 +483,7 @@ Derivative Matrices
 
 Single matrices that can be computed with only our original matrix as input.
 
-### transposed, alias T
+### transposed
 
 Returns a new, transposed Matrix, where rows became colums and vice versa.
 
@@ -495,24 +495,24 @@ Returns a new, transposed Matrix, where rows became colums and vice versa.
 
 ### negated
 
-    my $new = $matrix.negated();    # invert sign of all cells
-    my $neg = - $matrix;            # works too
+    my $new = $matrix.negated();     # invert sign of all cells
+    my $neg = - $matrix;             # operator alias
 
-### conjugated, alias conj
+### conjugated
 
     my $c = $matrix.conjugated();    # change every value to its complex conjugated
-    my $c = $matrix.conj();          # works too (official Perl 6 name)
+    my $c = $matrix.conj();          # short alias (official Perl 6 name)
 
 ### inverted
 
 Matrices that have a square form and a full rank can be inverted (see .is-invertible). Inverse matrix regarding to matrix multiplication. The dot product of a matrix with its inverted results in a identity matrix (neutral element in this group).
 
-### reduced-row-echelon-form, alias rref
+### reduced-row-echelon-form
 
 Return the reduced row echelon form of a matrix, a.k.a. row canonical form
 
     my $rref = $matrix.reduced-row-echelon-form();
-    my $rref = $matrix.rref();
+    my $rref = $matrix.rref();       # short alias
 
 Decompositions
 --------------
