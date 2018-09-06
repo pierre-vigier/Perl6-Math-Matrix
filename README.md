@@ -43,7 +43,7 @@ METHODS
 
   * constructors: new, new-zero, new-identity, new-diagonal, new-vector-product
 
-  * accessors: cell, row, column, [diagonal](#diagonal), [submatrix](#submatrix), [AT-POS](#AT-POS)
+  * accessors: cell, row, column, [diagonal](#diagonal), [submatrix](#submatrix), [AT-POS](#at-pos)
 
   * conversion: Bool, Numeric, Str, Array, Hash, list, list-rows, list-columns, [gist](#gist), [perl](#perl)
 
@@ -55,13 +55,13 @@ METHODS
 
   * decompositions: decompositionLUCrout, decompositionLU, decompositionCholesky
 
-  * list like ops: elems, cont, equal, map, map-row, map-column, map-cell, reduce, reduce-rows, reduce-columns
+  * list like ops: [elems](#elems), [cont](#cont), [equal](#equal), [map](#map), map-row, map-column, map-cell, reduce, reduce-rows, reduce-columns
 
   * structural ops: move-row, move-column, swap-rows, swap-columns, splice-rows, splice-columns
 
   * matrix math ops: [add](#add), [subtract](#subtract), add-row, add-column, multiply, multiply-row, multiply-column, dotProduct, tensorProduct
 
-  * [operators](#Operators): MM, +, -, *, **, dot, ⋅, ÷, x, ⊗, ❘ ❘, ‖ ‖, [ ]
+  * [operators](#operators): MM, +, -, *, **, dot, ⋅, ÷, x, ⊗, ❘ ❘, ‖ ‖, [ ]
 
 Constructors
 ------------
