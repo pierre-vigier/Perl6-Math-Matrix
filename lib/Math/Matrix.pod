@@ -33,14 +33,14 @@ Acceptable export tags are:
 =item :ALL
 
 =head1 METHODS
-=item constructors: new, new-zero, new-identity, new-diagonal, new-vector-product
-=item accessors: cell, row, column, L<diagonal|#diagonal>, L<submatrix|#submatrix>, L<AT-POS|#at-pos>
-=item conversion: Bool, Numeric, Str, Array, Hash, list, list-rows, list-columns, L<gist|#gist>, L<perl|#perl>
+=item constructors: L<new []|#new-->, L<new ''|#new---1>, new-zero, new-identity, new-diagonal, new-vector-product
+=item accessors: L<cell|#cell>, L<row|#row>, L<column|#column>, L<diagonal|#diagonal>, L<submatrix|#submatrix>, L<AT-POS|#at-pos>
+=item conversion: L<Bool|#bool>, L<Numeric|#numeric>, L<Str|#str>, L<Array|#array>, L<Hash|#hash>, L<list|#list>, list-rows, list-columns, L<gist|#gist>, L<perl|#perl>
 =item boolean properties: is-zero, is-identity, is-square, is-diagonal,
     is-diagonally-dominant, is-upper-triangular, is-lower-triangular, is-invertible,
     is-symmetric, is-antisymmetric, is-unitary, is-self-adjoint, is-orthogonal,
     is-positive-definite, is-positive-semidefinite
-=item numeric properties: size, density, trace, determinant, rank, kernel, norm, condition, narrowest-cell-type, widest-cell-type
+=item numeric properties: L<size|#size>, L<density|#density>, L<trace|#trace>, L<determinant|#determinant>, L<rank|#rank>, L<kernel|#kernel>, L<norm|#norm>, L<condition|#condition>, L<narrowest-cell-type|#narrowest-cell-type>, L<widest-cell-type|#widest-cell-type>
 =item derived matrices: transposed, negated, conjugated, inverted, reduced-row-echelon-form
 =item decompositions: decompositionLUCrout, decompositionLU, decompositionCholesky
 =item list like ops: L<elems|#elems>, L<cont|#cont>, L<equal|#equal>, L<map|#map>, map-row, map-column, map-cell, reduce, reduce-rows, reduce-columns

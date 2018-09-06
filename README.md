@@ -41,15 +41,15 @@ All computation heavy properties will be calculated lazily and will be cached. A
 METHODS
 =======
 
-  * constructors: new, new-zero, new-identity, new-diagonal, new-vector-product
+  * constructors: [new []](#new--), [new ''](#new---1), new-zero, new-identity, new-diagonal, new-vector-product
 
-  * accessors: cell, row, column, [diagonal](#diagonal), [submatrix](#submatrix), [AT-POS](#at-pos)
+  * accessors: [cell](#cell), [row](#row), [column](#column), [diagonal](#diagonal), [submatrix](#submatrix), [AT-POS](#at-pos)
 
-  * conversion: Bool, Numeric, Str, Array, Hash, list, list-rows, list-columns, [gist](#gist), [perl](#perl)
+  * conversion: [Bool](#bool), [Numeric](#numeric), [Str](#str), [Array](#array), [Hash](#hash), [list](#list), list-rows, list-columns, [gist](#gist), [perl](#perl)
 
   * boolean properties: is-zero, is-identity, is-square, is-diagonal, is-diagonally-dominant, is-upper-triangular, is-lower-triangular, is-invertible, is-symmetric, is-antisymmetric, is-unitary, is-self-adjoint, is-orthogonal, is-positive-definite, is-positive-semidefinite
 
-  * numeric properties: size, density, trace, determinant, rank, kernel, norm, condition, narrowest-cell-type, widest-cell-type
+  * numeric properties: [size](#size), [density](#density), [trace](#trace), [determinant](#determinant), [rank](#rank), [kernel](#kernel), [norm](#norm), [condition](#condition), [narrowest-cell-type](#narrowest-cell-type), [widest-cell-type](#widest-cell-type)
 
   * derived matrices: transposed, negated, conjugated, inverted, reduced-row-echelon-form
 
