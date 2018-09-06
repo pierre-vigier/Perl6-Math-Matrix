@@ -35,7 +35,7 @@ Acceptable export tags are:
 =head1 METHODS
 =item constructors: new, new-zero, new-identity, new-diagonal, new-vector-product
 =item accessors: cell, row, column, diagonal, submatrix, AT-POS
-=item conversion: Bool, Numeric, Str, Array, Hash, list, list-rows, list-columns, L<#gist>, perl
+=item conversion: Bool, Numeric, Str, Array, Hash, list, list-rows, list-columns, L<gist>, perl
 =item boolean properties: is-zero, is-identity, is-square, is-diagonal,
     is-diagonally-dominant, is-upper-triangular, is-lower-triangular, is-invertible,
     is-symmetric, is-antisymmetric, is-unitary, is-self-adjoint, is-orthogonal,
