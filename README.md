@@ -45,7 +45,7 @@ METHODS
 
   * accessors: cell, row, column, diagonal, submatrix, AT-POS
 
-  * conversion: Bool, Numeric, Str, Array, Hash, list, list-rows, list-columns, gist, perl
+  * conversion: Bool, Numeric, Str, Array, Hash, list, list-rows, list-columns, [#gist](#gist), perl
 
   * boolean properties: is-zero, is-identity, is-square, is-diagonal, is-diagonally-dominant, is-upper-triangular, is-lower-triangular, is-invertible, is-symmetric, is-antisymmetric, is-unitary, is-self-adjoint, is-orthogonal, is-positive-definite, is-positive-semidefinite
 
