@@ -246,7 +246,7 @@ multi method gist(Math::Matrix:D: Int :$max-chars?, Int :$max-rows? --> Str) {
     }
     $!gist;
 }
-
+# my $d = 9;say 31215.355.fmt("%"~$d~"g")
 
 
 ################################################################################

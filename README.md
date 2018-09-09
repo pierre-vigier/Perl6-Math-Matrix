@@ -61,6 +61,8 @@ METHODS
 
   * matrix math ops: [add](#add), [subtract](#subtract), [add-row](#add-row), [add-column](#add-column), [multiply](#multiply), [multiply-row](#multiply-row), [multiply-column](#multiply-column), [dotProduct](#dotProduct), [tensorProduct](#tensorProduct)
 
+  * [shortcuts](#shortcuts): T, det, rref
+
   * [operators](#operators): MM, +, -, *, **, dot, ⋅, ÷, x, ⊗, ❘ ❘, ‖ ‖, [ ]
 
 Constructors
@@ -509,6 +511,9 @@ Returns a new, transposed Matrix, where rows became colums and vice versa.
 
 Matrices that have a square form and a full rank can be inverted (see .is-invertible). Inverse matrix regarding to matrix multiplication. The dot product of a matrix with its inverted results in a identity matrix (neutral element in this group).
 
+    my $i = $matrix.inverted();      # invert matrix
+    my $i = $matrix ** -1;           # operator alias
+
 ### reduced-row-echelon-form
 
 Return the reduced row echelon form of a matrix, a.k.a. row canonical form
@@ -832,6 +837,20 @@ The tensor product between a matrix a of size (m,n) and a matrix b of size (p,q)
     my $c = $a x $b;                # works too as operator alias
     my $c = $a ⊗ $b;                # unicode operator alias
 
+Shortcuts
+---------
+
+Summary of all methods with short alias:
+
+<table class="pod-table">
+<thead><tr>
+<th>short</th> <th>long name</th>
+</tr></thead>
+<tbody>
+<tr> <td>T</td> <td>transposed</td> </tr> <tr> <td>det</td> <td>determinant</td> </tr> <tr> <td>rref</td> <td>reduced-row-echelon-form</td> </tr>
+</tbody>
+</table>
+
 Operators
 =========
 
@@ -843,8 +862,8 @@ The only exception is MM-operator, a shortcut to create a matrix. That has to be
     my $b   = ?$matrix               # Bool context, True if any cell has a none zero value
     my $str = ~$matrix               # String context, matrix content, space and new line separated as table
     my $l   = |$matrix               # list context, list of all cells, row-wise
-    my $a   = @$matrix               # same thing, but as Array
-    my $h   = %$matrix               # hash context, similar to .kv, so that %$matrix{0}{0} is first cell
+    my $a   = @ $matrix              # same thing, but as Array
+    my $h   = % $matrix              # hash context, similar to .kv, so that %$matrix{0}{0} is first cell
 
     $matrixa == $matrixb             # check if both have same size and they are cell wise equal
     $matrixa ~~ $matrixb             # same thing
