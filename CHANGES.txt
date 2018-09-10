@@ -1,13 +1,13 @@
 
  0.3.0:
     - redone .gist allows now complex numbers and scientific notation
-    - added method .AT-POS and $matrix[1][2] syntax
+    - added method .AT-POS for $matrix[1][2] syntax
     - added converter to hash context
     - cell-type can now be Bool and FatRat
     - cell-type changed into narrowest-cell-type and widest-cell-type
     - making width and height of the table gist displayy optional arguments
     - fixed prefix % and @ ops
-    - linked docs
+    - crosslinking doc headers
 
  0.2.5:
     - 2018.8.20
