@@ -49,17 +49,17 @@ METHODS
 
   * [boolean properties](#boolean-properties): [is-zero](#is-zero), [is-identity](#is-identity), [is-square](#is-square), [is-diagonal](#is-diagonal), [is-diagonally-dominant](#is-diagonally-dominant), [is-upper-triangular](#is-upper-triangular), [is-lower-triangular](#is-lower-triangular), [is-invertible](#is-invertible), [is-symmetric](#is-symmetric), [is-antisymmetric](#is-antisymmetric), [is-unitary](#is-unitary), [is-self-adjoint](#is-self-adjoint), [is-orthogonal](#is-orthogonal), [is-positive-definite](#is-positive-definite), [is-positive-semidefinite](#is-positive-semidefinite)
 
-  * numeric properties: [size](#size), [density](#density), [trace](#trace), [determinant](#determinant), [rank](#rank), [kernel](#kernel), [norm](#norm), [condition](#condition), [narrowest-cell-type](#narrowest-cell-type), [widest-cell-type](#widest-cell-type)
+  * [numeric properties](#numeric-properties): [size](#size), [density](#density), [trace](#trace), [determinant](#determinant), [rank](#rank), [kernel](#kernel), [norm](#norm), [condition](#condition), [narrowest-cell-type](#narrowest-cell-type), [widest-cell-type](#widest-cell-type)
 
-  * derived matrices: [transposed](#transposed), [negated](#negated), [conjugated](#conjugated), [inverted](#inverted), [reduced-row-echelon-form](#reduced-row-echelon-form)
+  * [derived matrices](#derived-matrices): [transposed](#transposed), [negated](#negated), [conjugated](#conjugated), [inverted](#inverted), [reduced-row-echelon-form](#reduced-row-echelon-form)
 
-  * decompositions: [decompositionLUCrout](#decompositionlucrout), [decompositionLU](#decompositionlu), [decompositionCholesky](#decompositioncholesky)
+  * [decompositions](#decompositions): [decompositionLUCrout](#decompositionlucrout), [decompositionLU](#decompositionlu), [decompositionCholesky](#decompositioncholesky)
 
-  * list like ops: [elems](#elems), [cont](#cont), [equal](#equal), [map](#map), [map-row](#map-row), [map-column](#map-column), [map-cell](#map-cell), [reduce](#reduce), [reduce-rows](#reduce-rows), [reduce-columns](#reduce-columns)
+  * [list like ops](#list-like-ops): [elems](#elems), [cont](#cont), [equal](#equal), [map](#map), [map-row](#map-row), [map-column](#map-column), [map-cell](#map-cell), [reduce](#reduce), [reduce-rows](#reduce-rows), [reduce-columns](#reduce-columns)
 
-  * structural ops: [move-row](#move-row), [move-column](#move-column), [swap-rows](#swap-rows), [swap-columns](#swap-columns), [splice-rows](#splice-rows), [splice-columns](#splice-columns)
+  * [structural ops](#structural-ops): [move-row](#move-row), [move-column](#move-column), [swap-rows](#swap-rows), [swap-columns](#swap-columns), [splice-rows](#splice-rows), [splice-columns](#splice-columns)
 
-  * matrix math ops: [add](#add), [subtract](#subtract), [add-row](#add-row), [add-column](#add-column), [multiply](#multiply), [multiply-row](#multiply-row), [multiply-column](#multiply-column), [dotProduct](#dotProduct), [tensorProduct](#tensorProduct)
+  * [matrix math ops](#matrix-math-ops): [add](#add), [subtract](#subtract), [add-row](#add-row), [add-column](#add-column), [multiply](#multiply), [multiply-row](#multiply-row), [multiply-column](#multiply-column), [dotProduct](#dotProduct), [tensorProduct](#tensorProduct)
 
   * [shortcuts](#shortcuts): T, conj, det, rref
 
@@ -847,7 +847,7 @@ Summary of all methods with short alias:
 <th>short</th> <th>long name</th>
 </tr></thead>
 <tbody>
-<tr> <td>T</td> <td>transposed</td> </tr> <tr> <td>conj</td> <td>conjugated</td> </tr> <tr> <td>det</td> <td>determinant</td> </tr> <tr> <td>rref</td> <td>reduced-row-echelon-form</td> </tr>
+<tr> <td>T</td> <td>L&lt;transposed|#transposed&gt;</td> </tr> <tr> <td>conj</td> <td>L&lt;conjugated|#conjugated&gt;</td> </tr> <tr> <td>det</td> <td>L&lt;determinant|#determinant&gt;</td> </tr> <tr> <td>rref</td> <td>L&lt;reduced-row-echelon-form|#reduced-row-echelon-form&gt;</td> </tr>
 </tbody>
 </table>
 
