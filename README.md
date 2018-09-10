@@ -151,7 +151,7 @@ This method is a constructor that returns a matrix which is a result of the matr
 
 Methods that return the content of selected elements (cells).
 
-### cell
+### [cell](#accessors)
 
 Gets value of element in row (first parameter) and column (second parameter). (counting always from 0)
 
@@ -159,29 +159,29 @@ Gets value of element in row (first parameter) and column (second parameter). (c
     say $matrix.cell(0,1)               : 2
     say $matrix[0][1]                   # array syntax alias
 
-### AT-POS
+### [AT-POS](#accessors)
 
 Gets row as array to enable direct postcircumfix syntax as shown in last example. $matrix.AT-POS(0) : [1,2] $matrix[0] # operator alias
 
-### row
+### [row](#accessors)
 
 Gets values of specified row (first required parameter) as a list.
 
     say Math::Matrix.new([[1,2],[3,4]]).row(0) : (1, 2)
 
-### column
+### [column](#accessors)
 
 Gets values of specified column (first required parameter) as a list.
 
     say Math::Matrix.new([[1,2],[3,4]]).column(0) : (1, 3)
 
-### diagonal
+### [diagonal](#accessors)
 
 Gets values of diagonal elements as a list. 
 
     say Math::Matrix.new([[1,2],[3,4]]).diagonal : (1, 4)
 
-### submatrix
+### [submatrix](#accessors)
 
 Matrix built by a subset of cells of a given matrix.
 
@@ -487,7 +487,7 @@ You can also check if all cells have the same type:
 
 Single matrices that can be computed with only our original matrix as input.
 
-### transposed
+### [transposed](#derived-matrices)
 
 Returns a new, transposed Matrix, where rows became colums and vice versa.
 
@@ -497,24 +497,24 @@ Returns a new, transposed Matrix, where rows became colums and vice versa.
                [4 5 6]       2 5
                              3 6
 
-### negated
+### [negated](#derived-matrices)
 
     my $new = $matrix.negated();     # invert sign of all cells
     my $neg = - $matrix;             # operator alias
 
-### conjugated
+### [conjugated](#derived-matrices)
 
     my $c = $matrix.conjugated();    # change every value to its complex conjugated
     my $c = $matrix.conj();          # short alias (official Perl 6 name)
 
-### inverted
+### [inverted](#derived-matrices)
 
 Matrices that have a square form and a full rank can be inverted (see .is-invertible). Inverse matrix regarding to matrix multiplication. The dot product of a matrix with its inverted results in a identity matrix (neutral element in this group).
 
     my $i = $matrix.inverted();      # invert matrix
     my $i = $matrix ** -1;           # operator alias
 
-### reduced-row-echelon-form
+### [reduced-row-echelon-form](#derived-matrices)
 
 Return the reduced row echelon form of a matrix, a.k.a. row canonical form
 
@@ -557,7 +557,7 @@ This decomposition works only on symmetric and definite positive matrices.
 
 Matrix math methods on full matrices and also parts (for gaussian table operations).
 
-### add
+### [add](#matrix-math-operations)
 
     Example:    1 2  +  5    =  6 7 
                 3 4             8 9
@@ -571,7 +571,23 @@ Matrix math methods on full matrices and also parts (for gaussian table operatio
     my $sum = $matrix.add( $number );   # adds number from every cell 
     my $s = $matrix + $number;          # works too
 
-### subtract
+### [add-row](#matrix-math-operations)
+
+Add a vector (row or col of some matrix) to a row of the matrix. In this example we add (2,3) to the second row. Instead of a matrix you can also give as parameter the raw data of a matrix as new would receive it.
+
+    Math::Matrix.new([[1,2],[3,4]]).add-row(1,[2,3]);
+
+    Example:    1 2  +       =  1 2
+                3 4    2 3      5 7
+
+### [add-column](#matrix-math-operations)
+
+    Math::Matrix.new([[1,2],[3,4]]).add-column(1,[2,3]);
+
+    Example:    1 2  +   2   =  1 4
+                3 4      3      3 7
+
+### [subtract](#matrix-math-operations)
 
 Works analogous to add - it's just for convenance.
 
@@ -582,23 +598,7 @@ Works analogous to add - it's just for convenance.
     my $diff = $matrix.subtract( $matrix2 );  # cell wise subraction of 2 same sized matrices
     my $d = $matrix - $matrix2;               # works too
 
-### add-row
-
-Add a vector (row or col of some matrix) to a row of the matrix. In this example we add (2,3) to the second row. Instead of a matrix you can also give as parameter the raw data of a matrix as new would receive it.
-
-    Math::Matrix.new([[1,2],[3,4]]).add-row(1,[2,3]);
-
-    Example:    1 2  +       =  1 2
-                3 4    2 3      5 7
-
-### add-column
-
-    Math::Matrix.new([[1,2],[3,4]]).add-column(1,[2,3]);
-
-    Example:    1 2  +   2   =  1 4
-                3 4      3      3 7
-
-### multiply
+### [multiply](#matrix-math-operations)
 
 In scalar multiplication each cell of the matrix gets multiplied with the same number (scalar). In addition to that, this method can multiply two same sized matrices, by multipling the cells with the came coordinates from each operand.
 
@@ -614,7 +614,7 @@ In scalar multiplication each cell of the matrix gets multiplied with the same n
     my $product = $matrix.multiply( $matrix2 );  # cell wise multiplication of same size matrices
     my $p = $matrix * $matrix2;                  # works too
 
-### multiply-row
+### [multiply-row](#matrix-math-operations)
 
 Multiply scalar number to each cell of a row.
 
@@ -623,7 +623,7 @@ Multiply scalar number to each cell of a row.
     Example:    1 2  * 2     =  2 4
                 3 4             3 4
 
-### multiply-column
+### [multiply-column](#matrix-math-operations)
 
 Multiply scalar number to each cell of a column.
 
@@ -634,7 +634,7 @@ Multiply scalar number to each cell of a column.
             
                *2
 
-### dotProduct
+### [dotProduct](#matrix-math-operations)
 
 Matrix multiplication of two fitting matrices (colums left == rows right).
 
@@ -655,7 +655,7 @@ Matrix multiplication of two fitting matrices (colums left == rows right).
     my $c = $a ** -3;               # same as ($a dot $a dot $a).inverted
     my $c = $a **  0;               # created an right sized identity matrix
 
-### tensorProduct
+### [tensorProduct](#matrix-math-operations)
 
 The tensor product between a matrix a of size (m,n) and a matrix b of size (p,q) is a matrix c of size (m*p,n*q). All matrices you get by multiplying an element (cell) of matrix a with matrix b (as in $a.multiply($b.cell(..,..)) concatinated result in matrix c. (Or replace in a each cell with its product with b.)
 
@@ -673,14 +673,14 @@ The tensor product between a matrix a of size (m,n) and a matrix b of size (p,q)
 
 Selection of methods that are also provided by Lists and Arrays and make also sense in context a 2D matrix. 
 
-### elems
+### [elems](#list-like-matrix-operations)
 
 Number (count) of elements.
 
     say $matrix.elems();
     say +$matrix;                       # same thing
 
-### cont
+### [cont](#list-like-matrix-operations)
 
 Asks if certain value is containted in cells (treating the matrix like a baggy set), or if there is one value within a cetain range.
 
@@ -690,7 +690,7 @@ Asks if certain value is containted in cells (treating the matrix like a baggy s
 
     MM [[1,2],[3,4]] (cont) 1           # True too
 
-### equal
+### [equal](#list-like-matrix-operations)
 
 Checks two matrices for equality. They have to be of same size and every element of the first matrix on a particular position has to be equal to the element (on the same position) of the second matrix.
 
@@ -698,7 +698,7 @@ Checks two matrices for equality. They have to be of same size and every element
     if $matrixa == $matrixb {
     if $matrixa ~~ $matrixb {
 
-### map
+### [map](#list-like-matrix-operations)
 
 Like the built in map it iterates over all elements, running a code block. The results for a new matrix.
 
@@ -707,7 +707,7 @@ Like the built in map it iterates over all elements, running a code block. The r
     2 3
     4 5
 
-### map-row
+### [map-rov](#list-like-matrix-operations)
 
 Map only specified row (row number is first parameter).
 
@@ -716,14 +716,14 @@ Map only specified row (row number is first parameter).
     1 2
     4 5
 
-### map-column
+### [map-column](#list-like-matrix-operations)
 
     say Math::Matrix.new([[1,2],[3,4]]).map-column(1, {0}) :
 
     1 0
     3 0
 
-### map-cell
+### [map-cell](#list-like-matrix-operations)
 
 Changes value of one cell on row (first parameter) and column (second) with code block (third, $_ or $^... is previous value).
 
@@ -732,20 +732,20 @@ Changes value of one cell on row (first parameter) and column (second) with code
     1 6
     3 4
 
-### reduce
+### [reduce](#list-like-matrix-operations)
 
 Like the built in reduce method, it iterates over all elements and joins them into one value, by applying the given operator or method to the previous result and the next element. I starts with the cell [0][0] and moving from left to right in the first row and continue with the first cell of the next row.
 
     Math::Matrix.new([[1,2],[3,4]]).reduce(&[+]): 10
     Math::Matrix.new([[1,2],[3,4]]).reduce(&[*]): 10
 
-### reduce-rows
+### [reduce-rows](#list-like-matrix-operations)
 
 Reduces (as described above) every row into one value, so the overall result will be a list. In this example we calculate the sum of all cells in a row:
 
     say Math::Matrix.new([[1,2],[3,4]]).reduce-rows(&[+]): (3, 7)
 
-### reduce-columns
+### [reduce-columns](#list-like-matrix-operations)
 
 Similar to reduce-rows, this method reduces each column to one value in the resulting list:
 
