@@ -47,7 +47,7 @@ Acceptable export tags are:
 =item structural ops: L<move-row|#move-row>, L<move-column|#move-column>, L<swap-rows|#swap-rows>, L<swap-columns|#swap-columns>, L<splice-rows|#splice-rows>, L<splice-columns|#splice-columns>
 =item matrix math ops: L<add|#add>, L<subtract|#subtract>, L<add-row|#add-row>, L<add-column|#add-column>, L<multiply|#multiply>, L<multiply-row|#multiply-row>, L<multiply-column|#multiply-column>, L<dotProduct|#dotProduct>, L<tensorProduct|#tensorProduct>
 =item L<shortcuts|#shortcuts>:   T,   det,   rref
-=item L<operators|#operators>:   MM,   +,   -,   *,   **,   dot,   ⋅,   ÷,   x,   ⊗,   ❘ ❘,   ‖ ‖,   [ ]
+=item L<operators|#operators>:   MM,   ?,  ~,   |,  @,  %,  +,   -,   *,   **,   dot,   ⋅,   ÷,   x,   ⊗,   ==,   ~~,   ❘ ❘,   ‖ ‖,   [ ]
 
 
 =head2 Constructors

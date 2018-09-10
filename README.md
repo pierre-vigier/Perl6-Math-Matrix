@@ -63,7 +63,7 @@ METHODS
 
   * [shortcuts](#shortcuts): T, det, rref
 
-  * [operators](#operators): MM, +, -, *, **, dot, ⋅, ÷, x, ⊗, ❘ ❘, ‖ ‖, [ ]
+  * [operators](#operators): MM, ?, ~, |, @, %, +, -, *, **, dot, ⋅, ÷, x, ⊗, ==, ~~, ❘ ❘, ‖ ‖, [ ]
 
 Constructors
 ------------
