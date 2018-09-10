@@ -51,7 +51,7 @@ Acceptable export tags are:
 =item L<operators|#operators>:   MM,   ?,  ~,   |,  @,  %,  +,   -,   *,   **,   dot,   ⋅,   ÷,   x,   ⊗,   ==,   ~~,   ❘ ❘,   ‖ ‖,   [ ]
 
 
-=head2 Constructors
+=head2 L<methods|#methods>
 
 Methods that create a new Math::Matrix object. The .new is optimized for speed and uniformity - the other
 are there for convenience and to optimize property calculation.

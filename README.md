@@ -65,8 +65,8 @@ METHODS
 
   * [operators](#operators): MM, ?, ~, |, @, %, +, -, *, **, dot, ⋅, ÷, x, ⊗, ==, ~~, ❘ ❘, ‖ ‖, [ ]
 
-Constructors
-------------
+[methods](#methods)
+-------------------
 
 Methods that create a new Math::Matrix object. The .new is optimized for speed and uniformity - the other are there for convenience and to optimize property calculation.
 
