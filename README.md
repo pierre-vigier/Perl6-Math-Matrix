@@ -55,7 +55,7 @@ METHODS
 
   * [decompositions](#decompositions): [decompositionLUCrout](#decompositionlucrout), [decompositionLU](#decompositionlu), [decompositionCholesky](#decompositioncholesky)
 
-  * [matrix math ops](#matrix-math-operations): [add](#add), [subtract](#subtract), [add-row](#add-row), [add-column](#add-column), [multiply](#multiply), [multiply-row](#multiply-row), [multiply-column](#multiply-column), [dotProduct](#dotProduct), [tensorProduct](#tensorProduct)
+  * [matrix math ops](#matrix-math-operations): [add](#add), [subtract](#subtract), [add-row](#add-row), [add-column](#add-column), [multiply](#multiply), [multiply-row](#multiply-row), [multiply-column](#multiply-column), [dotProduct](#dotproduct), [tensorProduct](#tensorproduct)
 
   * [list like ops](#list-like-matrix-operations): [elems](#elems), [cont](#cont), [equal](#equal), [map](#map), [map-row](#map-row), [map-column](#map-column), [map-cell](#map-cell), [reduce](#reduce), [reduce-rows](#reduce-rows), [reduce-columns](#reduce-columns)
 
@@ -527,7 +527,7 @@ Return the reduced row echelon form of a matrix, a.k.a. row canonical form
 
 Methods that return lists of matrices, which in their product or otherwise can be recombined to the original matrix. In case of cholesky only one matrix is returned, becasue the other one is its transposed.
 
-### decompositionLU
+### [decompositionLU](#decompositions)
 
     my ($L, $U, $P) = $matrix.decompositionLU( );
     $L dot $U eq $matrix dot $P;         # True
@@ -539,14 +539,14 @@ $L is a left triangular matrix and $R is a right one Without pivotisation the ma
     my ($L, $D, $U, $P) = $matrix.decompositionLU( :diagonal );
     $L dot $D dot $U eq $matrix dot $P;  # True
 
-### decompositionLUCrout
+### [decompositionLUCrout](#decompositions)
 
     my ($L, $U) = $matrix.decompositionLUCrout( );
     $L dot $U eq $matrix;                # True
 
 $L is a left triangular matrix and $R is a right one This decomposition works only on invertible matrices (square and full ranked).
 
-### decompositionCholesky
+### [decompositionCholesky](#decompositions)
 
 This decomposition works only on symmetric and definite positive matrices.
 
