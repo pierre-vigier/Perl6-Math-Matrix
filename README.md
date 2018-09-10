@@ -68,7 +68,7 @@ METHODS
 [Constructors](#methods)
 ------------------------
 
-Methods that create a new Math::Matrix object. The .new is optimized for speed and uniformity - the other are there for convenience and to optimize property calculation.
+Methods that create a new Math::Matrix object. The default is of course .new, which can take array of array of values (fastest) or one string. Additional constructers: [new-zero](#new-zero), [new-identity](#new-identity), [new-diagonal](#new-diagonal) and [new-vector-product](#new-vector-product) are there for convenience and to optimize property calculation.
 
 ### [new( [[...],...,[...]] )](#constructors)
 
@@ -847,7 +847,7 @@ Summary of all methods with short alias: [transposed](#transposed), [conjugated]
 <th>short</th> <th>long name</th>
 </tr></thead>
 <tbody>
-<tr> <td>T</td> <td>transposed|#transposed</td> </tr> <tr> <td>conj</td> <td>conjugated|#conjugated</td> </tr> <tr> <td>det</td> <td>determinant|#determinant</td> </tr> <tr> <td>rref</td> <td>reduced-row-echelon-form</td> </tr>
+<tr> <td>T</td> <td>transposed</td> </tr> <tr> <td>conj</td> <td>conjugated</td> </tr> <tr> <td>det</td> <td>determinant</td> </tr> <tr> <td>rref</td> <td>reduced-row-echelon-form</td> </tr>
 </tbody>
 </table>
 

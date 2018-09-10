@@ -53,7 +53,8 @@ Acceptable export tags are:
 
 =head2 L<Constructors|#methods>
 
-Methods that create a new Math::Matrix object. The .new is optimized for speed and uniformity - the other
+Methods that create a new Math::Matrix object. The default is of course .new, which can take array of array of values (fastest) or one string.
+Additional constructers: L<new-zero|#new-zero>, L<new-identity|#new-identity>, L<new-diagonal|#new-diagonal> and L<new-vector-product|#new-vector-product>
 are there for convenience and to optimize property calculation.
 
 =head3 L<new( [[...],...,[...]] )|#constructors>
@@ -920,9 +921,9 @@ Summary of all methods with short alias: L<transposed|#transposed>, L<conjugated
 =begin table
     short  long name 
     ------------------
-    T      transposed|#transposed 
-    conj   conjugated|#conjugated
-    det    determinant|#determinant
+    T      transposed
+    conj   conjugated
+    det    determinant
     rref   reduced-row-echelon-form
 =end table
 
