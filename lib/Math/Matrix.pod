@@ -34,10 +34,10 @@ Acceptable export tags are:
 =item :ALL
 
 =head1 METHODS
-=item constructors: L<new []|#new-->, L<new ''|#new---1>, L<new-zero|#new-zero>, L<new-identity|#new-identity>, L<new-diagonal|#new-diagonal>, L<new-vector-product|#new-vector-product>
-=item accessors: L<cell|#cell>, L<row|#row>, L<column|#column>, L<diagonal|#diagonal>, L<submatrix|#submatrix>, L<AT-POS|#at-pos>
-=item conversion: L<Bool|#bool>, L<Numeric|#numeric>, L<Str|#str>, L<Array|#array>, L<Hash|#hash>, L<list|#list>, L<list-rows|#list-rows>, L<list-columns|#list-columns>, L<gist|#gist>, L<perl|#perl>
-=item boolean properties: L<is-zero|#is-zero>, L<is-identity|#is-identity>, L<is-square|#is-square>, L<is-diagonal|#is-diagonal>,
+=item L<constructors|#constructors>: L<new []|#new-->, L<new ''|#new---1>, L<new-zero|#new-zero>, L<new-identity|#new-identity>, L<new-diagonal|#new-diagonal>, L<new-vector-product|#new-vector-product>
+=item L<accessors|#accessors>: L<cell|#cell>, L<row|#row>, L<column|#column>, L<diagonal|#diagonal>, L<submatrix|#submatrix>, L<AT-POS|#at-pos>
+=item L<converter|#type-conversion-and-output-formats>: L<Bool|#bool>, L<Numeric|#numeric>, L<Str|#str>, L<Array|#array>, L<Hash|#hash>, L<list|#list>, L<list-rows|#list-rows>, L<list-columns|#list-columns>, L<gist|#gist>, L<perl|#perl>
+=item L<boolean properties|#boolean-properties>: L<is-zero|#is-zero>, L<is-identity|#is-identity>, L<is-square|#is-square>, L<is-diagonal|#is-diagonal>,
     L<is-diagonally-dominant|#is-diagonally-dominant>, L<is-upper-triangular|#is-upper-triangular>, L<is-lower-triangular|#is-lower-triangular>, L<is-invertible|#is-invertible>,
     L<is-symmetric|#is-symmetric>, L<is-antisymmetric|#is-antisymmetric>, L<is-unitary|#is-unitary>, L<is-self-adjoint|#is-self-adjoint>, L<is-orthogonal|#is-orthogonal>,
     L<is-positive-definite|#is-positive-definite>, L<is-positive-semidefinite|#is-positive-semidefinite>
@@ -596,7 +596,6 @@ This decomposition works only on symmetric and definite positive matrices.
     $D dot $D.T eq $matrix;                    # True 
 
 
-
 =head2 L<List Like Matrix Operations|#methods>
 
 Selection of methods that are also provided by Lists and Arrays and make also sense in context a 2D matrix. 
@@ -691,7 +690,7 @@ resulting list:
     say Math::Matrix.new([[1,2],[3,4]]).reduce-columns(&[*]): (3, 8)
 
 
-=head2 Structural Matrix Operations
+=head2 L<Structural Matrix Operations|#methods>
 
 Methods that reorder the rows and columns, delete some or even add new. 
 The accessor .submatrix is also useful for that purpose.

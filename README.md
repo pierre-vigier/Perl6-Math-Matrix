@@ -41,13 +41,13 @@ All computation heavy properties will be calculated lazily and will be cached. A
 METHODS
 =======
 
-  * constructors: [new []](#new--), [new ''](#new---1), [new-zero](#new-zero), [new-identity](#new-identity), [new-diagonal](#new-diagonal), [new-vector-product](#new-vector-product)
+  * [constructors](#constructors): [new []](#new--), [new ''](#new---1), [new-zero](#new-zero), [new-identity](#new-identity), [new-diagonal](#new-diagonal), [new-vector-product](#new-vector-product)
 
-  * accessors: [cell](#cell), [row](#row), [column](#column), [diagonal](#diagonal), [submatrix](#submatrix), [AT-POS](#at-pos)
+  * [accessors](#accessors): [cell](#cell), [row](#row), [column](#column), [diagonal](#diagonal), [submatrix](#submatrix), [AT-POS](#at-pos)
 
-  * conversion: [Bool](#bool), [Numeric](#numeric), [Str](#str), [Array](#array), [Hash](#hash), [list](#list), [list-rows](#list-rows), [list-columns](#list-columns), [gist](#gist), [perl](#perl)
+  * [converter](#type-conversion-and-output-formats): [Bool](#bool), [Numeric](#numeric), [Str](#str), [Array](#array), [Hash](#hash), [list](#list), [list-rows](#list-rows), [list-columns](#list-columns), [gist](#gist), [perl](#perl)
 
-  * boolean properties: [is-zero](#is-zero), [is-identity](#is-identity), [is-square](#is-square), [is-diagonal](#is-diagonal), [is-diagonally-dominant](#is-diagonally-dominant), [is-upper-triangular](#is-upper-triangular), [is-lower-triangular](#is-lower-triangular), [is-invertible](#is-invertible), [is-symmetric](#is-symmetric), [is-antisymmetric](#is-antisymmetric), [is-unitary](#is-unitary), [is-self-adjoint](#is-self-adjoint), [is-orthogonal](#is-orthogonal), [is-positive-definite](#is-positive-definite), [is-positive-semidefinite](#is-positive-semidefinite)
+  * [boolean properties](#boolean-properties): [is-zero](#is-zero), [is-identity](#is-identity), [is-square](#is-square), [is-diagonal](#is-diagonal), [is-diagonally-dominant](#is-diagonally-dominant), [is-upper-triangular](#is-upper-triangular), [is-lower-triangular](#is-lower-triangular), [is-invertible](#is-invertible), [is-symmetric](#is-symmetric), [is-antisymmetric](#is-antisymmetric), [is-unitary](#is-unitary), [is-self-adjoint](#is-self-adjoint), [is-orthogonal](#is-orthogonal), [is-positive-definite](#is-positive-definite), [is-positive-semidefinite](#is-positive-semidefinite)
 
   * numeric properties: [size](#size), [density](#density), [trace](#trace), [determinant](#determinant), [rank](#rank), [kernel](#kernel), [norm](#norm), [condition](#condition), [narrowest-cell-type](#narrowest-cell-type), [widest-cell-type](#widest-cell-type)
 
@@ -635,8 +635,8 @@ Similar to reduce-rows, this method reduces each column to one value in the resu
 
     say Math::Matrix.new([[1,2],[3,4]]).reduce-columns(&[*]): (3, 8)
 
-Structural Matrix Operations
-----------------------------
+[Structural Matrix Operations](#methods)
+----------------------------------------
 
 Methods that reorder the rows and columns, delete some or even add new. The accessor .submatrix is also useful for that purpose.
 
