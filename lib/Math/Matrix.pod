@@ -914,8 +914,9 @@ Summary of all methods with short alias:
     short  long name 
     ------------------
     T      transposed 
+    conj   conjugated
     det    determinant
-    rref   reduced-row-echelon-form 
+    rref   reduced-row-echelon-form
 =end table
 
 =head1 Operators

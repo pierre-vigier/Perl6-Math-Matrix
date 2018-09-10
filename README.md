@@ -847,7 +847,7 @@ Summary of all methods with short alias:
 <th>short</th> <th>long name</th>
 </tr></thead>
 <tbody>
-<tr> <td>T</td> <td>transposed</td> </tr> <tr> <td>det</td> <td>determinant</td> </tr> <tr> <td>rref</td> <td>reduced-row-echelon-form</td> </tr>
+<tr> <td>T</td> <td>transposed</td> </tr> <tr> <td>conj</td> <td>conjugated</td> </tr> <tr> <td>det</td> <td>determinant</td> </tr> <tr> <td>rref</td> <td>reduced-row-echelon-form</td> </tr>
 </tbody>
 </table>
 
