@@ -218,7 +218,7 @@ In that example we have second and third row in previous order, but selcted only
 
 Methods that convert a matrix into other types or allow different views on the overall content.
 
-### Bool
+### [Bool](#type-conversion-and-output-formats)
 
 Conversion into Bool context. Returns False if matrix is zero (all cells equal zero as in is-zero), otherwise True.
 
@@ -226,14 +226,14 @@ Conversion into Bool context. Returns False if matrix is zero (all cells equal z
     ? $matrix           # alias op
     if $matrix          # matrix in Bool context too
 
-### Numeric
+### [Numeric](#type-conversion-and-output-formats)
 
 Conversion into Numeric context. Returns number (amount) of cells (as .elems). Please note, only a prefix operator + (as in: + $matrix) will call this Method. An infix (as in $matrix + $number) calls $matrix.add($number).
 
     $matrix.Numeric
     + $matrix           # alias op
 
-### Str
+### [Str](#type-conversion-and-output-formats)
 
 Returns all cell values separated by one whitespace, rows by new line. This is the same format as expected by Math::Matrix.new(""). Str is called implicitly by put and print. A shortened version is provided by .gist
 
@@ -244,40 +244,41 @@ Returns all cell values separated by one whitespace, rows by new line. This is t
 
     ~$matrix            # alias op
 
-### Array
+### [Array](#type-conversion-and-output-formats)
 
 Content of all cells as an array of arrays (same format that was put into Math::Matrix.new([...])).
 
     say Math::Matrix.new([[1,2],[3,4]]).Array : [[1 2] [3 4]]
+    say @ $matrix       # alias op, space needed
 
-### list
+### [list](#type-conversion-and-output-formats)
 
 Returns a flat list with all cells (same as .list-rows.flat.list).
 
     say $matrix.list    : (1 2 3 4)
     say |$matrix        # alias op
 
-### list-rows
+### [list-rows](#type-conversion-and-output-formats)
 
 Returns a list of lists, reflecting the row-wise content of the matrix.
 
     say Math::Matrix.new( [[1,2],[3,4]] ).list-rows      : ((1 2) (3 4))
     say Math::Matrix.new( [[1,2],[3,4]] ).list-rows.flat : (1 2 3 4)
 
-### list-columns
+### [list-columns](#type-conversion-and-output-formats)
 
 Returns a list of lists, reflecting the row-wise content of the matrix.
 
     say Math::Matrix.new( [[1,2],[3,4]] ).list-columns : ((1 3) (2 4))
 
-### Hash
+### [Hash](#type-conversion-and-output-formats)
 
 Gets you a nested key - value hash.
 
     say $matrix.Hash : { 0 => { 0 => 1, 1 => 2}, 1 => {0 => 3, 1 => 4} } 
-    say %$matrix     # alias op
+    say % $matrix       # alias op, space needed
 
-### gist
+### [gist](#type-conversion-and-output-formats)
 
 Limited tabular view, optimized for shell output. Just cuts off excessive columns that do not fit into standard terminal and also stops after 20 rows. If you call it explicitly, you can add width and height (char count) as optional arguments. Might even not show all decimals. Several dots will hint that something is missing. It is implicitly called by say. For a full view use .Str
 
@@ -295,7 +296,7 @@ max-chars is the maximum amount of characters in any row of output (default is 8
 
 You change the cache by calling gist with arguments again.
 
-### perl
+### [perl](#type-conversion-and-output-formats)
 
 Conversion into String that can reevaluated into the same object later using default constructor.
 
@@ -306,15 +307,15 @@ Conversion into String that can reevaluated into the same object later using def
 
 These are mathematical properties a matrix can have or not.
 
-### is-square
+### [is-square](#boolean-properties)
 
 True if number of rows and colums are the same.
 
-### is-zero
+### [is-zero](#boolean-properties)
 
-True if every cell (element) has value of 0.
+True if every cell (element) has value of 0 (as created by new-zero).
 
-### is-identity
+### [is-identity](#boolean-properties)
 
 True if every cell on the diagonal (where row index equals column index) is 1 and any other cell is 0.
 
@@ -322,7 +323,7 @@ True if every cell on the diagonal (where row index equals column index) is 1 an
                 0 1 0
                 0 0 1
 
-### is-upper-triangular
+### [is-upper-triangular](#boolean-properties)
 
 True if every cell below the diagonal (where row index is greater than column index) is 0.
 
@@ -330,7 +331,7 @@ True if every cell below the diagonal (where row index is greater than column in
                 0 3 8
                 0 0 7
 
-### is-lower-triangular
+### [is-lower-triangular](#boolean-properties)
 
 True if every cell above the diagonal (where row index is smaller than column index) is 0.
 
@@ -338,7 +339,7 @@ True if every cell above the diagonal (where row index is smaller than column in
                 2 3 0
                 5 8 7
 
-### is-diagonal
+### [is-diagonal](#boolean-properties)
 
     True if only cells on the diagonal differ from 0.
     .is-upper-triangular and .is-lower-triangular would also be True.
@@ -347,7 +348,7 @@ True if every cell above the diagonal (where row index is smaller than column in
                  0 3 0
                  0 0 7
 
-### is-diagonally-dominant
+### [is-diagonally-dominant](#boolean-properties)
 
     True if cells on the diagonal have a bigger (strict) or equal absolute value than the
     sum of the other absolute values in the column or row.
@@ -359,7 +360,7 @@ True if every cell above the diagonal (where row index is smaller than column in
     $matrix.is-diagonally-dominant(:strict,  :along<row>)    # DE > sum of rest row
     $matrix.is-diagonally-dominant(:!strict, :along<both>)   # DE >= sum of rest row and rest column
 
-### is-symmetric
+### [is-symmetric](#boolean-properties)
 
 True if every cell with coordinates x y has same value as the cell on y x. In other words: $matrix and $matrix.transposed (alias T) are the same.
 
@@ -367,7 +368,7 @@ True if every cell with coordinates x y has same value as the cell on y x. In ot
                 2 5 4
                 3 4 7
 
-### is-antisymmetric
+### [is-antisymmetric](#boolean-properties)
 
 Means the transposed and negated matrix are the same.
 
@@ -375,7 +376,7 @@ Means the transposed and negated matrix are the same.
                -2  0  4
                -3 -4  0
 
-### is-self-adjoint
+### [is-self-adjoint](#boolean-properties)
 
 A Hermitian or self-adjoint matrix is equal to its transposed and complex conjugated.
 
@@ -383,23 +384,23 @@ A Hermitian or self-adjoint matrix is equal to its transposed and complex conjug
                 2   5   4
                 3-i 4   7
 
-### is-invertible
+### [is-invertible](#boolean-properties)
 
 Is True if number of rows and colums are the same (.is-square) and .determinant is not zero. All rows or colums have to be independent vectors. Please use this method before $matrix.inverted, or you will get an exception.
 
-### is-orthogonal
+### [is-orthogonal](#boolean-properties)
 
 An orthogonal matrix multiplied (dotProduct) with its transposed derivative (T) is an identity matrix or in other words: .transposed and .inverted matrices are equal.
 
-### is-unitary
+### [is-unitary](#boolean-properties)
 
 An unitery matrix multiplied (dotProduct) with its concjugate transposed derivative (.conj.T) is an identity matrix, or said differently: the concjugate transposed matrix equals the inverted matrix.
 
-### is-positive-definite
+### [is-positive-definite](#boolean-properties)
 
 True if all main minors or all Eigenvalues are strictly greater zero.
 
-### is-positive-semidefinite
+### [is-positive-semidefinite](#boolean-properties)
 
 True if all main minors or all Eigenvalues are greater equal zero.
 
@@ -408,26 +409,26 @@ True if all main minors or all Eigenvalues are greater equal zero.
 
 Matrix properties that are expressed with a single number.
 
-### size
+### [size](#numeric-properties)
 
 List of two values: number of rows and number of columns.
 
     say $matrix.size();
     my $dim = min $matrix.size();
 
-### density
+### [density](#numeric-properties)
 
 Density is the percentage of cell which are not zero.
 
     my $d = $matrix.density( );
 
-### trace
+### [trace](#numeric-properties)
 
 The trace of a square matrix is the sum of the cells on the main diagonal. In other words: sum of cells which row and column value is identical.
 
     my $tr = $matrix.trace( );
 
-### determinant
+### [determinant](#numeric-properties)
 
 If you see the columns as vectors, that describe the edges of a solid, the determinant of a square matrix tells you the volume of that solid. So if the solid is just in one dimension flat, the determinant is zero too.
 
@@ -435,19 +436,19 @@ If you see the columns as vectors, that describe the edges of a solid, the deter
     my $d = $matrix.det( );             # same thing
     my $d = ❘ $matrix ❘;                # unicode operator shortcut
 
-### rank
+### [rank](#numeric-properties)
 
 Rank is the number of independent row or column vectors or also called independent dimensions (thats why this command is sometimes calles dim)
 
     my $r = $matrix.rank( );
 
-### kernel
+### [kernel](#numeric-properties)
 
 Kernel of matrix, number of dependent rows or columns (rank + kernel = dim).
 
     my $tr = $matrix.kernel( );
 
-### norm
+### [norm](#numeric-properties)
 
 A norm is a single positive number, which is an abstraction to the concept of size. Most common form for matrices is the p-norm, where in step 1 the absolute value of every cell is taken to the power of p. The sum of these results is taken to the power of 1/p. The p-q-Norm extents this process. In his step 2 every column-sum is taken to the power of (p/q). In step 3 the sum of these are taken to the power of (1/q).
 
@@ -462,15 +463,15 @@ A norm is a single positive number, which is an abstraction to the concept of si
     $matrix.norm('row-sum');              # row sum norm - biggest abs. value-sum of a row
     $matrix.norm('column-sum');           # column sum norm - same column wise
 
-### condition
+### [condition](#numeric-properties)
 
 Condition number of a matrix is L2 norm * L2 of inverted matrix.
 
     my $c = $matrix.condition( );
 
-### narrowest-cell-type
+### [narrowest-cell-type](#numeric-properties)
 
-### widest-cell-type
+### [widest-cell-type](#numeric-properties)
 
 Matrix cells can be (from most narrow to widest), of type (Bool), (Int), (Num), (Rat), (FatRat) or (Complex). The widest type of any cell will returned as type object.
 
@@ -707,7 +708,7 @@ Like the built in map it iterates over all elements, running a code block. The r
     2 3
     4 5
 
-### [map-rov](#list-like-matrix-operations)
+### [map-row](#list-like-matrix-operations)
 
 Map only specified row (row number is first parameter).
 

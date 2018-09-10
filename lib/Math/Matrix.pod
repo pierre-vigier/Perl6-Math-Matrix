@@ -224,7 +224,7 @@ in reversed order.
 
 Methods that convert a matrix into other types or allow different views on the overall content.
 
-=head3 Bool
+=head3 L<Bool|#type-conversion-and-output-formats>
 
 Conversion into Bool context. Returns False if matrix is zero
 (all cells equal zero as in is-zero), otherwise True.
@@ -233,7 +233,7 @@ Conversion into Bool context. Returns False if matrix is zero
     ? $matrix           # alias op
     if $matrix          # matrix in Bool context too
 
-=head3 Numeric
+=head3 L<Numeric|#type-conversion-and-output-formats>
 
 Conversion into Numeric context. Returns number (amount) of cells (as .elems).
 Please note, only a prefix operator + (as in: + $matrix) will call this Method.
@@ -242,7 +242,7 @@ An infix (as in $matrix + $number) calls $matrix.add($number).
     $matrix.Numeric
     + $matrix           # alias op
 
-=head3 Str
+=head3 L<Str|#type-conversion-and-output-formats>
 
 Returns all cell values separated by one whitespace, rows by new line.
 This is the same format as expected by Math::Matrix.new("").
@@ -255,13 +255,14 @@ Str is called implicitly by put and print. A shortened version is provided by .g
 
     ~$matrix            # alias op
 
-=head3 Array
+=head3 L<Array|#type-conversion-and-output-formats>
 
 Content of all cells as an array of arrays (same format that was put into Math::Matrix.new([...])).
 
     say Math::Matrix.new([[1,2],[3,4]]).Array : [[1 2] [3 4]]
+    say @ $matrix       # alias op, space needed
 
-=head3 list
+=head3 L<list|#type-conversion-and-output-formats>
 
 Returns a flat list with all cells (same as .list-rows.flat.list).
 
@@ -269,27 +270,27 @@ Returns a flat list with all cells (same as .list-rows.flat.list).
     say |$matrix        # alias op
 
 
-=head3 list-rows
+=head3 L<list-rows|#type-conversion-and-output-formats>
 
 Returns a list of lists, reflecting the row-wise content of the matrix.
     
     say Math::Matrix.new( [[1,2],[3,4]] ).list-rows      : ((1 2) (3 4))
     say Math::Matrix.new( [[1,2],[3,4]] ).list-rows.flat : (1 2 3 4)
 
-=head3 list-columns
+=head3 L<list-columns|#type-conversion-and-output-formats>
 
 Returns a list of lists, reflecting the row-wise content of the matrix.
     
     say Math::Matrix.new( [[1,2],[3,4]] ).list-columns : ((1 3) (2 4))
 
-=head3 Hash
+=head3 L<Hash|#type-conversion-and-output-formats>
 
 Gets you a nested key - value hash.
 
     say $matrix.Hash : { 0 => { 0 => 1, 1 => 2}, 1 => {0 => 3, 1 => 4} } 
-    say %$matrix     # alias op
+    say % $matrix       # alias op, space needed
 
-=head3 gist
+=head3 L<gist|#type-conversion-and-output-formats>
 
 Limited tabular view, optimized for shell output. Just cuts off excessive
 columns that do not fit into standard terminal and also stops after 20 rows.
@@ -314,7 +315,7 @@ So next time you call:
 
 You change the cache by calling gist with arguments again.
 
-=head3 perl
+=head3 L<perl|#type-conversion-and-output-formats>
 
 Conversion into String that can reevaluated into the same object later using default constructor.
 
@@ -324,15 +325,15 @@ Conversion into String that can reevaluated into the same object later using def
 
 These are mathematical properties a matrix can have or not.
 
-=head3 is-square
+=head3 L<is-square|#boolean-properties>
 
 True if number of rows and colums are the same.
 
-=head3 is-zero
+=head3 L<is-zero|#boolean-properties>
 
-True if every cell (element) has value of 0.
+True if every cell (element) has value of 0 (as created by new-zero).
 
-=head3 is-identity
+=head3 L<is-identity|#boolean-properties>
 
 True if every cell on the diagonal (where row index equals column index) is 1
 and any other cell is 0.
@@ -341,7 +342,7 @@ and any other cell is 0.
                 0 1 0
                 0 0 1
 
-=head3 is-upper-triangular
+=head3 L<is-upper-triangular|#boolean-properties>
 
 True if every cell below the diagonal (where row index is greater than column index) is 0.
 
@@ -349,7 +350,7 @@ True if every cell below the diagonal (where row index is greater than column in
                 0 3 8
                 0 0 7
 
-=head3 is-lower-triangular
+=head3 L<is-lower-triangular|#boolean-properties>
 
 True if every cell above the diagonal (where row index is smaller than column index) is 0.
 
@@ -357,7 +358,7 @@ True if every cell above the diagonal (where row index is smaller than column in
                 2 3 0
                 5 8 7
 
-=head3 is-diagonal
+=head3 L<is-diagonal|#boolean-properties>
 
    True if only cells on the diagonal differ from 0.
    .is-upper-triangular and .is-lower-triangular would also be True.
@@ -366,7 +367,7 @@ True if every cell above the diagonal (where row index is smaller than column in
                 0 3 0
                 0 0 7
 
-=head3 is-diagonally-dominant
+=head3 L<is-diagonally-dominant|#boolean-properties>
 
    True if cells on the diagonal have a bigger (strict) or equal absolute value than the
    sum of the other absolute values in the column or row.
@@ -378,7 +379,7 @@ True if every cell above the diagonal (where row index is smaller than column in
    $matrix.is-diagonally-dominant(:strict,  :along<row>)    # DE > sum of rest row
    $matrix.is-diagonally-dominant(:!strict, :along<both>)   # DE >= sum of rest row and rest column
 
-=head3 is-symmetric
+=head3 L<is-symmetric|#boolean-properties>
 
 True if every cell with coordinates x y has same value as the cell on y x.
 In other words: $matrix and $matrix.transposed (alias T) are the same.
@@ -387,7 +388,7 @@ In other words: $matrix and $matrix.transposed (alias T) are the same.
                 2 5 4
                 3 4 7
 
-=head3 is-antisymmetric
+=head3 L<is-antisymmetric|#boolean-properties>
 
 Means the transposed and negated matrix are the same.
 
@@ -396,7 +397,7 @@ Means the transposed and negated matrix are the same.
                -3 -4  0
 
 
-=head3 is-self-adjoint
+=head3 L<is-self-adjoint|#boolean-properties>
 
 A Hermitian or self-adjoint matrix is equal to its transposed and complex conjugated.
 
@@ -404,28 +405,28 @@ A Hermitian or self-adjoint matrix is equal to its transposed and complex conjug
                 2   5   4
                 3-i 4   7
 
-=head3 is-invertible
+=head3 L<is-invertible|#boolean-properties>
 
 Is True if number of rows and colums are the same (.is-square) and .determinant is not zero.
 All rows or colums have to be independent vectors. Please use this method before $matrix.inverted,
 or you will get an exception.
 
-=head3 is-orthogonal
+=head3 L<is-orthogonal|#boolean-properties>
 
 An orthogonal matrix multiplied (dotProduct) with its transposed derivative (T)
 is an identity matrix or in other words: .transposed and .inverted matrices are equal.
 
-=head3 is-unitary
+=head3 L<is-unitary|#boolean-properties>
 
 An unitery matrix multiplied (dotProduct) with its concjugate transposed 
 derivative (.conj.T) is an identity matrix, or said differently:
 the concjugate transposed matrix equals the inverted matrix.
 
-=head3 is-positive-definite
+=head3 L<is-positive-definite|#boolean-properties>
 
 True if all main minors or all Eigenvalues are strictly greater zero.
 
-=head3 is-positive-semidefinite
+=head3 L<is-positive-semidefinite|#boolean-properties>
 
 True if all main minors or all Eigenvalues are greater equal zero.
 
@@ -433,27 +434,27 @@ True if all main minors or all Eigenvalues are greater equal zero.
 
 Matrix properties that are expressed with a single number.
 
-=head3 size
+=head3 L<size|#numeric-properties>
 
 List of two values: number of rows and number of columns.
 
     say $matrix.size();
     my $dim = min $matrix.size();  
 
-=head3 density
+=head3 L<density|#numeric-properties>
 
 Density is the percentage of cell which are not zero.
 
     my $d = $matrix.density( );   
 
-=head3 trace
+=head3 L<trace|#numeric-properties>
 
 The trace of a square matrix is the sum of the cells on the main diagonal.
 In other words: sum of cells which row and column value is identical.
 
     my $tr = $matrix.trace( ); 
 
-=head3 determinant
+=head3 L<determinant|#numeric-properties>
 
 If you see the columns as vectors, that describe the edges of a solid,
 the determinant of a square matrix tells you the volume of that solid.
@@ -463,21 +464,21 @@ So if the solid is just in one dimension flat, the determinant is zero too.
     my $d = $matrix.det( );             # same thing
     my $d = ❘ $matrix ❘;                # unicode operator shortcut
 
-=head3 rank
+=head3 L<rank|#numeric-properties>
 
 Rank is the number of independent row or column vectors or also called independent
 dimensions (thats why this command is sometimes calles dim)
 
     my $r = $matrix.rank( );
 
-=head3 kernel
+=head3 L<kernel|#numeric-properties>
 
 Kernel of matrix, number of dependent rows or columns (rank + kernel = dim).
 
     my $tr = $matrix.kernel( );
 
 
-=head3 norm
+=head3 L<norm|#numeric-properties>
 
 A norm is a single positive number, which is an abstraction to the concept of size.
 Most common form for matrices is the p-norm, where in step 1
@@ -497,15 +498,15 @@ In step 3 the sum of these are taken to the power of (1/q).
     $matrix.norm('row-sum');              # row sum norm - biggest abs. value-sum of a row
     $matrix.norm('column-sum');           # column sum norm - same column wise
 
-=head3 condition
+=head3 L<condition|#numeric-properties>
 
 Condition number of a matrix is L2 norm * L2 of inverted matrix.
 
     my $c = $matrix.condition( );        
 
-=head3 narrowest-cell-type
+=head3 L<narrowest-cell-type|#numeric-properties>
 
-=head3 widest-cell-type
+=head3 L<widest-cell-type|#numeric-properties>
 
 Matrix cells can be (from most narrow to widest), of type (Bool), (Int), (Num), (Rat), (FatRat) or (Complex). 
 The widest type of any cell will returned as type object.
@@ -772,7 +773,7 @@ The results for a new matrix.
     2 3
     4 5
 
-=head3 L<map-rov|#list-like-matrix-operations>
+=head3 L<map-row|#list-like-matrix-operations>
 
 Map only specified row (row number is first parameter).
     
