@@ -427,7 +427,7 @@ The trace of a square matrix is the sum of the cells on the main diagonal. In ot
 
     my $tr = $matrix.trace( );
 
-### determinant, alias det
+### determinant
 
 If you see the columns as vectors, that describe the edges of a solid, the determinant of a square matrix tells you the volume of that solid. So if the solid is just in one dimension flat, the determinant is zero too.
 
@@ -756,7 +756,7 @@ Similar to reduce-rows, this method reduces each column to one value in the resu
 
 Methods that reorder the rows and columns, delete some or even add new. The accessor .submatrix is also useful for that purpose.
 
-### move-row
+### [move-row](#structural-matrix-operations)
 
     Math::Matrix.new([[1,2,3],[4,5,6],[7,8,9]]).move-row(0,1);  # move row 0 to 1
     Math::Matrix.new([[1,2,3],[4,5,6],[7,8,9]]).move-row(0=>1); # same
@@ -765,7 +765,7 @@ Methods that reorder the rows and columns, delete some or even add new. The acce
     4 5 6    ==>    1 2 3
     7 8 9           7 8 9
 
-### move-column
+### [move-column](#structural-matrix-operations)
 
     Math::Matrix.new([[1,2,3],[4,5,6],[7,8,9]]).move-column(2,1);
     Math::Matrix.new([[1,2,3],[4,5,6],[7,8,9]]).move-column(2=>1); # same
@@ -774,7 +774,7 @@ Methods that reorder the rows and columns, delete some or even add new. The acce
     4 5 6    ==>    4 6 5
     7 8 9           7 9 8
 
-### swap-rows
+### [swap-rows](#structural-matrix-operations)
 
     Math::Matrix.new([[1,2,3],[4,5,6],[7,8,9]]).swap-rows(2,0);
 
@@ -782,7 +782,7 @@ Methods that reorder the rows and columns, delete some or even add new. The acce
     4 5 6    ==>    4 5 6
     7 8 9           1 2 3
 
-### swap-columns
+### [swap-columns](#structural-matrix-operations)
 
     Math::Matrix.new([[1,2,3],[4,5,6],[7,8,9]]).swap-columns(0,2);
 
@@ -790,7 +790,7 @@ Methods that reorder the rows and columns, delete some or even add new. The acce
     4 5 6    ==>    6 5 4
     7 8 9           9 8 7
 
-### splice-rows
+### [splice-rows](#structural-matrix-operations)
 
 Like the splice for lists: the first two parameter are position and amount (optional) of rows to be deleted. The third and alos optional parameter will be an array of arrays (line .new would accept), that fitting row lengths. These rows will be inserted before the row with the number of first parameter. The third parameter can also be a fitting Math::Matrix.
 
@@ -826,7 +826,7 @@ Like the splice for lists: the first two parameter are position and amount (opti
     5 6
     7 8
 
-### splice-columns
+### [splice-columns](#structural-matrix-operations)
 
 Same as splice-rows, just horizontally.
 
@@ -889,7 +889,7 @@ The only exception is MM-operator, a shortcut to create a matrix. That has to be
     my $tp  =  $a x $b;              # tensor product 
     my $tp  =  $a ⊗ $b;              # tensor product, unicode (U+02297)
 
-      ｜$matrix ｜                     # determinant, unicode (U+0FF5C)
+     ｜ $matrix ｜                     # determinant, unicode (U+0FF5C)
      ‖ $matrix ‖                     # L2 norm (euclidean p=2 to the square), (U+02016)
 
        $matrix[1][2]                 # cell in second row and third column, works even when used :MANDATORY tag

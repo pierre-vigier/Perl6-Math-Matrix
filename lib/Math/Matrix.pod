@@ -453,7 +453,7 @@ In other words: sum of cells which row and column value is identical.
 
     my $tr = $matrix.trace( ); 
 
-=head3 determinant, alias det
+=head3 determinant
 
 If you see the columns as vectors, that describe the edges of a solid,
 the determinant of a square matrix tells you the volume of that solid.
@@ -827,7 +827,7 @@ resulting list:
 Methods that reorder the rows and columns, delete some or even add new. 
 The accessor .submatrix is also useful for that purpose.
 
-=head3 move-row
+=head3 L<move-row|#structural-matrix-operations>
 
     Math::Matrix.new([[1,2,3],[4,5,6],[7,8,9]]).move-row(0,1);  # move row 0 to 1
     Math::Matrix.new([[1,2,3],[4,5,6],[7,8,9]]).move-row(0=>1); # same
@@ -836,7 +836,7 @@ The accessor .submatrix is also useful for that purpose.
     4 5 6    ==>    1 2 3
     7 8 9           7 8 9
 
-=head3 move-column
+=head3 L<move-column|#structural-matrix-operations>
 
     Math::Matrix.new([[1,2,3],[4,5,6],[7,8,9]]).move-column(2,1);
     Math::Matrix.new([[1,2,3],[4,5,6],[7,8,9]]).move-column(2=>1); # same
@@ -845,7 +845,7 @@ The accessor .submatrix is also useful for that purpose.
     4 5 6    ==>    4 6 5
     7 8 9           7 9 8
 
-=head3 swap-rows
+=head3 L<swap-rows|#structural-matrix-operations>
 
     Math::Matrix.new([[1,2,3],[4,5,6],[7,8,9]]).swap-rows(2,0);
 
@@ -853,7 +853,7 @@ The accessor .submatrix is also useful for that purpose.
     4 5 6    ==>    4 5 6
     7 8 9           1 2 3
 
-=head3 swap-columns
+=head3 L<swap-columns|#structural-matrix-operations>
 
     Math::Matrix.new([[1,2,3],[4,5,6],[7,8,9]]).swap-columns(0,2);
 
@@ -861,7 +861,7 @@ The accessor .submatrix is also useful for that purpose.
     4 5 6    ==>    6 5 4
     7 8 9           9 8 7
 
-=head3 splice-rows
+=head3 L<splice-rows|#structural-matrix-operations>
 
 Like the splice for lists: the first two parameter are position and amount (optional) of rows to be deleted.
 The third and alos optional parameter will be an array of arrays (line .new would accept),
@@ -900,7 +900,7 @@ The third parameter can also be a fitting Math::Matrix.
     5 6
     7 8
 
-=head3 splice-columns
+=head3 L<splice-columns|#structural-matrix-operations>
 
 Same as splice-rows, just horizontally.
 
@@ -968,7 +968,7 @@ The postcircumfix [] - op will always work.
     my $tp  =  $a x $b;              # tensor product 
     my $tp  =  $a ⊗ $b;              # tensor product, unicode (U+02297)
 
-      ｜$matrix ｜                     # determinant, unicode (U+0FF5C)
+     ｜ $matrix ｜                     # determinant, unicode (U+0FF5C)
      ‖ $matrix ‖                     # L2 norm (euclidean p=2 to the square), (U+02016)
 
        $matrix[1][2]                 # cell in second row and third column, works even when used :MANDATORY tag
