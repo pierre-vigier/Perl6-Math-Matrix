@@ -65,12 +65,12 @@ METHODS
 
   * [operators](#operators): MM, ?, ~, |, @, %, +, -, *, **, dot, ⋅, ÷, x, ⊗, ==, ~~, ❘ ❘, ‖ ‖, [ ]
 
-[methods](#methods)
--------------------
+[Constructors](#methods)
+------------------------
 
 Methods that create a new Math::Matrix object. The .new is optimized for speed and uniformity - the other are there for convenience and to optimize property calculation.
 
-### new( [[...],...,[...]] )
+### [new( [[...],...,[...]] )](#methods)
 
 The default constructor, takes arrays of arrays of numbers os only required parameter. Each second level array represents a row in the matrix. That is why their length has to be the same.
 

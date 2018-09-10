@@ -51,12 +51,12 @@ Acceptable export tags are:
 =item L<operators|#operators>:   MM,   ?,  ~,   |,  @,  %,  +,   -,   *,   **,   dot,   ⋅,   ÷,   x,   ⊗,   ==,   ~~,   ❘ ❘,   ‖ ‖,   [ ]
 
 
-=head2 L<methods|#methods>
+=head2 L<Constructors|#methods>
 
 Methods that create a new Math::Matrix object. The .new is optimized for speed and uniformity - the other
 are there for convenience and to optimize property calculation.
 
-=head3 new( [[...],...,[...]] )
+=head3 L<new( [[...],...,[...]] )|#methods>
 
 The default constructor, takes arrays of arrays of numbers os only required parameter.
 Each second level array represents a row in the matrix.
