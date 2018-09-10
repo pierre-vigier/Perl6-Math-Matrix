@@ -840,14 +840,14 @@ Same as splice-rows, just horizontally.
 [Shortcuts](#methods)
 ---------------------
 
-Summary of all methods with short alias:
+Summary of all methods with short alias: [transposed](#transposed), [conjugated](#conjugated), [determinant](#determinant), [reduced-row-echelon-form](#reduced-row-echelon-form) 
 
 <table class="pod-table">
 <thead><tr>
 <th>short</th> <th>long name</th>
 </tr></thead>
 <tbody>
-<tr> <td>T</td> <td>L&lt;transposed|#transposed&gt;</td> </tr> <tr> <td>conj</td> <td>L&lt;conjugated|#conjugated&gt;</td> </tr> <tr> <td>det</td> <td>L&lt;determinant|#determinant&gt;</td> </tr> <tr> <td>rref</td> <td>L&lt;reduced-row-echelon-form|#reduced-row-echelon-form&gt;</td> </tr>
+<tr> <td>T</td> <td>transposed|#transposed</td> </tr> <tr> <td>conj</td> <td>conjugated|#conjugated</td> </tr> <tr> <td>det</td> <td>determinant|#determinant</td> </tr> <tr> <td>rref</td> <td>reduced-row-echelon-form</td> </tr>
 </tbody>
 </table>
 
@@ -889,7 +889,7 @@ The only exception is MM-operator, a shortcut to create a matrix. That has to be
     my $tp  =  $a x $b;              # tensor product 
     my $tp  =  $a ⊗ $b;              # tensor product, unicode (U+02297)
 
-     ｜$matrix ｜                     # determinant, unicode (U+0FF5C)
+      ｜$matrix ｜                     # determinant, unicode (U+0FF5C)
      ‖ $matrix ‖                     # L2 norm (euclidean p=2 to the square), (U+02016)
 
        $matrix[1][2]                 # cell in second row and third column, works even when used :MANDATORY tag

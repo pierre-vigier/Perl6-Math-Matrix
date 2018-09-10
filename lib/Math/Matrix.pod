@@ -915,15 +915,15 @@ Same as splice-rows, just horizontally.
 
 =head2 L<Shortcuts|#methods>
 
-Summary of all methods with short alias:
+Summary of all methods with short alias: L<transposed|#transposed>, L<conjugated|#conjugated>, L<determinant|#determinant>, L<reduced-row-echelon-form|#reduced-row-echelon-form> 
 
 =begin table
     short  long name 
     ------------------
-    T      L<transposed|#transposed> 
-    conj   L<conjugated|#conjugated>
-    det    L<determinant|#determinant>
-    rref   L<reduced-row-echelon-form|#reduced-row-echelon-form>
+    T      transposed|#transposed 
+    conj   conjugated|#conjugated
+    det    determinant|#determinant
+    rref   reduced-row-echelon-form
 =end table
 
 =head1 L<Operators|#methods>
@@ -967,7 +967,7 @@ The postcircumfix [] - op will always work.
     my $tp  =  $a x $b;              # tensor product 
     my $tp  =  $a ⊗ $b;              # tensor product, unicode (U+02297)
 
-     ｜$matrix ｜                     # determinant, unicode (U+0FF5C)
+      ｜$matrix ｜                     # determinant, unicode (U+0FF5C)
      ‖ $matrix ‖                     # L2 norm (euclidean p=2 to the square), (U+02016)
 
        $matrix[1][2]                 # cell in second row and third column, works even when used :MANDATORY tag
