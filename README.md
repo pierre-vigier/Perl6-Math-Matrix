@@ -72,7 +72,7 @@ Methods that create a new Math::Matrix object. The default is of course .new, wh
 
 ### [new( [[...],...,[...]] )](#constructors)
 
-The default constructor, takes arrays of arrays of numbers os only required parameter. Each second level array represents a row in the matrix. That is why their length has to be the same.
+The default constructor, takes arrays of arrays of numbers as the only required parameter. Each second level array represents a row in the matrix. That is why their length has to be the same.
 
     say Math::Matrix.new( [[1,2],[3,4]] ) :
 
@@ -101,7 +101,7 @@ Alternatively you can define the matrix from a string, which makes most sense wh
     use Math::Matrix :ALL;          # 
     MM '1';                         # this case begs for a shortcut
 
-### new-zero
+### [new-zero](#constructors)
 
 This method is a constructor that returns an zero (sometimes called empty) matrix (as checked by is-zero) of the size given by parameter. If only one parameter is given, the matrix is quadratic. All the cells are set to 0.
 
@@ -116,7 +116,7 @@ This method is a constructor that returns an zero (sometimes called empty) matri
     0 0
     0 0
 
-### new-identity
+### [new-identity](#constructors)
 
 This method is a constructor that returns an identity matrix (as checked by is-identity) of the size given in the only and required parameter. All the cells are set to 0 except the top/left to bottom/right diagonale is set to 1.
 
@@ -126,7 +126,7 @@ This method is a constructor that returns an identity matrix (as checked by is-i
     0 1 0
     0 0 1
 
-### new-diagonal
+### [new-diagonal](#constructors)
 
 This method is a constructor that returns an diagonal matrix (as checked by is-diagonal) of the size given by count of the parameter. All the cells are set to 0 except the top/left to bottom/right diagonal, set to given values.
 
@@ -136,7 +136,7 @@ This method is a constructor that returns an diagonal matrix (as checked by is-d
     0 4 0
     0 0 5
 
-### new-vector-product
+### [new-vector-product](#constructors)
 
 This method is a constructor that returns a matrix which is a result of the matrix product (method dotProduct, or operator dot) of a column vector (first argument) and a row vector (second argument). It can also be understood as a tensor product of row and column.
 
