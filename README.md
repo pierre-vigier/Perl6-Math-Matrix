@@ -70,7 +70,7 @@ METHODS
 
 Methods that create a new Math::Matrix object. The .new is optimized for speed and uniformity - the other are there for convenience and to optimize property calculation.
 
-### [new( [[...],...,[...]] )](#methods)
+### [new( [[...],...,[...]] )](#constructors)
 
 The default constructor, takes arrays of arrays of numbers os only required parameter. Each second level array represents a row in the matrix. That is why their length has to be the same.
 
@@ -88,7 +88,7 @@ The default constructor, takes arrays of arrays of numbers os only required para
     use Math::Matrix :MM;            # tag :ALL works too
     MM [[1,2],[3,4]];                # shortcut
 
-### new( "..." )
+### [new( "..." )](#constructors)
 
 Alternatively you can define the matrix from a string, which makes most sense while using heredocs.
 
@@ -146,8 +146,8 @@ This method is a constructor that returns a matrix which is a result of the matr
     4  6  8  =  2*2  2*3  2*4
     6  9 12     3*2  3*3  3*4
 
-Accessors
----------
+[Accessors](#methods)
+---------------------
 
 Methods that return the content of selected elements (cells).
 
@@ -213,8 +213,8 @@ When provided with two lists of values (first for the rows - second for columns)
 
 In that example we have second and third row in previous order, but selcted only third and fourth column in reversed order.
 
-Type Conversion And Output Flavour
-----------------------------------
+[Type Conversion And Output Formats](#methods)
+----------------------------------------------
 
 Methods that convert a matrix into other types or allow different views on the overall content.
 
@@ -301,8 +301,8 @@ Conversion into String that can reevaluated into the same object later using def
 
     my $clone = eval $matrix.perl;       # same as: $matrix.clone
 
-Boolean Properties
-------------------
+[Boolean Properties](#methods)
+------------------------------
 
 These are mathematical properties a matrix can have or not.
 
@@ -403,8 +403,8 @@ True if all main minors or all Eigenvalues are strictly greater zero.
 
 True if all main minors or all Eigenvalues are greater equal zero.
 
-Numeric Properties
-------------------
+[Numeric Properties](#methods)
+------------------------------
 
 Matrix properties that are expressed with a single number.
 
@@ -482,8 +482,8 @@ You can also check if all cells have the same type:
 
     if $matrix.widest-cell-type eqv $matrix.narrowest-cell-type
 
-Derivative Matrices
--------------------
+[Derivative Matrices](#methods)
+-------------------------------
 
 Single matrices that can be computed with only our original matrix as input.
 
@@ -521,8 +521,8 @@ Return the reduced row echelon form of a matrix, a.k.a. row canonical form
     my $rref = $matrix.reduced-row-echelon-form();
     my $rref = $matrix.rref();       # short alias
 
-Decompositions
---------------
+[Decompositions](#methods)
+--------------------------
 
 Methods that return lists of matrices, which in their product or otherwise can be recombined to the original matrix. In case of cholesky only one matrix is returned, becasue the other one is its transposed.
 
@@ -552,8 +552,8 @@ This decomposition works only on symmetric and definite positive matrices.
     my $D = $matrix.decompositionCholesky( );  # $D is a left triangular matrix
     $D dot $D.T eq $matrix;                    # True
 
-List Like Matrix Operations
----------------------------
+[List Like Matrix Operations](#methods)
+---------------------------------------
 
 Selection of methods that are also provided by Lists and Arrays and make also sense in context a 2D matrix. 
 
@@ -721,8 +721,8 @@ Same as splice-rows, just horizontally.
     1 2  ~  5 6  =  1 2 5 6
     3 4     7 8     3 4 7 8
 
-Matrix Math Operations
-----------------------
+[Matrix Math Operations](#methods)
+----------------------------------
 
 Matrix math methods on full matrices and also parts (for gaussian table operations).
 
@@ -837,8 +837,8 @@ The tensor product between a matrix a of size (m,n) and a matrix b of size (p,q)
     my $c = $a x $b;                # works too as operator alias
     my $c = $a ⊗ $b;                # unicode operator alias
 
-Shortcuts
----------
+[Shortcuts](#methods)
+---------------------
 
 Summary of all methods with short alias:
 
@@ -851,8 +851,8 @@ Summary of all methods with short alias:
 </tbody>
 </table>
 
-Operators
-=========
+[Operators](#methods)
+=====================
 
 The Module overloads or uses a range of well and lesser known ops. +, -, *, ⋅, dot, x, ⊗ and ~~ are commutative. They are always exported (with flag :DEFAULT or :ALL, not under :MANDATORY or :MM).
 
