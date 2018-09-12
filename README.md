@@ -492,11 +492,11 @@ Single matrices that can be computed with only our original matrix as input.
 
 Returns a new, transposed Matrix, where rows became colums and vice versa.
 
-    Math::Matrix.new([[1,2,3],[3,4,6]]).transposed
+    Math::Matrix.new([[1,2,3],[3,4,6]]).transposed :
 
-    Example:   [1 2 3].T  =  1 4       
-               [4 5 6]       2 5
-                             3 6
+    [[1 2 3]     = [[1 4]
+     [4 5 6]].T     [2 5]
+                    [3 6]]
 
 ### [negated](#derived-matrices)
 
