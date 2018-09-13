@@ -1,4 +1,8 @@
 
+ 0.3.5:
+    -2018.10.
+    -
+
  0.3.0:
     - 2018.9.13
     - redone .gist allows now complex numbers and scientific notation
@@ -6,7 +10,7 @@
     - added converter to hash context
     - cell-type can now be Bool and FatRat
     - cell-type changed into narrowest-cell-type and widest-cell-type
-    - making width and height of the table gist displayy optional arguments
+    - making width and height of the table gist display optional arguments
     - fixed prefix % and @ ops
     - crosslinking doc headers
 
