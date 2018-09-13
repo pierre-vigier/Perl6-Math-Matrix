@@ -48,13 +48,17 @@ subset NumList of List where { .all ~~ Numeric };
 subset NumArray of Array where { .all ~~ Numeric };
 
 ################################################################################
-# methods: constructors
+# private accessors
 ################################################################################
 
 method !rows       { @!rows }
 method !clone-rows  { self!AoA-clone(@!rows) }
 method !row-count    { $!row-count }
 method !column-count  { $!column-count }
+
+################################################################################
+# public methods: constructors
+################################################################################
 
 method clone { self.bless( rows => @!rows ) }
 
@@ -165,7 +169,6 @@ method !build_diagonal(Math::Matrix:D: --> List){
     ( gather for ^$!row-count -> $i { take @!rows[$i;$i] } ).list;
 }
 
-
 multi method submatrix(Math::Matrix:D: Int:D $row, Int:D $column --> Math::Matrix:D ){
     self!check-index($row, $column);
     my @rows = ^$!row-count;     @rows.splice($row,1);
@@ -189,65 +192,53 @@ multi method submatrix(Math::Matrix:D: @rows, @cols --> Math::Matrix:D ){
 method Bool(Math::Matrix:D: --> Bool)     { ! self.is-zero }
 method Numeric (Math::Matrix:D: --> Int)  {   self.elems   }
 method Str(Math::Matrix:D: --> Str)       {   join("\n", @!rows.map: *.Str) }
-
-multi method perl(Math::Matrix:D: --> Str){ self.WHAT.perl ~ ".new(" ~ @!rows.perl ~ ")" }
-
-method Array(Math::Matrix:D: --> Array)   { self!clone-rows }
-
-method Hash(Math::Matrix:D: --> Hash){
-    my $i = 0;
-    ( @!rows.map: {$i++ => .kv.Hash}  ).Hash;
-}
-
-method list(Math::Matrix:D: --> List)     { self.list-rows.flat.list }
-
-method list-rows(Math::Matrix:D: --> List){
-    (@!rows.map: {.flat}).list;
-}
-
-method list-columns(Math::Matrix:D: --> List) {
-    ((0 .. $!column-count - 1).map: {self.column($_)}).list;
-}
+method Array(Math::Matrix:D: --> Array)   {   self!clone-rows }
+method Hash(Math::Matrix:D: --> Hash)     {  ((^$!row-count).map: {$_ => @!rows[$_].kv.Hash}).Hash}
+method list(Math::Matrix:D: --> List)     {   self.list-rows.flat.list }
+method list-rows(Math::Matrix:D: --> List){  (@!rows.map: {.flat}).list }
+method list-columns(Math::Matrix:D: --> List){((^$!column-count).map: {self.column($_)}).list }
 
 multi method gist(Math::Matrix:U: --> Str) { "({self.^name})" }
 multi method gist(Math::Matrix:D: Int :$max-chars?, Int :$max-rows? --> Str) {
     if not $!gist.defined or ($max-chars.defined or $max-rows.defined) {
         my $max-width = (not $max-chars.defined or $max-chars < 5) ?? 80 !! $max-chars;
         my $max-heigth = (not $max-rows.defined or $max-rows < 2) ?? 20 !! $max-rows;
-        my @col-width;                 # comma im total
-        my $max-nr-char;               # maximal pre digit char in cell
-        my $cell_with = 6;             #
-        my $fmt;# cell-width re im
-        given self.widest-cell-type() {
-            when Int {
-                $max-nr-char = max( @!rows[*;*] ).Int.chars;
-                $fmt = " %{$max-nr-char}d ";
-                $cell_with = $max-nr-char + 2;
-            }
-            when Rat {
-                my $max-decimal = max( @!rows[*;*].map( { ( .split(/\./)[1] // '' ).chars } ) );
-                $max-decimal = 5 if $max-decimal > 5; #more than that is not readable
-                $max-nr-char = max( @!rows[*;*] ).Int.chars + $max-decimal + 1;
-                $fmt = " \%{$max-nr-char}.{$max-decimal}f ";
-                $cell_with = $max-nr-char + 3 + $max-decimal;
-            }
-            when Complex {
-            }
+        my @fmt-content = @!rows.map: {    # all values in optimized complex format
+            (.map: { $_ ~~ Bool   ?? %( re => $_,             im => '' ) !! 
+                    $_ ~~ Complex ?? %( re => $_.re.fmt("%g"),im => (($_.im > 0 ??'+'!!'')~$_.im.fmt("%g")~'i') ) !!
+                                     %( re => $_.fmt("%g"),   im => '' )
+        }).Array};
+        my @col-width;                     # width of the formatted cell content in n column
+        @fmt-content.map: {
+            for .kv -> $ci, $val {
+                @col-width[$ci]<re>.push: $val<re>.chars;
+                @col-width[$ci]<im>.push: $val<im>.chars;
+        }};
+        my @max-width = @col-width.map: { %( re => $_<re>.max, im => $_<im>.max ) };
+        my ($shown-cols, $width-index);
+        for @max-width.kv -> $ci, $max {
+            $width-index += 2 + $max<re> + $max<im>;
+            if ($ci < @max-width.end and $width-index <= $max-width-3) 
+            or $width-index <= $max-width {$shown-cols++}
+            else                          {last}
         }
-        my $rows = min $!row-count, $max-heigth;
-        my $cols = min $!column-count, $max-width div $cell_with;
-        my $row-addon = $!column-count > $cols ?? '..' !! '';
-        my $str;
-        for @!rows[0 .. $rows-1] -> $r {
-            $str ~= ( [~] $r.[0..$cols-1].map( { $_.fmt($fmt) } ) ) ~ "$row-addon\n";
-        }
-        $str ~= " ...\n" if $!row-count > $max-heigth;
-        $!gist = $str.chomp;
+        my $shown-rows = min @!rows.elems, $max-heigth;
+        my $out;
+        for @fmt-content.kv -> $ri, $row {
+            if $ri == $shown-rows {$out ~= "  ...\n" ; last}
+            for $row.kv -> $ci, $val {
+                if $ci == $shown-cols { $out ~= ' ..' ; last}
+                $out ~= (' ' x (@max-width[$ci]<re> - @col-width[$ci]<re>[$ri]) + 2) ~ $val<re> ~ 
+                        $val<im> ~ (' ' x (@max-width[$ci]<im> - @col-width[$ci]<im>[$ri]));
+            }
+            $out ~= "\n";
+        };
+        $!gist = $out.chomp;
     }
     $!gist;
 }
-# my $d = 9;say 31215.355.fmt("%"~$d~"g")
 
+multi method perl(Math::Matrix:D: --> Str){ self.WHAT.perl ~ ".new(" ~ @!rows.perl ~ ")" }
 
 ################################################################################
 # end of type conversion and handy shortcuts - start boolean matrix properties

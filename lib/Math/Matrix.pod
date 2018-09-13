@@ -321,6 +321,8 @@ Conversion into String that can reevaluated into the same object later using def
 
     my $clone = eval $matrix.perl;       # same as: $matrix.clone
 
+
+
 =head2 L<Boolean Properties|#methods>
 
 These are mathematical properties a matrix can have or not.
