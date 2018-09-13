@@ -1,7 +1,7 @@
 use v6.c;
 need Math::Matrix::Util;
 
-unit class Math::Matrix:ver<0.2.5>:auth<github:pierre-vigier> does Math::Matrix::Util;
+unit class Math::Matrix:ver<0.3.0>:auth<github:pierre-vigier> does Math::Matrix::Util;
 use AttrX::Lazy;
 
 ################################################################################

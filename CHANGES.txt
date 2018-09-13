@@ -1,5 +1,6 @@
 
  0.3.0:
+    - 2018.9.13
     - redone .gist allows now complex numbers and scientific notation
     - added method .AT-POS for $matrix[1][2] syntax
     - added converter to hash context
