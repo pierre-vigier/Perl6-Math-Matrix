@@ -7,6 +7,10 @@ Math::Matrix - create, compare, compute and measure 2D matrices
 
 0.3.0
 
+=head1 !MOVING!
+
+This repo will be moved to a L<different place|https://github.com/lichtkind/Perl6-Math-Matrix> soon.
+
 =head1 SYNOPSIS
 
 Matrices are tables with rows and columns (index counting from 0)

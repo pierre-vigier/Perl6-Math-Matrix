@@ -13,6 +13,11 @@ VERSION
 
 0.3.0
 
+!MOVING!
+========
+
+This repo will be moved to a [different place](https://github.com/lichtkind/Perl6-Math-Matrix) soon.
+
 SYNOPSIS
 ========
 
