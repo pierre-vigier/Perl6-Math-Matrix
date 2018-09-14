@@ -240,7 +240,7 @@ Conversion into Numeric context. Returns number (amount) of cells (as .elems). P
 
 ### [Str](#type-conversion-and-output-formats)
 
-Returns all cell values separated by one whitespace, rows by new line. This is the same format as expected by Math::Matrix.new(""). Str is called implicitly by put and print. A shortened version is provided by .gist
+Returns all cell values separated by one whitespace, rows by new line. This is the same format as expected by [Math::Matrix.new("")](#new---). Str is called implicitly by put and print. A shortened version is provided by [gist](#gist)
 
     say Math::Matrix.new([[1,2],[3,4]]).Str:
 
@@ -285,7 +285,7 @@ Gets you a nested key - value hash.
 
 ### [gist](#type-conversion-and-output-formats)
 
-Limited tabular view, optimized for shell output. Just cuts off excessive columns that do not fit into standard terminal and also stops after 20 rows. If you call it explicitly, you can add width and height (char count) as optional arguments. Might even not show all decimals. Several dots will hint that something is missing. It is implicitly called by say. For a full view use .Str
+Limited tabular view, optimized for shell output. Just cuts off excessive columns that do not fit into standard terminal and also stops after 20 rows. If you call it explicitly, you can add width and height (char count) as optional arguments. Might even not show all decimals. Several dots will hint that something is missing. It is implicitly called by say. For a full view use [Str](#str).
 
     say $matrix;      # output when matrix has more than 100 cells
 
