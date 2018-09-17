@@ -166,7 +166,10 @@ Gets value of element in row (first parameter) and column (second parameter). (c
 
 ### [AT-POS](#accessors)
 
-Gets row as array to enable direct postcircumfix syntax as shown in last example. $matrix.AT-POS(0) : [1,2] $matrix[0] # operator alias
+Gets row as array to enable direct postcircumfix syntax as shown in last example.
+
+    $matrix.AT-POS(0)     : [1,2]
+    $matrix[0]            # operator alias
 
 ### [row](#accessors)
 
