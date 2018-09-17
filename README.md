@@ -192,35 +192,27 @@ Gets values of diagonal elements as a list.
 
 ### [submatrix](#accessors)
 
-Matrix built by a subset of cells of a given matrix.
+Returns a matrix that might miss certain rows and columns of the original. This method accepts arguments in three different formats. The first follows the strict mathematical definition of a submatrix, the second supports a rather visual understanding of the term and the third is a way to get almost any combination rows and columns you might wish for. To properly present these functions, we present examples that rely upon this matrix:
 
-The first and simplest usage is by choosing a cell (by coordinates like .cell()). Row and column of that cell will be removed. The remaining cells form the submatrix.
+    say $m:    1 2 3 4
+               2 3 4 5
+               3 4 5 6
+               4 5 6 7
 
-    say $m:
+In mathematics, a submatrix is built by leaving out one row and one column. In the two argument format you name these by their index ($row, $column).
 
-    1 2 3 4
-    2 3 4 5
-    3 4 5 6
-
-    say $m.submatrix(1,2) :
-
-    1 2 4
-    3 4 6
+    say $m.submatrix(1,2) :    1 2 4
+                               3 4 6
+                               4 5 7
 
 If you provide two pairs of coordinates (row1, column1, row2, column2), these will be counted as left upper and right lower corner of and area inside the original matrix, which will the resulting submatrix.
 
-    say $m.submatrix(1,1,1,3) :
+    say $m.submatrix(1,1,1,3) :    3 4 5
 
-    3 4 5
+When provided with two lists (or arrays) of values (first for the rows - second for columns) a new matrix will be created with that selection of rows and columns. Please note, that you can pick any row/column in any order and as many times you prefer. They will displayed in the order they are listed in the arguments.
 
-When provided with two lists of values (first for the rows - second for columns) a new matrix will be created with that selection of the old rows and columns in that new order.
-
-    $m.submatrix((1,2),(3,2)):
-
-    5 4
-    6 5
-
-In that example we have second and third row in previous order, but selcted only third and fourth column in reversed order.
+    $m.submatrix((1,2),(3,2)):    5 4
+                                  6 5
 
 [Type Conversion And Output Formats](#methods)
 ----------------------------------------------
