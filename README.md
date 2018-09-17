@@ -48,7 +48,7 @@ METHODS
 
   * [constructors](#constructors): [new []](#new--), [new ''](#new---1), [new-zero](#new-zero), [new-identity](#new-identity), [new-diagonal](#new-diagonal), [new-vector-product](#new-vector-product)
 
-  * [accessors](#accessors): [cell](#cell), [row](#row), [column](#column), [diagonal](#diagonal), [submatrix](#submatrix), [AT-POS](#at-pos)
+  * [accessors](#accessors): [cell](#cell), [AT-POS](#at-pos), [row](#row), [column](#column), [diagonal](#diagonal), [submatrix](#submatrix)
 
   * [converter](#type-conversion-and-output-formats): [Bool](#bool), [Numeric](#numeric), [Str](#str), [Array](#array), [Hash](#hash), [list](#list), [list-rows](#list-rows), [list-columns](#list-columns), [gist](#gist), [perl](#perl)
 
@@ -168,8 +168,9 @@ Gets value of element in row (first parameter) and column (second parameter). (c
 
 Gets row as array to enable direct postcircumfix syntax as shown in last example.
 
-    $matrix.AT-POS(0)     : [1,2]
-    $matrix[0]            # operator alias
+    say $matrix.AT-POS(0)     : [1,2]
+    say $matrix[0]            # operator alias
+    say $matrix.Array[0]      # long alias with converter method L<Array|#array>
 
 ### [row](#accessors)
 
