@@ -170,7 +170,7 @@ Gets row as array to enable direct postcircumfix syntax as shown in last example
 
     say $matrix.AT-POS(0)     : [1,2]
     say $matrix[0]            # operator alias
-    say $matrix.Array[0]      # long alias with converter method L<Array|#array>
+    say $matrix.Array[0]      # long alias with converter method Array
 
 ### [row](#accessors)
 
@@ -192,7 +192,7 @@ Gets values of diagonal elements as a list.
 
 ### [submatrix](#accessors)
 
-Returns a matrix that might miss certain rows and columns of the original. This method accepts arguments in three different formats. The first follows the strict mathematical definition of a submatrix, the second supports a rather visual understanding of the term and the third is a way to get almost any combination rows and columns you might wish for. To properly present these functions, we present examples that rely upon this matrix:
+Returns a matrix that might miss certain rows and columns of the original. This method accepts arguments in three different formats. The first follows the strict mathematical definition of a submatrix, the second supports a rather visual understanding of the term and the third is a way to get almost any combination rows and columns you might wish for. To properly present these functions, we base the next examples upon this matrix:
 
     say $m:    1 2 3 4
                2 3 4 5
@@ -236,7 +236,7 @@ Conversion into Numeric context. Returns number (amount) of cells (as .elems). P
 
 ### [Str](#type-conversion-and-output-formats)
 
-Returns all cell values separated by one whitespace, rows by new line. This is the same format as expected by [Math::Matrix.new("")](#new---). Str is called implicitly by put and print. A shortened version is provided by [gist](#gist)
+Returns all cell values separated by one whitespace, rows by new line. This is the same format as expected by [Math::Matrix.new("")](#new---1). Str is called implicitly by put and print. A shortened version is provided by [gist](#gist)
 
     say Math::Matrix.new([[1,2],[3,4]]).Str:
 
@@ -247,7 +247,7 @@ Returns all cell values separated by one whitespace, rows by new line. This is t
 
 ### [Array](#type-conversion-and-output-formats)
 
-Content of all cells as an array of arrays (same format that was put into Math::Matrix.new([...])).
+Content of all cells as an array of arrays (same format that was put into [Math::Matrix.new([...])](#new--)).
 
     say Math::Matrix.new([[1,2],[3,4]]).Array : [[1 2] [3 4]]
     say @ $matrix       # alias op, space needed
