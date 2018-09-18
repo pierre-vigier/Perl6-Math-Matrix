@@ -190,7 +190,7 @@ multi method submatrix(Math::Matrix:D: @rows, @cols --> Math::Matrix:D ){
 ################################################################################
 
 method Bool(Math::Matrix:D: --> Bool)     { ! self.is-zero }
-method Numeric (Math::Matrix:D: --> Int)  {   self.elems   }
+method Numeric (Math::Matrix:D: --> Int)  {   self.norm   }
 method Str(Math::Matrix:D: --> Str)       {   join("\n", @!rows.map: *.Str) }
 method Array(Math::Matrix:D: --> Array)   {   self!clone-rows }
 method Hash(Math::Matrix:D: --> Hash)     {  ((^$!row-count).map: {$_ => @!rows[$_].kv.Hash}).Hash}

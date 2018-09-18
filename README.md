@@ -46,7 +46,7 @@ All computation heavy properties will be calculated lazily and will be cached. A
 METHODS
 =======
 
-  * [constructors](#constructors): [new []](#new--), [new ()](#new---), [new ''](#new---1), [new-zero](#new-zero), [new-identity](#new-identity), [new-diagonal](#new-diagonal), [new-vector-product](#new-vector-product)
+  * [constructors](#constructors): [new []](#new--), [new ()](#new---1), [new ''](#new---2), [new-zero](#new-zero), [new-identity](#new-identity), [new-diagonal](#new-diagonal), [new-vector-product](#new-vector-product)
 
   * [accessors](#accessors): [cell](#cell), [AT-POS](#at-pos), [row](#row), [column](#column), [diagonal](#diagonal), [submatrix](#submatrix)
 
@@ -96,6 +96,11 @@ The default constructor, takes arrays of arrays of numbers as the only required 
 ### [new( [[...],...,[...]] )](#constructors)
 
 Instead of square brackets you can use round ones too and use a list of lists as argument too.
+
+    say Math::Matrix.new( ((1,2),(3,4)) ) :
+
+    1 2
+    3 4
 
 ### [new( "..." )](#constructors)
 
@@ -233,7 +238,7 @@ Conversion into Bool context. Returns False if matrix is zero (all cells equal z
 
 ### [Numeric](#type-conversion-and-output-formats)
 
-Conversion into Numeric context. Returns number (amount) of cells (as .elems). Please note, only a prefix operator + (as in: + $matrix) will call this Method. An infix (as in $matrix + $number) calls $matrix.add($number).
+Conversion into Numeric context. Returns Euclidean [norm](#norm). Please note, only a prefix operator + (as in: + $matrix) will call this Method. An infix (as in $matrix + $number) calls $matrix.add($number).
 
     $matrix.Numeric
     + $matrix           # alias op
@@ -458,6 +463,7 @@ Kernel of matrix, number of dependent rows or columns (rank + kernel = dim).
 A norm is a single positive number, which is an abstraction to the concept of size. Most common form for matrices is the p-norm, where in step 1 the absolute value of every cell is taken to the power of p. The sum of these results is taken to the power of 1/p. The p-q-Norm extents this process. In his step 2 every column-sum is taken to the power of (p/q). In step 3 the sum of these are taken to the power of (1/q).
 
     my $norm = $matrix.norm( );           # euclidian norm (L2, p = 2)
+    my $norm = + $matrix;                # context op shortcut
     my $norm = ‖ $matrix ‖;               # unicode op shortcut
     my $norm = $matrix.norm(1);           # p-norm, L1 = sum of all cells absolute values
     my $norm = $matrix.norm(p:<4>,q:<3>); # p,q - norm, p = 4, q = 3
@@ -864,7 +870,7 @@ The Module overloads or uses a range of well and lesser known ops. +, -, *, ⋅,
 
 The only exception is MM-operator, a shortcut to create a matrix. That has to be importet explicitly with the tag :MM or :ALL. The postcircumfix [] - op will always work.
 
-    my $a   = +$matrix               # Num context, amount (count) of cells
+    my $a   = +$matrix               # Num context, Euclidean norm
     my $b   = ?$matrix               # Bool context, True if any cell has a none zero value
     my $str = ~$matrix               # String context, matrix content, space and new line separated as table
     my $l   = |$matrix               # list context, list of all cells, row-wise

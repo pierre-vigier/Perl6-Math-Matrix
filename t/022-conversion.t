@@ -16,7 +16,7 @@ ok  $matrixi.Str().WHAT ~~ Str        , "Method Str should return a String";
 is  $matrixi.Str(), "1 2\n3 4"        , "value is correct in Str context ";
 is  ~$matrixi, "1 2\n3 4"             , "content is correct in string context by prefix op";
 ok  $matrixi.Numeric ~~ Numeric       , "method .Numeric returns right type";
-is  +$matrixi, 4                      , "content is correct in numeric context by prefix op";
+is  +$matrixi, sqrt(30)               , "content is correct in numeric context by prefix op";
 ok   $matrixi.Bool ~~ Bool            , "method .Bool returns right type";
 is  ?$matrixi, True                   , "content is correct in bool context by prefix op";
 ok   $matrixi.list ~~ List            , "method .List returns correct type";
