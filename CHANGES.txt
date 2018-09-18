@@ -1,7 +1,8 @@
 
  0.3.5:
-    -2018.10.
-    -
+    - 2018.10.20
+    - accept list of list as input for new
+    - prefix + aka numeric now returns Euclidean norm
 
  0.3.0:
     - 2018.9.13

@@ -46,7 +46,7 @@ All computation heavy properties will be calculated lazily and will be cached. A
 METHODS
 =======
 
-  * [constructors](#constructors): [new []](#new--), [new ''](#new---1), [new-zero](#new-zero), [new-identity](#new-identity), [new-diagonal](#new-diagonal), [new-vector-product](#new-vector-product)
+  * [constructors](#constructors): [new []](#new--), [new ()](#new---), [new ''](#new---1), [new-zero](#new-zero), [new-identity](#new-identity), [new-diagonal](#new-diagonal), [new-vector-product](#new-vector-product)
 
   * [accessors](#accessors): [cell](#cell), [AT-POS](#at-pos), [row](#row), [column](#column), [diagonal](#diagonal), [submatrix](#submatrix)
 
@@ -92,6 +92,10 @@ The default constructor, takes arrays of arrays of numbers as the only required 
 
     use Math::Matrix :MM;            # tag :ALL works too
     MM [[1,2],[3,4]];                # shortcut
+
+### [new( [[...],...,[...]] )](#constructors)
+
+Instead of square brackets you can use round ones too and use a list of lists as argument too.
 
 ### [new( "..." )](#constructors)
 
