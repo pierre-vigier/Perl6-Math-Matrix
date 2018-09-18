@@ -46,7 +46,7 @@ All computation heavy properties will be calculated lazily and will be cached. A
 METHODS
 =======
 
-  * [constructors](#constructors): [new []](#new--), [new ()](#new---1), [new ''](#new---2), [new-zero](#new-zero), [new-identity](#new-identity), [new-diagonal](#new-diagonal), [new-vector-product](#new-vector-product)
+  * [constructors](#constructors): [new []](#new--), [new ()](#new---1), [new ""](#new---2), [new-zero](#new-zero), [new-identity](#new-identity), [new-diagonal](#new-diagonal), [new-vector-product](#new-vector-product)
 
   * [accessors](#accessors): [cell](#cell), [AT-POS](#at-pos), [row](#row), [column](#column), [diagonal](#diagonal), [submatrix](#submatrix)
 
@@ -93,7 +93,7 @@ The default constructor, takes arrays of arrays of numbers as the only required 
     use Math::Matrix :MM;            # tag :ALL works too
     MM [[1,2],[3,4]];                # shortcut
 
-### [new( [[...],...,[...]] )](#constructors)
+### [new( ((...),...,(...)) )](#constructors)
 
 Instead of square brackets you can use round ones too and use a list of lists as argument too.
 
@@ -245,7 +245,7 @@ Conversion into Numeric context. Returns Euclidean [norm](#norm). Please note, o
 
 ### [Str](#type-conversion-and-output-formats)
 
-Returns all cell values separated by one whitespace, rows by new line. This is the same format as expected by [Math::Matrix.new("")](#new---1). Str is called implicitly by put and print. A shortened version is provided by [gist](#gist)
+Returns all cell values separated by one whitespace, rows by new line. This is the same format as expected by [Math::Matrix.new("")](#new---2). Str is called implicitly by put and print. A shortened version is provided by [gist](#gist)
 
     say Math::Matrix.new([[1,2],[3,4]]).Str:
 
@@ -259,7 +259,7 @@ Returns all cell values separated by one whitespace, rows by new line. This is t
 Content of all cells as an array of arrays (same format that was put into [Math::Matrix.new([...])](#new--)).
 
     say Math::Matrix.new([[1,2],[3,4]]).Array : [[1 2] [3 4]]
-    say @ $matrix       # alias op, space needed
+    say @ $matrix       # alias op, space between @ and $ needed
 
 ### [list](#type-conversion-and-output-formats)
 
@@ -270,7 +270,7 @@ Returns a flat list with all cells (same as .list-rows.flat.list).
 
 ### [list-rows](#type-conversion-and-output-formats)
 
-Returns a list of lists, reflecting the row-wise content of the matrix.
+Returns a list of lists, reflecting the row-wise content of the matrix. Same format as [new ()](#new---1) takes in.
 
     say Math::Matrix.new( [[1,2],[3,4]] ).list-rows      : ((1 2) (3 4))
     say Math::Matrix.new( [[1,2],[3,4]] ).list-rows.flat : (1 2 3 4)
@@ -280,13 +280,14 @@ Returns a list of lists, reflecting the row-wise content of the matrix.
 Returns a list of lists, reflecting the row-wise content of the matrix.
 
     say Math::Matrix.new( [[1,2],[3,4]] ).list-columns : ((1 3) (2 4))
+    say Math::Matrix.new( [[1,2],[3,4]] ).list-columns.flat : (1 3 2 4)
 
 ### [Hash](#type-conversion-and-output-formats)
 
 Gets you a nested key - value hash.
 
     say $matrix.Hash : { 0 => { 0 => 1, 1 => 2}, 1 => {0 => 3, 1 => 4} } 
-    say % $matrix       # alias op, space needed
+    say % $matrix       # alias op, space between % and $ still needed
 
 ### [gist](#type-conversion-and-output-formats)
 

@@ -189,14 +189,14 @@ multi method submatrix(Math::Matrix:D: @rows, @cols --> Math::Matrix:D ){
 # end of accessors - start with type conversion and handy shortcuts
 ################################################################################
 
-method Bool(Math::Matrix:D: --> Bool)     { ! self.is-zero }
-method Numeric (Math::Matrix:D: --> Int)  {   self.norm   }
-method Str(Math::Matrix:D: --> Str)       {   join("\n", @!rows.map: *.Str) }
-method Array(Math::Matrix:D: --> Array)   {   self!clone-rows }
-method Hash(Math::Matrix:D: --> Hash)     {  ((^$!row-count).map: {$_ => @!rows[$_].kv.Hash}).Hash}
-method list(Math::Matrix:D: --> List)     {   self.list-rows.flat.list }
-method list-rows(Math::Matrix:D: --> List){  (@!rows.map: {.flat}).list }
-method list-columns(Math::Matrix:D: --> List){((^$!column-count).map: {self.column($_)}).list }
+method Bool(Math::Matrix:D: --> Bool)       { ! self.is-zero }
+method Numeric (Math::Matrix:D: --> Numeric){   self.norm   }
+method Str(Math::Matrix:D: --> Str)         {   join("\n", @!rows.map: *.Str) }
+method Array(Math::Matrix:D: --> Array)     {   self!clone-rows }
+method Hash(Math::Matrix:D: --> Hash)       {  ((^$!row-count).map: {$_ => @!rows[$_].kv.Hash}).Hash}
+method list(Math::Matrix:D: --> List)       {   self.list-rows.flat.list }
+method list-rows(Math::Matrix:D: --> List)  {  (@!rows.map: {.flat}).list }
+method list-columns(Math::Matrix:D: --> List){ ((^$!column-count).map: {self.column($_)}).list }
 
 multi method gist(Math::Matrix:U: --> Str) { "({self.^name})" }
 multi method gist(Math::Matrix:D: Int :$max-chars?, Int :$max-rows? --> Str) {

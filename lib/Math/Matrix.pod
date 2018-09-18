@@ -38,7 +38,7 @@ Acceptable export tags are:
 =item :ALL
 
 =head1 METHODS
-=item L<constructors|#constructors>: L<new []|#new-->, L<new ()|#new---1>, L<new ''|#new---2>, L<new-zero|#new-zero>, L<new-identity|#new-identity>, L<new-diagonal|#new-diagonal>, L<new-vector-product|#new-vector-product>
+=item L<constructors|#constructors>: L<new []|#new-->, L<new ()|#new---1>, L<new ""|#new---2>, L<new-zero|#new-zero>, L<new-identity|#new-identity>, L<new-diagonal|#new-diagonal>, L<new-vector-product|#new-vector-product>
 =item L<accessors|#accessors>: L<cell|#cell>, L<AT-POS|#at-pos>, L<row|#row>, L<column|#column>, L<diagonal|#diagonal>, L<submatrix|#submatrix>
 =item L<converter|#type-conversion-and-output-formats>: L<Bool|#bool>, L<Numeric|#numeric>, L<Str|#str>, L<Array|#array>, L<Hash|#hash>, L<list|#list>, L<list-rows|#list-rows>, L<list-columns|#list-columns>, L<gist|#gist>, L<perl|#perl>
 =item L<boolean properties|#boolean-properties>: L<is-zero|#is-zero>, L<is-identity|#is-identity>, L<is-square|#is-square>, L<is-diagonal|#is-diagonal>,
@@ -81,7 +81,7 @@ That is why their length has to be the same.
    use Math::Matrix :MM;            # tag :ALL works too
    MM [[1,2],[3,4]];                # shortcut
 
-=head3 L<new( [[...],...,[...]] )|#constructors>
+=head3 L<new( ((...),...,(...)) )|#constructors>
 
 Instead of square brackets you can use round ones too and use a list of lists as argument too.
 
@@ -262,7 +262,7 @@ An infix (as in $matrix + $number) calls $matrix.add($number).
 =head3 L<Str|#type-conversion-and-output-formats>
 
 Returns all cell values separated by one whitespace, rows by new line.
-This is the same format as expected by L<Math::Matrix.new("")|#new---1>.
+This is the same format as expected by L<Math::Matrix.new("")|#new---2>.
 Str is called implicitly by put and print. A shortened version is provided by L<gist|#gist>
 
     say Math::Matrix.new([[1,2],[3,4]]).Str:
@@ -277,7 +277,7 @@ Str is called implicitly by put and print. A shortened version is provided by L<
 Content of all cells as an array of arrays (same format that was put into L<Math::Matrix.new([...])|#new-->).
 
     say Math::Matrix.new([[1,2],[3,4]]).Array : [[1 2] [3 4]]
-    say @ $matrix       # alias op, space needed
+    say @ $matrix       # alias op, space between @ and $ needed
 
 =head3 L<list|#type-conversion-and-output-formats>
 
@@ -290,6 +290,7 @@ Returns a flat list with all cells (same as .list-rows.flat.list).
 =head3 L<list-rows|#type-conversion-and-output-formats>
 
 Returns a list of lists, reflecting the row-wise content of the matrix.
+Same format as L<new ()|#new---1> takes in.
     
     say Math::Matrix.new( [[1,2],[3,4]] ).list-rows      : ((1 2) (3 4))
     say Math::Matrix.new( [[1,2],[3,4]] ).list-rows.flat : (1 2 3 4)
@@ -299,13 +300,14 @@ Returns a list of lists, reflecting the row-wise content of the matrix.
 Returns a list of lists, reflecting the row-wise content of the matrix.
     
     say Math::Matrix.new( [[1,2],[3,4]] ).list-columns : ((1 3) (2 4))
+    say Math::Matrix.new( [[1,2],[3,4]] ).list-columns.flat : (1 3 2 4)
 
 =head3 L<Hash|#type-conversion-and-output-formats>
 
 Gets you a nested key - value hash.
 
     say $matrix.Hash : { 0 => { 0 => 1, 1 => 2}, 1 => {0 => 3, 1 => 4} } 
-    say % $matrix       # alias op, space needed
+    say % $matrix       # alias op, space between % and $ still needed
 
 =head3 L<gist|#type-conversion-and-output-formats>
 
