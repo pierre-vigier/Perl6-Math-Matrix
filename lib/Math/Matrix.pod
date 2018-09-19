@@ -509,7 +509,7 @@ The p-q-Norm extents this process. In his step 2 every column-sum is taken to th
 In step 3 the sum of these are taken to the power of (1/q).
 
     my $norm = $matrix.norm( );           # euclidian norm (L2, p = 2)
-    my $norm = + $matrix;                # context op shortcut
+    my $norm = + $matrix;                 # context op shortcut
     my $norm = ‖ $matrix ‖;               # unicode op shortcut
     my $norm = $matrix.norm(1);           # p-norm, L1 = sum of all cells absolute values
     my $norm = $matrix.norm(p:<4>,q:<3>); # p,q - norm, p = 4, q = 3
@@ -762,7 +762,6 @@ Selection of methods that are also provided by Lists and Arrays and make also se
 Number (count) of elements.
 
     say $matrix.elems();
-    say +$matrix;                       # same thing
 
 =head3 L<cont|#list-like-matrix-operations>
 
