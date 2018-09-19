@@ -179,8 +179,8 @@ multi method submatrix(Math::Matrix:D: Range:D $row, Range:D $col --> Math::Matr
     my @rows = $row.max == Inf ?? ($row.min .. $!row-count-1).list !! $row.list;
     my @cols = $col.max == Inf ?? ($col.min .. $!column-count-1) !! $col.list;
     fail "Matrix indices must be Int" unless all(@rows.min, @rows.max, @cols.min, @cols.max) ~~ Int;
-    fail "Minimum row has to be smaller than maximum row" if @rows.min > $rows.max;
-    fail "Minimum column has to be smaller than maximum column" if $colc.min > $cols.max;
+    fail "Minimum row has to be smaller than maximum row" if @rows.min > @rows.max;
+    fail "Minimum column has to be smaller than maximum column" if @colc.min > @cols.max;
     self!check-index(@rows.min, @cols.min);
     self!check-index(@rows.max, @cols.max);
     self.submatrix(@rows, @cols);
