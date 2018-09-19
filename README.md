@@ -463,10 +463,10 @@ Kernel of matrix, number of dependent rows or columns (rank + kernel = dim).
 
 A norm is a single positive number, which is an abstraction to the concept of size. Most common form for matrices is the p-norm, where in step 1 the absolute value of every cell is taken to the power of p. The sum of these results is taken to the power of 1/p. The p-q-Norm extents this process. In his step 2 every column-sum is taken to the power of (p/q). In step 3 the sum of these are taken to the power of (1/q).
 
-    my $norm = $matrix.norm( );           # euclidian norm (L2, p = 2)
+    my $norm = $matrix.norm( );           # euclidian norm aka L2 (p = 2, q = 2)
     my $norm = + $matrix;                 # context op shortcut
     my $norm = ‖ $matrix ‖;               # unicode op shortcut
-    my $norm = $matrix.norm(1);           # p-norm, L1 = sum of all cells absolute values
+    my $norm = $matrix.norm(1);           # p-norm aka L1 = sum of all cells absolute values (p = 1, q = 1)
     my $norm = $matrix.norm(p:<4>,q:<3>); # p,q - norm, p = 4, q = 3
     my $norm = $matrix.norm(p:<2>,q:<2>); # L2 aka Euclidean aka Frobenius norm
     my $norm = $matrix.norm('euclidean'); # same thing, more expressive to some
