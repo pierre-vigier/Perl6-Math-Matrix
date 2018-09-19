@@ -175,10 +175,15 @@ multi method submatrix(Math::Matrix:D: Int:D $row, Int:D $column --> Math::Matri
     my @cols = ^$!column-count;  @cols.splice($column,1);
     self.submatrix(@rows ,@cols);
 }
-multi method submatrix(Math::Matrix:D: Int:D $row-min, Int:D $col-min, Int:D $row-max, Int:D $col-max --> Math::Matrix:D ){
-    fail "Minimum row has to be smaller than maximum row" if $row-min > $row-max;
-    fail "Minimum column has to be smaller than maximum column" if $col-min > $col-max;
-    self.submatrix(($row-min .. $row-max).list, ($col-min .. $col-max).list);
+multi method submatrix(Math::Matrix:D: Range:D $row, Range:D $col --> Math::Matrix:D ){
+    my @rows = $row.max == Inf ?? ($row.min .. $!row-count-1).list !! $row.list;
+    my @cols = $col.max == Inf ?? ($col.min .. $!column-count-1) !! $col.list;
+    fail "Matrix indices must be Int" unless all(@rows.min, @rows.max, @cols.min, @cols.max) ~~ Int;
+    fail "Minimum row has to be smaller than maximum row" if @rows.min > $rows.max;
+    fail "Minimum column has to be smaller than maximum column" if $colc.min > $cols.max;
+    self!check-index(@rows.min, @cols.min);
+    self!check-index(@rows.max, @cols.max);
+    self.submatrix(@rows, @cols);
 }
 multi method submatrix(Math::Matrix:D: @rows, @cols --> Math::Matrix:D ){
     self!check-indices(@rows, @cols);
@@ -726,6 +731,9 @@ method equal(Math::Matrix:D: Math::Matrix $b --> Bool)           { @!rows ~~ $b!
 multi method ACCEPTS(Math::Matrix:D: Math::Matrix:D $b --> Bool) { self.equal( $b )  }
 
 method elems (Math::Matrix:D: --> Int)               {  $!row-count * $!column-count }
+
+#method elem (Math::Matrix:D: --> Int)               {  $!row-count * $!column-count }
+
 
 multi method cont (Math::Matrix:D: Numeric $e  --> Bool) { # matrix contains element ?
     self.map( {return True if $_ == $e});

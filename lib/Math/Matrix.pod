@@ -221,11 +221,10 @@ In the two argument format you name these by their index ($row, $column).
                                3 4 6
                                4 5 7
 
-If you provide two pairs of coordinates (row1, column1, row2, column2), these will be counted as
-left upper and right lower corner of and area inside the original matrix,
-which will the resulting submatrix.
+If you provide two ranges (row-min..row-max, col-min..col-max), you get the two dimensional
+excerpt of the matrix that is defined by these ranges.
 
-    say $m.submatrix(1,1,1,3) :    3 4 5        
+    say $m.submatrix(1..1, 0..*) :    3 4 5        
 
 When provided with two lists (or arrays) of values (first for the rows - second for columns)
 a new matrix will be created with that selection of rows and columns.
