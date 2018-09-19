@@ -180,7 +180,7 @@ multi method submatrix(Math::Matrix:D: Range:D $row, Range:D $col --> Math::Matr
     my @cols = $col.max == Inf ?? ($col.min .. $!column-count-1) !! $col.list;
     fail "Matrix indices must be Int" unless all(@rows.min, @rows.max, @cols.min, @cols.max) ~~ Int;
     fail "Minimum row has to be smaller than maximum row" if @rows.min > @rows.max;
-    fail "Minimum column has to be smaller than maximum column" if @colc.min > @cols.max;
+    fail "Minimum column has to be smaller than maximum column" if @cols.min > @cols.max;
     self!check-index(@rows.min, @cols.min);
     self!check-index(@rows.max, @cols.max);
     self.submatrix(@rows, @cols);
@@ -732,15 +732,18 @@ multi method ACCEPTS(Math::Matrix:D: Math::Matrix:D $b --> Bool) { self.equal( $
 
 method elems (Math::Matrix:D: --> Int)               {  $!row-count * $!column-count }
 
-#method elem (Math::Matrix:D: --> Int)               {  $!row-count * $!column-count }
 
+method elem (Math::Matrix:D: Range $r --> Bool) {  # is every cell value element in the set/range
+    self.map: {return False unless $_ ~~ $r};
+    True;
 
+}
 multi method cont (Math::Matrix:D: Numeric $e  --> Bool) { # matrix contains element ?
-    self.map( {return True if $_ == $e});
+    self.map: {return True if $_ == $e};
     False;
 }
-multi method cont (Math::Matrix:D: Range $r  --> Bool) {
-    self.map( {return True if $_ ~~ $r});
+multi method cont (Math::Matrix:D: Range $r  --> Bool) { # is any cell value in this set/range
+    self.map: {return True if $_ ~~ $r};
     False;
 }
 

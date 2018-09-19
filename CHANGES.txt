@@ -2,6 +2,7 @@
  0.3.5:
     - 2018.10.20
     - accept list of list as input for new
+    - added method elem that returns true if all matrix values are within a set
     - prefix + aka numeric now returns Euclidean norm
     - submatrix(Int, Int, Int, Int) is now submatix (Range, Range) and accepts also *
 

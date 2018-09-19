@@ -62,7 +62,7 @@ METHODS
 
   * [matrix math ops](#matrix-math-operations): [add](#add), [subtract](#subtract), [add-row](#add-row), [add-column](#add-column), [multiply](#multiply), [multiply-row](#multiply-row), [multiply-column](#multiply-column), [dotProduct](#dotproduct), [tensorProduct](#tensorproduct)
 
-  * [list like ops](#list-like-matrix-operations): [elems](#elems), [cont](#cont), [equal](#equal), [map](#map), [map-row](#map-row), [map-column](#map-column), [map-cell](#map-cell), [reduce](#reduce), [reduce-rows](#reduce-rows), [reduce-columns](#reduce-columns)
+  * [list like ops](#list-like-matrix-operations): [elems](#elems), [elem](#elem), [cont](#cont), [equal](#equal), [map](#map), [map-row](#map-row), [map-column](#map-column), [map-cell](#map-cell), [reduce](#reduce), [reduce-rows](#reduce-rows), [reduce-columns](#reduce-columns)
 
   * [structural ops](#structural-matrix-operations): [move-row](#move-row), [move-column](#move-column), [swap-rows](#swap-rows), [swap-columns](#swap-columns), [splice-rows](#splice-rows), [splice-columns](#splice-columns)
 
@@ -688,19 +688,26 @@ Selection of methods that are also provided by Lists and Arrays and make also se
 
 ### [elems](#list-like-matrix-operations)
 
-Number (count) of elements.
+Number (count) of elements = rows * columns.
 
     say $matrix.elems();
 
+### [elem](#list-like-matrix-operations)
+
+Asks if all cell values are part an element of the set/range provided.
+
+    Math::Matrix.new([[1,2],[3,4]]).elem(1..4) :   True
+    Math::Matrix.new([[1,2],[3,4]]).elem(2..5) :   False
+
 ### [cont](#list-like-matrix-operations)
 
-Asks if certain value is containted in cells (treating the matrix like a baggy set), or if there is one value within a cetain range.
+Asks if the matrix contains a value equal to the only argument of the method. If a range is provided as argument, at least one cell value has to be within this range to make the result true.
 
-    Math::Matrix.new([[1,2],[3,4]]).cont(1) :   True
-    Math::Matrix.new([[1,2],[3,4]]).cont(5) :   False
+    Math::Matrix.new([[1,2],[3,4]]).cont(1)   : True
+    Math::Matrix.new([[1,2],[3,4]]).cont(5)   : False
     Math::Matrix.new([[1,2],[3,4]]).cont(3..7): True
 
-    MM [[1,2],[3,4]] (cont) 1           # True too
+    MM [[1,2],[3,4]] (cont) 1                 # True too
 
 ### [equal](#list-like-matrix-operations)
 
