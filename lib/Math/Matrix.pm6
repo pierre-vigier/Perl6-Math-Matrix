@@ -342,7 +342,7 @@ method !build_is-positive-definite (Math::Matrix:D: --> Bool) { # with Sylvester
     return False unless self.determinant > 0;
     my $sub = Math::Matrix.new( @!rows );
     for $!row-count - 1 ... 1 -> $r {
-        $sub = $sub.submatrix(0,0,$r,$r);
+        $sub = $sub.submatrix(0..$r, 0..$r);
         return False unless $sub.determinant > 0;
     }
     True;
@@ -353,7 +353,7 @@ method !build_is-positive-semidefinite (Math::Matrix:D: --> Bool) { # with Sylve
     return False unless self.determinant >= 0;
     my $sub = Math::Matrix.new( @!rows );
     for $!row-count - 1 ... 1 -> $r {
-        $sub = $sub.submatrix(0,0,$r,$r);
+        $sub = $sub.submatrix(0..$r, 0..$r);
         return False unless $sub.determinant >= 0;
     }
     True;
