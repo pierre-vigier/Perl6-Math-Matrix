@@ -72,13 +72,11 @@ multi method new (Str $m){
     self.bless( rows => @m );
 }
 
-submethod BUILD( :@rows!, :$min, :$max, :$diagonal, :$density, :$trace, :$determinant, :$rank, :$kernel,
+submethod BUILD( :@rows!, :$diagonal, :$density, :$trace, :$determinant, :$rank, :$kernel,
                  :$is-zero, :$is-identity, :$is-symmetric, :$is-upper-triangular, :$is-lower-triangular ) {
     @!rows = self!AoA-clone(@rows);
     $!row-count = @rows.elems;
     $!column-count = @rows[0].elems;
-    $!min       = $min if $min.defined;
-    $!max       = $max if $max.defined;
     $!diagonal  = $diagonal if $diagonal.defined;
     $!density   = $density if $density.defined;
     $!trace     = $trace if $trace.defined;
@@ -94,19 +92,19 @@ submethod BUILD( :@rows!, :$min, :$max, :$diagonal, :$density, :$trace, :$determ
 
 multi method new-zero(PosInt $size) {
     self.bless( rows => self!zero-array($size, $size),
-            min => 0, max => 0, determinant => 0, rank => 0, kernel => $size, density => 0.0, trace => 0,
+            determinant => 0, rank => 0, kernel => $size, density => 0.0, trace => 0,
             is-zero => True, is-identity => False, is-diagonal => True, 
             is-square => True, is-symmetric => True  );
 }
 multi method new-zero(Math::Matrix:U: PosInt $rows, PosInt $cols) {
     self.bless( rows => self!zero-array($rows, $cols),
-            min => 0, max => 0, determinant => 0, rank => 0, kernel => min($rows, $cols), density => 0.0, trace => 0,
+            determinant => 0, rank => 0, kernel => min($rows, $cols), density => 0.0, trace => 0,
             is-zero => True, is-identity => False, is-diagonal => ($cols == $rows),  );
 }
 
 method new-identity( Int $size where * > 0 ) {
     self.bless( rows => self!identity-array($size), diagonal => (1) xx $size, 
-                min => 0, max => 1, determinant => 1, rank => $size, kernel => 0, density => 1/$size, trace => $size,
+                determinant => 1, rank => $size, kernel => 0, density => 1/$size, trace => $size,
                 is-zero => False, is-identity => True, 
                 is-square => True, is-diagonal => True, is-symmetric => True );
 }
