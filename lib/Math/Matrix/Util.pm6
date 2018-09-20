@@ -60,7 +60,7 @@ submethod !check-indices (@row, @col) {
 # data builder
 ################################################################################
 
-submethod !zero-array( PosInt $rows, PosInt $cols = $rows ) {
+sub zero-array( PosInt $rows, PosInt $cols = $rows ) is export {
     return [ [ 0 xx $cols ] xx $rows ];
 }
 

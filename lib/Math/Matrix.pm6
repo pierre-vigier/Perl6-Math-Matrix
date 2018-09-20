@@ -91,13 +91,13 @@ submethod BUILD( :@rows!, :$diagonal, :$density, :$trace, :$determinant, :$rank,
 }
 
 multi method new-zero(PosInt $size) {
-    self.bless( rows => self!zero-array($size, $size),
+    self.bless( rows => zero-array($size, $size),
             determinant => 0, rank => 0, kernel => $size, density => 0.0, trace => 0,
             is-zero => True, is-identity => False, is-diagonal => True, 
             is-square => True, is-symmetric => True  );
 }
 multi method new-zero(Math::Matrix:U: PosInt $rows, PosInt $cols) {
-    self.bless( rows => self!zero-array($rows, $cols),
+    self.bless( rows => zero-array($rows, $cols),
             determinant => 0, rank => 0, kernel => min($rows, $cols), density => 0.0, trace => 0,
             is-zero => True, is-identity => False, is-diagonal => ($cols == $rows),  );
 }
@@ -113,7 +113,7 @@ method new-diagonal( *@diag ){
     fail "Expect at least on number as parameter" if @diag == 0;
     fail "Expect an List of Number" unless @diag ~~ NumList;
     my Int $size = +@diag;
-    my @d = self!zero-array($size, $size);
+    my @d = zero-array($size, $size);
     (^$size).map: { @d[$_][$_] = @diag[$_] };
 
     self.bless( rows => @d, diagonal => @diag,
