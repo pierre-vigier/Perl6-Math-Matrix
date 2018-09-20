@@ -72,18 +72,20 @@ multi method new (Str $m){
     self.bless( rows => @m );
 }
 
-submethod BUILD( :@rows!, :$diagonal, :$density, :$trace, :$determinant, :$rank, :$kernel,
+submethod BUILD( :@rows!, :$min, :$max, :$diagonal, :$density, :$trace, :$determinant, :$rank, :$kernel,
                  :$is-zero, :$is-identity, :$is-symmetric, :$is-upper-triangular, :$is-lower-triangular ) {
     @!rows = self!AoA-clone(@rows);
     $!row-count = @rows.elems;
     $!column-count = @rows[0].elems;
-    $!diagonal = $diagonal if $diagonal.defined;
-    $!density  = $density if $density.defined;
-    $!trace    = $trace if $trace.defined;
+    $!min       = $min if $min.defined;
+    $!max       = $max if $max.defined;
+    $!diagonal  = $diagonal if $diagonal.defined;
+    $!density   = $density if $density.defined;
+    $!trace     = $trace if $trace.defined;
     $!determinant = $determinant if $determinant.defined;
-    $!rank   = $rank if $rank.defined;
-    $!kernel = $kernel if $kernel.defined;
-    $!is-zero = $is-zero if $is-zero.defined;
+    $!rank      = $rank if $rank.defined;
+    $!kernel    = $kernel if $kernel.defined;
+    $!is-zero   = $is-zero if $is-zero.defined;
     $!is-identity = $is-identity if $is-identity.defined;
     $!is-symmetric = $is-symmetric if $is-symmetric.defined;
     $!is-upper-triangular = $is-upper-triangular if $is-upper-triangular.defined;
@@ -91,20 +93,20 @@ submethod BUILD( :@rows!, :$diagonal, :$density, :$trace, :$determinant, :$rank,
 }
 
 multi method new-zero(PosInt $size) {
-    self.bless( rows => zero-array($size, $size),
-            determinant => 0, rank => 0, kernel => $size, density => 0.0, trace => 0,
+    self.bless( rows => self!zero-array($size, $size),
+            min => 0, max => 0, determinant => 0, rank => 0, kernel => $size, density => 0.0, trace => 0,
             is-zero => True, is-identity => False, is-diagonal => True, 
             is-square => True, is-symmetric => True  );
 }
 multi method new-zero(Math::Matrix:U: PosInt $rows, PosInt $cols) {
-    self.bless( rows => zero-array($rows, $cols),
-            determinant => 0, rank => 0, kernel => min($rows, $cols), density => 0.0, trace => 0,
+    self.bless( rows => self!zero-array($rows, $cols),
+            min => 0, max => 0, determinant => 0, rank => 0, kernel => min($rows, $cols), density => 0.0, trace => 0,
             is-zero => True, is-identity => False, is-diagonal => ($cols == $rows),  );
 }
 
 method new-identity( Int $size where * > 0 ) {
     self.bless( rows => self!identity-array($size), diagonal => (1) xx $size, 
-                determinant => 1, rank => $size, kernel => 0, density => 1/$size, trace => $size,
+                min => 0, max => 1, determinant => 1, rank => $size, kernel => 0, density => 1/$size, trace => $size,
                 is-zero => False, is-identity => True, 
                 is-square => True, is-diagonal => True, is-symmetric => True );
 }
@@ -113,7 +115,7 @@ method new-diagonal( *@diag ){
     fail "Expect at least on number as parameter" if @diag == 0;
     fail "Expect an List of Number" unless @diag ~~ NumList;
     my Int $size = +@diag;
-    my @d = zero-array($size, $size);
+    my @d = self!zero-array($size, $size);
     (^$size).map: { @d[$_][$_] = @diag[$_] };
 
     self.bless( rows => @d, diagonal => @diag,
@@ -202,6 +204,7 @@ method Hash(Math::Matrix:D: --> Hash)       {  ((^$!row-count).map: {$_ => @!row
 method list(Math::Matrix:D: --> List)       {   self.list-rows.flat.list }
 method list-rows(Math::Matrix:D: --> List)  {  (@!rows.map: {.flat}).list }
 method list-columns(Math::Matrix:D: --> List){ ((^$!column-count).map: {self.column($_)}).list }
+method Range(Math::Matrix:D: --> Range)     {   self.list.min .. self.list.max }
 
 multi method gist(Math::Matrix:U: --> Str) { "({self.^name})" }
 multi method gist(Math::Matrix:D: Int :$max-chars?, Int :$max-rows? --> Str) {
@@ -637,10 +640,10 @@ method decompositionCholesky(Math::Matrix:D: --> Math::Matrix:D) {
 # end of decompositions - start matrix math operations
 ################################################################################
 
-multi method add(Math::Matrix:D: Numeric $r --> Math::Matrix:D ) {
-    self.map( * + $r );
-}
 
+method equal(Math::Matrix:D: Math::Matrix $b --> Bool)           { @!rows ~~ $b!rows }
+multi method ACCEPTS(Math::Matrix:D: Math::Matrix:D $b --> Bool) { self.equal( $b )  }
+multi method add(Math::Matrix:D: Numeric $r --> Math::Matrix:D ) { self.map( * + $r )}
 multi method add(Math::Matrix:D: Math::Matrix $b where { $!row-count == $b!row-count and 
                                                          $!column-count == $b!column-count } --> Math::Matrix:D ) {
     my @sum;
@@ -727,11 +730,7 @@ method tensorProduct(Math::Matrix:D: Math::Matrix $b  --> Math::Matrix:D) {
 # end of matrix math operations - start list like operations
 ################################################################################
 
-method equal(Math::Matrix:D: Math::Matrix $b --> Bool)           { @!rows ~~ $b!rows }
-multi method ACCEPTS(Math::Matrix:D: Math::Matrix:D $b --> Bool) { self.equal( $b )  }
-
 method elems (Math::Matrix:D: --> Int)               {  $!row-count * $!column-count }
-
 
 method elem (Math::Matrix:D: Range $r --> Bool) {  # is every cell value element in the set/range
     self.map: {return False unless $_ ~~ $r};

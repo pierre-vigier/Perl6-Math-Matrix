@@ -1,7 +1,7 @@
 use lib "lib";
 use Test;
 use Math::Matrix;
-plan 21;
+plan 22;
 
 my $matrixi = Math::Matrix.new([[1,2],[3,4]]);
 my $matrixr = Math::Matrix.new([[ 1.1, 2.2 ],[ 3.3 , 4.4 ]]);
@@ -30,6 +30,7 @@ is ~$matrixc, "1.1+1i 2.2-1i\n3.3+2i 4.4-3.4i", "correct content of complex valu
 ok $matrixi.list == (1, 2, 3, 4)    , "list context";
 ok $matrixi.list-rows == ((1, 2), (3, 4)), "vertical list of lists context";
 ok $matrixi.list-columns == ((1,3),(2,4)), "horizontal list of lists context";
+ok $matrixi.Range == 1..4,                 "Range context";
 
 ok $matrixi.Array == [[1, 2], [3, 4]]                  , "Array context";
 ok $matrixi.Hash == { 0=>{0=>1,1=>2}, 1=>{0=>3, 1=>4}} , "Hash context";

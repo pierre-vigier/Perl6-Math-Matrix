@@ -1,12 +1,25 @@
 use lib "lib";
 use Test;
 use Math::Matrix;
-plan 4;
+plan 5;
 
 my $a = Math::Matrix.new( [[1,2,3],[4,5,6]] );
 my $b = Math::Matrix.new( [[7,8],[9,10],[11,12]] );
 my $i = Math::Matrix.new-identity( 3 );
 
+subtest {
+    plan 2;
+    ok $a.elems == 6,           "right number of elements";
+    ok $i.elems == 9,           "right number of elements too";
+}, "Elems";
+
+
+subtest {
+    plan 3;
+    ok $a.elem(1..6),           "All cell values are cells within asked range";
+    ok $b.elem(1..22),          "All cell values are cells within way larger range";
+    nok $a.elem(7..12),         "There are cells not within asked range";
+}, "Cont";
 
 subtest {
     plan 4;
@@ -15,13 +28,6 @@ subtest {
     ok $a.cont(2..4),           "There are cells within asked range";
     nok $a.cont(7..12),         "There are no cells within asked range";
 }, "Cont";
-
-
-subtest {
-    plan 2;
-    ok $a.elems == 6,           "right number of elements";
-    ok $i.elems == 9,           "right number of elements too";
-}, "Elems";
 
 
 subtest {

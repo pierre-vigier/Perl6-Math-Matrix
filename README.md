@@ -50,7 +50,7 @@ METHODS
 
   * [accessors](#accessors): [cell](#cell), [AT-POS](#at-pos), [row](#row), [column](#column), [diagonal](#diagonal), [submatrix](#submatrix)
 
-  * [converter](#type-conversion-and-output-formats): [Bool](#bool), [Numeric](#numeric), [Str](#str), [Array](#array), [Hash](#hash), [list](#list), [list-rows](#list-rows), [list-columns](#list-columns), [gist](#gist), [perl](#perl)
+  * [converter](#type-conversion-and-output-formats): [Bool](#bool), [Numeric](#numeric), [Str](#str), [Array](#array), [Hash](#hash), [Range](#range), [list](#list), [list-rows](#list-rows), [list-columns](#list-columns), [gist](#gist), [perl](#perl)
 
   * [boolean properties](#boolean-properties): [is-zero](#is-zero), [is-identity](#is-identity), [is-square](#is-square), [is-diagonal](#is-diagonal), [is-diagonally-dominant](#is-diagonally-dominant), [is-upper-triangular](#is-upper-triangular), [is-lower-triangular](#is-lower-triangular), [is-invertible](#is-invertible), [is-symmetric](#is-symmetric), [is-antisymmetric](#is-antisymmetric), [is-unitary](#is-unitary), [is-self-adjoint](#is-self-adjoint), [is-orthogonal](#is-orthogonal), [is-positive-definite](#is-positive-definite), [is-positive-semidefinite](#is-positive-semidefinite)
 
@@ -60,9 +60,9 @@ METHODS
 
   * [decompositions](#decompositions): [decompositionLUCrout](#decompositionlucrout), [decompositionLU](#decompositionlu), [decompositionCholesky](#decompositioncholesky)
 
-  * [matrix math ops](#matrix-math-operations): [add](#add), [subtract](#subtract), [add-row](#add-row), [add-column](#add-column), [multiply](#multiply), [multiply-row](#multiply-row), [multiply-column](#multiply-column), [dotProduct](#dotproduct), [tensorProduct](#tensorproduct)
+  * [matrix math ops](#matrix-math-operations): [equal](#equal), [add](#add), [subtract](#subtract), [add-row](#add-row), [add-column](#add-column), [multiply](#multiply), [multiply-row](#multiply-row), [multiply-column](#multiply-column), [dotProduct](#dotproduct), [tensorProduct](#tensorproduct)
 
-  * [list like ops](#list-like-matrix-operations): [elems](#elems), [elem](#elem), [cont](#cont), [equal](#equal), [map](#map), [map-row](#map-row), [map-column](#map-column), [map-cell](#map-cell), [reduce](#reduce), [reduce-rows](#reduce-rows), [reduce-columns](#reduce-columns)
+  * [list like ops](#list-like-matrix-operations): [elems](#elems), [elem](#elem), [cont](#cont), [map](#map), [map-row](#map-row), [map-column](#map-column), [map-cell](#map-cell), [reduce](#reduce), [reduce-rows](#reduce-rows), [reduce-columns](#reduce-columns)
 
   * [structural ops](#structural-matrix-operations): [move-row](#move-row), [move-column](#move-column), [swap-rows](#swap-rows), [swap-columns](#swap-columns), [splice-rows](#splice-rows), [splice-columns](#splice-columns)
 
@@ -288,6 +288,12 @@ Gets you a nested key - value hash.
 
     say $matrix.Hash : { 0 => { 0 => 1, 1 => 2}, 1 => {0 => 3, 1 => 4} } 
     say % $matrix       # alias op, space between % and $ still needed
+
+### [Range](#type-conversion-and-output-formats)
+
+Returns an range object that reflects the content of all cells.
+
+    say $matrix.Range: 1..4
 
 ### [gist](#type-conversion-and-output-formats)
 
@@ -570,6 +576,14 @@ This decomposition works only on symmetric and definite positive matrices.
 
 Matrix math methods on full matrices and also parts (for gaussian table operations).
 
+### [equal](#matrix-math-operations)
+
+Checks two matrices for equality. They have to be of same size and every element of the first matrix on a particular position has to be equal to the element (on the same position) of the second matrix.
+
+    if $matrixa.equal( $matrixb ) {
+    if $matrixa == $matrixb {
+    if $matrixa ~~ $matrixb {
+
 ### [add](#matrix-math-operations)
 
     Example:    1 2  +  5    =  6 7 
@@ -708,14 +722,6 @@ Asks if the matrix contains a value equal to the only argument of the method. If
     Math::Matrix.new([[1,2],[3,4]]).cont(3..7): True
 
     MM [[1,2],[3,4]] (cont) 1                 # True too
-
-### [equal](#list-like-matrix-operations)
-
-Checks two matrices for equality. They have to be of same size and every element of the first matrix on a particular position has to be equal to the element (on the same position) of the second matrix.
-
-    if $matrixa.equal( $matrixb ) {
-    if $matrixa == $matrixb {
-    if $matrixa ~~ $matrixb {
 
 ### [map](#list-like-matrix-operations)
 
