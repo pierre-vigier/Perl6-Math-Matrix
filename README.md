@@ -930,8 +930,11 @@ The only exception is MM-operator, a shortcut to create a matrix. That has to be
 Operators with method aliases:
 
 <table class="pod-table">
+<thead><tr>
+<th>Operator Method</th>
+</tr></thead>
 <tbody>
-<tr> <td>Operator</td> <td>Method</td> </tr> <tr> <td>prefix ? prefix:+ prefix:- prefix:~ prefix:| prefix:@ prefix:%</td> <td>Bool Numeric negated Str list Array Hash</td> </tr> <tr> <td>infix:== infix:~~ infix:+ infix:- infix:* infix:⋅,dot infix:÷ infix:**</td> <td>equal ACCEPTS add subtract multiply dotProduct dotProduct inverted dotProduct inverted</td> </tr>
+<tr> <td>prefix ? Bool</td> </tr> <tr> <td>prefix:+ Numeric</td> </tr> <tr> <td>prefix:- negated</td> </tr> <tr> <td>prefix:~ Str</td> </tr> <tr> <td>prefix:| list</td> </tr> <tr> <td>prefix:@ Array</td> </tr> <tr> <td>prefix:% Hash</td> </tr> <tr> <td>infix:== equal</td> </tr> <tr> <td>infix:~~ ACCEPTS</td> </tr> <tr> <td>infix:+ add</td> </tr> <tr> <td>infix:- subtract</td> </tr> <tr> <td>infix:* multiply</td> </tr> <tr> <td>infix:⋅,dot dotProduct</td> </tr> <tr> <td>infix:÷ dotProduct inverted</td> </tr> <tr> <td>infix:** dotProduct inverted</td> </tr> <tr> <td>infix:⊗,x tensorProduct</td> </tr> <tr> <td>circumfix:｜..｜ determinant</td> </tr> <tr> <td>circumfix:‖..‖ norm</td> </tr> <tr> <td>postcircumfix:[..] AT-POS</td> </tr>
 </tbody>
 </table>
 
