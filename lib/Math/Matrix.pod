@@ -1028,27 +1028,27 @@ The postcircumfix [] - op will always work.
 Operators with method aliases:
 
 =begin table
-    Operator           Method
+    Operator            Method
     --------------------------
-    prefix ?           Bool 
-    prefix:+           Numeric
-    prefix:-           negated
-    prefix:~           Str
-    prefix:|           list
-    prefix:@           Array
-    prefix:%           Hash
-    infix:==           equal
-    infix:~~           ACCEPTS
-    infix:+            add
-    infix:-            subtract
-    infix:*            multiply
-    infix:⋅,dot        dotProduct
-    infix:÷            dotProduct inverted
-    infix:**           dotProduct inverted
-    infix:⊗,x          tensorProduct
-    circumfix:｜..｜    determinant
-    circumfix:‖..‖     norm
-    postcircumfix:[..] AT-POS    
+    prefix:?            Bool 
+    prefix:+            Numeric
+    prefix:-            negated
+    prefix:~            Str
+    prefix:|            list
+    prefix:@            Array
+    prefix:%            Hash
+    infix:==            equal
+    infix:~~            ACCEPTS
+    infix:+             add
+    infix:-             subtract
+    infix:*             multiply
+    infix:⋅,dot         dotProduct
+    infix:÷             dotProduct inverted
+    infix:**            dotProduct inverted
+    infix:⊗,x           tensorProduct
+    circumfix:｜..｜     determinant
+    circumfix:‖..‖      norm
+    postcircumfix:[..]  AT-POS    
 =end table
 
 
