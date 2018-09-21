@@ -291,9 +291,14 @@ Gets you a nested key - value hash.
 
 ### [Range](#type-conversion-and-output-formats)
 
-Returns an range object that reflects the content of all cells.
+Returns an range object that reflects the content of all cells. Please note that complex number can not be endpoints of ranges.
 
     say $matrix.Range: 1..4
+
+To get single endpoints you could write:
+
+    say $matrix.Range.min: 1
+    say $matrix.list.max:  4
 
 ### [gist](#type-conversion-and-output-formats)
 
