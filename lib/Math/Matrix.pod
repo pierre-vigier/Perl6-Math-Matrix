@@ -1031,6 +1031,7 @@ The postcircumfix [] - op will always work.
 
 =head1 Contributors
 
+=item Patrick Spek
 
 =head1 License
 

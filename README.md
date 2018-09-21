@@ -937,6 +937,8 @@ Author
 Contributors
 ============
 
+  * Patrick Spek
+
 License
 =======
 
