@@ -927,6 +927,14 @@ The only exception is MM-operator, a shortcut to create a matrix. That has to be
     MM [[1]]                         # a new matrix
     MM '1'                           # string alias
 
+Operators with method aliases:
+
+<table class="pod-table">
+<tbody>
+<tr> <td>Operator Method</td> </tr> <tr> <td>prefix:? Bool prefix:+ Numeric prefix:- negated prefix:~ Str prefix:| list prefix:@ Array prefix:% Hash</td> </tr> <tr> <td>infix:== equal infix:~~ ACCEPTS infix:+ add infix:- subtract infix:* multiply infix:⋅,dot dotProduct infix:÷ dotProduct inverted infix:** dotProduct inverted infix:⊗,x tensorProduct</td> </tr> <tr> <td>circumfix:｜..｜ determinant circumfix:‖..‖ norm</td> </tr> <tr> <td>postcircumfix:[..] AT-POS</td> </tr>
+</tbody>
+</table>
+
 Author
 ======
 
