@@ -930,11 +930,8 @@ The only exception is MM-operator, a shortcut to create a matrix. That has to be
 Operators with method aliases:
 
 <table class="pod-table">
-<thead><tr>
-<th>Operator</th> <th>Method</th>
-</tr></thead>
 <tbody>
-<tr> <td>prefix:?</td> <td>Bool</td> </tr> <tr> <td>prefix:+</td> <td>Numeric</td> </tr> <tr> <td>prefix:-</td> <td>negated</td> </tr> <tr> <td>prefix:~</td> <td>Str</td> </tr> <tr> <td>prefix:|</td> <td>list</td> </tr> <tr> <td>prefix:@</td> <td>Array</td> </tr> <tr> <td>prefix:%</td> <td>Hash</td> </tr> <tr> <td>infix:==</td> <td>equal</td> </tr> <tr> <td>infix:~~</td> <td>ACCEPTS</td> </tr> <tr> <td>infix:+</td> <td>add</td> </tr> <tr> <td>infix:-</td> <td>subtract</td> </tr> <tr> <td>infix:*</td> <td>multiply</td> </tr> <tr> <td>infix:⋅,dot</td> <td>dotProduct</td> </tr> <tr> <td>infix:÷</td> <td>dotProduct inverted</td> </tr> <tr> <td>infix:**</td> <td>dotProduct inverted</td> </tr>
+<tr> <td>Operator</td> <td>Method</td> </tr> <tr> <td>prefix ? prefix:+ prefix:- prefix:~ prefix:| prefix:@ prefix:%</td> <td>Bool Numeric negated Str list Array Hash</td> </tr> <tr> <td>infix:== infix:~~ infix:+ infix:- infix:* infix:⋅,dot infix:÷ infix:**</td> <td>equal ACCEPTS add subtract multiply dotProduct dotProduct inverted dotProduct inverted</td> </tr>
 </tbody>
 </table>
 

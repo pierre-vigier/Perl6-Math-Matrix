@@ -1029,14 +1029,15 @@ Operators with method aliases:
 
 =begin table
     Operator           Method
-    -------------------------
-    prefix:?           Bool 
+    --------------------------
+    prefix ?           Bool 
     prefix:+           Numeric
     prefix:-           negated
     prefix:~           Str
     prefix:|           list
     prefix:@           Array
     prefix:%           Hash
+    --------------------------
     infix:==           equal
     infix:~~           ACCEPTS
     infix:+            add
