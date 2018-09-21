@@ -978,8 +978,9 @@ Summary of all methods with short alias: L<transposed|#transposed>, L<conjugated
 =head1 L<Operators|#methods>
 
 The Module overloads or uses a range of well and lesser known ops.
-+, -, *, ⋅, dot, x, ⊗ and ~~ are commutative. 
-They are always exported (with flag :DEFAULT or :ALL, not under :MANDATORY or :MM).
+==, +, * are commutative, -, ⋅, dot, ÷, x, ⊗ and ** are not. 
+They are exported when using no flag or under the export flags :DEFAULT or :ALL,
+but not under :MANDATORY or :MM).
 
 The only exception is MM-operator, a shortcut to create a matrix.
 That has to be importet explicitly with the tag :MM or :ALL.
