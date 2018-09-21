@@ -202,7 +202,7 @@ method Hash(Math::Matrix:D: --> Hash)       {  ((^$!row-count).map: {$_ => @!row
 method list(Math::Matrix:D: --> List)       {   self.list-rows.flat.list }
 method list-rows(Math::Matrix:D: --> List)  {  (@!rows.map: {.flat}).list }
 method list-columns(Math::Matrix:D: --> List){ ((^$!column-count).map: {self.column($_)}).list }
-method Range(Math::Matrix:D: --> Range)     {   self.list.min .. self.list.max }
+method Range(Math::Matrix:D: --> Range)     {   self.list.minmax }
 
 multi method gist(Math::Matrix:U: --> Str) { "({self.^name})" }
 multi method gist(Math::Matrix:D: Int :$max-chars?, Int :$max-rows? --> Str) {
