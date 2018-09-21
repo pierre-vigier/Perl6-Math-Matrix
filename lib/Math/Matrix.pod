@@ -1045,10 +1045,6 @@ Operators with method aliases:
     infix:⋅,dot        dotProduct
     infix:÷            dotProduct inverted
     infix:**           dotProduct inverted
-    infix:⊗,x          tensorProduct
-    circumfix:｜..｜    determinant
-    circumfix:‖..‖     norm
-    postcircumfix:[..] AT-POS
 =end table
 
 
