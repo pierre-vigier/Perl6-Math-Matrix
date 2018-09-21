@@ -969,7 +969,7 @@ Summary of all methods with short alias: L<transposed|#transposed>, L<conjugated
 =begin table
     short  long name 
     ------------------
-    T      transposed
+    T      L<transposed|#transposed>
     conj   conjugated
     det    determinant
     rref   reduced-row-echelon-form
@@ -1052,16 +1052,16 @@ Operators with method aliases:
 =end table
 
 
-=head1 Author
+=head1 L<Author|#methods>
 
 =item Pierre VIGIER
 =item Herbert Breunung
 
-=head1 Contributors
+=head1 L<Contributors|#methods>
 
 =item Patrick Spek
 
-=head1 License
+=head1 L<License|#methods>
 
 Artistic License 2.0
 

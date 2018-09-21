@@ -877,7 +877,7 @@ Summary of all methods with short alias: [transposed](#transposed), [conjugated]
 <th>short</th> <th>long name</th>
 </tr></thead>
 <tbody>
-<tr> <td>T</td> <td>transposed</td> </tr> <tr> <td>conj</td> <td>conjugated</td> </tr> <tr> <td>det</td> <td>determinant</td> </tr> <tr> <td>rref</td> <td>reduced-row-echelon-form</td> </tr>
+<tr> <td>T</td> <td>L&lt;transposed|#transposed&gt;</td> </tr> <tr> <td>conj</td> <td>conjugated</td> </tr> <tr> <td>det</td> <td>determinant</td> </tr> <tr> <td>rref</td> <td>reduced-row-echelon-form</td> </tr>
 </tbody>
 </table>
 
@@ -938,20 +938,20 @@ Operators with method aliases:
 </tbody>
 </table>
 
-Author
-======
+[Author](#methods)
+==================
 
   * Pierre VIGIER
 
   * Herbert Breunung
 
-Contributors
-============
+[Contributors](#methods)
+========================
 
   * Patrick Spek
 
-License
-=======
+[License](#methods)
+===================
 
 Artistic License 2.0
 
