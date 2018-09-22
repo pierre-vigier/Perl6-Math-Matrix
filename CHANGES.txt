@@ -3,6 +3,7 @@
     - 2018.10.22
     - accept list of list as input for new
     - added method minor, that computes well a Minor
+    - added method adjugated, computes the derived matrix called adjugate (classical adjoint)
     - added method elem that returns true if all matrix values are within a set
     - added Range converter method
     - prefix + aka numeric now returns Euclidean norm
