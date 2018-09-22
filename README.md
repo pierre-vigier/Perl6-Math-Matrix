@@ -56,7 +56,7 @@ METHODS
 
   * [numeric properties](#numeric-properties): [size](#size), [density](#density), [trace](#trace), [determinant](#determinant), [rank](#rank), [kernel](#kernel), [norm](#norm), [condition](#condition), [minor](#minor), [narrowest-cell-type](#narrowest-cell-type), [widest-cell-type](#widest-cell-type)
 
-  * [derived matrices](#derived-matrices): [transposed](#transposed), [negated](#negated), [conjugated](#conjugated), [inverted](#inverted), [reduced-row-echelon-form](#reduced-row-echelon-form)
+  * [derived matrices](#derived-matrices): [transposed](#transposed), [negated](#negated), [conjugated](#conjugated), [adjugated](#adjugateed), [inverted](#inverted), [reduced-row-echelon-form](#reduced-row-echelon-form)
 
   * [decompositions](#decompositions): [decompositionLUCrout](#decompositionlucrout), [decompositionLU](#decompositionlu), [decompositionCholesky](#decompositioncholesky)
 
@@ -494,7 +494,7 @@ Condition number of a matrix is L2 norm * L2 of inverted matrix.
 
 ### [minor](#numeric-properties)
 
-Arguments are row and column of an existing cell. A Minor is the determinant of a submatrix multiplied with cofactor of the cell.
+Arguments are row and column of an existing cell. A Minor is the determinant of a submatrix (2 argument variant).
 
     my $m = $matrix.minor(1,2);
 
@@ -529,13 +529,34 @@ Returns a new, transposed Matrix, where rows became colums and vice versa.
 
 ### [negated](#derived-matrices)
 
+Creates a matrix where every cell has the negated value of the original (invertion of sign).
+
     my $new = $matrix.negated();     # invert sign of all cells
     my $neg = - $matrix;             # operator alias
 
+    say $neg:  -1 -2
+               -3 -4
+
 ### [conjugated](#derived-matrices)
+
+Creates a matrix where every cell has the complex conjugated of the original.
 
     my $c = $matrix.conjugated();    # change every value to its complex conjugated
     my $c = $matrix.conj();          # short alias (official Perl 6 name)
+
+    say Math::Matrix.new([[1+i,2],[3,4-i]]).conj :
+
+    1-1i  2   
+    3     4+1i
+
+### [adjugated](#derived-matrices)
+
+Creates a matrix out of the properly signed [minors](#minor) of the original. It is called adjugate, classical adjoint or sometimes adjunct.
+
+    $matrix.adjugated.say :
+
+     4 -3
+    -2  1
 
 ### [inverted](#derived-matrices)
 
@@ -543,6 +564,11 @@ Matrices that have a square form and a full rank can be inverted (see .is-invert
 
     my $i = $matrix.inverted();      # invert matrix
     my $i = $matrix ** -1;           # operator alias
+
+    say $i:
+
+     -2    1
+    1.5 -0.5
 
 ### [reduced-row-echelon-form](#derived-matrices)
 
@@ -695,7 +721,7 @@ Matrix multiplication of two fitting matrices (colums left == rows right).
 
 ### [tensorProduct](#matrix-math-operations)
 
-The tensor product between a matrix a of size (m,n) and a matrix b of size (p,q) is a matrix c of size (m*p,n*q). All matrices you get by multiplying an element (cell) of matrix a with matrix b (as in $a.multiply($b.cell(..,..)) concatinated result in matrix c. (Or replace in a each cell with its product with b.)
+The tensor product (a.k.a Kronecker product) between a matrix a of size (m,n) and a matrix b of size (p,q) is a matrix c of size (m*p,n*q). All matrices you get by multiplying an element (cell) of matrix a with matrix b (as in $a.multiply($b.cell(..,..)) concatinated result in matrix c. (Or replace in a each cell with its product with b.)
 
     Example:    1 2  *  2 3   =  1*[2 3] 2*[2 3]  =  2  3  4  6
                 3 4     4 5        [4 5]   [4 5]     4  5  8 10

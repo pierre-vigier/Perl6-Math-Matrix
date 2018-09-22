@@ -73,4 +73,4 @@ submethod !identity-array( PosInt $size ) {
 # helper
 ################################################################################
 
-method cofactor( PosInt $row, PosInt $col) { -1 ** (($row+$col) mod 2) }
+method cofactor-sign( Int:D $row, Int:D $col) { (-1) ** (($row+$col) mod 2) }

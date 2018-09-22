@@ -460,14 +460,9 @@ multi method norm(Math::Matrix:D: 'max' --> Numeric)      { max            @!row
 multi method norm(Math::Matrix:D: 'row-sum' --> Numeric)  { max            @!rows.map: {[+] .map: *.abs} }
 multi method norm(Math::Matrix:D: 'column-sum'--> Numeric){ max (^$!column-count).map: {[+] self.column($_).map: *.abs} }
 
-method condition(Math::Matrix:D: --> Numeric) {
-    self.norm() * self.inverted().norm()
-}
+method condition(Math::Matrix:D:                    --> Numeric) { self.norm() * self.inverted.norm       }
 
-method minor(Math::Matrix:D: Int:D $row, Int:D $column --> Numeric) {
-    self!check-index($row, $column);
-    self.submatrix($row, $column).determinant * self.cofactor($row, $column)
-}
+method minor(Math::Matrix:D: Int:D $row, Int:D $col --> Numeric) { self.submatrix($row, $col).determinant }
 
 method !build_narrowest-cell-type(Math::Matrix:D: --> Numeric){
     return Bool if any( @!rows[*;*] ) ~~ Bool;
@@ -497,6 +492,17 @@ method transposed(Math::Matrix:D: --> Math::Matrix:D ) {
     Math::Matrix.new( @transposed );
 }
 
+method negated(Math::Matrix:D: --> Math::Matrix:D )       { self.map( - * ) }
+
+method conj(Math::Matrix:D: --> Math::Matrix:D  )         { self.conjugated }
+method conjugated(Math::Matrix:D: --> Math::Matrix:D )    { self.map( { $_.conj} ) }
+
+method adjugated(Math::Matrix:D: --> Math::Matrix:D) {
+    fail "Number of columns has to be same as number of rows" unless self.is-square;
+    $!row-count == 1 ?? self.new([[1]]) 
+                     !! self!imap2({ self.minor($^m, $^n) * self.cofactor-sign($^m, $^n) });
+}
+
 method inverted(Math::Matrix:D: --> Math::Matrix:D) {
     fail "Number of columns has to be same as number of rows" unless self.is-square;
     fail "Matrix is not invertible, or singular because defect (determinant = 0)" if self.determinant == 0;
@@ -521,13 +527,6 @@ method inverted(Math::Matrix:D: --> Math::Matrix:D) {
         }
     }
     Math::Matrix.new( @inverted );
-}
-
-method negated(Math::Matrix:D: --> Math::Matrix:D )       { self.map( - * ) }
-
-method conj(Math::Matrix:D: --> Math::Matrix:D  )         { self.conjugated }
-method conjugated(Math::Matrix:D: --> Math::Matrix:D ) {
-    self.map( { $_.conj} );
 }
 
 method reduced-row-echelon-form(Math::Matrix:D: --> Math::Matrix:D) {
@@ -747,6 +746,17 @@ multi method cont (Math::Matrix:D: Numeric $e  --> Bool) { # matrix contains ele
 multi method cont (Math::Matrix:D: Range $r  --> Bool) { # is any cell value in this set/range
     self.map: {return True if $_ ~~ $r};
     False;
+}
+
+method !imap2(Math::Matrix:D: &coderef --> Math::Matrix:D) {
+    my @aoa;
+    for ^$!row-count X ^$!column-count -> ($r, $c) { @aoa[$r][$c] = &coderef($r, $c) }
+    Math::Matrix.new( @aoa );
+}
+method !imap3(Math::Matrix:D: &coderef --> Math::Matrix:D) {
+    my @aoa;
+    for ^$!row-count X ^$!column-count -> ($r, $c) { @aoa[$r][$c] = &coderef($r, $c, @!rows[$r][$c]) }
+    Math::Matrix.new( @aoa );
 }
 
 method map(Math::Matrix:D: &coderef --> Math::Matrix:D) {

@@ -46,7 +46,7 @@ Acceptable export tags are:
     L<is-symmetric|#is-symmetric>, L<is-antisymmetric|#is-antisymmetric>, L<is-unitary|#is-unitary>, L<is-self-adjoint|#is-self-adjoint>, L<is-orthogonal|#is-orthogonal>,
     L<is-positive-definite|#is-positive-definite>, L<is-positive-semidefinite|#is-positive-semidefinite>
 =item L<numeric properties|#numeric-properties>: L<size|#size>, L<density|#density>, L<trace|#trace>, L<determinant|#determinant>, L<rank|#rank>, L<kernel|#kernel>, L<norm|#norm>, L<condition|#condition>, L<minor|#minor>, L<narrowest-cell-type|#narrowest-cell-type>, L<widest-cell-type|#widest-cell-type>
-=item L<derived matrices|#derived-matrices>: L<transposed|#transposed>, L<negated|#negated>, L<conjugated|#conjugated>, L<inverted|#inverted>, L<reduced-row-echelon-form|#reduced-row-echelon-form>
+=item L<derived matrices|#derived-matrices>: L<transposed|#transposed>, L<negated|#negated>, L<conjugated|#conjugated>, L<adjugated|#adjugateed>, L<inverted|#inverted>, L<reduced-row-echelon-form|#reduced-row-echelon-form>
 =item L<decompositions|#decompositions>: L<decompositionLUCrout|#decompositionlucrout>, L<decompositionLU|#decompositionlu>, L<decompositionCholesky|#decompositioncholesky>
 =item L<matrix math ops|#matrix-math-operations>: L<equal|#equal>, L<add|#add>, L<subtract|#subtract>, L<add-row|#add-row>, L<add-column|#add-column>, L<multiply|#multiply>, L<multiply-row|#multiply-row>, L<multiply-column|#multiply-column>, L<dotProduct|#dotproduct>, L<tensorProduct|#tensorproduct>
 =item L<list like ops|#list-like-matrix-operations>: L<elems|#elems>, L<elem|#elem>, L<cont|#cont>, L<map|#map>, L<map-row|#map-row>, L<map-column|#map-column>, L<map-cell|#map-cell>, L<reduce|#reduce>, L<reduce-rows|#reduce-rows>, L<reduce-columns|#reduce-columns>
@@ -540,7 +540,7 @@ Condition number of a matrix is L2 norm * L2 of inverted matrix.
 =head3 L<minor|#numeric-properties>
 
 Arguments are row and column of an existing cell.
-A Minor is the determinant of a submatrix multiplied with cofactor of the cell.
+A Minor is the determinant of a submatrix (2 argument variant).
 
     my $m = $matrix.minor(1,2);        
 
@@ -577,13 +577,36 @@ Returns a new, transposed Matrix, where rows became colums and vice versa.
                              
 =head3 L<negated|#derived-matrices>
 
+Creates a matrix where every cell has the negated value of the original (invertion of sign).
+
     my $new = $matrix.negated();     # invert sign of all cells
     my $neg = - $matrix;             # operator alias
+    
+    say $neg:  -1 -2
+               -3 -4
 
 =head3 L<conjugated|#derived-matrices>
 
+Creates a matrix where every cell has the complex conjugated of the original.
+
     my $c = $matrix.conjugated();    # change every value to its complex conjugated
     my $c = $matrix.conj();          # short alias (official Perl 6 name)
+    
+    say Math::Matrix.new([[1+i,2],[3,4-i]]).conj :
+    
+    1-1i  2   
+    3     4+1i
+
+
+=head3 L<adjugated|#derived-matrices>
+
+Creates a matrix out of the properly signed L<minors|#minor> of the original.
+It is called adjugate, classical adjoint or sometimes adjunct.
+
+    $matrix.adjugated.say :
+
+     4 -3
+    -2  1
 
 =head3 L<inverted|#derived-matrices>
 
@@ -595,6 +618,10 @@ The dot product of a matrix with its inverted results in a identity matrix
     my $i = $matrix.inverted();      # invert matrix
     my $i = $matrix ** -1;           # operator alias
 
+    say $i:
+    
+     -2    1
+    1.5 -0.5
 
 =head3 L<reduced-row-echelon-form|#derived-matrices>
 
@@ -766,10 +793,10 @@ Matrix multiplication of two fitting matrices (colums left == rows right).
 
 =head3 L<tensorProduct|#matrix-math-operations>
 
-The tensor product between a matrix a of size (m,n) and a matrix b of size
-(p,q) is a matrix c of size (m*p,n*q). All matrices you get by multiplying
-an element (cell) of matrix a with matrix b (as in $a.multiply($b.cell(..,..))
-concatinated result in matrix c. 
+The tensor product (a.k.a Kronecker product) between a matrix a of size (m,n)
+and a matrix b of size (p,q) is a matrix c of size (m*p,n*q).
+All matrices you get by multiplying an element (cell) of matrix a with
+ matrix b (as in $a.multiply($b.cell(..,..)) concatinated result in matrix c. 
 (Or replace in a each cell with its product with b.)
 
     Example:    1 2  *  2 3   =  1*[2 3] 2*[2 3]  =  2  3  4  6
