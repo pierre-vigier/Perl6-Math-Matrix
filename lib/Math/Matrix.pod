@@ -45,7 +45,7 @@ Acceptable export tags are:
     L<is-diagonally-dominant|#is-diagonally-dominant>, L<is-upper-triangular|#is-upper-triangular>, L<is-lower-triangular|#is-lower-triangular>, L<is-invertible|#is-invertible>,
     L<is-symmetric|#is-symmetric>, L<is-antisymmetric|#is-antisymmetric>, L<is-unitary|#is-unitary>, L<is-self-adjoint|#is-self-adjoint>, L<is-orthogonal|#is-orthogonal>,
     L<is-positive-definite|#is-positive-definite>, L<is-positive-semidefinite|#is-positive-semidefinite>
-=item L<numeric properties|#numeric-properties>: L<size|#size>, L<density|#density>, L<trace|#trace>, L<determinant|#determinant>, L<rank|#rank>, L<kernel|#kernel>, L<norm|#norm>, L<condition|#condition>, L<narrowest-cell-type|#narrowest-cell-type>, L<widest-cell-type|#widest-cell-type>
+=item L<numeric properties|#numeric-properties>: L<size|#size>, L<density|#density>, L<trace|#trace>, L<determinant|#determinant>, L<rank|#rank>, L<kernel|#kernel>, L<norm|#norm>, L<condition|#condition>, L<minor|#minor>, L<narrowest-cell-type|#narrowest-cell-type>, L<widest-cell-type|#widest-cell-type>
 =item L<derived matrices|#derived-matrices>: L<transposed|#transposed>, L<negated|#negated>, L<conjugated|#conjugated>, L<inverted|#inverted>, L<reduced-row-echelon-form|#reduced-row-echelon-form>
 =item L<decompositions|#decompositions>: L<decompositionLUCrout|#decompositionlucrout>, L<decompositionLU|#decompositionlu>, L<decompositionCholesky|#decompositioncholesky>
 =item L<matrix math ops|#matrix-math-operations>: L<equal|#equal>, L<add|#add>, L<subtract|#subtract>, L<add-row|#add-row>, L<add-column|#add-column>, L<multiply|#multiply>, L<multiply-row|#multiply-row>, L<multiply-column|#multiply-column>, L<dotProduct|#dotproduct>, L<tensorProduct|#tensorproduct>
@@ -537,6 +537,13 @@ Condition number of a matrix is L2 norm * L2 of inverted matrix.
 
     my $c = $matrix.condition( );        
 
+=head3 L<minor|#numeric-properties>
+
+Arguments are row and column of an existing cell.
+A Minor is the determinant of a submatrix multiplied with cofactor of the cell.
+
+    my $m = $matrix.minor(1,2);        
+
 =head3 L<narrowest-cell-type|#numeric-properties>
 
 =head3 L<widest-cell-type|#numeric-properties>
@@ -964,16 +971,12 @@ Same as splice-rows, just horizontally.
 
 =head2 L<Shortcuts|#methods>
 
-Summary of all methods with short alias: L<transposed|#transposed>, L<conjugated|#conjugated>, L<determinant|#determinant>, L<reduced-row-echelon-form|#reduced-row-echelon-form> 
+Summary of all shortcut aliases (first) and their long form (second). 
 
-=begin table
-    short  long name 
-    ------------------
-    T      transposed
-    conj   conjugated
-    det    determinant
-    rref   reduced-row-echelon-form
-=end table
+=item T --> L<transposed|#transposed>
+=item conj -->  L<conjugated|#conjugated>
+=item det -->   L<determinant|#determinant>
+=item rref -->  L<reduced-row-echelon-form|#reduced-row-echelon-form>
 
 =head1 L<Operators|#methods>
 

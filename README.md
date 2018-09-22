@@ -54,7 +54,7 @@ METHODS
 
   * [boolean properties](#boolean-properties): [is-zero](#is-zero), [is-identity](#is-identity), [is-square](#is-square), [is-diagonal](#is-diagonal), [is-diagonally-dominant](#is-diagonally-dominant), [is-upper-triangular](#is-upper-triangular), [is-lower-triangular](#is-lower-triangular), [is-invertible](#is-invertible), [is-symmetric](#is-symmetric), [is-antisymmetric](#is-antisymmetric), [is-unitary](#is-unitary), [is-self-adjoint](#is-self-adjoint), [is-orthogonal](#is-orthogonal), [is-positive-definite](#is-positive-definite), [is-positive-semidefinite](#is-positive-semidefinite)
 
-  * [numeric properties](#numeric-properties): [size](#size), [density](#density), [trace](#trace), [determinant](#determinant), [rank](#rank), [kernel](#kernel), [norm](#norm), [condition](#condition), [narrowest-cell-type](#narrowest-cell-type), [widest-cell-type](#widest-cell-type)
+  * [numeric properties](#numeric-properties): [size](#size), [density](#density), [trace](#trace), [determinant](#determinant), [rank](#rank), [kernel](#kernel), [norm](#norm), [condition](#condition), [minor](#minor), [narrowest-cell-type](#narrowest-cell-type), [widest-cell-type](#widest-cell-type)
 
   * [derived matrices](#derived-matrices): [transposed](#transposed), [negated](#negated), [conjugated](#conjugated), [inverted](#inverted), [reduced-row-echelon-form](#reduced-row-echelon-form)
 
@@ -492,6 +492,12 @@ Condition number of a matrix is L2 norm * L2 of inverted matrix.
 
     my $c = $matrix.condition( );
 
+### [minor](#numeric-properties)
+
+Arguments are row and column of an existing cell. A Minor is the determinant of a submatrix multiplied with cofactor of the cell.
+
+    my $m = $matrix.minor(1,2);
+
 ### [narrowest-cell-type](#numeric-properties)
 
 ### [widest-cell-type](#numeric-properties)
@@ -870,23 +876,22 @@ Same as splice-rows, just horizontally.
 [Shortcuts](#methods)
 ---------------------
 
-Summary of all methods with short alias: [transposed](#transposed), [conjugated](#conjugated), [determinant](#determinant), [reduced-row-echelon-form](#reduced-row-echelon-form) 
+Summary of all shortcut aliases (first) and their long form (second). 
 
-<table class="pod-table">
-<thead><tr>
-<th>short</th> <th>long name</th>
-</tr></thead>
-<tbody>
-<tr> <td>T</td> <td>L&lt;transposed|#transposed&gt;</td> </tr> <tr> <td>conj</td> <td>conjugated</td> </tr> <tr> <td>det</td> <td>determinant</td> </tr> <tr> <td>rref</td> <td>reduced-row-echelon-form</td> </tr>
-</tbody>
-</table>
+  * T --> [transposed](#transposed)
+
+  * conj --> [conjugated](#conjugated)
+
+  * det --> [determinant](#determinant)
+
+  * rref --> [reduced-row-echelon-form](#reduced-row-echelon-form)
 
 [Operators](#methods)
 =====================
 
-The Module overloads or uses a range of well and lesser known ops. ==, +, * are commutative, -, ⋅, dot, ÷, x, ⊗ and ** are not. They are exported when using no flag or under the export flags :DEFAULT or :ALL, but not under :MANDATORY or :MM).
+The Module overloads or introduces a range of well and lesser known ops. ==, +, * are commutative, -, ⋅, dot, ÷, x, ⊗ and ** are not.
 
-The only exception is MM-operator, a shortcut to create a matrix. That has to be importet explicitly with the tag :MM or :ALL. The postcircumfix [] - op will always work.
+They are exported when using no flag or under the export flags :DEFAULT or :ALL, but not under :MANDATORY or :MM). The only exception is MM-operator, a shortcut to create a matrix. That has to be importet explicitly with the tag :MM or :ALL. The postcircumfix [] - op will always work.
 
     my $a   = +$matrix               # Num context, Euclidean norm
     my $b   = ?$matrix               # Bool context, True if any cell has a none zero value
