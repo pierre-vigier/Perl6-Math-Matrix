@@ -464,6 +464,11 @@ method condition(Math::Matrix:D: --> Numeric) {
     self.norm() * self.inverted().norm()
 }
 
+method minor(Math::Matrix:D: Int:D $row, Int:D $column --> Numeric) {
+    self!check-index($row, $column);
+    self.submatrix($row, $column).determinant * self.cofactor($row, $column)
+}
+
 method !build_narrowest-cell-type(Math::Matrix:D: --> Numeric){
     return Bool if any( @!rows[*;*] ) ~~ Bool;
     return Int  if any( @!rows[*;*] ) ~~ Int;
