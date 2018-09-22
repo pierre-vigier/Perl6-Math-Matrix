@@ -56,7 +56,7 @@ METHODS
 
   * [numeric properties](#numeric-properties): [size](#size), [density](#density), [trace](#trace), [determinant](#determinant), [rank](#rank), [kernel](#kernel), [norm](#norm), [condition](#condition), [minor](#minor), [narrowest-cell-type](#narrowest-cell-type), [widest-cell-type](#widest-cell-type)
 
-  * [derived matrices](#derived-matrices): [transposed](#transposed), [negated](#negated), [conjugated](#conjugated), [adjugated](#adjugateed), [inverted](#inverted), [reduced-row-echelon-form](#reduced-row-echelon-form)
+  * [derived matrices](#derived-matrices): [transposed](#transposed), [negated](#negated), [conjugated](#conjugated), [adjugated](#adjugated), [inverted](#inverted), [reduced-row-echelon-form](#reduced-row-echelon-form)
 
   * [decompositions](#decompositions): [decompositionLUCrout](#decompositionlucrout), [decompositionLU](#decompositionlu), [decompositionCholesky](#decompositioncholesky)
 
