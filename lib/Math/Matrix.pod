@@ -51,7 +51,7 @@ Acceptable export tags are:
 =item L<matrix math ops|#matrix-math-operations>: L<equal|#equal>, L<add|#add>, L<subtract|#subtract>, L<add-row|#add-row>, L<add-column|#add-column>, L<multiply|#multiply>, L<multiply-row|#multiply-row>, L<multiply-column|#multiply-column>, L<dotProduct|#dotproduct>, L<tensorProduct|#tensorproduct>
 =item L<list like ops|#list-like-matrix-operations>: L<elems|#elems>, L<elem|#elem>, L<cont|#cont>, L<map|#map>, L<map-row|#map-row>, L<map-column|#map-column>, L<map-cell|#map-cell>, L<reduce|#reduce>, L<reduce-rows|#reduce-rows>, L<reduce-columns|#reduce-columns>
 =item L<structural ops|#structural-matrix-operations>: L<move-row|#move-row>, L<move-column|#move-column>, L<swap-rows|#swap-rows>, L<swap-columns|#swap-columns>, L<splice-rows|#splice-rows>, L<splice-columns|#splice-columns>
-=item L<shortcuts|#shortcuts>:   T,   conj,   det,   rref
+=item L<shortcuts|#shortcuts>:   L<T|#transposed>,   L<conj|#conjugated>,   L<det|#determinant>,   L<rref|#reduced-row-echelon-form>
 =item L<operators|#operators>:   MM,   ?,  ~,   |,  @,  %,  +,   -,   *,   **,   dot,   ⋅,   ÷,   x,   ⊗,   ==,   ~~,   ❘ ❘,   ‖ ‖,   [ ]
 
 

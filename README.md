@@ -66,7 +66,7 @@ METHODS
 
   * [structural ops](#structural-matrix-operations): [move-row](#move-row), [move-column](#move-column), [swap-rows](#swap-rows), [swap-columns](#swap-columns), [splice-rows](#splice-rows), [splice-columns](#splice-columns)
 
-  * [shortcuts](#shortcuts): T, conj, det, rref
+  * [shortcuts](#shortcuts): [T](#transposed), [conj](#conjugated), [det](#determinant), [rref](#reduced-row-echelon-form)
 
   * [operators](#operators): MM, ?, ~, |, @, %, +, -, *, **, dot, ⋅, ÷, x, ⊗, ==, ~~, ❘ ❘, ‖ ‖, [ ]
 
