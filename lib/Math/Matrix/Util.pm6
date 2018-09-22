@@ -15,7 +15,6 @@ submethod !AoA-clone (@m) { [ map {[ map {$^cell.clone}, $^row.flat ]}, @m ]}
 # checker
 ################################################################################
 
-
 submethod !check-matrix-data (@m) {
     fail "Expect an Array of Array" unless all @m ~~ Array or all @m ~~ List;
     fail "All rows must contains the same number of elements" unless @m.elems == 1 or @m[0] == all @m[*];
@@ -70,3 +69,8 @@ submethod !identity-array( PosInt $size ) {
     return @identity;
 }
 
+################################################################################
+# helper
+################################################################################
+
+method cofactor( PosInt $row, PosInt $col) { -1 ** (($row+$col) mod 2) }

@@ -969,7 +969,7 @@ Summary of all methods with short alias: L<transposed|#transposed>, L<conjugated
 =begin table
     short  long name 
     ------------------
-    T      L<transposed|#transposed>
+    T      transposed
     conj   conjugated
     det    determinant
     rref   reduced-row-echelon-form
@@ -977,11 +977,11 @@ Summary of all methods with short alias: L<transposed|#transposed>, L<conjugated
 
 =head1 L<Operators|#methods>
 
-The Module overloads or uses a range of well and lesser known ops.
-==, +, * are commutative, -, ⋅, dot, ÷, x, ⊗ and ** are not. 
+The Module overloads or introduces a range of well and lesser known ops.
+==, +, * are commutative, -, ⋅, dot, ÷, x, ⊗ and ** are not.
+
 They are exported when using no flag or under the export flags :DEFAULT or :ALL,
 but not under :MANDATORY or :MM).
-
 The only exception is MM-operator, a shortcut to create a matrix.
 That has to be importet explicitly with the tag :MM or :ALL.
 The postcircumfix [] - op will always work.
