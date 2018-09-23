@@ -363,17 +363,15 @@ True if every cell above the diagonal (where row index is smaller than column in
 
 ### [is-diagonal](#boolean-properties)
 
-    True if only cells on the diagonal differ from 0.
-    .is-upper-triangular and .is-lower-triangular would also be True.
+True if only cells on the diagonal differ from 0. .is-upper-triangular and .is-lower-triangular would also be True.
 
-     Example:    1 0 0
-                 0 3 0
-                 0 0 7
+    Example:    1 0 0
+                0 3 0
+                0 0 7
 
 ### [is-diagonally-dominant](#boolean-properties)
 
-    True if cells on the diagonal have a bigger (strict) or equal absolute value than the
-    sum of the other absolute values in the column or row.
+True if cells on the diagonal have a bigger (strict) or equal absolute value than the sum of the other absolute values in the column or row.
 
     if $matrix.is-diagonally-dominant {
     $matrix.is-diagonally-dominant(:!strict)   # same thing (default)
