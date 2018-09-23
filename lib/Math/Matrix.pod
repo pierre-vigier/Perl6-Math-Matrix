@@ -431,7 +431,7 @@ Means the transposed and negated matrix are the same.
 
 =head3 L<is-self-adjoint|#boolean-properties>
 
-A Hermitian or self-adjoint matrix is equal to its transposed and complex conjugated.
+A Hermitian or self-adjoint matrix is equal to its L<transposed|#transposed> and complex L<conjugated|#conjugated>.
 
     Example:    1   2   3+i
                 2   5   4
@@ -439,14 +439,14 @@ A Hermitian or self-adjoint matrix is equal to its transposed and complex conjug
 
 =head3 L<is-invertible|#boolean-properties>
 
-Is True if number of rows and colums are the same (.is-square) and .determinant is not zero.
+Is True if number of rows and colums are the same (L<is-square|#is-square>) and L<determinant|#determinant> is not zero.
 All rows or colums have to be independent vectors. Please use this method before $matrix.inverted,
 or you will get an exception.
 
 =head3 L<is-orthogonal|#boolean-properties>
 
-An orthogonal matrix multiplied (dotProduct) with its transposed derivative (T)
-is an identity matrix or in other words: .transposed and .inverted matrices are equal.
+An orthogonal matrix multiplied (L<dotProduct|#dotproduct>) with its transposed derivative (T)
+is an identity matrix or in other words: L<transposed|#transposed> and L<inverted|#inverted> matrices are equal.
 
 =head3 L<is-unitary|#boolean-properties>
 
@@ -561,6 +561,8 @@ You can also check if all cells have the same type:
     if $matrix.widest-cell-type eqv $matrix.narrowest-cell-type
 
 
+
+
 =head2 L<Derived Matrices|#methods>
 
 Single matrices that can be computed with only our original matrix as input.
@@ -597,7 +599,6 @@ Creates a matrix where every cell has the complex conjugated of the original.
     1-1i  2   
     3     4+1i
 
-
 =head3 L<adjugated|#derived-matrices>
 
 Creates a matrix out of the properly signed L<minors|#minor> of the original.
@@ -610,9 +611,9 @@ It is called adjugate, classical adjoint or sometimes adjunct.
 
 =head3 L<inverted|#derived-matrices>
 
-Matrices that have a square form and a full rank can be inverted (see .is-invertible).
-Inverse matrix regarding to matrix multiplication.
-The dot product of a matrix with its inverted results in a identity matrix
+Matrices that have a square form and a full rank can be inverted (see L<is-invertible|#is-invertible>).
+Inverse matrix regarding to matrix multiplication (see L<dotProduct|#dotproduct>).
+The dot product of a matrix with its inverted results in a L<identity|#is-identity> matrix
 (neutral element in this group).
 
     my $i = $matrix.inverted();      # invert matrix
@@ -629,6 +630,7 @@ Return the reduced row echelon form of a matrix, a.k.a. row canonical form
 
     my $rref = $matrix.reduced-row-echelon-form();
     my $rref = $matrix.rref();       # short alias
+
 
 
 
@@ -667,6 +669,7 @@ This decomposition works only on symmetric and definite positive matrices.
 
     my $D = $matrix.decompositionCholesky( );  # $D is a left triangular matrix
     $D dot $D.T eq $matrix;                    # True 
+
 
 
 

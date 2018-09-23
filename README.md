@@ -400,7 +400,7 @@ Means the transposed and negated matrix are the same.
 
 ### [is-self-adjoint](#boolean-properties)
 
-A Hermitian or self-adjoint matrix is equal to its transposed and complex conjugated.
+A Hermitian or self-adjoint matrix is equal to its [transposed](#transposed) and complex [conjugated](#conjugated).
 
     Example:    1   2   3+i
                 2   5   4
@@ -408,11 +408,11 @@ A Hermitian or self-adjoint matrix is equal to its transposed and complex conjug
 
 ### [is-invertible](#boolean-properties)
 
-Is True if number of rows and colums are the same (.is-square) and .determinant is not zero. All rows or colums have to be independent vectors. Please use this method before $matrix.inverted, or you will get an exception.
+Is True if number of rows and colums are the same ([is-square](#is-square)) and [determinant](#determinant) is not zero. All rows or colums have to be independent vectors. Please use this method before $matrix.inverted, or you will get an exception.
 
 ### [is-orthogonal](#boolean-properties)
 
-An orthogonal matrix multiplied (dotProduct) with its transposed derivative (T) is an identity matrix or in other words: .transposed and .inverted matrices are equal.
+An orthogonal matrix multiplied ([dotProduct](#dotproduct)) with its transposed derivative (T) is an identity matrix or in other words: [transposed](#transposed) and [inverted](#inverted) matrices are equal.
 
 ### [is-unitary](#boolean-properties)
 
@@ -560,7 +560,7 @@ Creates a matrix out of the properly signed [minors](#minor) of the original. It
 
 ### [inverted](#derived-matrices)
 
-Matrices that have a square form and a full rank can be inverted (see .is-invertible). Inverse matrix regarding to matrix multiplication. The dot product of a matrix with its inverted results in a identity matrix (neutral element in this group).
+Matrices that have a square form and a full rank can be inverted (see [is-invertible](#is-invertible)). Inverse matrix regarding to matrix multiplication (see [dotProduct](#dotproduct)). The dot product of a matrix with its inverted results in a [identity](#is-identity) matrix (neutral element in this group).
 
     my $i = $matrix.inverted();      # invert matrix
     my $i = $matrix ** -1;           # operator alias
