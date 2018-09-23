@@ -211,7 +211,7 @@ multi method gist(Math::Matrix:D: Int :$max-chars?, Int :$max-rows? --> Str) {
         my $max-heigth = (not $max-rows.defined or $max-rows < 2) ?? 20 !! $max-rows;
         my @fmt-content = @!rows.map: {    # all values in optimized complex format
             (.map: { $_ ~~ Bool   ?? %( re => $_,             im => '' ) !! 
-                    $_ ~~ Complex ?? %( re => $_.re.fmt("%g"),im => (($_.im > 0 ??'+'!!'')~$_.im.fmt("%g")~'i') ) !!
+                    $_ ~~ Complex ?? %( re => $_.re.fmt("%g"),im => (($_.im >= 0 ??'+'!!'')~$_.im.fmt("%g")~'i') ) !!
                                      %( re => $_.fmt("%g"),   im => '' )
         }).Array};
         my @col-width;                     # width of the formatted cell content in n column
