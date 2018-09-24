@@ -26,7 +26,7 @@ Matrices are tables with rows and columns (index counting from 0) of numbers (Nu
     transpose, invert, negate, add, multiply, dot product, tensor product, 22 ops, determinant, rank,
     trace, norm, 15 boolean properties, 3 decompositions, submatrix, splice, map, reduce and more
 
-Table of Content
+Table of Content:
 
   * [Methods](#methods)
 
@@ -919,9 +919,9 @@ Summary of all shortcut aliases (first) and their long form (second).
 
   * :MANDATORY (nothing is exported)
 
-  * :DEFAULT (same as no tag, most <ops|#operators> will be exported)
+  * :DEFAULT (same as no tag, most [ops](#operators) will be exported)
 
-  * :MM (only <MM|#new--> op exported)
+  * :MM (only [MM](#new--) op exported)
 
   * :ALL
 

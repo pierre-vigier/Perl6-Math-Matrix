@@ -19,7 +19,7 @@ of numbers (Numeric type - Bool or Int or Num or Rat or FatRat or Complex):
  transpose, invert, negate, add, multiply, dot product, tensor product, 22 ops, determinant, rank,
  trace, norm, 15 boolean properties, 3 decompositions, submatrix, splice, map, reduce and more
 
-Table of Content
+Table of Content:
 
 =item L<Methods|#methods>
 =item L<Export Tags|#export-tags>
@@ -1014,8 +1014,8 @@ Summary of all shortcut aliases (first) and their long form (second).
 =head1 L<Export Tags|#synopsis>
 
 =item :MANDATORY (nothing is exported)
-=item :DEFAULT (same as no tag, most <ops|#operators> will be exported)
-=item :MM (only <MM|#new--> op exported)
+=item :DEFAULT (same as no tag, most L<ops|#operators> will be exported)
+=item :MM (only L<MM|#new--> op exported)
 =item :ALL
 
 =head1 L<Operators|#synopsis>
