@@ -30,7 +30,7 @@ Table of Content
 
   * [Methods](#methods)
 
-  * [Export Tags](#export tags)
+  * [Export Tags](#export-tags)
 
   * [Operators](#operators)
 

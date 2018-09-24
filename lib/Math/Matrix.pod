@@ -22,7 +22,7 @@ of numbers (Numeric type - Bool or Int or Num or Rat or FatRat or Complex):
 Table of Content
 
 =item L<Methods|#methods>
-=item L<Export Tags|#export tags>
+=item L<Export Tags|#export-tags>
 =item L<Operators|#operators>
 =item L<Authors|#authors>
 =item L<License|#license>
