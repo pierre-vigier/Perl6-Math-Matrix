@@ -47,8 +47,8 @@ Matrices are readonly - operations and functions do create new matrix objects. A
 
 All computation heavy properties will be calculated lazily and will be cached.
 
-METHODS
-=======
+[METHODS](#synopsis)
+====================
 
   * [constructors](#constructors): [new []](#new--), [new ()](#new---1), [new ""](#new---2), [new-zero](#new-zero), [new-identity](#new-identity), [new-diagonal](#new-diagonal), [new-vector-product](#new-vector-product)
 
@@ -914,8 +914,8 @@ Summary of all shortcut aliases (first) and their long form (second).
 
   * rref --> [reduced-row-echelon-form](#reduced-row-echelon-form)
 
-Export Tags
-===========
+[Export Tags](#synopsis)
+========================
 
   * :MANDATORY (nothing is exported)
 
