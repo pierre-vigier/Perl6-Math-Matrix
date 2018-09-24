@@ -26,6 +26,18 @@ Matrices are tables with rows and columns (index counting from 0) of numbers (Nu
     transpose, invert, negate, add, multiply, dot product, tensor product, 22 ops, determinant, rank,
     trace, norm, 15 boolean properties, 3 decompositions, submatrix, splice, map, reduce and more
 
+Table of Content
+
+  * [Methods](#methods)
+
+  * [Export Tags](#export tags)
+
+  * [Operators](#operators)
+
+  * [Authors](#authors)
+
+  * [License](#license)
+
 DESCRIPTION
 ===========
 
@@ -33,15 +45,7 @@ Because the list based, functional toolbox of Perl 6 is not enough to calculate 
 
 Matrices are readonly - operations and functions do create new matrix objects. All methods return readonly data or deep clones - also the constructor does a deep clone of provided data. In that sense the library is thread safe.
 
-All computation heavy properties will be calculated lazily and will be cached. Acceptable export tags are: 
-
-  * :MANDATORY (nothing is exported)
-
-  * :DEFAULT (same as no tag, most ops will be exported)
-
-  * :MM (only MM op exported)
-
-  * :ALL
+All computation heavy properties will be calculated lazily and will be cached.
 
 METHODS
 =======
@@ -910,8 +914,19 @@ Summary of all shortcut aliases (first) and their long form (second).
 
   * rref --> [reduced-row-echelon-form](#reduced-row-echelon-form)
 
-[Operators](#methods)
-=====================
+Export Tags
+===========
+
+  * :MANDATORY (nothing is exported)
+
+  * :DEFAULT (same as no tag, most <ops|#operators> will be exported)
+
+  * :MM (only <MM|#new--> op exported)
+
+  * :ALL
+
+[Operators](#synopsis)
+======================
 
 The Module overloads or introduces a range of well and lesser known ops. ==, +, * are commutative, -, ⋅, dot, ÷, x, ⊗ and ** are not.
 
@@ -967,20 +982,20 @@ Operators with method aliases:
 </tbody>
 </table>
 
-[Author](#methods)
-==================
+[Authors](#synopsis)
+====================
 
   * Pierre VIGIER
 
   * Herbert Breunung
 
-[Contributors](#methods)
-========================
+[Contributors](#synopsis)
+=========================
 
   * Patrick Spek
 
-[License](#methods)
-===================
+[License](#synopsis)
+====================
 
 Artistic License 2.0
 

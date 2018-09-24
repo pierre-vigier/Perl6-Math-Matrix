@@ -19,6 +19,14 @@ of numbers (Numeric type - Bool or Int or Num or Rat or FatRat or Complex):
  transpose, invert, negate, add, multiply, dot product, tensor product, 22 ops, determinant, rank,
  trace, norm, 15 boolean properties, 3 decompositions, submatrix, splice, map, reduce and more
 
+Table of Content
+
+=item L<Methods|#methods>
+=item L<Export Tags|#export tags>
+=item L<Operators|#operators>
+=item L<Authors|#authors>
+=item L<License|#license>
+
 =head1 DESCRIPTION
 
 Because the list based, functional toolbox of Perl 6 is not enough to calculate matrices comfortably,
@@ -31,11 +39,6 @@ All methods return readonly data or deep clones - also the constructor does a de
 In that sense the library is thread safe.
 
 All computation heavy properties will be calculated lazily and will be cached.
-Acceptable export tags are: 
-=item :MANDATORY (nothing is exported)
-=item :DEFAULT (same as no tag, most ops will be exported)
-=item :MM (only MM op exported)
-=item :ALL
 
 =head1 METHODS
 =item L<constructors|#constructors>: L<new []|#new-->, L<new ()|#new---1>, L<new ""|#new---2>, L<new-zero|#new-zero>, L<new-identity|#new-identity>, L<new-diagonal|#new-diagonal>, L<new-vector-product|#new-vector-product>
@@ -1008,7 +1011,14 @@ Summary of all shortcut aliases (first) and their long form (second).
 =item det -->   L<determinant|#determinant>
 =item rref -->  L<reduced-row-echelon-form|#reduced-row-echelon-form>
 
-=head1 L<Operators|#methods>
+=head1 Export Tags
+
+=item :MANDATORY (nothing is exported)
+=item :DEFAULT (same as no tag, most <ops|#operators> will be exported)
+=item :MM (only <MM|#new--> op exported)
+=item :ALL
+
+=head1 L<Operators|#synopsis>
 
 The Module overloads or introduces a range of well and lesser known ops.
 ==, +, * are commutative, -, ⋅, dot, ÷, x, ⊗ and ** are not.
@@ -1085,16 +1095,16 @@ Operators with method aliases:
 =end table
 
 
-=head1 L<Author|#methods>
+=head1 L<Authors|#synopsis>
 
 =item Pierre VIGIER
 =item Herbert Breunung
 
-=head1 L<Contributors|#methods>
+=head1 L<Contributors|#synopsis>
 
 =item Patrick Spek
 
-=head1 L<License|#methods>
+=head1 L<License|#synopsis>
 
 Artistic License 2.0
 
