@@ -933,6 +933,8 @@ Operators with method aliases:
 
   * prefix % --> [Hash](#hash)
 
+  * prefix MM --> [new](#new--)
+
   * infix == --> [equal](#equal)
 
   * infix ~~ --> [equal](#equal) ACCEPTS

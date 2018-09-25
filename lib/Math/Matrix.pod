@@ -1023,6 +1023,7 @@ Operators with method aliases:
 =item prefix |  -->  L<list|#list>
 =item prefix @  -->  L<Array|#array>
 =item prefix %  -->  L<Hash|#hash>
+=item prefix MM  -->  L<new|#new-->
 =item infix ==  -->  L<equal|#equal>
 =item infix ~~  -->  L<equal|#equal> ACCEPTS
 =item infix +  -->  L<add|#add>
