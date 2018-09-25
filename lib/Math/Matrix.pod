@@ -1006,10 +1006,35 @@ Same as splice-rows, just horizontally.
 
 Summary of all shortcut aliases (first) and their long form (second). 
 
-=item T --> L<transposed|#transposed>
-=item conj -->  L<conjugated|#conjugated>
-=item det -->   L<determinant|#determinant>
-=item rref -->  L<reduced-row-echelon-form|#reduced-row-echelon-form>
+=item T  -->  L<transposed|#transposed>
+=item conj  -->  L<conjugated|#conjugated>
+=item det  -->  L<determinant|#determinant>
+=item rref  -->  L<reduced-row-echelon-form|#reduced-row-echelon-form>
+
+
+=head2 L<Operator Methods|#methods>
+
+Operators with method aliases:
+
+=item prefix:?  -->  L<Bool|#bool>
+=item prefix:+  -->  L<Numeric|#numeric>
+=item prefix:-  -->  L<negated|#negated>
+=item prefix:~  -->  L<Str|#str>
+=item prefix:|  -->  L<list|#list>
+=item prefix:@  -->  L<Array|#array>
+=item prefix:%  -->  L<Hash|#hash>
+=item infix:==  -->  L<equal|#equal>
+=item infix:~~  -->  L<equal|#equal> ACCEPTS
+=item infix:+  -->  L<add|#add>
+=item infix:-  -->  L<subtract|#subtract>
+=item infix:*  -->  L<multiply|#multiply>
+=item infix:⋅,dot -->  L<dotProduct|#dotroduct>
+=item infix:÷ -->   dotProduct L<inverted|#inverted>
+=item infix:** -->  dotProduct inverted
+=item infix:⊗,x -->  L<tensorProduct|#tensorproduct>
+=item circumfix:｜..｜ -->  L<determinant|#determinant>
+=item circumfix:‖..‖  -->  L<norm|#norm>
+=item postcircumfix:[..]  -->  L<AT-POS|#at-pos>
 
 =head1 L<Export Tags|#synopsis>
 
@@ -1067,33 +1092,6 @@ The postcircumfix [] - op will always work.
 
     MM [[1]]                         # a new matrix
     MM '1'                           # string alias
-
-Operators with method aliases:
-
-=begin table
-    Operator            Method
-    --------------------------
-    prefix:?            Bool 
-    prefix:+            Numeric
-    prefix:-            negated
-    prefix:~            Str
-    prefix:|            list
-    prefix:@            Array
-    prefix:%            Hash
-    infix:==            equal
-    infix:~~            ACCEPTS
-    infix:+             add
-    infix:-             subtract
-    infix:*             multiply
-    infix:⋅,dot         dotProduct
-    infix:÷             dotProduct inverted
-    infix:**            dotProduct inverted
-    infix:⊗,x           tensorProduct
-    circumfix:｜..｜       determinant
-    circumfix:‖..‖      norm
-    postcircumfix:[..]  AT-POS    
-=end table
-
 
 =head1 L<Authors|#synopsis>
 

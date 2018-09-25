@@ -914,6 +914,49 @@ Summary of all shortcut aliases (first) and their long form (second).
 
   * rref --> [reduced-row-echelon-form](#reduced-row-echelon-form)
 
+[Operator Methods](#methods)
+----------------------------
+
+Operators with method aliases:
+
+  * prefix:? --> [Bool](#bool)
+
+  * prefix:+ --> [Numeric](#numeric)
+
+  * prefix:- --> [negated](#negated)
+
+  * prefix:~ --> [Str](#str)
+
+  * prefix:| --> [list](#list)
+
+  * prefix:@ --> [Array](#array)
+
+  * prefix:% --> [Hash](#hash)
+
+  * infix:== --> [equal](#equal)
+
+  * infix:~~ --> [equal](#equal) ACCEPTS
+
+  * infix:+ --> [add](#add)
+
+  * infix:- --> [subtract](#subtract)
+
+  * infix:* --> [multiply](#multiply)
+
+  * infix:⋅,dot --> [dotProduct](#dotroduct)
+
+  * infix:÷ --> dotProduct [inverted](#inverted)
+
+  * infix:** --> dotProduct inverted
+
+  * infix:⊗,x --> [tensorProduct](#tensorproduct)
+
+  * circumfix:｜..｜ --> [determinant](#determinant)
+
+  * circumfix:‖..‖ --> [norm](#norm)
+
+  * postcircumfix:[..] --> [AT-POS](#at-pos)
+
 [Export Tags](#synopsis)
 ========================
 
@@ -970,17 +1013,6 @@ They are exported when using no flag or under the export flags :DEFAULT or :ALL,
 
     MM [[1]]                         # a new matrix
     MM '1'                           # string alias
-
-Operators with method aliases:
-
-<table class="pod-table">
-<thead><tr>
-<th>Operator</th> <th>Method</th>
-</tr></thead>
-<tbody>
-<tr> <td>prefix:?</td> <td>Bool</td> </tr> <tr> <td>prefix:+</td> <td>Numeric</td> </tr> <tr> <td>prefix:-</td> <td>negated</td> </tr> <tr> <td>prefix:~</td> <td>Str</td> </tr> <tr> <td>prefix:|</td> <td>list</td> </tr> <tr> <td>prefix:@</td> <td>Array</td> </tr> <tr> <td>prefix:%</td> <td>Hash</td> </tr> <tr> <td>infix:==</td> <td>equal</td> </tr> <tr> <td>infix:~~</td> <td>ACCEPTS</td> </tr> <tr> <td>infix:+</td> <td>add</td> </tr> <tr> <td>infix:-</td> <td>subtract</td> </tr> <tr> <td>infix:*</td> <td>multiply</td> </tr> <tr> <td>infix:⋅,dot</td> <td>dotProduct</td> </tr> <tr> <td>infix:÷</td> <td>dotProduct inverted</td> </tr> <tr> <td>infix:**</td> <td>dotProduct inverted</td> </tr> <tr> <td>infix:⊗,x</td> <td>tensorProduct</td> </tr> <tr> <td>circumfix:｜..｜</td> <td>determinant</td> </tr> <tr> <td>circumfix:‖..‖</td> <td>norm</td> </tr> <tr> <td>postcircumfix:[..]</td> <td>AT-POS</td> </tr>
-</tbody>
-</table>
 
 [Authors](#synopsis)
 ====================
