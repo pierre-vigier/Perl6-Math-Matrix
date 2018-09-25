@@ -55,7 +55,7 @@ All computation heavy properties will be calculated lazily and will be cached.
 =item L<list like ops|#list-like-matrix-operations>: L<elems|#elems>, L<elem|#elem>, L<cont|#cont>, L<map|#map>, L<map-row|#map-row>, L<map-column|#map-column>, L<map-cell|#map-cell>, L<reduce|#reduce>, L<reduce-rows|#reduce-rows>, L<reduce-columns|#reduce-columns>
 =item L<structural ops|#structural-matrix-operations>: L<move-row|#move-row>, L<move-column|#move-column>, L<swap-rows|#swap-rows>, L<swap-columns|#swap-columns>, L<splice-rows|#splice-rows>, L<splice-columns|#splice-columns>
 =item L<shortcuts|#shortcuts>:   L<T|#transposed>,   L<conj|#conjugated>,   L<det|#determinant>,   L<rref|#reduced-row-echelon-form>
-=item L<operators|#operators>:   MM,   ?,  ~,   |,  @,  %,  +,   -,   *,   **,   dot,   ⋅,   ÷,   x,   ⊗,   ==,   ~~,   ❘ ❘,   ‖ ‖,   [ ]
+=item L<operators|#operator-methods>:   MM,   ?,  ~,   |,  @,  %,  +,   -,   *,   **,   dot,   ⋅,   ÷,   x,   ⊗,   ==,   ~~,   ❘ ❘,   ‖ ‖,   [ ]
 
 
 =head2 L<Constructors|#methods>
@@ -1016,25 +1016,25 @@ Summary of all shortcut aliases (first) and their long form (second).
 
 Operators with method aliases:
 
-=item prefix:?  -->  L<Bool|#bool>
-=item prefix:+  -->  L<Numeric|#numeric>
-=item prefix:-  -->  L<negated|#negated>
-=item prefix:~  -->  L<Str|#str>
-=item prefix:|  -->  L<list|#list>
-=item prefix:@  -->  L<Array|#array>
-=item prefix:%  -->  L<Hash|#hash>
-=item infix:==  -->  L<equal|#equal>
-=item infix:~~  -->  L<equal|#equal> ACCEPTS
-=item infix:+  -->  L<add|#add>
-=item infix:-  -->  L<subtract|#subtract>
-=item infix:*  -->  L<multiply|#multiply>
-=item infix:⋅,dot -->  L<dotProduct|#dotroduct>
-=item infix:÷ -->   dotProduct L<inverted|#inverted>
-=item infix:** -->  dotProduct inverted
-=item infix:⊗,x -->  L<tensorProduct|#tensorproduct>
-=item circumfix:｜..｜ -->  L<determinant|#determinant>
-=item circumfix:‖..‖  -->  L<norm|#norm>
-=item postcircumfix:[..]  -->  L<AT-POS|#at-pos>
+=item prefix ?  -->  L<Bool|#bool>
+=item prefix +  -->  L<Numeric|#numeric>
+=item prefix -  -->  L<negated|#negated>
+=item prefix ~  -->  L<Str|#str>
+=item prefix |  -->  L<list|#list>
+=item prefix @  -->  L<Array|#array>
+=item prefix %  -->  L<Hash|#hash>
+=item infix ==  -->  L<equal|#equal>
+=item infix ~~  -->  L<equal|#equal> ACCEPTS
+=item infix +  -->  L<add|#add>
+=item infix -  -->  L<subtract|#subtract>
+=item infix *  -->  L<multiply|#multiply>
+=item infix ⋅ dot  -->  L<dotProduct|#dotproduct>
+=item infix ÷  -->  dotProduct L<inverted|#inverted>
+=item infix **  -->  dotProduct inverted
+=item infix ⊗ x  -->  L<tensorProduct|#tensorproduct>
+=item circumfix ｜..｜ -->  L<determinant|#determinant>
+=item circumfix ‖..‖  -->  L<norm|#norm>
+=item postcircumfix [..]  -->  L<AT-POS|#at-pos>
 
 =head1 L<Export Tags|#synopsis>
 

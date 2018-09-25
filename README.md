@@ -72,7 +72,7 @@ All computation heavy properties will be calculated lazily and will be cached.
 
   * [shortcuts](#shortcuts): [T](#transposed), [conj](#conjugated), [det](#determinant), [rref](#reduced-row-echelon-form)
 
-  * [operators](#operators): MM, ?, ~, |, @, %, +, -, *, **, dot, ⋅, ÷, x, ⊗, ==, ~~, ❘ ❘, ‖ ‖, [ ]
+  * [operators](#operator-methods): MM, ?, ~, |, @, %, +, -, *, **, dot, ⋅, ÷, x, ⊗, ==, ~~, ❘ ❘, ‖ ‖, [ ]
 
 [Constructors](#methods)
 ------------------------
@@ -919,43 +919,43 @@ Summary of all shortcut aliases (first) and their long form (second).
 
 Operators with method aliases:
 
-  * prefix:? --> [Bool](#bool)
+  * prefix ? --> [Bool](#bool)
 
-  * prefix:+ --> [Numeric](#numeric)
+  * prefix + --> [Numeric](#numeric)
 
-  * prefix:- --> [negated](#negated)
+  * prefix - --> [negated](#negated)
 
-  * prefix:~ --> [Str](#str)
+  * prefix ~ --> [Str](#str)
 
-  * prefix:| --> [list](#list)
+  * prefix | --> [list](#list)
 
-  * prefix:@ --> [Array](#array)
+  * prefix @ --> [Array](#array)
 
-  * prefix:% --> [Hash](#hash)
+  * prefix % --> [Hash](#hash)
 
-  * infix:== --> [equal](#equal)
+  * infix == --> [equal](#equal)
 
-  * infix:~~ --> [equal](#equal) ACCEPTS
+  * infix ~~ --> [equal](#equal) ACCEPTS
 
-  * infix:+ --> [add](#add)
+  * infix + --> [add](#add)
 
-  * infix:- --> [subtract](#subtract)
+  * infix - --> [subtract](#subtract)
 
-  * infix:* --> [multiply](#multiply)
+  * infix * --> [multiply](#multiply)
 
-  * infix:⋅,dot --> [dotProduct](#dotroduct)
+  * infix ⋅ dot --> [dotProduct](#dotproduct)
 
-  * infix:÷ --> dotProduct [inverted](#inverted)
+  * infix ÷ --> dotProduct [inverted](#inverted)
 
-  * infix:** --> dotProduct inverted
+  * infix ** --> dotProduct inverted
 
-  * infix:⊗,x --> [tensorProduct](#tensorproduct)
+  * infix ⊗ x --> [tensorProduct](#tensorproduct)
 
-  * circumfix:｜..｜ --> [determinant](#determinant)
+  * circumfix ｜..｜ --> [determinant](#determinant)
 
-  * circumfix:‖..‖ --> [norm](#norm)
+  * circumfix ‖..‖ --> [norm](#norm)
 
-  * postcircumfix:[..] --> [AT-POS](#at-pos)
+  * postcircumfix [..] --> [AT-POS](#at-pos)
 
 [Export Tags](#synopsis)
 ========================
