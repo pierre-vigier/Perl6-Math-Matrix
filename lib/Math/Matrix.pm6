@@ -780,12 +780,6 @@ method map-column(Math::Matrix:D: Int $col, &coderef --> Math::Matrix:D ) {
     Math::Matrix.new( @m );
 }
 
-method map-cell(Math::Matrix:D: Int $row, Int $col, &coderef --> Math::Matrix:D ) {
-    self!check-index($row, $col);
-    my @m = self!clone-rows;
-    @m[$row;$col] = &coderef( @m[$row;$col] );
-    Math::Matrix.new( @m );
-}
 
 method reduce(Math::Matrix:D: &coderef ) {
     (@!rows.map: {$_.flat}).flat.reduce( &coderef )

@@ -66,7 +66,7 @@ All computation heavy properties will be calculated lazily and will be cached.
 
   * [matrix math ops](#matrix-math-operations): [equal](#equal), [add](#add), [subtract](#subtract), [add-row](#add-row), [add-column](#add-column), [multiply](#multiply), [multiply-row](#multiply-row), [multiply-column](#multiply-column), [dotProduct](#dotproduct), [tensorProduct](#tensorproduct)
 
-  * [list like ops](#list-like-matrix-operations): [elems](#elems), [elem](#elem), [cont](#cont), [map-index](#map-index), [map-with-index](#map-with-index), [map](#map), [map-row](#map-row), [map-column](#map-column), [map-cell](#map-cell), [reduce](#reduce), [reduce-rows](#reduce-rows), [reduce-columns](#reduce-columns)
+  * [list like ops](#list-like-matrix-operations): [elems](#elems), [elem](#elem), [cont](#cont), [map-index](#map-index), [map-with-index](#map-with-index), [map](#map), [map-row](#map-row), [map-column](#map-column), [reduce](#reduce), [reduce-rows](#reduce-rows), [reduce-columns](#reduce-columns)
 
   * [structural ops](#structural-matrix-operations): [move-row](#move-row), [move-column](#move-column), [swap-rows](#swap-rows), [swap-columns](#swap-columns), [splice-rows](#splice-rows), [splice-columns](#splice-columns)
 
@@ -804,15 +804,6 @@ Map only specified row (row number is first parameter).
 
     1 0
     3 0
-
-### [map-cell](#list-like-matrix-operations)
-
-Changes value of one cell on row (first parameter) and column (second) with code block (third, $_ or $^... is previous value).
-
-    say Math::Matrix.new([[1,2],[3,4]]).map-cell(0, 1, {$_  * 3}); :
-
-    1 6
-    3 4
 
 ### [reduce](#list-like-matrix-operations)
 
