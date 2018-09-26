@@ -1,60 +1,60 @@
 
- 0.3.6:
-    - 2018.10.
-    -
+ 0.4.0:
+    § 2018.11.
+    + methid map-index and mat-with-index
  
  0.3.5:
-    - 2018.10.23
-    - accept list of list as input for new
-    - added method minor, that computes well a Minor
-    - added method adjugated, computes the derived matrix called adjugate (classical adjoint)
-    - added method elem that returns true if all matrix values are within a set
-    - added Range converter method
-    - prefix + aka numeric now returns Euclidean norm
-    - submatrix(Int, Int, Int, Int) is now submatix (Range, Range) and accepts also *
-    - improving docs of derived matrices
+    § 2018.10.23
+    * accept list of list as input for new
+    + added method minor, that computes well a Minor
+    + added method adjugated, computes the derived matrix called adjugate (classical adjoint)
+    + added method elem that returns true if all matrix values are within a set
+    + added Range converter method
+    ! prefix + aka numeric now returns Euclidean norm
+    ! submatrix(Int, Int, Int, Int) is now submatix (Range, Range) and accepts also *
+    = improving docs of derived matrices
 
  0.3.0:
-    - 2018.9.13
-    - redone .gist allows now complex numbers and scientific notation
-    - added method .AT-POS for $matrix[1][2] syntax
-    - added converter to hash context
-    - cell-type can now be Bool and FatRat
-    - cell-type changed into narrowest-cell-type and widest-cell-type
-    - making width and height of the table gist display optional arguments
+    § 2018.9.13
+    * redone .gist allows now complex numbers and scientific notation
+    + added method .AT-POS for $matrix[1][2] syntax
+    + added converter to hash context
+    * cell-type can now be Bool and FatRat
+    * cell-type changed into narrowest-cell-type and widest-cell-type
+    * making width and height of the table gist display optional arguments
     - fixed prefix % and @ ops
-    - crosslinking doc headers
+    = crosslinking doc headers
 
  0.2.5:
-    - 2018.8.20
-    - added MM operator as shortcut for Math::Matrix.new()
-    - added constructor that takes a string
-    - .Str outputs now same format that constructor takes
+    § 2018.8.20
+    + added MM operator as shortcut for Math::Matrix.new()
+    + added constructor that takes a string
+    ! .Str outputs now same format that constructor takes
     - removed .full
-    - added splice-rows and splice-columns replacing prepend-*, append-* and planned insert-* and delete-*
-    - added own methods for .list (flat) and .Array context
-    - added proper .gist for type object (like all types have) showing (Math::Matrix)
-    - new property cell-type return widest cell type
-    - refreshed doc synopsis and description, improved docs overall
-    - added .appveyor.yml file: win CI support to github project
+    + added splice-rows and splice-columns replacing prepend-*, append-* and planned insert-* and delete-*
+    + added own methods for .list (flat) and .Array context
+    + added proper .gist for type object (like all types have) showing (Math::Matrix)
+    + new property cell-type return widest cell type
+    = refreshed doc synopsis and description, improved docs overall
+    & added .appveyor.yml file: win CI support to github project
 
  0.2.0:
-    - 2018.3.26
-    - add methods: add-row, add-column, multiply-row, multiply-column, map-row, map-column
-    - add methods move-row, move-column, swap-rows, swap-columns, 
+    § 2018.3.26
+    + add methods: add-row, add-column, multiply-row, multiply-column, map-row, map-column
+    + add methods move-row, move-column, swap-rows, swap-columns, 
           prepend-vertically, append-vertically, prepend-horizontally, append-horizontally
-    - add method elem to check if any cell is equal to value or in a range
-    - new property: antisymmetric
-    - new category: list like ops
-    - submatrix with 2 Int parameter works now as expected
-    - accessor column becomes faster
-    - move docs into Matrix.pod
-    - added docs
+    + add method elem to check if any cell is equal to value or in a range
+    + new property: antisymmetric
+    = new category: list like ops
+    x submatrix with 2 Int parameter works now as expected
+    x accessor column becomes faster
+    = move docs into Matrix.pod
+    = added docs
 
  0.1.8:
-    - 2018.3.20
-    - added method: tensorProduct, alias infix op x, unicode alias ⊗
-    - added method: conjugated, is-self-adjoint, is-unitary, is-positive-semidefinite
+    § 2018.3.20
+    + added method: tensorProduct, alias infix op x, unicode alias ⊗
+    + added method: conjugated, is-self-adjoint, is-unitary, is-positive-semidefinite
     - more property setting optimization in constructors
     - new category for methods: structural ops
 

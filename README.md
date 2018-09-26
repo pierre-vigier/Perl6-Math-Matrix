@@ -66,7 +66,7 @@ All computation heavy properties will be calculated lazily and will be cached.
 
   * [matrix math ops](#matrix-math-operations): [equal](#equal), [add](#add), [subtract](#subtract), [add-row](#add-row), [add-column](#add-column), [multiply](#multiply), [multiply-row](#multiply-row), [multiply-column](#multiply-column), [dotProduct](#dotproduct), [tensorProduct](#tensorproduct)
 
-  * [list like ops](#list-like-matrix-operations): [elems](#elems), [elem](#elem), [cont](#cont), [map](#map), [map-row](#map-row), [map-column](#map-column), [map-cell](#map-cell), [reduce](#reduce), [reduce-rows](#reduce-rows), [reduce-columns](#reduce-columns)
+  * [list like ops](#list-like-matrix-operations): [elems](#elems), [elem](#elem), [cont](#cont), [map-index](#map-index), [map-with-index](#map-with-index), [map](#map), [map-row](#map-row), [map-column](#map-column), [map-cell](#map-cell), [reduce](#reduce), [reduce-rows](#reduce-rows), [reduce-columns](#reduce-columns)
 
   * [structural ops](#structural-matrix-operations): [move-row](#move-row), [move-column](#move-column), [swap-rows](#swap-rows), [swap-columns](#swap-columns), [splice-rows](#splice-rows), [splice-columns](#splice-columns)
 
@@ -762,9 +762,27 @@ Asks if the matrix contains a value equal to the only argument of the method. If
 
     MM [[1,2],[3,4]] (cont) 1                 # True too
 
+### [map-index](#list-like-matrix-operations)
+
+Runs a code block (only required argument) for every cell of the matrix. Arguments to the anonymous block are current row and column index. The results for a new matrix.
+
+    say Math::Matrix.new([[1,2],[3,4]]).map: {$^m == $^n ?? 1 !! 0 } :
+
+    1 0
+    0 1
+
+### [map-with-index](#list-like-matrix-operations)
+
+Runs a code block (only required argument) for every cell of the matrix. Arguments to the anonymous block are current row and column index and the content of the cell. The results for a new matrix.
+
+    say Math::Matrix.new([[1,2],[3,4]]).map: {$^m == $^n ?? $^value !! 0 } :
+
+    1 0
+    0 4
+
 ### [map](#list-like-matrix-operations)
 
-Like the built in map it iterates over all elements, running a code block. The results for a new matrix.
+Like the built in map it iterates over all elements (cell values), running a code block (only required argument) that gets the cell value as argument. The results build a new matrix.
 
     say Math::Matrix.new([[1,2],[3,4]]).map(* + 1) :
 
@@ -917,7 +935,7 @@ Summary of all shortcut aliases (first) and their long form (second).
 [Operator Methods](#methods)
 ----------------------------
 
-Operators with method aliases:
+Operators with method aliases, for more explanations loo into [ops chapter](#operators):
 
   * prefix ? --> [Bool](#bool)
 

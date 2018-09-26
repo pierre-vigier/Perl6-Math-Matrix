@@ -500,7 +500,7 @@ method conjugated(Math::Matrix:D: --> Math::Matrix:D )    { self.map( { $_.conj}
 method adjugated(Math::Matrix:D: --> Math::Matrix:D) {
     fail "Number of columns has to be same as number of rows" unless self.is-square;
     $!row-count == 1 ?? self.new([[1]]) 
-                     !! self!imap2({ self.minor($^m, $^n) * self.cofactor-sign($^m, $^n) });
+                     !! self.map-index({ self.minor($^m, $^n) * self.cofactor-sign($^m, $^n) });
 }
 
 method inverted(Math::Matrix:D: --> Math::Matrix:D) {
@@ -748,20 +748,21 @@ multi method cont (Math::Matrix:D: Range $r  --> Bool) { # is any cell value in 
     False;
 }
 
-method !imap2(Math::Matrix:D: &coderef --> Math::Matrix:D) {
+method map-index(Math::Matrix:D: &coderef --> Math::Matrix:D) {
     my @aoa;
     for ^$!row-count X ^$!column-count -> ($r, $c) { @aoa[$r][$c] = &coderef($r, $c) }
     Math::Matrix.new( @aoa );
 }
-method !imap3(Math::Matrix:D: &coderef --> Math::Matrix:D) {
+
+method map-with-index(Math::Matrix:D: &coderef --> Math::Matrix:D) {
     my @aoa;
     for ^$!row-count X ^$!column-count -> ($r, $c) { @aoa[$r][$c] = &coderef($r, $c, @!rows[$r][$c]) }
     Math::Matrix.new( @aoa );
 }
 
 method map(Math::Matrix:D: &coderef --> Math::Matrix:D) {
-    Math::Matrix.new( [ @!rows.map: 
-        { [ .map( &coderef ) ] }
+    Math::Matrix.new( [ 
+        @!rows.map: { [ .map: &coderef ] }
     ] );
 }
 
