@@ -228,15 +228,15 @@ In the two argument format you name these by their index ($row, $column).
 If you provide two ranges (row-min .. row-max, col-min .. col-max), you get the two dimensional
 excerpt of the matrix that is defined by these ranges.
 
-    say $m.submatrix(1..1, 0..*) :    3 4 5        
+    say $m.submatrix( rows => 1..1, columns => 0..*) :    3 4 5        
 
 When provided with two lists (or arrays) of values (first for the rows - second for columns)
 a new matrix will be created with that selection of rows and columns.
 Please note, that you can pick any row/column in any order and as many times you prefer.
 They will displayed in the order they are listed in the arguments.
     
-    $m.submatrix((1,2),(3,2)):    5 4
-                                  6 5
+    $m.submatrix(rows => (1,2), columns => (3,2)):    5 4
+                                                      6 5
 
 
 

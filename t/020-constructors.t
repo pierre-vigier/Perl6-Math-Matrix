@@ -1,17 +1,23 @@
 use lib "lib";
 use Test;
 use Math::Matrix;
-plan 26;
+plan 32;
 
-lives-ok { my $matrix = Math::Matrix.new([[1,2],[3,4]]); }  , "Able to create a int matrix with Array of Array syntax";
-lives-ok { my $matrix = Math::Matrix.new([[.1,2.11111],[3/5,4e-2]]); }, "created a rational matrix";
-lives-ok { my $matrix = Math::Matrix.new([[1,2],[3,4+i]]); }  , "Able to create a complex matrix";
-lives-ok { my $matrix = Math::Matrix.new([[True, False],[False,True]]); }, "created a Bool matrix";
-lives-ok { my $matrix = Math::Matrix.new(((1,2),(3,4))); }  , "Able to create matrix with List of List syntax";
-lives-ok { my $matrix = Math::Matrix.new("1 2 \n 3 4"); }  , "Able to create a int matrix with Str syntax";
-dies-ok  { my $matrix = Math::Matrix.new([[1,2],[1,2,3]]); }, "Different nuber of elements per line";
-dies-ok  { my $matrix = Math::Matrix.new(); }               , "Constructor need params";
-dies-ok  { my $matrix = Math::Matrix.new([[1,2],[3,"a"]]); }, "All elements have to be Numeric";
+dies-ok  { my $matrix = Math::Matrix.new() }                 , "Constructor need params";
+dies-ok  { my $matrix = Math::Matrix.new( [] ) }             , "Empty row Array is not enough";
+dies-ok  { my $matrix = Math::Matrix.new( [[],[]]) }         , "Empty columns Arrays are not enough";
+dies-ok  { my $matrix = Math::Matrix.new( ()) }              , "Empty row List is not enough";
+dies-ok  { my $matrix = Math::Matrix.new( ((),())) }         , "Empty columns Lists are not enough";
+dies-ok  { my $matrix = Math::Matrix.new( "" ) }             , "Empty String as Input is not enough";
+dies-ok  { my $matrix = Math::Matrix.new( "\n\n" ) }         , "String with empty lines as Input is not enough";
+dies-ok  { my $matrix = Math::Matrix.new( [[1,2],[1,2,3]]) } , "Different nuber of elements per line";
+dies-ok  { my $matrix = Math::Matrix.new( [[1,2],[3,"a"]]) } , "All elements have to be Numeric";
+lives-ok { my $matrix = Math::Matrix.new( [[1,2],[3,4]]) }   , "Able to create a int matrix with Array of Array syntax";
+lives-ok { my $matrix = Math::Matrix.new( [[.1,2.11111],[3/5,4e-2]]) }, "created a rational matrix";
+lives-ok { my $matrix = Math::Matrix.new( [[1,2],[3,4+i]]) } , "Able to create a complex matrix";
+lives-ok { my $matrix = Math::Matrix.new( [[True, False],[False,True]]) }, "created a Bool matrix";
+lives-ok { my $matrix = Math::Matrix.new( ((1,2),(3,4))) }   , "Able to create matrix with List of List syntax";
+lives-ok { my $matrix = Math::Matrix.new( "1 2 \n 3 4") }    , "Able to create a int matrix with Str syntax";
 
 my $matrixa = Math::Matrix.new([[1,2],[3,4]]);
 ok $matrixa ~~ Math::Matrix        , "object was created of right type";

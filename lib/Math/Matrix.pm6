@@ -173,7 +173,7 @@ multi method submatrix(Math::Matrix:D: Int:D $row, Int:D $column --> Math::Matri
     self!check-index($row, $column);
     my @rows = ^$!row-count;     @rows.splice($row,1);
     my @cols = ^$!column-count;  @cols.splice($column,1);
-    self.submatrix(@rows ,@cols);
+    self.submatrix( rows => @rows , columns => @cols);
 }
 multi method submatrix(Math::Matrix:D: Range:D :$rows!, Range:D :$columns! --> Math::Matrix:D ){
     my @rows = $rows.max    == Inf ?? ($rows.min    .. $!row-count-1)    !! $rows.list;
@@ -183,7 +183,7 @@ multi method submatrix(Math::Matrix:D: Range:D :$rows!, Range:D :$columns! --> M
     fail "Minimum column has to be smaller than maximum column" if @cols.min > @cols.max;
     self!check-index(@rows.min, @cols.min);
     self!check-index(@rows.max, @cols.max);
-    self.submatrix(@rows, @cols);
+    self.submatrix( rows => @rows, columns=> @cols);
 }
 multi method submatrix(Math::Matrix:D: :@rows!, :@columns! --> Math::Matrix:D ){
     self!check-indices(@rows, @columns);
