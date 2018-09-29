@@ -183,7 +183,7 @@ multi method submatrix(Math::Matrix:D: Range:D :$rows!, Range:D :$columns! --> M
     fail "Minimum column has to be smaller than maximum column" if @cols.min > @cols.max;
     self!check-index(@rows.min, @cols.min);
     self!check-index(@rows.max, @cols.max);
-    self.submatrix( rows => @rows, columns=> @cols);
+    self.submatrix( rows => @rows, columns => @cols);
 }
 multi method submatrix(Math::Matrix:D: :@rows!, :@columns! --> Math::Matrix:D ){
     self!check-indices(@rows, @columns);
@@ -343,7 +343,7 @@ method !build_is-positive-definite (Math::Matrix:D: --> Bool) { # with Sylvester
     return False unless self.determinant > 0;
     my $sub = Math::Matrix.new( @!rows );
     for $!row-count - 1 ... 1 -> $r {
-        $sub = $sub.submatrix(0..$r, 0..$r);
+        $sub = $sub.submatrix(rows => 0..$r, columns => 0..$r);
         return False unless $sub.determinant > 0;
     }
     True;
@@ -354,7 +354,7 @@ method !build_is-positive-semidefinite (Math::Matrix:D: --> Bool) { # with Sylve
     return False unless self.determinant >= 0;
     my $sub = Math::Matrix.new( @!rows );
     for $!row-count - 1 ... 1 -> $r {
-        $sub = $sub.submatrix(0..$r, 0..$r);
+        $sub = $sub.submatrix(rows => 0..$r, columns => 0..$r);
         return False unless $sub.determinant >= 0;
     }
     True;
@@ -735,16 +735,16 @@ method tensorProduct(Math::Matrix:D: Math::Matrix $b  --> Math::Matrix:D) {
 method elems (Math::Matrix:D: --> Int)               {  $!row-count * $!column-count }
 
 method elem (Math::Matrix:D: Range $r --> Bool) {  # is every cell value element in the set/range
-    self.map: {return False unless $_ ~~ $r};
+    self.list.map: {return False unless $_ ~~ $r};
     True;
 
 }
 multi method cont (Math::Matrix:D: Numeric $e  --> Bool) { # matrix contains element ?
-    self.map: {return True if $_ == $e};
+    self.list.map: {return True if $_ == $e};
     False;
 }
 multi method cont (Math::Matrix:D: Range $r  --> Bool) { # is any cell value in this set/range
-    self.map: {return True if $_ ~~ $r};
+    self.list.map: {return True if $_ ~~ $r};
     False;
 }
 
@@ -805,7 +805,7 @@ multi method move-row (Math::Matrix:D: Int $from, Int $to --> Math::Matrix:D) {
     return self if $from == $to;
     my @rows = (^$!row-count).list;
     @rows.splice($to,0,@rows.splice($from,1));
-    self.submatrix(@rows, (^$!column-count).list);
+    self.submatrix( rows => @rows, columns => (^$!column-count).list);
 }
 
 multi method move-column (Math::Matrix:D: Pair $p --> Math::Matrix:D) {
@@ -816,7 +816,7 @@ multi method move-column (Math::Matrix:D: Int $from, Int $to --> Math::Matrix:D)
     return self if $from == $to;
     my @cols = (^$!column-count).list;
     @cols.splice($to,0,@cols.splice($from,1));
-    self.submatrix((^$!row-count).list, @cols);
+    self.submatrix( rows => (^$!row-count).list, columns => @cols);
 }
 
 method swap-rows (Math::Matrix:D: Int $rowa, Int $rowb --> Math::Matrix:D) {
@@ -824,7 +824,7 @@ method swap-rows (Math::Matrix:D: Int $rowa, Int $rowb --> Math::Matrix:D) {
     return self if $rowa == $rowb;
     my @rows = (^$!row-count).list;
     (@rows.[$rowa], @rows.[$rowb]) = (@rows.[$rowb], @rows.[$rowa]);
-    self.submatrix(@rows, (^$!column-count).list);
+    self.submatrix( rows => @rows, columns => (^$!column-count).list);
 }
 
 method swap-columns (Math::Matrix:D: Int $cola, Int $colb --> Math::Matrix:D) {
@@ -832,7 +832,7 @@ method swap-columns (Math::Matrix:D: Int $cola, Int $colb --> Math::Matrix:D) {
     return self if $cola == $colb;
     my @cols = (^$!column-count).list;
     (@cols.[$cola], @cols.[$colb]) = (@cols.[$colb], @cols.[$cola]);
-    self.submatrix((^$!row-count).list, @cols);
+    self.submatrix( rows => (^$!row-count).list, columns => @cols);
 }
 
 multi method splice-rows(Math::Matrix:D: Int $row, Int $elems, Math::Matrix $replacement --> Math::Matrix:D){

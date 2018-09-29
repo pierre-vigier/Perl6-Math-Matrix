@@ -19,7 +19,7 @@ subtest {
     ok $a.elem(1..6),           "All cell values are cells within asked range";
     ok $b.elem(1..22),          "All cell values are cells within way larger range";
     nok $a.elem(7..12),         "There are cells not within asked range";
-}, "Cont";
+}, "Elem";
 
 subtest {
     plan 4;
