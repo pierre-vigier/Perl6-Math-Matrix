@@ -218,11 +218,11 @@ In mathematics, a submatrix is built by leaving out one row and one column. In t
                                3 4 6
                                4 5 7
 
-If you provide two ranges (row-min .. row-max, col-min .. col-max), you get the two dimensional excerpt of the matrix that is defined by these ranges.
+If you provide two ranges (row-min .. row-max, col-min .. col-max) to the appropriately named arguments, you get the two dimensional excerpt of the matrix that is defined by these ranges.
 
     say $m.submatrix( rows => 1..1, columns => 0..*) :    3 4 5
 
-When provided with two lists (or arrays) of values (first for the rows - second for columns) a new matrix will be created with that selection of rows and columns. Please note, that you can pick any row/column in any order and as many times you prefer. They will displayed in the order they are listed in the arguments.
+When provided with two lists (or arrays) of values (to the arguments named "rows" and "columns") a new matrix will be created with that selection of rows and columns. Please note, that you can pick any row/column in any order and as many times you prefer. They will displayed in the order they are listed in the arguments.
 
     $m.submatrix(rows => (1,2), columns => (3,2)):    5 4
                                                       6 5
