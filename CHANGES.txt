@@ -1,8 +1,9 @@
 
  0.4.0:
     § 2018.11.
-    + methid map-index and mat-with-index
-    - remove map-cell
+    + method map-index and mat-with-index
+    - method map-cell removed
+    ! constructors reject now empty matrices
  
  0.3.5:
     § 2018.10.23

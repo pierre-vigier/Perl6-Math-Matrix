@@ -175,9 +175,9 @@ multi method submatrix(Math::Matrix:D: Int:D $row, Int:D $column --> Math::Matri
     my @cols = ^$!column-count;  @cols.splice($column,1);
     self.submatrix(@rows ,@cols);
 }
-multi method submatrix(Math::Matrix:D: Range:D $row, Range:D $col --> Math::Matrix:D ){
-    my @rows = $row.max == Inf ?? ($row.min .. $!row-count-1).list !! $row.list;
-    my @cols = $col.max == Inf ?? ($col.min .. $!column-count-1) !! $col.list;
+multi method submatrix(Math::Matrix:D: Range:D :$rows!, Range:D :$columns! --> Math::Matrix:D ){
+    my @rows = $rows.max    == Inf ?? ($rows.min    .. $!row-count-1)    !! $rows.list;
+    my @cols = $columns.max == Inf ?? ($columns.min .. $!column-count-1) !! $columns.list;
     fail "Matrix indices must be Int" unless all(@rows.min, @rows.max, @cols.min, @cols.max) ~~ Int;
     fail "Minimum row has to be smaller than maximum row" if @rows.min > @rows.max;
     fail "Minimum column has to be smaller than maximum column" if @cols.min > @cols.max;
@@ -185,9 +185,9 @@ multi method submatrix(Math::Matrix:D: Range:D $row, Range:D $col --> Math::Matr
     self!check-index(@rows.max, @cols.max);
     self.submatrix(@rows, @cols);
 }
-multi method submatrix(Math::Matrix:D: @rows, @cols --> Math::Matrix:D ){
-    self!check-indices(@rows, @cols);
-    Math::Matrix.new([ @rows.map( { [ @!rows[$_][|@cols] ] } ) ]);
+multi method submatrix(Math::Matrix:D: :@rows!, :@columns! --> Math::Matrix:D ){
+    self!check-indices(@rows, @columns);
+    Math::Matrix.new([ @rows.map( { [ @!rows[$^row][|@columns] ] } ) ]);
 }
 
 ################################################################################

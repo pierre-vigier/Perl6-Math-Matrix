@@ -81,7 +81,7 @@ Methods that create a new Math::Matrix object. The default is of course .new, wh
 
 ### [new( [[...],...,[...]] )](#constructors)
 
-The default constructor, takes arrays of arrays of numbers as the only required parameter. Each second level array represents a row in the matrix. That is why their length has to be the same.
+The default constructor, takes arrays of arrays of numbers as the only required parameter. Each second level array represents a row in the matrix. That is why their length has to be the same. Empty rows or columns we not be accepted. 
 
     say Math::Matrix.new( [[1,2],[3,4]] ) :
 
