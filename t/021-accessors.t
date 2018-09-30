@@ -20,7 +20,7 @@ subtest {
     my $matrix =   Math::Matrix.new([[4,0,1],[2,1,0],[2,2,3]]);
 
     ok $matrix.row(1) == (2,1,0), "got second row";
-    dies-ok { $matrix.row(5) },   "tried none exi sting row";
+    dies-ok { $matrix.row(5) },   "tried none existing row";
 }, "Row";
 
 subtest {

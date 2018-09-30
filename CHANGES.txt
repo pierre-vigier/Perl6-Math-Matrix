@@ -4,7 +4,7 @@
     + method map-index and mat-with-index
     - method map-cell removed
     ! constructors reject now empty matrices
-    ! 2 unconventional submatrix variants receive now named arguments
+    ! 2 unconventional submatrix variants receive now optional named arguments and can be combined
  
  0.3.5:
     § 2018.10.23
