@@ -231,7 +231,7 @@ When provided with two lists (or arrays) of values (to the arguments named "rows
 
 The named arguments of both types can be mixed and are in both cases optional. If you provide none of them, the result will be the original matrix.
 
-    say $m.submatrix( rows => (1) )               :   3 4 5        
+    say $m.submatrix( rows => (1,) )              :   3 4 5        
 
     $m.submatrix(rows => (1..*), columns => (3,2)):   5 4
                                                       6 5
