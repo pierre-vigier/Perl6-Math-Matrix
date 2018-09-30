@@ -170,25 +170,23 @@ method !build_diagonal(Math::Matrix:D: --> List){
 }
 
 multi method submatrix(Math::Matrix:D: Int:D $row, Int:D $column --> Math::Matrix:D ){
+say "-1";
     self!check-index($row, $column);
     my @rows = ^$!row-count;     @rows.splice($row,1);
     my @cols = ^$!column-count;  @cols.splice($column,1);
     self.submatrix( rows => @rows , columns => @cols);
 }
-multi method submatrix(Math::Matrix:D: Range:D :$rows!, Range:D :$columns! --> Math::Matrix:D ){
-    my @rows = $rows.max    == Inf ?? ($rows.min    .. $!row-count-1)    !! $rows.list;
-    my @cols = $columns.max == Inf ?? ($columns.min .. $!column-count-1) !! $columns.list;
-    fail "Matrix indices must be Int" unless all(@rows.min, @rows.max, @cols.min, @cols.max) ~~ Int;
-    fail "Minimum row has to be smaller than maximum row" if @rows.min > @rows.max;
-    fail "Minimum column has to be smaller than maximum column" if @cols.min > @cols.max;
-    self!check-index(@rows.min, @cols.min);
-    self!check-index(@rows.max, @cols.max);
-    self.submatrix( rows => @rows, columns => @cols);
+multi method submatrix(Math::Matrix:D: :@rows    = (^$!row-count).list,
+                                       :@columns = (^$!column-count).list --> Math::Matrix:D) {
+    my @r = @rows.max    == Inf ?? (@rows.min    .. $!row-count-1).list    !! @rows.list;
+    my @c = @columns.max == Inf ?? (@columns.min .. $!column-count-1).list !! @columns.list;
+    fail "Need at least one row number" if @r == 0;
+    fail "Need at least one column number" if @c == 0;
+    self!check-indices(@r, @c);
+    Math::Matrix.new([ @r.map( { [ @!rows[$^row][|@c] ] } ) ]);
 }
-multi method submatrix(Math::Matrix:D: :@rows!, :@columns! --> Math::Matrix:D ){
-    self!check-indices(@rows, @columns);
-    Math::Matrix.new([ @rows.map( { [ @!rows[$^row][|@columns] ] } ) ]);
-}
+
+
 
 ################################################################################
 # end of accessors - start with type conversion and handy shortcuts
@@ -903,6 +901,7 @@ multi sub infix:<÷>(  Math::Matrix:D $a, Math::Matrix:D $b --> Math::Matrix:D) 
 
 multi sub infix:<⊗>( Math::Matrix:D $a, Math::Matrix:D $b --> Math::Matrix:D) is equiv(&infix:<x>) is export { $a.tensorProduct( $b ) }
 multi sub infix:<x>( Math::Matrix:D $a, Math::Matrix:D $b --> Math::Matrix:D) is equiv(&infix:<x>) is export { $a.tensorProduct( $b ) }
+multi sub infix:<X>( Math::Matrix:D $a, Math::Matrix:D $b --> Math::Matrix:D) is equiv(&infix:<x>) is export { $a.tensorProduct( $b ) }
 
 multi sub prefix:<MM>(Str   $m --> Math::Matrix:D) is tighter(&postcircumfix:<[ ]>) is export(:MM) { Math::Matrix.new($m) }
 multi sub prefix:<MM>(Array $m --> Math::Matrix:D) is tighter(&postcircumfix:<[ ]>) is export(:MM) { Math::Matrix.new(@$m) }

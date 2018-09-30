@@ -44,7 +44,6 @@ submethod !check-row-indices       ( @row) {
     fail X::OutOfRange.new( :what<Row index>,
                             :got(@row),
                             :range("0..{self!row-count -1 }")) unless 0 <= all(@row) < self!row-count;
-
 }
 submethod !check-column-indices    ( @col) {
     fail "Column index has to be an Int." unless all(@col) ~~ Int;

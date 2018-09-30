@@ -226,6 +226,10 @@ When provided with two lists (or arrays) of values (to the arguments named "rows
 
     $m.submatrix(rows => (1,2), columns => (3,2)):    5 4
                                                       6 5
+                                                      
+    $m.submatrix(rows => (1...2), columns => (3,2))  # same thing
+
+The named arguments are in both cases optional. If you provide none of them, the result will be the original matrix.
 
 [Type Conversion And Output Formats](#methods)
 ----------------------------------------------
