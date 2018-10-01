@@ -3,6 +3,7 @@
     § 2018.11.
     + method map-index and mat-with-index
     - method map-cell removed
+    ! renamed dotProduct -> dot-product and tensorProduct -> tensor-product
     ! constructors reject now empty matrices
     ! 2 unconventional submatrix variants receive now optional named arguments and can be combined
  
