@@ -324,12 +324,12 @@ method !build_is-self-adjoint(Math::Matrix:D: --> Bool) {
 
 method !build_is-unitary(Math::Matrix:D: --> Bool) {
     return False unless self.is-square;
-    self.dotProduct( self.T.conj ) ~~ Math::Matrix.new-identity( $!row-count );
+    self.dot-product( self.T.conj ) ~~ Math::Matrix.new-identity( $!row-count );
 }
 
 method !build_is-orthogonal(Math::Matrix:D: --> Bool) {
     return False unless self.is-square;
-    self.dotProduct( self.T ) ~~ Math::Matrix.new-identity( $!row-count );
+    self.dot-product( self.T ) ~~ Math::Matrix.new-identity( $!row-count );
 }
 
 method !build_is-invertible(Math::Matrix:D: --> Bool) {
@@ -706,7 +706,7 @@ method multiply-column(Math::Matrix:D: Int $column, Numeric $factor --> Math::Ma
     self.map-column($column,{$_ * $factor});
 }
 
-method dotProduct(Math::Matrix:D: Math::Matrix $b --> Math::Matrix:D ) {
+method dot-product(Math::Matrix:D: Math::Matrix $b --> Math::Matrix:D ) {
     fail "Number of columns of the second matrix is different from number of rows of the first operand"
         unless $!column-count == $b!row-count;
     my @product;
@@ -716,7 +716,7 @@ method dotProduct(Math::Matrix:D: Math::Matrix $b --> Math::Matrix:D ) {
     Math::Matrix.new( @product );
 }
 
-method tensorProduct(Math::Matrix:D: Math::Matrix $b  --> Math::Matrix:D) {
+method tensor-product(Math::Matrix:D: Math::Matrix $b  --> Math::Matrix:D) {
     my @product;
     for @!rows -> $arow {
         for $b!rows -> $brow {
@@ -890,18 +890,18 @@ multi sub infix:<*>( Math::Matrix:D $a, Math::Matrix:D $b --> Math::Matrix:D) is
 multi sub infix:<**>( Math::Matrix:D $a where { $a.is-square }, Int $e --> Math::Matrix:D) is export {
     return Math::Matrix.new-identity( $a!row-count ) if $e == 0;
     my $p = $a.clone;
-    $p = $p.dotProduct( $a ) for 2 .. abs $e;
+    $p = $p.dot-product( $a ) for 2 .. abs $e;
     $p = $p.inverted         if  $e < 0;
     $p;
 }
 
-multi sub infix:<⋅>(  Math::Matrix:D $a, Math::Matrix:D $b --> Math::Matrix:D) is tighter(&infix:<*>) is export { $a.dotProduct( $b ) }
-multi sub infix:<dot>(Math::Matrix:D $a, Math::Matrix:D $b --> Math::Matrix:D) is equiv(&infix:<⋅>)   is export { $a.dotProduct( $b ) }
-multi sub infix:<÷>(  Math::Matrix:D $a, Math::Matrix:D $b --> Math::Matrix:D) is equiv(&infix:<⋅>)   is export { $a.dotProduct( $b.inverted ) }
+multi sub infix:<⋅>(  Math::Matrix:D $a, Math::Matrix:D $b --> Math::Matrix:D) is tighter(&infix:<*>) is export { $a.dot-product( $b ) }
+multi sub infix:<dot>(Math::Matrix:D $a, Math::Matrix:D $b --> Math::Matrix:D) is equiv(&infix:<⋅>)   is export { $a.dot-product( $b ) }
+multi sub infix:<÷>(  Math::Matrix:D $a, Math::Matrix:D $b --> Math::Matrix:D) is equiv(&infix:<⋅>)   is export { $a.dot-product( $b.inverted ) }
 
-multi sub infix:<⊗>( Math::Matrix:D $a, Math::Matrix:D $b --> Math::Matrix:D) is equiv(&infix:<x>) is export { $a.tensorProduct( $b ) }
-multi sub infix:<x>( Math::Matrix:D $a, Math::Matrix:D $b --> Math::Matrix:D) is equiv(&infix:<x>) is export { $a.tensorProduct( $b ) }
-multi sub infix:<X>( Math::Matrix:D $a, Math::Matrix:D $b --> Math::Matrix:D) is equiv(&infix:<x>) is export { $a.tensorProduct( $b ) }
+multi sub infix:<⊗>( Math::Matrix:D $a, Math::Matrix:D $b --> Math::Matrix:D) is equiv(&infix:<x>) is export { $a.tensor-product( $b ) }
+multi sub infix:<x>( Math::Matrix:D $a, Math::Matrix:D $b --> Math::Matrix:D) is equiv(&infix:<x>) is export { $a.tensor-product( $b ) }
+multi sub infix:<X>( Math::Matrix:D $a, Math::Matrix:D $b --> Math::Matrix:D) is equiv(&infix:<x>) is export { $a.tensor-product( $b ) }
 
 multi sub prefix:<MM>(Str   $m --> Math::Matrix:D) is tighter(&postcircumfix:<[ ]>) is export(:MM) { Math::Matrix.new($m) }
 multi sub prefix:<MM>(Array $m --> Math::Matrix:D) is tighter(&postcircumfix:<[ ]>) is export(:MM) { Math::Matrix.new(@$m) }

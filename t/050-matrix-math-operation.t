@@ -108,7 +108,7 @@ subtest {
     my $matrix   = Math::Matrix.new([[1,2],[3,4]]);
     my $identity = Math::Matrix.new-identity(2);
 
-    ok $a.dotProduct( $b ) ~~ $p,            "Simple multiplication check";
+    ok $a.dot-product( $b ) ~~ $p,            "Simple multiplication check";
     ok ($a ⋅ $b) ~~ $p,                      "Simple multiplication check with ⋅ operator";
     ok ($a dot $b) ~~ $p,                    "Simple multiplication check with ⋅ operator, texas form";
     ok $matrix ** 0 ~~ $identity,            "times one means no multiplication";
@@ -117,7 +117,7 @@ subtest {
 
     my $c = Math::Matrix.new( [[7,8],[9,10],[11,12],[13,14]] );
     dies-ok { $a ⋅ $c } , "Matrices can't be multiplied, first matrix column count should be equal to second matrix row count";
-    dies-ok { $a.dotProduct( $c ) } , "Matrices can't be multiplied, first matrix column count should be equal to second matrix row count";
+    dies-ok { $a.dot-product( $c ) } , "Matrices can't be multiplied, first matrix column count should be equal to second matrix row count";
 }, "Dot Product";
 
 
@@ -130,9 +130,9 @@ subtest {
     my $z3 = Math::Matrix.new-zero(3);
     my $z12 = Math::Matrix.new-zero(12);
 
-    ok $i.tensorProduct( $i ) ~~ $i,     "Trivial multiplication check";
-    ok $a.tensorProduct( $b ) ~~ $p,     "Simple multiplication check";
-    ok $z3.tensorProduct($p ) ~~ $z12,   "check for richt dimension expansion on larger matrix";
+    ok $i.tensor-product( $i ) ~~ $i,     "Trivial multiplication check";
+    ok $a.tensor-product( $b ) ~~ $p,     "Simple multiplication check";
+    ok $z3.tensor-product($p ) ~~ $z12,   "check for richt dimension expansion on larger matrix";
     ok ($a x $b) ~~ $p,                  "Simple multiplication check with x operator";
 }, "Tensor Product";
 

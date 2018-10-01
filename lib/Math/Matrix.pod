@@ -51,7 +51,7 @@ All computation heavy properties will be calculated lazily and will be cached.
 =item L<numeric properties|#numeric-properties>: L<size|#size>, L<density|#density>, L<trace|#trace>, L<determinant|#determinant>, L<rank|#rank>, L<kernel|#kernel>, L<norm|#norm>, L<condition|#condition>, L<minor|#minor>, L<narrowest-cell-type|#narrowest-cell-type>, L<widest-cell-type|#widest-cell-type>
 =item L<derived matrices|#derived-matrices>: L<transposed|#transposed>, L<negated|#negated>, L<conjugated|#conjugated>, L<adjugated|#adjugated>, L<inverted|#inverted>, L<reduced-row-echelon-form|#reduced-row-echelon-form>
 =item L<decompositions|#decompositions>: L<decompositionLUCrout|#decompositionlucrout>, L<decompositionLU|#decompositionlu>, L<decompositionCholesky|#decompositioncholesky>
-=item L<matrix math ops|#matrix-math-operations>: L<equal|#equal>, L<add|#add>, L<subtract|#subtract>, L<add-row|#add-row>, L<add-column|#add-column>, L<multiply|#multiply>, L<multiply-row|#multiply-row>, L<multiply-column|#multiply-column>, L<dotProduct|#dotproduct>, L<tensorProduct|#tensorproduct>
+=item L<matrix math ops|#matrix-math-operations>: L<equal|#equal>, L<add|#add>, L<subtract|#subtract>, L<add-row|#add-row>, L<add-column|#add-column>, L<multiply|#multiply>, L<multiply-row|#multiply-row>, L<multiply-column|#multiply-column>, L<dot-product|#dot-product>, L<tensor-product|#tensor-product>
 =item L<list like ops|#list-like-matrix-operations>: L<elems|#elems>, L<elem|#elem>, L<cont|#cont>, L<map-index|#map-index>, L<map-with-index|#map-with-index>, L<map|#map>, L<map-row|#map-row>, L<map-column|#map-column>, L<reduce|#reduce>, L<reduce-rows|#reduce-rows>, L<reduce-columns|#reduce-columns>
 =item L<structural ops|#structural-matrix-operations>: L<move-row|#move-row>, L<move-column|#move-column>, L<swap-rows|#swap-rows>, L<swap-columns|#swap-columns>, L<splice-rows|#splice-rows>, L<splice-columns|#splice-columns>
 =item L<shortcuts|#shortcuts>:   L<T|#transposed>,   L<conj|#conjugated>,   L<det|#determinant>,   L<rref|#reduced-row-echelon-form>
@@ -459,12 +459,12 @@ or you will get an exception.
 
 =head3 L<is-orthogonal|#boolean-properties>
 
-An orthogonal matrix multiplied (L<dotProduct|#dotproduct>) with its transposed derivative (T)
+An orthogonal matrix multiplied (L<dot-product|#dot-product>) with its transposed derivative (T)
 is an identity matrix or in other words: L<transposed|#transposed> and L<inverted|#inverted> matrices are equal.
 
 =head3 L<is-unitary|#boolean-properties>
 
-An unitery matrix multiplied (dotProduct) with its concjugate transposed 
+An unitery matrix multiplied (L<dot-product|#dot-product) with its concjugate transposed 
 derivative (.conj.T) is an identity matrix, or said differently:
 the concjugate transposed matrix equals the inverted matrix.
 
@@ -626,7 +626,7 @@ It is called adjugate, classical adjoint or sometimes adjunct.
 =head3 L<inverted|#derived-matrices>
 
 Matrices that have a square form and a full rank can be inverted (see L<is-invertible|#is-invertible>).
-Inverse matrix regarding to matrix multiplication (see L<dotProduct|#dotproduct>).
+Inverse matrix regarding to matrix multiplication (see L<dot-product|#dot-product>).
 The dot product of a matrix with its inverted results in a L<identity|#is-identity> matrix
 (neutral element in this group).
 
@@ -787,11 +787,11 @@ Multiply scalar number to each cell of a column.
             
                *2
 
-=head3 L<dotProduct|#matrix-math-operations>
+=head3 L<dot-product|#matrix-math-operations>
 
 Matrix multiplication of two fitting matrices (colums left == rows right).
 
-    Math::Matrix.new( [[1,2],[3,4]] ).dotProduct(  Math::Matrix.new([[2,3],[4,5]]) );
+    Math::Matrix.new( [[1,2],[3,4]] ).dot-product(  Math::Matrix.new([[2,3],[4,5]]) );
 
     Example:    2  3
            *    4  5
@@ -799,7 +799,7 @@ Matrix multiplication of two fitting matrices (colums left == rows right).
          1 2   10 13  =  1*2+2*4  1*3+2*5
          3 4   22 29     3*2+4*4  3*3+4*5
 
-    my $product = $matrix1.dotProduct( $matrix2 )
+    my $product = $matrix1.dot-product( $matrix2 )
     my $c = $a dot $b;              # works too as operator alias
     my $c = $a ⋅ $b;                # unicode operator alias
 
@@ -808,7 +808,7 @@ Matrix multiplication of two fitting matrices (colums left == rows right).
     my $c = $a ** -3;               # same as ($a dot $a dot $a).inverted
     my $c = $a **  0;               # created an right sized identity matrix
 
-=head3 L<tensorProduct|#matrix-math-operations>
+=head3 L<tensor-product|#matrix-math-operations>
 
 The tensor product (a.k.a Kronecker product) between a matrix a of size (m,n)
 and a matrix b of size (p,q) is a matrix c of size (m*p,n*q).
@@ -821,7 +821,7 @@ All matrices you get by multiplying an element (cell) of matrix a with
                                  3*[2 3] 4*[2 3]     6  9  8 12
                                    [4 5]   [4 5]     8 15 16 20
     
-    my $c = $matrixa.tensorProduct( $matrixb );
+    my $c = $matrixa.tensor-product( $matrixb );
     my $c = $a x $b;                # works too as operator alias
     my $c = $a ⊗ $b;                # unicode operator alias
 
@@ -1054,10 +1054,10 @@ Operators with method aliases, for more explanations loo into L<ops chapter|#ope
 =item infix +  -->  L<add|#add>
 =item infix -  -->  L<subtract|#subtract>
 =item infix *  -->  L<multiply|#multiply>
-=item infix ⋅ dot  -->  L<dotProduct|#dotproduct>
-=item infix ÷  -->  dotProduct L<inverted|#inverted>
-=item infix **  -->  dotProduct inverted
-=item infix ⊗ x  -->  L<tensorProduct|#tensorproduct>
+=item infix ⋅ dot  -->  L<dot-product|#dot-product>
+=item infix ÷  -->  dot-product L<inverted|#inverted>
+=item infix **  -->  dot-product inverted
+=item infix ⊗ x  -->  L<tensor-product|#tensor-product>
 =item circumfix ｜..｜ -->  L<determinant|#determinant>
 =item circumfix ‖..‖  -->  L<norm|#norm>
 =item postcircumfix [..]  -->  L<AT-POS|#at-pos>

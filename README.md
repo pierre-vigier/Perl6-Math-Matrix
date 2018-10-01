@@ -64,7 +64,7 @@ All computation heavy properties will be calculated lazily and will be cached.
 
   * [decompositions](#decompositions): [decompositionLUCrout](#decompositionlucrout), [decompositionLU](#decompositionlu), [decompositionCholesky](#decompositioncholesky)
 
-  * [matrix math ops](#matrix-math-operations): [equal](#equal), [add](#add), [subtract](#subtract), [add-row](#add-row), [add-column](#add-column), [multiply](#multiply), [multiply-row](#multiply-row), [multiply-column](#multiply-column), [dotProduct](#dotproduct), [tensorProduct](#tensorproduct)
+  * [matrix math ops](#matrix-math-operations): [equal](#equal), [add](#add), [subtract](#subtract), [add-row](#add-row), [add-column](#add-column), [multiply](#multiply), [multiply-row](#multiply-row), [multiply-column](#multiply-column), [dot-product](#dot-product), [tensor-product](#tensor-product)
 
   * [list like ops](#list-like-matrix-operations): [elems](#elems), [elem](#elem), [cont](#cont), [map-index](#map-index), [map-with-index](#map-with-index), [map](#map), [map-row](#map-row), [map-column](#map-column), [reduce](#reduce), [reduce-rows](#reduce-rows), [reduce-columns](#reduce-columns)
 
@@ -423,13 +423,15 @@ Is True if number of rows and colums are the same ([is-square](#is-square)) and 
 
 ### [is-orthogonal](#boolean-properties)
 
-An orthogonal matrix multiplied ([dotProduct](#dotproduct)) with its transposed derivative (T) is an identity matrix or in other words: [transposed](#transposed) and [inverted](#inverted) matrices are equal.
+An orthogonal matrix multiplied ([dot-product](#dot-product)) with its transposed derivative (T) is an identity matrix or in other words: [transposed](#transposed) and [inverted](#inverted) matrices are equal.
 
 ### [is-unitary](#boolean-properties)
 
-An unitery matrix multiplied (dotProduct) with its concjugate transposed derivative (.conj.T) is an identity matrix, or said differently: the concjugate transposed matrix equals the inverted matrix.
+An unitery matrix multiplied ([dot-product](#dot-product) with its concjugate transposed 
+derivative (.conj.T) is an identity matrix, or said differently:
+the concjugate transposed matrix equals the inverted matrix.
 
-### [is-positive-definite](#boolean-properties)
+=head3 L<is-positive-definite|#boolean-properties)
 
 True if all main minors or all Eigenvalues are strictly greater zero.
 
@@ -571,7 +573,7 @@ Creates a matrix out of the properly signed [minors](#minor) of the original. It
 
 ### [inverted](#derived-matrices)
 
-Matrices that have a square form and a full rank can be inverted (see [is-invertible](#is-invertible)). Inverse matrix regarding to matrix multiplication (see [dotProduct](#dotproduct)). The dot product of a matrix with its inverted results in a [identity](#is-identity) matrix (neutral element in this group).
+Matrices that have a square form and a full rank can be inverted (see [is-invertible](#is-invertible)). Inverse matrix regarding to matrix multiplication (see [dot-product](#dot-product)). The dot product of a matrix with its inverted results in a [identity](#is-identity) matrix (neutral element in this group).
 
     my $i = $matrix.inverted();      # invert matrix
     my $i = $matrix ** -1;           # operator alias
@@ -709,11 +711,11 @@ Multiply scalar number to each cell of a column.
             
                *2
 
-### [dotProduct](#matrix-math-operations)
+### [dot-product](#matrix-math-operations)
 
 Matrix multiplication of two fitting matrices (colums left == rows right).
 
-    Math::Matrix.new( [[1,2],[3,4]] ).dotProduct(  Math::Matrix.new([[2,3],[4,5]]) );
+    Math::Matrix.new( [[1,2],[3,4]] ).dot-product(  Math::Matrix.new([[2,3],[4,5]]) );
 
     Example:    2  3
            *    4  5
@@ -721,7 +723,7 @@ Matrix multiplication of two fitting matrices (colums left == rows right).
          1 2   10 13  =  1*2+2*4  1*3+2*5
          3 4   22 29     3*2+4*4  3*3+4*5
 
-    my $product = $matrix1.dotProduct( $matrix2 )
+    my $product = $matrix1.dot-product( $matrix2 )
     my $c = $a dot $b;              # works too as operator alias
     my $c = $a ⋅ $b;                # unicode operator alias
 
@@ -730,7 +732,7 @@ Matrix multiplication of two fitting matrices (colums left == rows right).
     my $c = $a ** -3;               # same as ($a dot $a dot $a).inverted
     my $c = $a **  0;               # created an right sized identity matrix
 
-### [tensorProduct](#matrix-math-operations)
+### [tensor-product](#matrix-math-operations)
 
 The tensor product (a.k.a Kronecker product) between a matrix a of size (m,n) and a matrix b of size (p,q) is a matrix c of size (m*p,n*q). All matrices you get by multiplying an element (cell) of matrix a with matrix b (as in $a.multiply($b.cell(..,..)) concatinated result in matrix c. (Or replace in a each cell with its product with b.)
 
@@ -739,7 +741,7 @@ The tensor product (a.k.a Kronecker product) between a matrix a of size (m,n) an
                                  3*[2 3] 4*[2 3]     6  9  8 12
                                    [4 5]   [4 5]     8 15 16 20
 
-    my $c = $matrixa.tensorProduct( $matrixb );
+    my $c = $matrixa.tensor-product( $matrixb );
     my $c = $a x $b;                # works too as operator alias
     my $c = $a ⊗ $b;                # unicode operator alias
 
@@ -963,13 +965,13 @@ Operators with method aliases, for more explanations loo into [ops chapter](#ope
 
   * infix * --> [multiply](#multiply)
 
-  * infix ⋅ dot --> [dotProduct](#dotproduct)
+  * infix ⋅ dot --> [dot-product](#dot-product)
 
-  * infix ÷ --> dotProduct [inverted](#inverted)
+  * infix ÷ --> dot-product [inverted](#inverted)
 
-  * infix ** --> dotProduct inverted
+  * infix ** --> dot-product inverted
 
-  * infix ⊗ x --> [tensorProduct](#tensorproduct)
+  * infix ⊗ x --> [tensor-product](#tensor-product)
 
   * circumfix ｜..｜ --> [determinant](#determinant)
 
