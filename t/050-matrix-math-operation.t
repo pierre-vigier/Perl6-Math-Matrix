@@ -133,7 +133,7 @@ subtest {
     ok $i.tensor-product( $i ) ~~ $i,     "Trivial multiplication check";
     ok $a.tensor-product( $b ) ~~ $p,     "Simple multiplication check";
     ok $z3.tensor-product($p ) ~~ $z12,   "check for richt dimension expansion on larger matrix";
-    ok ($a x $b) ~~ $p,                  "Simple multiplication check with x operator";
+    ok ($a X* $b) ~~ $p,                  "Simple multiplication check with x operator";
 }, "Tensor Product";
 
 
