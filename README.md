@@ -742,7 +742,7 @@ The tensor product (a.k.a Kronecker product) between a matrix a of size (m,n) an
                                    [4 5]   [4 5]     8 15 16 20
 
     my $c = $matrixa.tensor-product( $matrixb );
-    my $c = $a x $b;                # works too as operator alias
+    my $c = $a X* $b;               # works too as operator alias
     my $c = $a ⊗ $b;                # unicode operator alias
 
 [List Like Matrix Operations](#methods)
@@ -971,7 +971,7 @@ Operators with method aliases, for more explanations loo into [ops chapter](#ope
 
   * infix ** --> dot-product inverted
 
-  * infix ⊗ x --> [tensor-product](#tensor-product)
+  * infix ⊗ X* --> [tensor-product](#tensor-product)
 
   * circumfix ｜..｜ --> [determinant](#determinant)
 
@@ -1025,7 +1025,7 @@ They are exported when using no flag or under the export flags :DEFAULT or :ALL,
     my $c   =  $a ** -3;             # alias to ($a dot $a dot $a).inverted
     my $c   =  $a **  0;             # creats an right sized identity matrix
 
-    my $tp  =  $a x $b;              # tensor product 
+    my $tp  =  $a X* $b;             # tensor product 
     my $tp  =  $a ⊗ $b;              # tensor product, unicode (U+02297)
 
      ｜ $matrix ｜                     # determinant, unicode (U+0FF5C)

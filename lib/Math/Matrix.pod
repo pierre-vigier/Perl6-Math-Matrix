@@ -822,7 +822,7 @@ All matrices you get by multiplying an element (cell) of matrix a with
                                    [4 5]   [4 5]     8 15 16 20
     
     my $c = $matrixa.tensor-product( $matrixb );
-    my $c = $a x $b;                # works too as operator alias
+    my $c = $a X* $b;               # works too as operator alias
     my $c = $a ⊗ $b;                # unicode operator alias
 
 
@@ -1057,7 +1057,7 @@ Operators with method aliases, for more explanations loo into L<ops chapter|#ope
 =item infix ⋅ dot  -->  L<dot-product|#dot-product>
 =item infix ÷  -->  dot-product L<inverted|#inverted>
 =item infix **  -->  dot-product inverted
-=item infix ⊗ x  -->  L<tensor-product|#tensor-product>
+=item infix ⊗ X*  -->  L<tensor-product|#tensor-product>
 =item circumfix ｜..｜ -->  L<determinant|#determinant>
 =item circumfix ‖..‖  -->  L<norm|#norm>
 =item postcircumfix [..]  -->  L<AT-POS|#at-pos>
@@ -1108,7 +1108,7 @@ The postcircumfix [] - op will always work.
     my $c   =  $a ** -3;             # alias to ($a dot $a dot $a).inverted
     my $c   =  $a **  0;             # creats an right sized identity matrix
 
-    my $tp  =  $a x $b;              # tensor product 
+    my $tp  =  $a X* $b;             # tensor product 
     my $tp  =  $a ⊗ $b;              # tensor product, unicode (U+02297)
 
      ｜ $matrix ｜                     # determinant, unicode (U+0FF5C)
