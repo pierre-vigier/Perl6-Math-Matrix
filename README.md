@@ -777,7 +777,7 @@ Asks if the matrix contains a value equal to the only argument of the method. If
 
 Runs a code block (only required argument) for every cell of the matrix. Arguments to the anonymous block are current row and column index. The results for a new matrix.
 
-    say Math::Matrix.new([[1,2],[3,4]]).map: {$^m == $^n ?? 1 !! 0 } :
+    say Math::Matrix.new([[1,2],[3,4]]).map-index: {$^m == $^n ?? 1 !! 0 } :
 
     1 0
     0 1
@@ -786,7 +786,7 @@ Runs a code block (only required argument) for every cell of the matrix. Argumen
 
 Runs a code block (only required argument) for every cell of the matrix. Arguments to the anonymous block are current row and column index and the content of the cell. The results for a new matrix.
 
-    say Math::Matrix.new([[1,2],[3,4]]).map: {$^m == $^n ?? $^value !! 0 } :
+    say Math::Matrix.new([[1,2],[3,4]]).map-with-index: {$^m == $^n ?? $^value !! 0 } :
 
     1 0
     0 4
