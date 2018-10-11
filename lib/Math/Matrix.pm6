@@ -170,7 +170,6 @@ method !build_diagonal(Math::Matrix:D: --> List){
 }
 
 multi method submatrix(Math::Matrix:D: Int:D $row, Int:D $column --> Math::Matrix:D ){
-say "-1";
     self!check-index($row, $column);
     my @rows = ^$!row-count;     @rows.splice($row,1);
     my @cols = ^$!column-count;  @cols.splice($column,1);
