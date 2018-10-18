@@ -20,5 +20,5 @@
   "source-url" : "git://github.com/pierre-vigier/Perl6-Math-Matrix.git",
   "tags" : [ "Math" ],
   "test-depends" : [ ],
-  "version" : "0.3.5"
+  "version" : "0.3.6"
 }

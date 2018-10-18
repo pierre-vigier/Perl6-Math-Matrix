@@ -1,14 +1,15 @@
 
- 0.4.0:
-    § 2018.11.
-    + method map-index and mat-with-index
+ 0.3.6:
+    § 2018.10.18
+    + method map-index and map-with-index
     - method map-cell removed
     ! renamed dotProduct -> dot-product and tensorProduct -> tensor-product
+    ! renamed kernel -> nullity
     ! constructors reject now empty matrices
     ! 2 unconventional submatrix variants receive now optional named arguments and can be combined
  
  0.3.5:
-    § 2018.10.23
+    § 2018.9.23
     * accept list of list as input for new
     + added method minor, that computes well a Minor
     + added method adjugated, computes the derived matrix called adjugate (classical adjoint)

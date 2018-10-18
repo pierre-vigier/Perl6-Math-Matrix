@@ -58,7 +58,7 @@ All computation heavy properties will be calculated lazily and will be cached.
 
   * [boolean properties](#boolean-properties): [is-zero](#is-zero), [is-identity](#is-identity), [is-square](#is-square), [is-diagonal](#is-diagonal), [is-diagonally-dominant](#is-diagonally-dominant), [is-upper-triangular](#is-upper-triangular), [is-lower-triangular](#is-lower-triangular), [is-invertible](#is-invertible), [is-symmetric](#is-symmetric), [is-antisymmetric](#is-antisymmetric), [is-unitary](#is-unitary), [is-self-adjoint](#is-self-adjoint), [is-orthogonal](#is-orthogonal), [is-positive-definite](#is-positive-definite), [is-positive-semidefinite](#is-positive-semidefinite)
 
-  * [numeric properties](#numeric-properties): [size](#size), [density](#density), [trace](#trace), [determinant](#determinant), [rank](#rank), [kernel](#kernel), [norm](#norm), [condition](#condition), [minor](#minor), [narrowest-cell-type](#narrowest-cell-type), [widest-cell-type](#widest-cell-type)
+  * [numeric properties](#numeric-properties): [size](#size), [density](#density), [trace](#trace), [determinant](#determinant), [rank](#rank), [nullity](#nullity), [norm](#norm), [condition](#condition), [minor](#minor), [narrowest-cell-type](#narrowest-cell-type), [widest-cell-type](#widest-cell-type)
 
   * [derived matrices](#derived-matrices): [transposed](#transposed), [negated](#negated), [conjugated](#conjugated), [adjugated](#adjugated), [inverted](#inverted), [reduced-row-echelon-form](#reduced-row-echelon-form)
 
@@ -72,7 +72,7 @@ All computation heavy properties will be calculated lazily and will be cached.
 
   * [shortcuts](#shortcuts): [T](#transposed), [conj](#conjugated), [det](#determinant), [rref](#reduced-row-echelon-form)
 
-  * [operators](#operator-methods): MM, ?, ~, |, @, %, +, -, *, **, dot, ⋅, ÷, x, ⊗, ==, ~~, ❘ ❘, ‖ ‖, [ ]
+  * [operators](#operator-methods): MM, ?, ~, |, @, %, +, -, *, **, dot, ⋅, ÷, X*, ⊗, ==, ~~, ❘ ❘, ‖ ‖, [ ]
 
 [Constructors](#methods)
 ------------------------
@@ -477,11 +477,11 @@ Rank is the number of independent row or column vectors or also called independe
 
     my $r = $matrix.rank( );
 
-### [kernel](#numeric-properties)
+### [nullity](#numeric-properties)
 
-Kernel of matrix, number of dependent rows or columns (rank + kernel = dim).
+Nullity of a matrix is the number of dependent rows or columns (rank + nullity = dim). Or number of dimensions of the kernel (vector space mapped by the matrix into zero).
 
-    my $tr = $matrix.kernel( );
+    my $n = $matrix.nullity( );
 
 ### [norm](#numeric-properties)
 

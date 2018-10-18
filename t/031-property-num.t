@@ -75,7 +75,7 @@ subtest {
     ok $zero.rank == 0     ,"Rank of Zero Matrix";
     ok $identity.rank == 3 ,"Identity has full rank";
     ok $diagonal.rank == 3 ,"Diagonal has full rank";
-    ok $matrix.rank == 1   ,"Custom Matrinx with larger Kernel has lesser rank";
+    ok $matrix.rank == 1   ,"Custom Matrinx with larger nullity has lesser rank";
 }, "Rank";
 
 subtest {
@@ -85,11 +85,11 @@ subtest {
     my $diagonal = Math::Matrix.new-diagonal([1,2,3]);
     my $matrix = Math::Matrix.new([[1,2,3],[2,4,6],[3,6,9]]);
 
-    ok $zero.kernel == 3     ,"Zero Matrix has full kernel";
-    ok $identity.kernel == 0 ,"Identity has no kernel";
-    ok $diagonal.kernel == 0 ,"Diagonal has no kernel";
-    ok $matrix.kernel == 2   ,"Custom Matrix with larger Kernel has lesser rank";
-}, "Kernel";
+    ok $zero.nullity == 3     ,"Zero matrix has full nullity";
+    ok $identity.nullity == 0 ,"Identity has no nullity";
+    ok $diagonal.nullity == 0 ,"Diagonal has no nullity";
+    ok $matrix.nullity == 2   ,"Custom matrix with larger nullity has lesser rank";
+}, "Nullity";
 
 subtest {
     plan 27;

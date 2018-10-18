@@ -1,7 +1,7 @@
 use v6.c;
 need Math::Matrix::Util;
 
-unit class Math::Matrix:ver<0.3.5>:auth<github:pierre-vigier> does Math::Matrix::Util;
+unit class Math::Matrix:ver<0.3.6>:auth<github:pierre-vigier> does Math::Matrix::Util;
 use AttrX::Lazy;
 
 ################################################################################
@@ -30,7 +30,7 @@ has Bool $!is-positive-definite is lazy;
 has Bool $!is-positive-semidefinite is lazy;
 
 has Int     $!rank is lazy;
-has Int     $!kernel is lazy;
+has Int     $!nullity is lazy;
 has Rat     $!density is lazy;
 has Numeric $!trace is lazy;
 has Numeric $!determinant is lazy;
@@ -72,18 +72,18 @@ multi method new (Str $m){
     self.bless( rows => @m );
 }
 
-submethod BUILD( :@rows!, :$diagonal, :$density, :$trace, :$determinant, :$rank, :$kernel,
+submethod BUILD( :@rows!, :$diagonal, :$density, :$trace, :$determinant, :$rank, :$nullity,
                  :$is-zero, :$is-identity, :$is-symmetric, :$is-upper-triangular, :$is-lower-triangular ) {
-    @!rows = self!AoA-clone(@rows);
-    $!row-count = @rows.elems;
+    @!rows        = self!AoA-clone(@rows);
+    $!row-count   = @rows.elems;
     $!column-count = @rows[0].elems;
-    $!diagonal  = $diagonal if $diagonal.defined;
-    $!density   = $density if $density.defined;
-    $!trace     = $trace if $trace.defined;
+    $!diagonal    = $diagonal if $diagonal.defined;
+    $!density     = $density if $density.defined;
+    $!trace       = $trace if $trace.defined;
     $!determinant = $determinant if $determinant.defined;
-    $!rank      = $rank if $rank.defined;
-    $!kernel    = $kernel if $kernel.defined;
-    $!is-zero   = $is-zero if $is-zero.defined;
+    $!rank        = $rank if $rank.defined;
+    $!nullity     = $nullity if $nullity.defined;
+    $!is-zero     = $is-zero if $is-zero.defined;
     $!is-identity = $is-identity if $is-identity.defined;
     $!is-symmetric = $is-symmetric if $is-symmetric.defined;
     $!is-upper-triangular = $is-upper-triangular if $is-upper-triangular.defined;
@@ -92,19 +92,19 @@ submethod BUILD( :@rows!, :$diagonal, :$density, :$trace, :$determinant, :$rank,
 
 multi method new-zero(PosInt $size) {
     self.bless( rows => self!zero-array($size, $size),
-            determinant => 0, rank => 0, kernel => $size, density => 0.0, trace => 0,
+            determinant => 0, rank => 0, nullity => $size, density => 0.0, trace => 0,
             is-zero => True, is-identity => False, is-diagonal => True, 
             is-square => True, is-symmetric => True  );
 }
 multi method new-zero(Math::Matrix:U: PosInt $rows, PosInt $cols) {
     self.bless( rows => self!zero-array($rows, $cols),
-            determinant => 0, rank => 0, kernel => min($rows, $cols), density => 0.0, trace => 0,
+            determinant => 0, rank => 0, nullity => min($rows, $cols), density => 0.0, trace => 0,
             is-zero => True, is-identity => False, is-diagonal => ($cols == $rows),  );
 }
 
 method new-identity( Int $size where * > 0 ) {
     self.bless( rows => self!identity-array($size), diagonal => (1) xx $size, 
-                determinant => 1, rank => $size, kernel => 0, density => 1/$size, trace => $size,
+                determinant => 1, rank => $size, nullity => 0, density => 1/$size, trace => $size,
                 is-zero => False, is-identity => True, 
                 is-square => True, is-diagonal => True, is-symmetric => True );
 }
@@ -436,7 +436,7 @@ method !build_rank(Math::Matrix:D: --> Int) {
     $rank;
 }
 
-method !build_kernel(Math::Matrix:D: --> Int) {
+method !build_nullity(Math::Matrix:D: --> Int) {
     min(self.size) - self.rank;
 }
 
