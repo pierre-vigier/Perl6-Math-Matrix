@@ -427,11 +427,9 @@ An orthogonal matrix multiplied ([dot-product](#dot-product)) with its transpose
 
 ### [is-unitary](#boolean-properties)
 
-An unitery matrix multiplied ([dot-product](#dot-product) with its concjugate transposed 
-derivative (.conj.T) is an identity matrix, or said differently:
-the concjugate transposed matrix equals the inverted matrix.
+An unitery matrix multiplied ([dot-product](#dot-product)) with its concjugate transposed derivative (.conj.T) is an identity matrix, or said differently: the concjugate transposed matrix equals the inverted matrix.
 
-### [is-positive-definite|#boolean-properties)
+### [is-positive-definite](#boolean-properties)
 
 True if all main minors or all Eigenvalues are strictly greater zero.
 
