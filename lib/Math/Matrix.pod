@@ -465,9 +465,10 @@ is an identity matrix or in other words: L<transposed|#transposed> and L<inverte
 
 =head3 L<is-unitary|#boolean-properties>
 
-An unitery matrix multiplied (L<dot-product|#dot-product) with its concjugate transposed 
+An unitery matrix multiplied (L<dot-product|#dot-product>) with its concjugate transposed 
 derivative (.conj.T) is an identity matrix, or said differently:
 the concjugate transposed matrix equals the inverted matrix.
+
 
 =head3 L<is-positive-definite|#boolean-properties>
 
