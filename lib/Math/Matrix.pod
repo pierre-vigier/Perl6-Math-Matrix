@@ -453,6 +453,7 @@ A Hermitian or self-adjoint matrix is equal to its L<transposed|#transposed> and
 
 =head3 L<is-invertible|#boolean-properties>
 
+Also called nonsingular or nondegenerate.
 Is True if number of rows and colums are the same (L<is-square|#is-square>) and L<determinant|#determinant> is not zero.
 All rows or colums have to be independent vectors. Please use this method before $matrix.inverted,
 or you will get an exception.

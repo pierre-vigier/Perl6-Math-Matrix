@@ -1,4 +1,8 @@
 
+ 0.3.7:
+    § 2018.11.
+    
+
  0.3.6:
     § 2018.10.18
     + method map-index and map-with-index
