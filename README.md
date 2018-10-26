@@ -419,7 +419,7 @@ A Hermitian or self-adjoint matrix is equal to its [transposed](#transposed) and
 
 ### [is-invertible](#boolean-properties)
 
-Is True if number of rows and colums are the same ([is-square](#is-square)) and [determinant](#determinant) is not zero. All rows or colums have to be independent vectors. Please use this method before $matrix.inverted, or you will get an exception.
+Also called nonsingular or nondegenerate. Is True if number of rows and colums are the same ([is-square](#is-square)) and [determinant](#determinant) is not zero. All rows or colums have to be independent vectors. Please use this method before $matrix.inverted, or you will get an exception.
 
 ### [is-orthogonal](#boolean-properties)
 
