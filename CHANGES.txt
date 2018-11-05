@@ -1,7 +1,7 @@
 
  0.3.7:
     § 2018.11.
-    ! extended diagonal
+    * get more than main diagonal (emulated mathematica API)
 
  0.3.6:
     § 2018.10.18

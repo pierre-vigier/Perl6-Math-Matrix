@@ -199,9 +199,11 @@ Gets values of specified column (first required parameter) as a list.
 
 ### [diagonal](#accessors)
 
-Gets values of diagonal elements as a list. 
+Without an argument it returns values of main diagonal elements as a list. Use the optional parameter to get any other parallel diagonal. Positive value for the ones above - negative below and 0 for the main diagonal. Matrix does not have to be a quadratic (square).
 
-    say Math::Matrix.new([[1,2],[3,4]]).diagonal : (1, 4)
+    say Math::Matrix.new([[1,2],[3,4]]      ).diagonal    : (1, 4)
+    say Math::Matrix.new([[1,2],[3,4]]      ).diagonal(1) : (2)
+    say Math::Matrix.new([[1,2],[3,4],[5,6]]).diagonal(-1): (3, 6)
 
 ### [submatrix](#accessors)
 
