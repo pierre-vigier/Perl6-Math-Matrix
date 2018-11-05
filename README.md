@@ -447,39 +447,39 @@ Matrix properties that are expressed with a single number.
 List of two values: number of rows and number of columns.
 
     say $matrix.size();
-    my $dim = min $matrix.size();
+    my $dim = min $matrix.size;
 
 ### [density](#numeric-properties)
 
 Density is the percentage of cell which are not zero.
 
-    my $d = $matrix.density( );
+    my $d = $matrix.density;
 
 ### [trace](#numeric-properties)
 
 The trace of a square matrix is the sum of the cells on the main diagonal. In other words: sum of cells which row and column value is identical.
 
-    my $tr = $matrix.trace( );
+    my $tr = $matrix.trace;
 
 ### [determinant](#numeric-properties)
 
 If you see the columns as vectors, that describe the edges of a solid, the determinant of a square matrix tells you the volume of that solid. So if the solid is just in one dimension flat, the determinant is zero too.
 
-    my $det = $matrix.determinant( );
-    my $d = $matrix.det( );             # same thing
+    my $det = $matrix.determinant;
+    my $d = $matrix.det;                # same thing
     my $d = ❘ $matrix ❘;                # unicode operator shortcut
 
 ### [rank](#numeric-properties)
 
 Rank is the number of independent row or column vectors or also called independent dimensions (thats why this command is sometimes calles dim)
 
-    my $r = $matrix.rank( );
+    my $r = $matrix.rank;
 
 ### [nullity](#numeric-properties)
 
 Nullity of a matrix is the number of dependent rows or columns (rank + nullity = dim). Or number of dimensions of the kernel (vector space mapped by the matrix into zero).
 
-    my $n = $matrix.nullity( );
+    my $n = $matrix.nullity;
 
 ### [norm](#numeric-properties)
 
