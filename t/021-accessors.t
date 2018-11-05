@@ -32,12 +32,16 @@ subtest {
 }, "Column";
 
 subtest {
-    plan 3;
+    plan 6;
     my $matrix =   Math::Matrix.new([[4,0,1],[2,1,0],[2,2,3]]);
     my $identity = Math::Matrix.new-identity(3);
+    my $fsmatrix = Math::Matrix.new([[6,7,8],[10,11,12]]);
 
-    ok $matrix.diagonal() ~~ (4,1,3), "custom diagonal";
-    ok $identity.diagonal() ~~ (1,1,1), "identity diagonal";
+    ok $matrix.diagonal() ~~ (4,1,3),     "custom diagonal";
+    ok $matrix.diagonal(-1) ~~ (0,0),     "short custom diagonal";
+    ok $identity.diagonal() ~~ (1,1,1),   "identity diagonal";
+    ok ($identity.diagonal(2) ~~ (0,)),      "short identity diagonal";
+    ok $fsmatrix.diagonal(0) ~~ (6,11),   "main diagonal of none square matrix";
     dies-ok { Math::Matrix.new([[2,2,3]]).diagonal(1); }, "tried get diagonal outside of size";
 }, "Diagonal";
 

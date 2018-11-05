@@ -163,7 +163,7 @@ method column(Math::Matrix:D: Int:D $column --> List) {
 
 method diagonal(Math::Matrix:D: $start? = 0 --> List){
     fail "start of requested diagonal is outside of the matrix" if $start <= -$!row-count or $start >= $!column-count;
-    my $length = min($!row-count , $!column-count) - $start;
+    my $length = min($!row-count , $!column-count) - $start.abs;
     (gather if  $start < 0 { for ^$length -> $i { take @!rows[$i;$i-$start] }} 
             else           { for ^$length -> $i { take @!rows[$i+$start;$i] }}
 	).list;
