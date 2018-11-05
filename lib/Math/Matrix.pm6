@@ -9,7 +9,6 @@ use AttrX::Lazy;
 ################################################################################
 
 has @!rows is required;
-has $!diagonal is lazy;
 
 has Int $!row-count;
 has Int $!column-count;
@@ -72,12 +71,11 @@ multi method new (Str $m){
     self.bless( rows => @m );
 }
 
-submethod BUILD( :@rows!, :$diagonal, :$density, :$trace, :$determinant, :$rank, :$nullity,
+submethod BUILD( :@rows!, :$density, :$trace, :$determinant, :$rank, :$nullity,
                  :$is-zero, :$is-identity, :$is-symmetric, :$is-upper-triangular, :$is-lower-triangular ) {
     @!rows        = self!AoA-clone(@rows);
     $!row-count   = @rows.elems;
     $!column-count = @rows[0].elems;
-    $!diagonal    = $diagonal if $diagonal.defined;
     $!density     = $density if $density.defined;
     $!trace       = $trace if $trace.defined;
     $!determinant = $determinant if $determinant.defined;
@@ -94,7 +92,7 @@ multi method new-zero(PosInt $size) {
     self.bless( rows => self!zero-array($size, $size),
             determinant => 0, rank => 0, nullity => $size, density => 0.0, trace => 0,
             is-zero => True, is-identity => False, is-diagonal => True, 
-            is-square => True, is-symmetric => True  );
+            is-square => True, is-symmetric => True );
 }
 multi method new-zero(Math::Matrix:U: PosInt $rows, PosInt $cols) {
     self.bless( rows => self!zero-array($rows, $cols),
@@ -103,7 +101,7 @@ multi method new-zero(Math::Matrix:U: PosInt $rows, PosInt $cols) {
 }
 
 method new-identity( Int $size where * > 0 ) {
-    self.bless( rows => self!identity-array($size), diagonal => (1) xx $size, 
+    self.bless( rows => self!identity-array($size),  
                 determinant => 1, rank => $size, nullity => 0, density => 1/$size, trace => $size,
                 is-zero => False, is-identity => True, 
                 is-square => True, is-diagonal => True, is-symmetric => True );
@@ -116,8 +114,7 @@ method new-diagonal( *@diag ){
     my @d = self!zero-array($size, $size);
     (^$size).map: { @d[$_][$_] = @diag[$_] };
 
-    self.bless( rows => @d, diagonal => @diag,
-                determinant => [*](@diag.flat), trace => [+] (@diag.flat),
+    self.bless( rows => @d, determinant => [*](@diag.flat), trace => [+] (@diag.flat),
                 is-square => True, is-diagonal => True, is-symmetric => True  );
 }
 
@@ -164,9 +161,12 @@ method column(Math::Matrix:D: Int:D $column --> List) {
     (@!rows.keys.map:{ @!rows[$_;$column] }).list;
 }
 
-method !build_diagonal(Math::Matrix:D: --> List){
-    fail "Number of columns has to be same as number of rows" unless self.is-square;
-    ( gather for ^$!row-count -> $i { take @!rows[$i;$i] } ).list;
+method diagonal(Math::Matrix:D: $start? = 0 --> List){
+    fail "start of requested diagonal is outside of the matrix" if $start <= -$!row-count or $start >= $!column-count;
+    my $length = min($!row-count , $!column-count) - $start;
+    (gather if  $start < 0 { for ^$length -> $i { take @!rows[$i;$i-$start] }} 
+            else           { for ^$length -> $i { take @!rows[$i+$start;$i] }}
+	).list;
 }
 
 multi method submatrix(Math::Matrix:D: Int:D $row, Int:D $column --> Math::Matrix:D ){
@@ -370,6 +370,7 @@ method !build_density(Math::Matrix:D: --> Rat) {
 }
 
 method !build_trace(Math::Matrix:D: --> Numeric) {
+    fail "Not square matrix" unless self.is-square;
     self.diagonal.sum;
 }
 

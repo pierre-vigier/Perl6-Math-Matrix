@@ -38,7 +38,7 @@ subtest {
 
     ok $matrix.diagonal() ~~ (4,1,3), "custom diagonal";
     ok $identity.diagonal() ~~ (1,1,1), "identity diagonal";
-    dies-ok { Math::Matrix.new([[2,2,3]]).diagonal(); }, "tried get diagonal of none square matrix";
+    dies-ok { Math::Matrix.new([[2,2,3]]).diagonal(1); }, "tried get diagonal outside of size";
 }, "Diagonal";
 
 
