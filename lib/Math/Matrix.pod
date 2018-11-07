@@ -420,7 +420,7 @@ True if only cells on the diagonal differ from 0.
 
 =head3 L<is-diagonal-constant|#boolean-properties>
 
-Checks caller is a diagonal-constant or Töplitz matrix.
+Checks if caller is a diagonal-constant or Töplitz matrix.
 True if every L<diagonal|#diagonal> is the a collection of cells that hold the same value.
 
     Example:     0  1  2
