@@ -384,7 +384,9 @@ True if only cells on the diagonal differ from 0. .is-upper-triangular and .is-l
                 0 3 0
                 0 0 7
 
-### [is-diagonal-constant](#boolean-properties) Checks caller is a diagonal-constant or Töplitz matrix. True if every [diagonal](#diagonal) is the a collection of cells that hold the same value.
+### [is-diagonal-constant](#boolean-properties)
+
+Checks caller is a diagonal-constant or Töplitz matrix. True if every [diagonal](#diagonal) is the a collection of cells that hold the same value.
 
     Example:     0  1  2
                 -1  0  1
@@ -439,11 +441,11 @@ An unitery matrix multiplied ([dot-product](#dot-product)) with its concjugate t
 
 ### [is-positive-definite](#boolean-properties)
 
-True if all main minors or all Eigenvalues are strictly greater zero.
+True if all main [minors](#minor) or all Eigenvalues are strictly greater zero.
 
 ### [is-positive-semidefinite](#boolean-properties)
 
-True if all main minors or all Eigenvalues are greater equal zero.
+True if all main [minors](#minor) or all Eigenvalues are greater equal zero.
 
 [Numeric Properties](#methods)
 ------------------------------
@@ -513,7 +515,7 @@ Condition number of a matrix is L2 norm * L2 of inverted matrix.
 
 ### [minor](#numeric-properties)
 
-Arguments are row and column of an existing cell. A Minor is the determinant of a submatrix (2 argument variant).
+Arguments are row and column of an existing cell. A Minor is the determinant of a [submatrix](#submatrix) (2 scalar argument, first variant).
 
     my $m = $matrix.minor(1,2);
 
