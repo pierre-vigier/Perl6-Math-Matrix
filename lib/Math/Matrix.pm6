@@ -16,6 +16,7 @@ has Int $!column-count;
 has Bool $!is-zero is lazy;
 has Bool $!is-identity is lazy;
 has Bool $!is-diagonal is lazy;
+has Bool $!is-diagonal-constant is lazy;
 has Bool $!is-lower-triangular is lazy;
 has Bool $!is-upper-triangular is lazy;
 has Bool $!is-square is lazy;
@@ -191,15 +192,15 @@ multi method submatrix(Math::Matrix:D: :@rows    = (^$!row-count).list,
 # end of accessors - start with type conversion and handy shortcuts
 ################################################################################
 
-method Bool(Math::Matrix:D: --> Bool)       { ! self.is-zero }
-method Numeric (Math::Matrix:D: --> Numeric){   self.norm   }
-method Str(Math::Matrix:D: --> Str)         {   join("\n", @!rows.map: *.Str) }
-method Array(Math::Matrix:D: --> Array)     {   self!clone-rows }
-method Hash(Math::Matrix:D: --> Hash)       {  ((^$!row-count).map: {$_ => @!rows[$_].kv.Hash}).Hash}
-method list(Math::Matrix:D: --> List)       {   self.list-rows.flat.list }
-method list-rows(Math::Matrix:D: --> List)  {  (@!rows.map: {.flat}).list }
-method list-columns(Math::Matrix:D: --> List){ ((^$!column-count).map: {self.column($_)}).list }
-method Range(Math::Matrix:D: --> Range)     {   self.list.minmax }
+method Bool(        Math::Matrix:D: --> Bool)   { ! self.is-zero }
+method Numeric (    Math::Matrix:D: --> Numeric){   self.norm   }
+method Str(         Math::Matrix:D: --> Str)    {   join("\n", @!rows.map: *.Str) }
+method Array(       Math::Matrix:D: --> Array)  {   self!clone-rows }
+method Hash(        Math::Matrix:D: --> Hash)   {  ((^$!row-count).map: {$_ => @!rows[$_].kv.Hash}).Hash}
+method list(        Math::Matrix:D: --> List)   {   self.list-rows.flat.list }
+method list-rows(   Math::Matrix:D: --> List)   {  (@!rows.map: {.flat}).list }
+method list-columns(Math::Matrix:D: --> List)   { ((^$!column-count).map: {self.column($_)}).list }
+method Range(       Math::Matrix:D: --> Range)  {   self.list.minmax }
 
 multi method gist(Math::Matrix:U: --> Str) { "({self.^name})" }
 multi method gist(Math::Matrix:D: Int :$max-chars?, Int :$max-rows? --> Str) {
@@ -276,7 +277,11 @@ method !build_is-lower-triangular(Math::Matrix:D: --> Bool) {
 }
 
 method !build_is-diagonal(Math::Matrix:D: --> Bool) {
-    return $.is-upper-triangular && $.is-lower-triangular;
+    $.is-upper-triangular && $.is-lower-triangular;
+}
+
+method !build_is-diagonal-constant(Math::Matrix:D: --> Bool) {
+    [&&](map { [==] $.diagonal($_).list }, -$!column-count+1 .. $!row-count-1);
 }
 
 method is-diagonally-dominant(Math::Matrix:D: Bool :$strict = False, 

@@ -1,7 +1,7 @@
 use lib "lib";
 use Test;
 use Math::Matrix;
-plan 53;
+plan 57;
 
 my $matrixa = Math::Matrix.new([[1,2],[3,4]]);
 my $matrixc = Math::Matrix.new([[8,8],[8,8]]);
@@ -47,6 +47,11 @@ ok  $identity.is-diagonal,       "Is an diagonal matrix";
 ok  $diagonal.is-diagonal,       "Diagonal is an diagonal matrix";
 nok $lt.is-diagonal,             "Lower triangular matrix is no an diagonal matrix";
 nok $ut.is-diagonal,             "Upper triangular matrix is no an diagonal matrix";
+
+ok $zero.is-diagonal-constant,      "zero matrix is diagonal constant";
+ok $identity.is-diagonal-constant,  "identity matrix is diagonal constant";
+nok $diagonal.is-diagonal-constant, "diagonal matrix is not diagonal constant";
+nok $symmetric.is-diagonal-constant,"symmetric matrix is not diagonal constant";
 
 nok $matrixa.is-diagonally-dominant, 'not diagonally dominant matrix';
 ok  $matrixc.is-diagonally-dominant, 'its diagonally dominant when all values are same';

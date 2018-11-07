@@ -24,7 +24,7 @@ SYNOPSIS
 Matrices are tables with rows and columns (index counting from 0) of numbers (Numeric type - Bool or Int or Num or Rat or FatRat or Complex): 
 
     transpose, invert, negate, add, multiply, dot product, tensor product, 22 ops, determinant, rank,
-    trace, norm, 15 boolean properties, 3 decompositions, submatrix, splice, map, reduce and more
+    trace, norm, 16 boolean properties, 3 decompositions, submatrix, splice, map, reduce and more
 
 Table of Content:
 
@@ -56,7 +56,7 @@ All computation heavy properties will be calculated lazily and will be cached.
 
   * [converter](#type-conversion-and-output-formats): [Bool](#bool), [Numeric](#numeric), [Str](#str), [Array](#array), [Hash](#hash), [Range](#range), [list](#list), [list-rows](#list-rows), [list-columns](#list-columns), [gist](#gist), [perl](#perl)
 
-  * [boolean properties](#boolean-properties): [is-zero](#is-zero), [is-identity](#is-identity), [is-square](#is-square), [is-diagonal](#is-diagonal), [is-diagonally-dominant](#is-diagonally-dominant), [is-upper-triangular](#is-upper-triangular), [is-lower-triangular](#is-lower-triangular), [is-invertible](#is-invertible), [is-symmetric](#is-symmetric), [is-antisymmetric](#is-antisymmetric), [is-unitary](#is-unitary), [is-self-adjoint](#is-self-adjoint), [is-orthogonal](#is-orthogonal), [is-positive-definite](#is-positive-definite), [is-positive-semidefinite](#is-positive-semidefinite)
+  * [boolean properties](#boolean-properties): [is-zero](#is-zero), [is-identity](#is-identity), [is-square](#is-square), [is-diagonal](#is-diagonal), [is-diagonal-constant](#is-diagonal-constant), [is-diagonally-dominant](#is-diagonally-dominant), [is-upper-triangular](#is-upper-triangular), [is-lower-triangular](#is-lower-triangular), [is-invertible](#is-invertible), [is-symmetric](#is-symmetric), [is-antisymmetric](#is-antisymmetric), [is-unitary](#is-unitary), [is-self-adjoint](#is-self-adjoint), [is-orthogonal](#is-orthogonal), [is-positive-definite](#is-positive-definite), [is-positive-semidefinite](#is-positive-semidefinite)
 
   * [numeric properties](#numeric-properties): [size](#size), [density](#density), [trace](#trace), [determinant](#determinant), [rank](#rank), [nullity](#nullity), [norm](#norm), [condition](#condition), [minor](#minor), [narrowest-cell-type](#narrowest-cell-type), [widest-cell-type](#widest-cell-type)
 
@@ -383,6 +383,12 @@ True if only cells on the diagonal differ from 0. .is-upper-triangular and .is-l
     Example:    1 0 0
                 0 3 0
                 0 0 7
+
+### [is-diagonal-constant](#boolean-properties) Checks caller is a diagonal-constant or Töplitz matrix. True if every [diagonal](#diagonal) is the a collection of cells that hold the same value.
+
+    Example:     0  1  2
+                -1  0  1
+                -2 -1  0
 
 ### [is-diagonally-dominant](#boolean-properties)
 
