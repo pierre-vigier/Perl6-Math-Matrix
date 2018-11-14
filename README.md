@@ -566,6 +566,8 @@ Returns a new, transposed Matrix, where rows became colums and vice versa.
      [4 5 6]].T     [2 5]
                     [3 6]]
 
+    Math::Matrix.new([[1,2,3],[3,4,6]]).T # same but shorter
+
 ### [negated](#derived-matrices)
 
 Creates a matrix where every cell has the negated value of the original (invertion of sign).
@@ -651,6 +653,8 @@ This decomposition works only on symmetric and definite positive matrices.
 ----------------------------------
 
 Matrix math methods on full matrices and also parts (for gaussian table operations).
+
+They are [equal](#equal), [add](#add), [add](#subtract), [multiply](#multiply), [dot-product](#dot-product), [tensor-product](#tensor-product).
 
 ### [equal](#matrix-math-operations)
 

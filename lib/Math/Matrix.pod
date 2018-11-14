@@ -635,6 +635,8 @@ Returns a new, transposed Matrix, where rows became colums and vice versa.
     [[1 2 3]     = [[1 4]
      [4 5 6]].T     [2 5]
                     [3 6]]
+
+    Math::Matrix.new([[1,2,3],[3,4,6]]).T # same but shorter
                              
 =head3 L<negated|#derived-matrices>
 
@@ -735,6 +737,8 @@ This decomposition works only on symmetric and definite positive matrices.
 =head2 L<Matrix Math Operations|#methods>
 
 Matrix math methods on full matrices and also parts (for gaussian table operations).
+
+They are L<equal|#equal>, L<add|#add>, L<add|#subtract>, L<multiply|#multiply>, L<dot-product|#dot-product>, L<tensor-product|#tensor-product>.
 
 
 =head3 L<equal|#matrix-math-operations>

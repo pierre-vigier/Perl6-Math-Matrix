@@ -4,6 +4,7 @@
     + added bool property is-diagonal-constnat
     * get more than main diagonal (emulated mathematica API)
     * question for strict diagonal matrix (upper and lower)
+    ! condense API of add and multiply
     = streamline TOC
 
  0.3.6:
