@@ -1,7 +1,7 @@
 use lib "lib";
 use Test;
 use Math::Matrix;
-plan 57;
+plan 59;
 
 my $matrixa = Math::Matrix.new([[1,2],[3,4]]);
 my $matrixc = Math::Matrix.new([[8,8],[8,8]]);
@@ -45,6 +45,8 @@ nok $almostidentity.is-identity, "Is not an identity matrix";
 nok $almostidentity.is-diagonal, "Is not an diagonal matrix";
 ok  $identity.is-diagonal,       "Is an diagonal matrix";
 ok  $diagonal.is-diagonal,       "Diagonal is an diagonal matrix";
+ok Math::Matrix.new-zero(3).is-diagonal, "square zero matrix is diagonal";
+nok $zero.is-diagonal,           "none square matrix is not diagonal";
 nok $lt.is-diagonal,             "Lower triangular matrix is no an diagonal matrix";
 nok $ut.is-diagonal,             "Upper triangular matrix is no an diagonal matrix";
 
