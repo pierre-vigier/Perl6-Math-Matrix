@@ -668,6 +668,8 @@ Checks two matrices for equality. They have to be of same size and every element
 
 Adding a matrix, vector or scalar. Named arguments *:row* and *:column* have no fixed position.
 
+#### [add matrix](#matrix-math-operations)
+
 When adding two matrices, they have to be of the same size. Instead of Math::matrix object you can also provide the cell data as [new []](#new--), [new ()](#new---1) or [new ""](#new---2) would accept it.
 
     $matrix.add( $matrix2 );
@@ -677,6 +679,8 @@ When adding two matrices, they have to be of the same size. Instead of Math::mat
     Example:    1 2  +  2 3  =  3 5
                 3 4     4 5     7 9
 
+#### [add vector](#matrix-math-operations)
+
 To add a vector you have to specify to which row or column it should be added and give a list or array (which have to fit the matrix size).
 
     $matrix.add( row => 1, [2,3] );
@@ -684,10 +688,12 @@ To add a vector you have to specify to which row or column it should be added an
     Example:    1 2  +       =  1 2
                 3 4    2 3      5 7
 
-    $matrix.add( column => 1, [2,3] );
+    $matrix.add( column => 1, (2,3) );
 
     Example:    1 2  +   2   =  1 4
                 3 4      3      3 7
+
+#### [add scalar](#matrix-math-operations)
 
 When adding a single number to the matrix, it will be added to every cell. If you provide a row or column number it will be only added to that row or column. In case you provide both, only a single cell gets a different value in the result matrix.
 
@@ -705,13 +711,7 @@ When adding a single number to the matrix, it will be added to every cell. If yo
 
 ### [multiply](#matrix-math-operations)
 
-In scalar multiplication each cell of the matrix gets multiplied with the same number (scalar). In addition to that, this method can multiply two same sized matrices, by multipling the cells with the came coordinates from each operand.
-
-    Example:    1 2  *  5    =   5 10 
-                3 4             15 20
-
-                1 2  *  2 3  =   2  6
-                3 4     4 5     12 20
+Unlike the [dot-product](#dot-product) and [tensor-product](#tensor-product), this operation is the simple, scalar multiplication applied to cells. That is why this method works analogous to the scalar variant of [add](#add-scalar). However, when a matrix of same size is given, the result will be a matrix of that size again. Each cell will be the product of two the two cells of the operands with the same indices (position).
 
     my $product = $matrix.multiply( $number );   # multiply every cell with number
     my $p = $matrix * $number;                   # works too
@@ -719,25 +719,26 @@ In scalar multiplication each cell of the matrix gets multiplied with the same n
     my $product = $matrix.multiply( $matrix2 );  # cell wise multiplication of same size matrices
     my $p = $matrix * $matrix2;                  # works too
 
-### [multiply-row](#matrix-math-operations)
+    Example:    1 2  *  5    =   5 10 
+                3 4             15 20
 
-Multiply scalar number to each cell of a row.
+                1 2  *  2 3  =   2  6
+                3 4     4 5     12 20
 
-    Math::Matrix.new([[1,2],[3,4]]).multiply-row(0,2);
+
+    $matrix.multiply( row => 0, 2);
 
     Example:    1 2  * 2     =  2 4
                 3 4             3 4
 
-### [multiply-column](#matrix-math-operations)
-
-Multiply scalar number to each cell of a column.
-
-    Math::Matrix.new([[1,2],[3,4]]).multiply-row(0,2);
+    $matrix.multiply(2, column => 0 );
 
     Example:    1 2   =  2 2
                 3 4      6 4
             
                *2
+
+    $matrix.multiply(row => 1, column => 1, 3) : [[1,2],[3,12]]
 
 ### [dot-product](#matrix-math-operations)
 
@@ -989,7 +990,7 @@ Operators with method aliases, for more explanations loo into [ops chapter](#ope
 
   * infix + --> [add](#add)
 
-  * infix - --> [add](#subtract)
+  * infix - --> [add](#add)
 
   * infix * --> [multiply](#multiply)
 

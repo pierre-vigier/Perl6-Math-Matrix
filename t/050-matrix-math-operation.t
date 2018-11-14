@@ -56,19 +56,18 @@ subtest {
     my $expected3 = Math::Matrix.new([[3,2],[9,4]]);
     my $expected4 = Math::Matrix.new([[1,6],[3,12]]);
 
-    ok $matrix.multiply-row(0,3) ~~ $expected1,   "multiply a row";
-    ok $matrix.multiply-row(1,3) ~~ $expected2,   "multiply another row";
-    dies-ok { $matrix.multiply-row(3,2) },        "row index out of bound";
+    ok $matrix.multiply(row => 0, 3) ~~ $expected1,   "multiply a row";
+    ok $matrix.multiply(row => 1, 3) ~~ $expected2,   "multiply another row";
+    dies-ok { $matrix.multiply(row => 3, 2) },        "row index out of bound";
 
-    ok $matrix.multiply-column(0,3) ~~ $expected3,"multiply a column";
-    ok $matrix.multiply-column(1,3) ~~ $expected4,"multiply another column";
-    dies-ok { $matrix.multiply-column(3,2) },     "row index out of bound";
+    ok $matrix.multiply( column => 0, 3) ~~ $expected3,"multiply a column";
+    ok $matrix.multiply( column => 1, 3) ~~ $expected4,"multiply another column";
+    dies-ok { $matrix.multiply( column => 3, 2) },     "row index out of bound";
 }, "Partial Scalar Multiplication";
 
 subtest {
     plan 3;
-    my $matrix = Math::Matrix.new([[1,1],[1,1]]);
-    my $expected = Math::Matrix.new([[2.2, 2.2],[2.2, 2.2]]);
+    my $expected = Math::Matrix.new([[1.1, 2.2],[3.3, 4.4]]);
     ok $matrix.multiply( 2.2 ) ~~ $expected, "multiplication with real working";
     ok $matrix * 2.2 ~~ $expected, "multiplication with real working with operator *";
     ok 2.2 * $matrix ~~ $expected, "multiplication with real working with operator *, reverse args";

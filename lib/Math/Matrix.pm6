@@ -686,37 +686,27 @@ multi method add(Math::Matrix:D: Numeric $s, Int :$row, Int :$column --> Math::M
 }
 
 
-multi method subtract(Math::Matrix:D: Numeric $r --> Math::Matrix:D ) {
-    self.map( * - $r );
-}
 
-multi method subtract(Math::Matrix:D: Math::Matrix $b where {self.size eqv $b.size} --> Math::Matrix:D ) {
-    my @subtract;
-    for ^$!row-count X ^$!column-count -> ($r, $c) {
-        @subtract[$r][$c] = @!rows[$r][$c] - $b!rows[$r][$c];
-    }
-    Math::Matrix.new( @subtract );
-}
-
-multi method multiply(Math::Matrix:D: Numeric $r --> Math::Matrix:D ) {
-    self.map( * * $r );
-}
-
+multi method multiply(Math::Matrix:D: Str $b --> Math::Matrix:D ) { self.multiply( Math::Matrix.new( $b ) ) }
+multi method multiply(Math::Matrix:D:     @b --> Math::Matrix:D ) { self.multiply( Math::Matrix.new( @b ) ) }
 multi method multiply(Math::Matrix:D: Math::Matrix $b where {self.size eqv $b.size} --> Math::Matrix:D ) {
-    my @multiply;
+    my @product;
     for ^$!row-count X ^$!column-count -> ($r, $c) {
-        @multiply[$r][$c] = @!rows[$r][$c] * $b!rows[$r][$c];
+        @product[$r][$c] = @!rows[$r][$c] * $b!rows[$r][$c];
     }
-    Math::Matrix.new( @multiply );
+    Math::Matrix.new( @product );
 }
-
-method multiply-row(Math::Matrix:D: Int $row, Numeric $factor --> Math::Matrix:D ) {
-    self!check-row-index($row);
-    self.map-row($row,{$_ * $factor});
-}
-
-method multiply-column(Math::Matrix:D: Int $column, Numeric $factor --> Math::Matrix:D ) {
-    self.map-column($column,{$_ * $factor});
+multi method multiply(Math::Matrix:D: Numeric $f, Int :$row, Int :$column --> Math::Matrix:D ) {
+    self!check-row-index($row)       if $row.defined;
+    self!check-column-index($column) if $column.defined;
+    if $row.defined and $column.defined {
+        my @m = self!clone-cells;
+        @m[$row][$column] += $f;
+        Math::Matrix.new(@m);
+    }
+    self.map-row(       $row, { $_ * $f} ) if $row.defined;
+    self.map-column( $column, { $_ * $f} ) if $column.defined;
+    self.map(                   *  * $f  );
 }
 
 method dot-product(Math::Matrix:D: Math::Matrix $b --> Math::Matrix:D ) {
