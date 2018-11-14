@@ -44,10 +44,10 @@ All computation heavy properties will be calculated lazily and will be cached.
 =item L<constructors|#constructors>: L<new []|#new-->, L<new ()|#new---1>, L<new ""|#new---2>, L<new-zero|#new-zero>, L<new-identity|#new-identity>, L<new-diagonal|#new-diagonal>, L<new-vector-product|#new-vector-product>
 =item L<accessors|#accessors>: L<cell|#cell>, L<AT-POS|#at-pos>, L<row|#row>, L<column|#column>, L<diagonal|#diagonal>, L<submatrix|#submatrix>
 =item L<converter|#type-conversion-and-output-formats>: L<Bool|#bool>, L<Numeric|#numeric>, L<Str|#str>, L<Array|#array>, L<Hash|#hash>, L<Range|#range>, L<list|#list>, L<list-rows|#list-rows>, L<list-columns|#list-columns>, L<gist|#gist>, L<perl|#perl>
-=item L<boolean properties|#boolean-properties>: L<is-zero|#is-zero>, L<is-identity|#is-identity>, L<is-square|#is-square>, L<is-diagonal|#is-diagonal>, L<is-diagonal-constant|#is-diagonal-constant>, 
-    L<is-diagonally-dominant|#is-diagonally-dominant>, L<is-upper-triangular|#is-upper-triangular>, L<is-lower-triangular|#is-lower-triangular>, L<is-invertible|#is-invertible>,
-    L<is-symmetric|#is-symmetric>, L<is-antisymmetric|#is-antisymmetric>, L<is-unitary|#is-unitary>, L<is-self-adjoint|#is-self-adjoint>, L<is-orthogonal|#is-orthogonal>,
-    L<is-positive-definite|#is-positive-definite>, L<is-positive-semidefinite|#is-positive-semidefinite>
+=item L<boolean properties|#boolean-properties>: L<zero|#is-zero>, L<identity|#identity>, L<square|#is-square>, L<diagonal|#is-diagonal>, L<diagonal-constant|#is-diagonal-constant>, 
+    L<diagonally-dominant|#is-diagonally-dominant>, L<upper-triangular|#is-upper-triangular>, L<lower-triangular|#is-lower-triangular>, L<invertible|#is-invertible>,
+    L<symmetric|#is-symmetric>, L<antisymmetric|#is-antisymmetric>, L<unitary|#is-unitary>, L<self-adjoint|#is-self-adjoint>, L<orthogonal|#is-orthogonal>,
+    L<positive-definite|#positive-definite>, L<positive-semidefinite|#is-positive-semidefinite>
 =item L<numeric properties|#numeric-properties>: L<size|#size>, L<density|#density>, L<trace|#trace>, L<determinant|#determinant>, L<rank|#rank>, L<nullity|#nullity>, L<norm|#norm>, L<condition|#condition>, L<minor|#minor>, L<narrowest-cell-type|#narrowest-cell-type>, L<widest-cell-type|#widest-cell-type>
 =item L<derived matrices|#derived-matrices>: L<transposed|#transposed>, L<negated|#negated>, L<conjugated|#conjugated>, L<adjugated|#adjugated>, L<inverted|#inverted>, L<reduced-row-echelon-form|#reduced-row-echelon-form>
 =item L<decompositions|#decompositions>: L<decompositionLUCrout|#decompositionlucrout>, L<decompositionLU|#decompositionlu>, L<decompositionCholesky|#decompositioncholesky>

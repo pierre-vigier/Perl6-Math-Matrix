@@ -56,7 +56,7 @@ All computation heavy properties will be calculated lazily and will be cached.
 
   * [converter](#type-conversion-and-output-formats): [Bool](#bool), [Numeric](#numeric), [Str](#str), [Array](#array), [Hash](#hash), [Range](#range), [list](#list), [list-rows](#list-rows), [list-columns](#list-columns), [gist](#gist), [perl](#perl)
 
-  * [boolean properties](#boolean-properties): [is-zero](#is-zero), [is-identity](#is-identity), [is-square](#is-square), [is-diagonal](#is-diagonal), [is-diagonal-constant](#is-diagonal-constant), [is-diagonally-dominant](#is-diagonally-dominant), [is-upper-triangular](#is-upper-triangular), [is-lower-triangular](#is-lower-triangular), [is-invertible](#is-invertible), [is-symmetric](#is-symmetric), [is-antisymmetric](#is-antisymmetric), [is-unitary](#is-unitary), [is-self-adjoint](#is-self-adjoint), [is-orthogonal](#is-orthogonal), [is-positive-definite](#is-positive-definite), [is-positive-semidefinite](#is-positive-semidefinite)
+  * [boolean properties](#boolean-properties): [zero](#is-zero), [identity](#identity), [square](#is-square), [diagonal](#is-diagonal), [diagonal-constant](#is-diagonal-constant), [diagonally-dominant](#is-diagonally-dominant), [upper-triangular](#is-upper-triangular), [lower-triangular](#is-lower-triangular), [invertible](#is-invertible), [symmetric](#is-symmetric), [antisymmetric](#is-antisymmetric), [unitary](#is-unitary), [self-adjoint](#is-self-adjoint), [orthogonal](#is-orthogonal), [positive-definite](#positive-definite), [positive-semidefinite](#is-positive-semidefinite)
 
   * [numeric properties](#numeric-properties): [size](#size), [density](#density), [trace](#trace), [determinant](#determinant), [rank](#rank), [nullity](#nullity), [norm](#norm), [condition](#condition), [minor](#minor), [narrowest-cell-type](#narrowest-cell-type), [widest-cell-type](#widest-cell-type)
 
@@ -386,7 +386,7 @@ True if only cells on the diagonal differ from 0. .is-upper-triangular and .is-l
 
 ### [is-diagonal-constant](#boolean-properties)
 
-Checks caller is a diagonal-constant or Töplitz matrix. True if every [diagonal](#diagonal) is the a collection of cells that hold the same value.
+Checks if caller is a diagonal-constant or Töplitz matrix. True if every [diagonal](#diagonal) is the a collection of cells that hold the same value.
 
     Example:     0  1  2
                 -1  0  1
