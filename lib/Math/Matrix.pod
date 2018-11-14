@@ -55,7 +55,7 @@ All computation heavy properties will be calculated lazily and will be cached.
 =item L<derived matrices|#derived-matrices>: L<transposed|#transposed>, L<negated|#negated>, L<conjugated|#conjugated>, L<adjugated|#adjugated>, L<inverted|#inverted>,
       L<reduced-row-echelon-form|#reduced-row-echelon-form>
 =item L<decompositions|#decompositions>: L<decompositionLUCrout|#decompositionlucrout>, L<decompositionLU|#decompositionlu>, L<decompositionCholesky|#decompositioncholesky>
-=item L<matrix math ops|#matrix-math-operations>: L<equal|#equal>, L<add|#add>, L<subtract|#subtract>, L<multiply|#multiply>, L<dot-product|#dot-product>, L<tensor-product|#tensor-product>
+=item L<matrix math ops|#matrix-math-operations>: L<equal|#equal>, L<add|#add>, L<multiply|#multiply>, L<dot-product|#dot-product>, L<tensor-product|#tensor-product>
 =item L<list like ops|#list-like-matrix-operations>: L<elems|#elems>, L<elem|#elem>, L<cont|#cont>,
       L<map-index|#map-index>, L<map-with-index|#map-with-index>, L<map|#map>, L<map-row|#map-row>, L<map-column|#map-column>,
       L<reduce|#reduce>, L<reduce-rows|#reduce-rows>, L<reduce-columns|#reduce-columns>
@@ -737,7 +737,7 @@ This decomposition works only on symmetric and definite positive matrices.
 
 Matrix math methods on full matrices and also parts (for gaussian table operations).
 
-They are: L<equal|#equal>, L<add|#add>, L<add|#subtract>, L<multiply|#multiply>, L<dot-product|#dot-product>, L<tensor-product|#tensor-product>.
+They are: L<equal|#equal>, L<add|#add>, L<multiply|#multiply>, L<dot-product|#dot-product>, L<tensor-product|#tensor-product>.
 
 
 =head3 L<equal|#matrix-math-operations>
@@ -753,7 +753,7 @@ of the first matrix on a particular position has to be equal to the element
 
 =head3 L<add|#matrix-math-operations>
 
-Adding a matrix, vector or scalar. 
+Adding a matrix, vector or scalar. Named arguments I<:row> and I<:column> have no fixed position.
 
 When adding two matrices, they have to be of the same size. Instead of
 Math::matrix object you can also provide the cell data as 
@@ -780,8 +780,8 @@ and give a list or array (which have to fit the matrix size).
                 3 4      3      3 7
 
 When adding a single number to the matrix, it will be added to every cell.
-If you provide a row or column number it will be only added to that,
-row or column or single cell (when both provided).
+If you provide a row or column number it will be only added to that row or column.
+In case you provide both, only a single cell gets a different value in the result matrix.
 
     $matrix.add( $number );       # adds number from every cell 
     $matrix + $number;            # works too
@@ -794,18 +794,6 @@ row or column or single cell (when both provided).
 
     $matrix.add( row => 1, 3 ):             [[1,2],[6,7]]
     $matrix.add( row => 1, column=> 0, 2 ): [[1,2],[5,4]]
-
-=head3 L<subtract|#matrix-math-operations>
-
-Works analogous to add - it's just for convenance.
-
-    my $diff = $matrix.subtract( $number );   # subtracts number from every cell (scalar subtraction)
-    my $sd = $matrix - $number;               # works too
-    my $sd = $number - $matrix ;              # works too
-
-    my $diff = $matrix.subtract( $matrix2 );  # cell wise subraction of 2 same sized matrices
-    my $d = $matrix - $matrix2;               # works too
-
 
 =head3 L<multiply|#matrix-math-operations>
 
@@ -1110,7 +1098,7 @@ Operators with method aliases, for more explanations loo into L<ops chapter|#ope
 =item infix ==  -->  L<equal|#equal>
 =item infix ~~  -->  L<equal|#equal> ACCEPTS
 =item infix +  -->  L<add|#add>
-=item infix -  -->  L<subtract|#subtract>
+=item infix -  -->  L<add|#subtract>
 =item infix *  -->  L<multiply|#multiply>
 =item infix ⋅ dot  -->  L<dot-product|#dot-product>
 =item infix ÷  -->  dot-product L<inverted|#inverted>

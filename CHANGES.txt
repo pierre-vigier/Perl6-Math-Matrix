@@ -5,6 +5,7 @@
     * get more than main diagonal (emulated mathematica API)
     * question for strict diagonal matrix (upper and lower)
     ! condense API of add and multiply
+    ! remove subtract
     = streamline TOC
 
  0.3.6:

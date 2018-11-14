@@ -1,7 +1,7 @@
 use lib "lib";
 use Test;
 use Math::Matrix;
-plan 9;
+plan 8;
 
 my $matrix = Math::Matrix.new([[1,2],[3,4]]);
 my $m1 = Math::Matrix.new([[1]]);
@@ -47,17 +47,6 @@ subtest {
 
     dies-ok { $matrix.add(Math::Matrix.new([[1]]))}, "matrix size out of bound";
 }, "Matrix Addition";
-
-
-subtest {
-    plan 3;
-    my $matrix2 = Math::Matrix.new([[4,3],[2,1]]);
-    my $expected = Math::Matrix.new([[ -3 , -1 ],[ 1 , 3 ]]);
-
-    ok $matrix.subtract( $matrix2 ) ~~ $expected,         "Substraction of matrices";
-    ok $matrix - $matrix2 ~~ $expected,                   "Substraction of matrices using - operator";
-    dies-ok { $matrix.subtract(Math::Matrix.new([[1]]))}, "matrix size out of bound";
-}, "Subtraction";
 
 
 subtest {

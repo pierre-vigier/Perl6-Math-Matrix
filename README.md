@@ -64,7 +64,7 @@ All computation heavy properties will be calculated lazily and will be cached.
 
   * [decompositions](#decompositions): [decompositionLUCrout](#decompositionlucrout), [decompositionLU](#decompositionlu), [decompositionCholesky](#decompositioncholesky)
 
-  * [matrix math ops](#matrix-math-operations): [equal](#equal), [add](#add), [subtract](#subtract), [multiply](#multiply), [dot-product](#dot-product), [tensor-product](#tensor-product)
+  * [matrix math ops](#matrix-math-operations): [equal](#equal), [add](#add), [multiply](#multiply), [dot-product](#dot-product), [tensor-product](#tensor-product)
 
   * [list like ops](#list-like-matrix-operations): [elems](#elems), [elem](#elem), [cont](#cont), [map-index](#map-index), [map-with-index](#map-with-index), [map](#map), [map-row](#map-row), [map-column](#map-column), [reduce](#reduce), [reduce-rows](#reduce-rows), [reduce-columns](#reduce-columns)
 
@@ -654,7 +654,7 @@ This decomposition works only on symmetric and definite positive matrices.
 
 Matrix math methods on full matrices and also parts (for gaussian table operations).
 
-They are: [equal](#equal), [add](#add), [add](#subtract), [multiply](#multiply), [dot-product](#dot-product), [tensor-product](#tensor-product).
+They are: [equal](#equal), [add](#add), [multiply](#multiply), [dot-product](#dot-product), [tensor-product](#tensor-product).
 
 ### [equal](#matrix-math-operations)
 
@@ -666,7 +666,7 @@ Checks two matrices for equality. They have to be of same size and every element
 
 ### [add](#matrix-math-operations)
 
-Adding a matrix, vector or scalar. 
+Adding a matrix, vector or scalar. Named arguments *:row* and *:column* have no fixed position.
 
 When adding two matrices, they have to be of the same size. Instead of Math::matrix object you can also provide the cell data as [new []](#new--), [new ()](#new---1) or [new ""](#new---2) would accept it.
 
@@ -689,7 +689,7 @@ To add a vector you have to specify to which row or column it should be added an
     Example:    1 2  +   2   =  1 4
                 3 4      3      3 7
 
-When adding a single number to the matrix, it will be added to every cell. If you provide a row or column number it will be only added to that, row or column or single cell (when both provided).
+When adding a single number to the matrix, it will be added to every cell. If you provide a row or column number it will be only added to that row or column. In case you provide both, only a single cell gets a different value in the result matrix.
 
     $matrix.add( $number );       # adds number from every cell 
     $matrix + $number;            # works too
@@ -702,17 +702,6 @@ When adding a single number to the matrix, it will be added to every cell. If yo
 
     $matrix.add( row => 1, 3 ):             [[1,2],[6,7]]
     $matrix.add( row => 1, column=> 0, 2 ): [[1,2],[5,4]]
-
-### [subtract](#matrix-math-operations)
-
-Works analogous to add - it's just for convenance.
-
-    my $diff = $matrix.subtract( $number );   # subtracts number from every cell (scalar subtraction)
-    my $sd = $matrix - $number;               # works too
-    my $sd = $number - $matrix ;              # works too
-
-    my $diff = $matrix.subtract( $matrix2 );  # cell wise subraction of 2 same sized matrices
-    my $d = $matrix - $matrix2;               # works too
 
 ### [multiply](#matrix-math-operations)
 
@@ -1000,7 +989,7 @@ Operators with method aliases, for more explanations loo into [ops chapter](#ope
 
   * infix + --> [add](#add)
 
-  * infix - --> [subtract](#subtract)
+  * infix - --> [add](#subtract)
 
   * infix * --> [multiply](#multiply)
 
