@@ -1,7 +1,7 @@
 use lib "lib";
 use Test;
 use Math::Matrix;
-plan 59;
+plan 65;
 
 my $matrixa = Math::Matrix.new([[1,2],[3,4]]);
 my $matrixc = Math::Matrix.new([[8,8],[8,8]]);
@@ -27,28 +27,37 @@ nok $matrixd.is-square,   "Is not a square matrix";
 ok $zero.is-zero,         "Is a zero matrix";
 nok $identity.is-zero,    "Is not a zero matrix";
 
-ok $ut.is-upper-triangular,       "Is an upper triangular matrix";
-ok $diagonal.is-upper-triangular, "Diagonal are upper triangular";
-nok $matrixa.is-upper-triangular, "Is not an upper triangular matrix";
-nok $lt.is-upper-triangular,      "lower is no upper triangular matrix";
-
-ok $lt.is-lower-triangular,       "Is an lower triangular matrix";
-ok $diagonal.is-lower-triangular, "Diagonal are lower triangular";
-nok $matrixc.is-lower-triangular, "Is not an lower diagonal matrix";
-nok $ut.is-lower-triangular,      "upper is no lower triangular matrix";
-
 my $almostidentity = Math::Matrix.new([ [ 1, 0, 0 ], [ 0, 1, 0 ] ]);
-ok $identity.is-identity,        "Is an identity matrix";
-nok $diagonal.is-identity,       "Is not an identity matrix";
-nok $almostidentity.is-identity, "Is not an identity matrix";
+ok $identity.is-identity,         "Is an identity matrix";
+nok $diagonal.is-identity,        "diagonal is not an identity matrix";
+nok $almostidentity.is-identity,  "none square is not an identity matrix";
 
-nok $almostidentity.is-diagonal, "Is not an diagonal matrix";
-ok  $identity.is-diagonal,       "Is an diagonal matrix";
-ok  $diagonal.is-diagonal,       "Diagonal is an diagonal matrix";
-ok Math::Matrix.new-zero(3).is-diagonal, "square zero matrix is diagonal";
-nok $zero.is-diagonal,           "none square matrix is not diagonal";
-nok $lt.is-diagonal,             "Lower triangular matrix is no an diagonal matrix";
-nok $ut.is-diagonal,             "Upper triangular matrix is no an diagonal matrix";
+my $z3 = Math::Matrix.new-zero(3);
+my $sut = Math::Matrix.new([[0,1],[0,0]]);
+ok $ut.is-upper-triangular,          "Is an upper triangular matrix";
+ok $ut.is-upper-triangular(:!strict),"Is an upper triangular, none strict matrix";
+nok $ut.is-upper-triangular(:strict),"Upper triangular matrix is not strict";
+ok $sut.is-upper-triangular(:strict),"Is strictly upper triangular matrix";
+ok $diagonal.is-upper-triangular,    "Diagonal are upper triangular";
+nok $matrixa.is-upper-triangular,    "Is not an upper triangular matrix";
+nok $lt.is-upper-triangular,         "lower triangular is no upper triangular matrix";
+
+my $slt = Math::Matrix.new([[0,0],[1,0]]);
+ok $lt.is-lower-triangular,          "Is an lower triangular matrix";
+ok $lt.is-lower-triangular(:!strict),"Is an lower triangular, none strict matrix";
+nok $lt.is-lower-triangular(:strict),"Lower triangugal matrix is not strict";
+ok $slt.is-lower-triangular(:strict),"Is a strictly lower triangular matrix";
+ok $diagonal.is-lower-triangular,    "Diagonal are lower triangular";
+nok $matrixc.is-lower-triangular,    "Is not an lower diagonal matrix";
+nok $ut.is-lower-triangular,         "upper triangular is no lower triangular matrix";
+
+nok $almostidentity.is-diagonal,  "none square is not an diagonal matrix";
+ok  $identity.is-diagonal,        "Is an diagonal matrix";
+ok  $diagonal.is-diagonal,        "Diagonal is an diagonal matrix";
+ok  $z3.is-diagonal,              "square zero matrix is diagonal";
+nok $zero.is-diagonal,            "none square zero matrix is not diagonal";
+nok $lt.is-diagonal,              "Lower triangular matrix is no an diagonal matrix";
+nok $ut.is-diagonal,              "Upper triangular matrix is no an diagonal matrix";
 
 ok $zero.is-diagonal-constant,      "zero matrix is diagonal constant";
 ok $identity.is-diagonal-constant,  "identity matrix is diagonal constant";

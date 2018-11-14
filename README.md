@@ -58,7 +58,7 @@ All computation heavy properties will be calculated lazily and will be cached.
 
   * [boolean properties](#boolean-properties): [zero](#is-zero), [identity](#identity), [square](#is-square), [diagonal](#is-diagonal), [diagonal-constant](#is-diagonal-constant), [diagonally-dominant](#is-diagonally-dominant), [upper-triangular](#is-upper-triangular), [lower-triangular](#is-lower-triangular), [invertible](#is-invertible), [symmetric](#is-symmetric), [antisymmetric](#is-antisymmetric), [unitary](#is-unitary), [self-adjoint](#is-self-adjoint), [orthogonal](#is-orthogonal), [positive-definite](#positive-definite), [positive-semidefinite](#is-positive-semidefinite)
 
-  * [numeric properties](#numeric-properties): [size](#size), [density](#density), [trace](#trace), [determinant](#determinant), [rank](#rank), [nullity](#nullity), [norm](#norm), [condition](#condition), [minor](#minor), [narrowest-cell-type](#narrowest-cell-type), [widest-cell-type](#widest-cell-type)
+  * [numeric properties](#numeric-properties): [size](#size), [density](#density), [trace](#trace), [determinant](#determinant), [rank](#rank), [nullity](#nullity), [norm](#norm), [condition](#condition), [minor](#minor), [narrowest-](#narrowest-cell-type), [widest-cell-type](#widest-cell-type)
 
   * [derived matrices](#derived-matrices): [transposed](#transposed), [negated](#negated), [conjugated](#conjugated), [adjugated](#adjugated), [inverted](#inverted), [reduced-row-echelon-form](#reduced-row-echelon-form)
 
@@ -362,19 +362,37 @@ True if every cell on the diagonal (where row index equals column index) is 1 an
 
 ### [is-upper-triangular](#boolean-properties)
 
-True if every cell below the diagonal (where row index is greater than column index) is 0.
+True if every cell below the [diagonal](#diagonal) (where row index is greater than column index) is 0.
 
     Example:    1 2 5
                 0 3 8
                 0 0 7
 
+There is an optional, boolean argument named :strict.
+
+    $matrix.is-upper-triangular(:!strict);   # asks for matrix is none strict triangular (default)
+    $matrix.is-upper-triangular(:strict);    # search for strictly triangular matrix
+
+    Example:    0 2 5
+                0 0 8
+                0 0 0
+
 ### [is-lower-triangular](#boolean-properties)
 
-True if every cell above the diagonal (where row index is smaller than column index) is 0.
+True if every cell above the [diagonal](#diagonal) (where row index is smaller than column index) is 0.
 
     Example:    1 0 0
                 2 3 0
                 5 8 7
+
+Has also an optional, boolean argument named :strict.
+
+    $matrix.is-lower-triangular(:!strict);   # asks for matrix is none strict triangular (default)
+    $matrix.is-lower-triangular(:strict);    # search for strictly triangular matrix
+
+    Example:    0 0 0
+                2 0 0
+                5 8 0
 
 ### [is-diagonal](#boolean-properties)
 
@@ -394,11 +412,11 @@ Checks if caller is a diagonal-constant or Töplitz matrix. True if every [diago
 
 ### [is-diagonally-dominant](#boolean-properties)
 
-True if cells on the diagonal have a bigger (strict) or equal absolute value than the sum of the other absolute values in the column or row.
+True when cells on the [diagonal](#diagonal) have a bigger (if strict) or at least equal (in none strict) absolute value than the sum of its row (sum of absolute values of the row except diagonal element).
 
     if $matrix.is-diagonally-dominant {
-    $matrix.is-diagonally-dominant(:!strict)   # same thing (default)
-    $matrix.is-diagonally-dominant(:strict)    # diagonal elements (DE) are stricly greater (>)
+    $matrix.is-diagonally-dominant(:!strict)      # same thing (default)
+    $matrix.is-diagonally-dominant(:strict)       # diagonal elements (DE) are stricly greater (>)
     $matrix.is-diagonally-dominant(:!strict, :along<column>) # default
     $matrix.is-diagonally-dominant(:strict,  :along<row>)    # DE > sum of rest row
     $matrix.is-diagonally-dominant(:!strict, :along<both>)   # DE >= sum of rest row and rest column

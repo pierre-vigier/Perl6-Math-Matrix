@@ -17,8 +17,6 @@ has Bool $!is-zero is lazy;
 has Bool $!is-identity is lazy;
 has Bool $!is-diagonal is lazy;
 has Bool $!is-diagonal-constant is lazy;
-has Bool $!is-lower-triangular is lazy;
-has Bool $!is-upper-triangular is lazy;
 has Bool $!is-square is lazy;
 has Bool $!is-symmetric is lazy;
 has Bool $!is-antisymmetric is lazy;
@@ -72,8 +70,7 @@ multi method new (Str $m){
     self.bless( rows => @m );
 }
 
-submethod BUILD( :@rows!, :$density, :$trace, :$determinant, :$rank, :$nullity,
-                 :$is-zero, :$is-identity, :$is-symmetric, :$is-upper-triangular, :$is-lower-triangular ) {
+submethod BUILD( :@rows!, :$density, :$trace, :$determinant, :$rank, :$nullity, :$is-zero, :$is-identity, :$is-symmetric) {
     @!rows        = self!AoA-clone(@rows);
     $!row-count   = @rows.elems;
     $!column-count = @rows[0].elems;
@@ -85,8 +82,6 @@ submethod BUILD( :@rows!, :$density, :$trace, :$determinant, :$rank, :$nullity,
     $!is-zero     = $is-zero if $is-zero.defined;
     $!is-identity = $is-identity if $is-identity.defined;
     $!is-symmetric = $is-symmetric if $is-symmetric.defined;
-    $!is-upper-triangular = $is-upper-triangular if $is-upper-triangular.defined;
-    $!is-lower-triangular = $is-lower-triangular if $is-lower-triangular.defined;
 }
 
 multi method new-zero(PosInt $size) {
@@ -121,12 +116,12 @@ method new-diagonal( *@diag ){
 
 method new-lower-triangular( @m ) {
     #don't want to trust outside of the class that a matrix is really triangular
-    self.bless( rows => @m, is-lower-triangular => True );
+    self.bless( rows => @m );
 }
 
 method new-upper-triangular( @m ) {
     #don't want to trust outside of the class that a matrix is really triangular
-    self.bless( rows => @m, is-upper-triangular => True );
+    self.bless( rows => @m );
 }
 
 method new-vector-product (@column_vector, @row_vector){
@@ -260,18 +255,20 @@ method !build_is-identity(Math::Matrix:D: --> Bool) {
     True;
 }
 
-method !build_is-upper-triangular(Math::Matrix:D: Bool :$strict = False --> Bool) {
+method is-upper-triangular(Math::Matrix:D: Bool :$strict = False --> Bool) {
     return False unless self.is-square;
+    my $cmp_op = $strict ?? &[>=] !! &[>];
     for ^$!row-count X ^$!column-count -> ($r, $c) {
-        return False if @!rows[$r][$c] != 0 and $r > $c;
+        return False if @!rows[$r][$c] != 0 and $cmp_op.($r, $c);
     }
     True;
 }
 
-method !build_is-lower-triangular(Math::Matrix:D: Bool :$strict = False --> Bool) {
+method is-lower-triangular(Math::Matrix:D: Bool :$strict = False --> Bool) {
     return False unless self.is-square;
+    my $cmp_op = $strict ?? &[<=] !! &[<];
     for ^$!row-count X ^$!column-count -> ($r, $c) {
-        return False if @!rows[$r][$c] != 0 and $r < $c;
+        return False if @!rows[$r][$c] != 0 and $cmp_op.($r, $c);
     }
     True;
 }

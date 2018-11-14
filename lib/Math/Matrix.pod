@@ -41,19 +41,27 @@ In that sense the library is thread safe.
 All computation heavy properties will be calculated lazily and will be cached.
 
 =head1 L<METHODS|#synopsis>
-=item L<constructors|#constructors>: L<new []|#new-->, L<new ()|#new---1>, L<new ""|#new---2>, L<new-zero|#new-zero>, L<new-identity|#new-identity>, L<new-diagonal|#new-diagonal>, L<new-vector-product|#new-vector-product>
+=item L<constructors|#constructors>: L<new []|#new-->, L<new ()|#new---1>, L<new ""|#new---2>,
+      L<new-zero|#new-zero>, L<new-identity|#new-identity>, L<new-diagonal|#new-diagonal>, L<new-vector-product|#new-vector-product>
 =item L<accessors|#accessors>: L<cell|#cell>, L<AT-POS|#at-pos>, L<row|#row>, L<column|#column>, L<diagonal|#diagonal>, L<submatrix|#submatrix>
-=item L<converter|#type-conversion-and-output-formats>: L<Bool|#bool>, L<Numeric|#numeric>, L<Str|#str>, L<Array|#array>, L<Hash|#hash>, L<Range|#range>, L<list|#list>, L<list-rows|#list-rows>, L<list-columns|#list-columns>, L<gist|#gist>, L<perl|#perl>
+=item L<converter|#type-conversion-and-output-formats>: L<Bool|#bool>, L<Numeric|#numeric>, L<Str|#str>,
+      L<Array|#array>, L<Hash|#hash>, L<Range|#range>, L<list|#list>, L<list-rows|#list-rows>, L<list-columns|#list-columns>, L<gist|#gist>, L<perl|#perl>
 =item L<boolean properties|#boolean-properties>: L<zero|#is-zero>, L<identity|#identity>, L<square|#is-square>, L<diagonal|#is-diagonal>, L<diagonal-constant|#is-diagonal-constant>, 
-    L<diagonally-dominant|#is-diagonally-dominant>, L<upper-triangular|#is-upper-triangular>, L<lower-triangular|#is-lower-triangular>, L<invertible|#is-invertible>,
-    L<symmetric|#is-symmetric>, L<antisymmetric|#is-antisymmetric>, L<unitary|#is-unitary>, L<self-adjoint|#is-self-adjoint>, L<orthogonal|#is-orthogonal>,
-    L<positive-definite|#positive-definite>, L<positive-semidefinite|#is-positive-semidefinite>
-=item L<numeric properties|#numeric-properties>: L<size|#size>, L<density|#density>, L<trace|#trace>, L<determinant|#determinant>, L<rank|#rank>, L<nullity|#nullity>, L<norm|#norm>, L<condition|#condition>, L<minor|#minor>, L<narrowest-cell-type|#narrowest-cell-type>, L<widest-cell-type|#widest-cell-type>
-=item L<derived matrices|#derived-matrices>: L<transposed|#transposed>, L<negated|#negated>, L<conjugated|#conjugated>, L<adjugated|#adjugated>, L<inverted|#inverted>, L<reduced-row-echelon-form|#reduced-row-echelon-form>
+      L<diagonally-dominant|#is-diagonally-dominant>, L<upper-triangular|#is-upper-triangular>, L<lower-triangular|#is-lower-triangular>, L<invertible|#is-invertible>,
+      L<symmetric|#is-symmetric>, L<antisymmetric|#is-antisymmetric>, L<unitary|#is-unitary>, L<self-adjoint|#is-self-adjoint>, L<orthogonal|#is-orthogonal>,
+      L<positive-definite|#positive-definite>, L<positive-semidefinite|#is-positive-semidefinite>
+=item L<numeric properties|#numeric-properties>: L<size|#size>, L<density|#density>, L<trace|#trace>, L<determinant|#determinant>, L<rank|#rank>, L<nullity|#nullity>,
+      L<norm|#norm>, L<condition|#condition>, L<minor|#minor>, L<narrowest-|#narrowest-cell-type>, L<widest-cell-type|#widest-cell-type>
+=item L<derived matrices|#derived-matrices>: L<transposed|#transposed>, L<negated|#negated>, L<conjugated|#conjugated>, L<adjugated|#adjugated>, L<inverted|#inverted>,
+      L<reduced-row-echelon-form|#reduced-row-echelon-form>
 =item L<decompositions|#decompositions>: L<decompositionLUCrout|#decompositionlucrout>, L<decompositionLU|#decompositionlu>, L<decompositionCholesky|#decompositioncholesky>
-=item L<matrix math ops|#matrix-math-operations>: L<equal|#equal>, L<add|#add>, L<subtract|#subtract>, L<add-row|#add-row>, L<add-column|#add-column>, L<multiply|#multiply>, L<multiply-row|#multiply-row>, L<multiply-column|#multiply-column>, L<dot-product|#dot-product>, L<tensor-product|#tensor-product>
-=item L<list like ops|#list-like-matrix-operations>: L<elems|#elems>, L<elem|#elem>, L<cont|#cont>, L<map-index|#map-index>, L<map-with-index|#map-with-index>, L<map|#map>, L<map-row|#map-row>, L<map-column|#map-column>, L<reduce|#reduce>, L<reduce-rows|#reduce-rows>, L<reduce-columns|#reduce-columns>
-=item L<structural ops|#structural-matrix-operations>: L<move-row|#move-row>, L<move-column|#move-column>, L<swap-rows|#swap-rows>, L<swap-columns|#swap-columns>, L<splice-rows|#splice-rows>, L<splice-columns|#splice-columns>
+=item L<matrix math ops|#matrix-math-operations>: L<equal|#equal>, L<add|#add>, L<subtract|#subtract>, L<add-row|#add-row>, L<add-column|#add-column>,
+      L<multiply|#multiply>, L<multiply-row|#multiply-row>, L<multiply-column|#multiply-column>, L<dot-product|#dot-product>, L<tensor-product|#tensor-product>
+=item L<list like ops|#list-like-matrix-operations>: L<elems|#elems>, L<elem|#elem>, L<cont|#cont>,
+      L<map-index|#map-index>, L<map-with-index|#map-with-index>, L<map|#map>, L<map-row|#map-row>, L<map-column|#map-column>,
+      L<reduce|#reduce>, L<reduce-rows|#reduce-rows>, L<reduce-columns|#reduce-columns>
+=item L<structural ops|#structural-matrix-operations>: L<move-row|#move-row>, L<move-column|#move-column>, L<swap-rows|#swap-rows>, L<swap-columns|#swap-columns>,
+      L<splice-rows|#splice-rows>, L<splice-columns|#splice-columns>
 =item L<shortcuts|#shortcuts>:   L<T|#transposed>,   L<conj|#conjugated>,   L<det|#determinant>,   L<rref|#reduced-row-echelon-form>
 =item L<operators|#operator-methods>:   MM,   ?,  ~,   |,  @,  %,  +,   -,   *,   **,   dot,   ⋅,   ÷,   X*,   ⊗,   ==,   ~~,   ❘ ❘,   ‖ ‖,   [ ]
 
@@ -395,19 +403,39 @@ and any other cell is 0.
 
 =head3 L<is-upper-triangular|#boolean-properties>
 
-True if every cell below the diagonal (where row index is greater than column index) is 0.
+True if every cell below the L<diagonal|#diagonal> (where row index is greater than column index) is 0.
 
     Example:    1 2 5
                 0 3 8
                 0 0 7
 
+There is an optional, boolean argument named :strict.
+
+    $matrix.is-upper-triangular(:!strict);   # asks for matrix is none strict triangular (default)
+    $matrix.is-upper-triangular(:strict);    # search for strictly triangular matrix
+
+    Example:    0 2 5
+                0 0 8
+                0 0 0
+
+
 =head3 L<is-lower-triangular|#boolean-properties>
 
-True if every cell above the diagonal (where row index is smaller than column index) is 0.
+True if every cell above the L<diagonal|#diagonal> (where row index is smaller than column index) is 0.
 
     Example:    1 0 0
                 2 3 0
                 5 8 7
+
+Has also an optional, boolean argument named :strict.
+
+    $matrix.is-lower-triangular(:!strict);   # asks for matrix is none strict triangular (default)
+    $matrix.is-lower-triangular(:strict);    # search for strictly triangular matrix
+
+    Example:    0 0 0
+                2 0 0
+                5 8 0
+
 
 =head3 L<is-diagonal|#boolean-properties>
 
@@ -429,12 +457,12 @@ True if every L<diagonal|#diagonal> is the a collection of cells that hold the s
 
 =head3 L<is-diagonally-dominant|#boolean-properties>
 
-True if cells on the diagonal have a bigger (strict) or equal absolute value than the
-sum of the other absolute values in the column or row.
+True when cells on the L<diagonal|#diagonal> have a bigger (if strict) or at least equal (in none strict)
+absolute value than the sum of its row (sum of absolute values of the row except diagonal element).
 
    if $matrix.is-diagonally-dominant {
-   $matrix.is-diagonally-dominant(:!strict)   # same thing (default)
-   $matrix.is-diagonally-dominant(:strict)    # diagonal elements (DE) are stricly greater (>)
+   $matrix.is-diagonally-dominant(:!strict)      # same thing (default)
+   $matrix.is-diagonally-dominant(:strict)       # diagonal elements (DE) are stricly greater (>)
    $matrix.is-diagonally-dominant(:!strict, :along<column>) # default
    $matrix.is-diagonally-dominant(:strict,  :along<row>)    # DE > sum of rest row
    $matrix.is-diagonally-dominant(:!strict, :along<both>)   # DE >= sum of rest row and rest column
