@@ -1,12 +1,12 @@
 
  0.3.7:
-    § 2018.11.
+    § 2018.11.15
     + added bool property is-diagonal-constnat
     * get more than main diagonal (emulated mathematica API)
     * question for strict diagonal matrix (upper and lower)
     ! condense API of add and multiply
     ! remove subtract
-    = streamline TOC
+    = streamlined TOC
 
  0.3.6:
     § 2018.10.18

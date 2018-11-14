@@ -1,7 +1,7 @@
 use v6.c;
 need Math::Matrix::Util;
 
-unit class Math::Matrix:ver<0.3.6>:auth<github:pierre-vigier> does Math::Matrix::Util;
+unit class Math::Matrix:ver<0.3.7>:auth<github:pierre-vigier> does Math::Matrix::Util;
 use AttrX::Lazy;
 
 ################################################################################
@@ -678,11 +678,11 @@ multi method add(Math::Matrix:D: Numeric $s, Int :$row, Int :$column --> Math::M
     if $row.defined and $column.defined {
         my @m = self!clone-cells;
         @m[$row][$column] += $s;
-        Math::Matrix.new(@m);
+        return Math::Matrix.new(@m);
     }
-    self.map-row(       $row, { $_ + $s} ) if $row.defined;
-    self.map-column( $column, { $_ + $s} ) if $column.defined;
-    self.map(                   *  + $s  );
+    return self.map-row(       $row, { $_ + $s} ) if $row.defined;
+    return self.map-column( $column, { $_ + $s} ) if $column.defined;
+           self.map(                   *  + $s  );
 }
 
 
@@ -701,12 +701,12 @@ multi method multiply(Math::Matrix:D: Numeric $f, Int :$row, Int :$column --> Ma
     self!check-column-index($column) if $column.defined;
     if $row.defined and $column.defined {
         my @m = self!clone-cells;
-        @m[$row][$column] += $f;
-        Math::Matrix.new(@m);
+        @m[$row][$column] *= $f;
+        return  Math::Matrix.new(@m);
     }
-    self.map-row(       $row, { $_ * $f} ) if $row.defined;
-    self.map-column( $column, { $_ * $f} ) if $column.defined;
-    self.map(                   *  * $f  );
+    return self.map-row(       $row, { $_ * $f} ) if $row.defined;
+    return self.map-column( $column, { $_ * $f} ) if $column.defined;
+           self.map(                   *  * $f  );
 }
 
 method dot-product(Math::Matrix:D: Math::Matrix $b --> Math::Matrix:D ) {

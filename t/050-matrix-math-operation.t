@@ -66,11 +66,13 @@ subtest {
 }, "Partial Scalar Multiplication";
 
 subtest {
-    plan 3;
-    my $expected = Math::Matrix.new([[1.1, 2.2],[3.3, 4.4]]);
+    plan 4;
+    my $expected = Math::Matrix.new([[2.2, 4.4],[6.6, 8.8]]);
+    my $expected2 = Math::Matrix.new([[1, 2],[3, 8.8]]);
     ok $matrix.multiply( 2.2 ) ~~ $expected, "multiplication with real working";
-    ok $matrix * 2.2 ~~ $expected, "multiplication with real working with operator *";
-    ok 2.2 * $matrix ~~ $expected, "multiplication with real working with operator *, reverse args";
+    ok $matrix * 2.2 ~~ $expected, "scalar multiplication with operator *";
+    ok 2.2 * $matrix ~~ $expected, "operator *, reverse args";
+    ok $matrix.multiply(row => 1, column => 1, 2.2 ) ~~ $expected2, "multiply only one cell";
 }, "Scalar Multiplication";
 
 subtest {
