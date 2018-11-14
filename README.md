@@ -716,13 +716,13 @@ Unlike the [dot-product](#dot-product) and [tensor-product](#tensor-product), th
     my $product = $matrix.multiply( $number );   # multiply every cell with number
     my $p = $matrix * $number;                   # works too
 
-    my $product = $matrix.multiply( $matrix2 );  # cell wise multiplication of same size matrices
-    my $p = $matrix * $matrix2;                  # works too
-
     Example:    1 2  *  5    =   5 10 
                 3 4             15 20
 
-                1 2  *  2 3  =   2  6
+    my $product = $matrix.multiply( $matrix2 );  # cell wise multiplication of same size matrices
+    my $p = $matrix * $matrix2;                  # works too
+
+    Example:    1 2  *  2 3  =   2  6
                 3 4     4 5     12 20
 
 
