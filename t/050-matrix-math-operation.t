@@ -1,40 +1,37 @@
 use lib "lib";
 use Test;
 use Math::Matrix;
-plan 10;
+plan 9;
 
 my $matrix = Math::Matrix.new([[1,2],[3,4]]);
 my $m1 = Math::Matrix.new([[1]]);
 
 subtest {
-   plan 1;
-   ok( ( ｜ $matrix ｜  == -2), 'unicode determinant operator');
-}, "Determinant";
+    plan 1;
+    my $expected1 = Math::Matrix.new([[2,3],[4,5]]);
+    ok $matrix.add(1) ~~ $expected1,  "add a scalar to all cells";
+}, "Scalar Addition";
+
 
 subtest {
-   plan 2;
-   ok ‖ $m1 ‖ == 1, 'norm on simplest matrix';
-   ok ‖ $matrix ‖ == 5.477225575051661, 'norm on default matrix';
-}, "L2 Norm";
-
-subtest {
-    plan 10;
+    plan 11;
     my $expected1 = Math::Matrix.new([[3,5],[3,4]]);
     my $expected2 = Math::Matrix.new([[1,2],[5,7]]);
     my $expected3 = Math::Matrix.new([[3,2],[6,4]]);
     my $expected4 = Math::Matrix.new([[1,4],[3,7]]);
 
-    ok $matrix.add-row(0,[2,3]) ~~ $expected1,  "add a row";
-    ok $matrix.add-row(1,[2,3]) ~~ $expected2,  "add another row";
-    dies-ok { $matrix.add-column(1,(1,2)) },    "row is not array";
-    dies-ok { $matrix.add-row(3,[1,2]) },       "row index out of bound";
-    dies-ok { $matrix.add-row(1,[1])   },       "row size out of bound";
+    ok $matrix.add(row => 0, [2,3]) ~~ $expected1,   "add a row";
+    ok $matrix.add(row => 1, [2,3]) ~~ $expected2,   "add another row";
+    ok $matrix.add(row => 1, (2,3)) ~~ $expected2,   "list syntax for adding row";
+    ok $matrix.add([2,3], row => 1) ~~ $expected2,   "column number can be second argument";
+    dies-ok { $matrix.add(row => 3, [1,2]) },        "row index out of bound";
+    dies-ok { $matrix.add(row => 1, [1])   },        "vector size out of bound";
 
-    ok $matrix.add-column(0,[2,3])~~ $expected3,"add a column";
-    ok $matrix.add-column(1,[2,3])~~ $expected4,"add another column";
-    dies-ok { $matrix.add-column(1,(1,2)) },    "column is not array";
-    dies-ok { $matrix.add-column(3,[1,2]) },    "column index out of bound";
-    dies-ok { $matrix.add-column(1,[1])   },    "column size out of bound";
+    ok $matrix.add( column => 0, [2,3])~~ $expected3,"add a column";
+    ok $matrix.add( column => 1, [2,3])~~ $expected4,"add another column";
+    ok $matrix.add( column => 1, (2,3))~~ $expected4,"list syntax is also good for adding column";
+    dies-ok { $matrix.add(column => 3, [1,2]) },    "column index out of bound";
+    dies-ok { $matrix.add(column => 1, [1,])   },    "vector size out of bound";
 }, "Vector Addition";
 
 
@@ -108,7 +105,7 @@ subtest {
     my $matrix   = Math::Matrix.new([[1,2],[3,4]]);
     my $identity = Math::Matrix.new-identity(2);
 
-    ok $a.dot-product( $b ) ~~ $p,            "Simple multiplication check";
+    ok $a.dot-product( $b ) ~~ $p,           "Simple multiplication check";
     ok ($a ⋅ $b) ~~ $p,                      "Simple multiplication check with ⋅ operator";
     ok ($a dot $b) ~~ $p,                    "Simple multiplication check with ⋅ operator, texas form";
     ok $matrix ** 0 ~~ $identity,            "times one means no multiplication";

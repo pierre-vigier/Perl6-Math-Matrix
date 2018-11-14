@@ -55,8 +55,7 @@ All computation heavy properties will be calculated lazily and will be cached.
 =item L<derived matrices|#derived-matrices>: L<transposed|#transposed>, L<negated|#negated>, L<conjugated|#conjugated>, L<adjugated|#adjugated>, L<inverted|#inverted>,
       L<reduced-row-echelon-form|#reduced-row-echelon-form>
 =item L<decompositions|#decompositions>: L<decompositionLUCrout|#decompositionlucrout>, L<decompositionLU|#decompositionlu>, L<decompositionCholesky|#decompositioncholesky>
-=item L<matrix math ops|#matrix-math-operations>: L<equal|#equal>, L<add|#add>, L<subtract|#subtract>, L<add-row|#add-row>, L<add-column|#add-column>,
-      L<multiply|#multiply>, L<multiply-row|#multiply-row>, L<multiply-column|#multiply-column>, L<dot-product|#dot-product>, L<tensor-product|#tensor-product>
+=item L<matrix math ops|#matrix-math-operations>: L<equal|#equal>, L<add|#add>, L<subtract|#subtract>, L<multiply|#multiply>, L<dot-product|#dot-product>, L<tensor-product|#tensor-product>
 =item L<list like ops|#list-like-matrix-operations>: L<elems|#elems>, L<elem|#elem>, L<cont|#cont>,
       L<map-index|#map-index>, L<map-with-index|#map-with-index>, L<map|#map>, L<map-row|#map-row>, L<map-column|#map-column>,
       L<reduce|#reduce>, L<reduce-rows|#reduce-rows>, L<reduce-columns|#reduce-columns>
@@ -738,14 +737,14 @@ This decomposition works only on symmetric and definite positive matrices.
 
 Matrix math methods on full matrices and also parts (for gaussian table operations).
 
-They are L<equal|#equal>, L<add|#add>, L<add|#subtract>, L<multiply|#multiply>, L<dot-product|#dot-product>, L<tensor-product|#tensor-product>.
+They are: L<equal|#equal>, L<add|#add>, L<add|#subtract>, L<multiply|#multiply>, L<dot-product|#dot-product>, L<tensor-product|#tensor-product>.
 
 
 =head3 L<equal|#matrix-math-operations>
 
 Checks two matrices for equality. They have to be of same size and every element
 of the first matrix on a particular position has to be equal to the element
-(on the same position) of the second matrix.
+(on the same position) of the second matrix (pass a check with ==).
     
     if $matrixa.equal( $matrixb ) {
     if $matrixa == $matrixb {
@@ -754,37 +753,47 @@ of the first matrix on a particular position has to be equal to the element
 
 =head3 L<add|#matrix-math-operations>
 
+Adding a matrix, vector or scalar. 
+
+When adding two matrices, they have to be of the same size. Instead of
+Math::matrix object you can also provide the cell data as 
+L<new []|#new-->, L<new ()|#new---1> or L<new ""|#new---2> would accept it.
+
+    $matrix.add( $matrix2 );
+    $matrix.add( [[2,3],[4,5]] ); # data alias
+    $matrix + $matrix2            # operator alias
+
+    Example:    1 2  +  2 3  =  3 5
+                3 4     4 5     7 9
+                
+To add a vector you have to specify to which row or column it should be added 
+and give a list or array (which have to fit the matrix size).
+
+    $matrix.add( row => 1, [2,3] );
+
+    Example:    1 2  +       =  1 2
+                3 4    2 3      5 7
+
+    $matrix.add( column => 1, [2,3] );
+
+    Example:    1 2  +   2   =  1 4
+                3 4      3      3 7
+
+When adding a single number to the matrix, it will be added to every cell.
+If you provide a row or column number it will be only added to that,
+row or column or single cell (when both provided).
+
+    $matrix.add( $number );       # adds number from every cell 
+    $matrix + $number;            # works too
+
     Example:    1 2  +  5    =  6 7 
                 3 4             8 9
 
                 1 2  +  2 3  =  3 5
                 3 4     4 5     7 9
 
-    my $sum = $matrix.add( $matrix2 );  # cell wise addition of 2 same sized matrices
-    my $s = $matrix + $matrix2;         # works too
-
-    my $sum = $matrix.add( $number );   # adds number from every cell 
-    my $s = $matrix + $number;          # works too
-
-
-=head3 L<add-row|#matrix-math-operations>
-
-Add a vector (row or col of some matrix) to a row of the matrix.
-In this example we add (2,3) to the second row.
-Instead of a matrix you can also give as parameter the raw data of a matrix as
-new would receive it.
-
-    Math::Matrix.new([[1,2],[3,4]]).add-row(1,[2,3]);
-
-    Example:    1 2  +       =  1 2
-                3 4    2 3      5 7
-
-=head3 L<add-column|#matrix-math-operations>
-
-    Math::Matrix.new([[1,2],[3,4]]).add-column(1,[2,3]);
-
-    Example:    1 2  +   2   =  1 4
-                3 4      3      3 7
+    $matrix.add( row => 1, 3 ):             [[1,2],[6,7]]
+    $matrix.add( row => 1, column=> 0, 2 ): [[1,2],[5,4]]
 
 =head3 L<subtract|#matrix-math-operations>
 

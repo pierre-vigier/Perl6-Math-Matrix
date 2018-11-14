@@ -27,8 +27,9 @@ subtest {
     ok $matrixb.size eqv (3,2),  "Non square matrix, right size";
 }, "Size";
 
+
 subtest {
-    plan 6;
+    plan 7;
     my $zero = Math::Matrix.new-zero(3,3);
     my $identity = Math::Matrix.new-identity(3);
     my $diagonal = Math::Matrix.new-diagonal([1,2,3]);
@@ -43,7 +44,10 @@ subtest {
 
     my $a = Math::Matrix.new([[7, 3, 7, 1, 1, 4], [9, 7, 6, 1, 9, 1], [9, 6, 2, 5, 5, 6], [6, 0, 3, 5, 1, 3], [0, 5, 0, 0, 5, 7], [4, 2, 7, 6, 1, 9]]);
     ok $a.det == -33618, "6x6 matrix determinant is correct (use Decomposition behind the scene)";
+    
+    ok( ( ｜ $matrix ｜  == -72), 'unicode determinant operator');
 }, "Determinant";
+
 
 subtest {
     plan 2;
@@ -92,11 +96,13 @@ subtest {
 }, "Nullity";
 
 subtest {
-    plan 27;
+    plan 29;
     my $zero = Math::Matrix.new-zero(3,4);
     my $identity = Math::Matrix.new-identity(3);
     my $diagonal = Math::Matrix.new-diagonal([1,2,3]);
     my $matrix = Math::Matrix.new([[1,2,3],[2,4,6],[3,6,9]]);
+    my $m1 = Math::Matrix.new([[1]]);
+    my $m2 = Math::Matrix.new([[1,2],[3,4]]);
 
     dies-ok { $zero.norm(0) }         ,"there is no 0 norm";
     dies-ok { $zero.norm(1,0) }       ,"there is no n,0 norm";
@@ -127,5 +133,9 @@ subtest {
     ok ($diagonal dot $matrix).norm('max') <= $diagonal.norm('max') * $matrix.norm('max'),  "Cauchy-Schwarz inequality for maximum norm";
     ok ($diagonal dot $matrix).norm('row-sum') <= $diagonal.norm('row-sum') * $matrix.norm('row-sum'),  "Cauchy-Schwarz inequality for rowsum norm";
     ok ($diagonal dot $matrix).norm('column-sum') <= $diagonal.norm('column-sum') * $matrix.norm('column-sum'),  "Cauchy-Schwarz inequality for columnsum norm";
+
+   ok ‖ $m1 ‖ == 1, 'norm op on simplest matrix';
+   ok ‖ $m2 ‖ == 5.477225575051661, 'norm op on default matrix';
+
 
 }, "Norm";

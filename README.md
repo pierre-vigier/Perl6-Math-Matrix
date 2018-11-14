@@ -64,7 +64,7 @@ All computation heavy properties will be calculated lazily and will be cached.
 
   * [decompositions](#decompositions): [decompositionLUCrout](#decompositionlucrout), [decompositionLU](#decompositionlu), [decompositionCholesky](#decompositioncholesky)
 
-  * [matrix math ops](#matrix-math-operations): [equal](#equal), [add](#add), [subtract](#subtract), [add-row](#add-row), [add-column](#add-column), [multiply](#multiply), [multiply-row](#multiply-row), [multiply-column](#multiply-column), [dot-product](#dot-product), [tensor-product](#tensor-product)
+  * [matrix math ops](#matrix-math-operations): [equal](#equal), [add](#add), [subtract](#subtract), [multiply](#multiply), [dot-product](#dot-product), [tensor-product](#tensor-product)
 
   * [list like ops](#list-like-matrix-operations): [elems](#elems), [elem](#elem), [cont](#cont), [map-index](#map-index), [map-with-index](#map-with-index), [map](#map), [map-row](#map-row), [map-column](#map-column), [reduce](#reduce), [reduce-rows](#reduce-rows), [reduce-columns](#reduce-columns)
 
@@ -654,11 +654,11 @@ This decomposition works only on symmetric and definite positive matrices.
 
 Matrix math methods on full matrices and also parts (for gaussian table operations).
 
-They are [equal](#equal), [add](#add), [add](#subtract), [multiply](#multiply), [dot-product](#dot-product), [tensor-product](#tensor-product).
+They are: [equal](#equal), [add](#add), [add](#subtract), [multiply](#multiply), [dot-product](#dot-product), [tensor-product](#tensor-product).
 
 ### [equal](#matrix-math-operations)
 
-Checks two matrices for equality. They have to be of same size and every element of the first matrix on a particular position has to be equal to the element (on the same position) of the second matrix.
+Checks two matrices for equality. They have to be of same size and every element of the first matrix on a particular position has to be equal to the element (on the same position) of the second matrix (pass a check with ==).
 
     if $matrixa.equal( $matrixb ) {
     if $matrixa == $matrixb {
@@ -666,33 +666,42 @@ Checks two matrices for equality. They have to be of same size and every element
 
 ### [add](#matrix-math-operations)
 
+Adding a matrix, vector or scalar. 
+
+When adding two matrices, they have to be of the same size. Instead of Math::matrix object you can also provide the cell data as [new []](#new--), [new ()](#new---1) or [new ""](#new---2) would accept it.
+
+    $matrix.add( $matrix2 );
+    $matrix.add( [[2,3],[4,5]] ); # data alias
+    $matrix + $matrix2            # operator alias
+
+    Example:    1 2  +  2 3  =  3 5
+                3 4     4 5     7 9
+
+To add a vector you have to specify to which row or column it should be added and give a list or array (which have to fit the matrix size).
+
+    $matrix.add( row => 1, [2,3] );
+
+    Example:    1 2  +       =  1 2
+                3 4    2 3      5 7
+
+    $matrix.add( column => 1, [2,3] );
+
+    Example:    1 2  +   2   =  1 4
+                3 4      3      3 7
+
+When adding a single number to the matrix, it will be added to every cell. If you provide a row or column number it will be only added to that, row or column or single cell (when both provided).
+
+    $matrix.add( $number );       # adds number from every cell 
+    $matrix + $number;            # works too
+
     Example:    1 2  +  5    =  6 7 
                 3 4             8 9
 
                 1 2  +  2 3  =  3 5
                 3 4     4 5     7 9
 
-    my $sum = $matrix.add( $matrix2 );  # cell wise addition of 2 same sized matrices
-    my $s = $matrix + $matrix2;         # works too
-
-    my $sum = $matrix.add( $number );   # adds number from every cell 
-    my $s = $matrix + $number;          # works too
-
-### [add-row](#matrix-math-operations)
-
-Add a vector (row or col of some matrix) to a row of the matrix. In this example we add (2,3) to the second row. Instead of a matrix you can also give as parameter the raw data of a matrix as new would receive it.
-
-    Math::Matrix.new([[1,2],[3,4]]).add-row(1,[2,3]);
-
-    Example:    1 2  +       =  1 2
-                3 4    2 3      5 7
-
-### [add-column](#matrix-math-operations)
-
-    Math::Matrix.new([[1,2],[3,4]]).add-column(1,[2,3]);
-
-    Example:    1 2  +   2   =  1 4
-                3 4      3      3 7
+    $matrix.add( row => 1, 3 ):             [[1,2],[6,7]]
+    $matrix.add( row => 1, column=> 0, 2 ): [[1,2],[5,4]]
 
 ### [subtract](#matrix-math-operations)
 
