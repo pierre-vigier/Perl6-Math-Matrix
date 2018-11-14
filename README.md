@@ -11,7 +11,7 @@ Math::Matrix - create, compare, compute and measure 2D matrices
 VERSION
 =======
 
-0.3.6
+0.3.7
 
 !MOVING!
 ========
