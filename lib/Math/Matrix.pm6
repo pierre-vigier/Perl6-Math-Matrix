@@ -260,7 +260,7 @@ method !build_is-identity(Math::Matrix:D: --> Bool) {
     True;
 }
 
-method !build_is-upper-triangular(Math::Matrix:D: --> Bool) {
+method !build_is-upper-triangular(Math::Matrix:D: Bool :$strict = False --> Bool) {
     return False unless self.is-square;
     for ^$!row-count X ^$!column-count -> ($r, $c) {
         return False if @!rows[$r][$c] != 0 and $r > $c;
@@ -268,7 +268,7 @@ method !build_is-upper-triangular(Math::Matrix:D: --> Bool) {
     True;
 }
 
-method !build_is-lower-triangular(Math::Matrix:D: --> Bool) {
+method !build_is-lower-triangular(Math::Matrix:D: Bool :$strict = False --> Bool) {
     return False unless self.is-square;
     for ^$!row-count X ^$!column-count -> ($r, $c) {
         return False if @!rows[$r][$c] != 0 and $r < $c;

@@ -378,7 +378,7 @@ True if every cell above the diagonal (where row index is smaller than column in
 
 ### [is-diagonal](#boolean-properties)
 
-True if only cells on the diagonal differ from 0. .is-upper-triangular and .is-lower-triangular would also be True.
+True if matrix is [square#is-square](square#is-square) and only cells on the [diagonal](#diagonal) differ from 0. In other words: if matrix is [upper-triangular](#is-upper-triangular) and [lower-triangular](#is-lower-triangular).
 
     Example:    1 0 0
                 0 3 0
