@@ -30,9 +30,9 @@ Table of Content:
 
   * [Methods](#methods)
 
-  * [Export Tags](#export-tags)
-
   * [Operators](#operators)
+
+  * [Export Tags](#export-tags)
 
   * [Authors](#authors)
 
@@ -50,29 +50,29 @@ All computation heavy properties will be calculated lazily and will be cached.
 [METHODS](#synopsis)
 ====================
 
-  * [constructors](#constructors): [new []](#new--), [new ()](#new---1), [new ""](#new---2), [new-zero](#new-zero), [new-identity](#new-identity), [new-diagonal](#new-diagonal), [new-vector-product](#new-vector-product)
+  * **[constructors](#constructors)**: [new []](#new--), [new ()](#new---1), [new ""](#new---2), [new-zero](#new-zero), [new-identity](#new-identity), [new-diagonal](#new-diagonal), [new-vector-product](#new-vector-product)
 
-  * [accessors](#accessors): [cell](#cell), [AT-POS](#at-pos), [row](#row), [column](#column), [diagonal](#diagonal), [submatrix](#submatrix)
+  * **[accessors](#accessors)**: [cell](#cell), [AT-POS](#at-pos), [row](#row), [column](#column), [diagonal](#diagonal), [submatrix](#submatrix)
 
-  * [converter](#type-conversion-and-output-formats): [Bool](#bool), [Numeric](#numeric), [Str](#str), [Array](#array), [Hash](#hash), [Range](#range), [list](#list), [list-rows](#list-rows), [list-columns](#list-columns), [gist](#gist), [perl](#perl)
+  * **[converter](#type-conversion-and-output-formats)**: [Bool](#bool), [Numeric](#numeric), [Str](#str), [Array](#array), [Hash](#hash), [Range](#range), [list](#list), [list-rows](#list-rows), [list-columns](#list-columns), [gist](#gist), [perl](#perl)
 
-  * [boolean properties](#boolean-properties): [zero](#is-zero), [identity](#identity), [square](#is-square), [diagonal](#is-diagonal), [diagonal-constant](#is-diagonal-constant), [diagonally-dominant](#is-diagonally-dominant), [upper-triangular](#is-upper-triangular), [lower-triangular](#is-lower-triangular), [invertible](#is-invertible), [symmetric](#is-symmetric), [antisymmetric](#is-antisymmetric), [unitary](#is-unitary), [self-adjoint](#is-self-adjoint), [orthogonal](#is-orthogonal), [positive-definite](#positive-definite), [positive-semidefinite](#is-positive-semidefinite)
+  * **[boolean properties](#boolean-properties)**: [zero](#is-zero), [identity](#identity), [square](#is-square), [diagonal](#is-diagonal), [diagonal-constant](#is-diagonal-constant), [diagonally-dominant](#is-diagonally-dominant), [upper-triangular](#is-upper-triangular), [lower-triangular](#is-lower-triangular), [invertible](#is-invertible), [symmetric](#is-symmetric), [antisymmetric](#is-antisymmetric), [unitary](#is-unitary), [self-adjoint](#is-self-adjoint), [orthogonal](#is-orthogonal), [positive-definite](#positive-definite), [positive-semidefinite](#is-positive-semidefinite)
 
-  * [numeric properties](#numeric-properties): [size](#size), [density](#density), [trace](#trace), [determinant](#determinant), [rank](#rank), [nullity](#nullity), [norm](#norm), [condition](#condition), [minor](#minor), [narrowest-](#narrowest-cell-type), [widest-cell-type](#widest-cell-type)
+  * **[numeric properties](#numeric-properties)**: [size](#size), [density](#density), [trace](#trace), [determinant](#determinant), [rank](#rank), [nullity](#nullity), [norm](#norm), [condition](#condition), [minor](#minor), [narrowest-](#narrowest-cell-type), [widest-cell-type](#widest-cell-type)
 
-  * [derived matrices](#derived-matrices): [transposed](#transposed), [negated](#negated), [conjugated](#conjugated), [adjugated](#adjugated), [inverted](#inverted), [reduced-row-echelon-form](#reduced-row-echelon-form)
+  * **[derived matrices](#derived-matrices)**: [transposed](#transposed), [negated](#negated), [conjugated](#conjugated), [adjugated](#adjugated), [inverted](#inverted), [reduced-row-echelon-form](#reduced-row-echelon-form)
 
-  * [decompositions](#decompositions): [decompositionLUCrout](#decompositionlucrout), [decompositionLU](#decompositionlu), [decompositionCholesky](#decompositioncholesky)
+  * **[decompositions](#decompositions)**: [LUCrout](#decompositionlucrout), [LU](#decompositionlu), [Cholesky](#decompositioncholesky)
 
-  * [matrix math ops](#matrix-math-operations): [equal](#equal), [add](#add), [multiply](#multiply), [dot-product](#dot-product), [tensor-product](#tensor-product)
+  * **[math ops](#mathematical-operations)**: [equal](#equal), [add](#add), [multiply](#multiply), [dot-product](#dot-product), [tensor-product](#tensor-product)
 
-  * [list like ops](#list-like-matrix-operations): [elems](#elems), [elem](#elem), [cont](#cont), [map-index](#map-index), [map-with-index](#map-with-index), [map](#map), [map-row](#map-row), [map-column](#map-column), [reduce](#reduce), [reduce-rows](#reduce-rows), [reduce-columns](#reduce-columns)
+  * **[list like ops](#list-like-matrix-operations)**: [elems](#elems), [elem](#elem), [cont](#cont), [map-index](#map-index), [map-with-index](#map-with-index), [map](#map), [map-row](#map-row), [map-column](#map-column), [reduce](#reduce), [reduce-rows](#reduce-rows), [reduce-columns](#reduce-columns)
 
-  * [structural ops](#structural-matrix-operations): [move-row](#move-row), [move-column](#move-column), [swap-rows](#swap-rows), [swap-columns](#swap-columns), [splice-rows](#splice-rows), [splice-columns](#splice-columns)
+  * **[structural ops](#structural-matrix-operations)**: [move-row](#move-row), [move-column](#move-column), [swap-rows](#swap-rows), [swap-columns](#swap-columns), [splice-rows](#splice-rows), [splice-columns](#splice-columns)
 
-  * [shortcuts](#shortcuts): [T](#transposed), [conj](#conjugated), [det](#determinant), [rref](#reduced-row-echelon-form)
+  * **[shortcuts](#shortcuts)**: [T](#transposed), [conj](#conjugated), [det](#determinant), [rref](#reduced-row-echelon-form)
 
-  * [operators](#operator-methods): MM, ?, ~, |, @, %, +, -, *, **, dot, ⋅, ÷, X*, ⊗, ==, ~~, ❘ ❘, ‖ ‖, [ ]
+  * **[operators](#operator-methods)**: MM, ?, ~, |, @, %, +, -, *, **, dot, ⋅, ÷, X*, ⊗, ==, ~~, ❘ ❘, ‖ ‖, [ ]
 
 [Constructors](#methods)
 ------------------------
@@ -199,7 +199,7 @@ Gets values of specified column (first required parameter) as a list.
 
 ### [diagonal](#accessors)
 
-Without an argument it returns values of main diagonal elements as a list. Use the optional parameter to get any other parallel diagonal. Positive value for the ones above - negative below and 0 for the main diagonal. Matrix does not have to be a quadratic (square).
+Without an argument it returns values of main diagonal elements as a list. Use the optional parameter to get any other parallel diagonal. Positive value for the ones above - negative below and 0 for the main diagonal. Matrix does not have to be a quadratic ([square](#is-square)).
 
     say Math::Matrix.new([[1,2],[3,4]]      ).diagonal    : (1, 4)
     say Math::Matrix.new([[1,2],[3,4]]      ).diagonal(1) : (2)
@@ -447,7 +447,7 @@ A Hermitian or self-adjoint matrix is equal to its [transposed](#transposed) and
 
 ### [is-invertible](#boolean-properties)
 
-Also called nonsingular or nondegenerate. Is True if number of rows and colums are the same ([is-square](#is-square)) and [determinant](#determinant) is not zero. All rows or colums have to be independent vectors. Please use this method before $matrix.inverted, or you will get an exception.
+Also called nonsingular or nondegenerate. Is True if number of rows and colums are the same ([is-square](#is-square)) and [determinant](#determinant) is not zero. All rows or colums have to be independent vectors. Please use this method before use: $matrix.inverted, or you will get an exception.
 
 ### [is-orthogonal](#boolean-properties)
 
@@ -455,7 +455,7 @@ An orthogonal matrix multiplied ([dot-product](#dot-product)) with its transpose
 
 ### [is-unitary](#boolean-properties)
 
-An unitery matrix multiplied ([dot-product](#dot-product)) with its concjugate transposed derivative (.conj.T) is an identity matrix, or said differently: the concjugate transposed matrix equals the inverted matrix.
+An unitery matrix multiplied ([dot-product](#dot-product)) with its concjugate transposed derivative (.conj.T) is an identity matrix, or said differently: the concjugate transposed matrix equals the [inverted](#inverted) matrix.
 
 ### [is-positive-definite](#boolean-properties)
 
@@ -485,13 +485,13 @@ Density is the percentage of cell which are not zero.
 
 ### [trace](#numeric-properties)
 
-The trace of a square matrix is the sum of the cells on the main diagonal. In other words: sum of cells which row and column value is identical.
+The trace of a [square](#is-square) matrix is the sum of the cells on the main diagonal. In other words: sum of cells which row and column value is identical.
 
     my $tr = $matrix.trace;
 
 ### [determinant](#numeric-properties)
 
-If you see the columns as vectors, that describe the edges of a solid, the determinant of a square matrix tells you the volume of that solid. So if the solid is just in one dimension flat, the determinant is zero too.
+Only a [square](#is-square) matrice has a defined determinant, which tells the volume, spanned by the row or column vectors. So if the volume is just in one dimension flat, the determinant is zero, and has a kernel (not a full [rank](#rank) - thus is not [invertible](#is-invertable)).
 
     my $det = $matrix.determinant;
     my $d = $matrix.det;                # same thing
@@ -527,7 +527,7 @@ A norm is a single positive number, which is an abstraction to the concept of si
 
 ### [condition](#numeric-properties)
 
-Condition number of a matrix is L2 norm * L2 of inverted matrix.
+Condition number of a matrix is L2 norm * L2 of [inverted](#inverted) matrix.
 
     my $c = $matrix.condition( );
 
@@ -601,7 +601,7 @@ Creates a matrix out of the properly signed [minors](#minor) of the original. It
 
 ### [inverted](#derived-matrices)
 
-Matrices that have a square form and a full rank can be inverted (see [is-invertible](#is-invertible)). Inverse matrix regarding to matrix multiplication (see [dot-product](#dot-product)). The dot product of a matrix with its inverted results in a [identity](#is-identity) matrix (neutral element in this group).
+Matrices that have a [square](#is-square) form and a full [rank](#rank) can be [inverted](#inverted) (see [is-invertible](#is-invertible)). Inverse matrix regarding to matrix multiplication (see [dot-product](#dot-product)). The dot product of a matrix with its [inverted](#inverted) results in a [identity](#is-identity) matrix (neutral element in this group).
 
     my $i = $matrix.inverted();      # invert matrix
     my $i = $matrix ** -1;           # operator alias
@@ -630,7 +630,7 @@ Methods that return lists of matrices, which in their product or otherwise can b
     my ($L, $U) = $matrix.decompositionLUC(:!pivot);
     $L dot $U eq $matrix;                # True
 
-$L is a left triangular matrix and $R is a right one Without pivotisation the marix has to be invertible (square and full ranked). In case you whant two unipotent triangular matrices and a diagonal (D): use the :diagonal option, which can be freely combined with :pivot.
+$L is a left triangular matrix and $R is a right one Without pivotisation the marix has to be invertible ([square](#is-square) and full [rank](#rank)ed). In case you whant two unipotent triangular matrices and a diagonal (D): use the :diagonal option, which can be freely combined with :pivot.
 
     my ($L, $D, $U, $P) = $matrix.decompositionLU( :diagonal );
     $L dot $D dot $U eq $matrix dot $P;  # True
@@ -640,7 +640,7 @@ $L is a left triangular matrix and $R is a right one Without pivotisation the ma
     my ($L, $U) = $matrix.decompositionLUCrout( );
     $L dot $U eq $matrix;                # True
 
-$L is a left triangular matrix and $R is a right one This decomposition works only on invertible matrices (square and full ranked).
+$L is a left triangular matrix and $R is a right one This decomposition works only on invertible matrices ([square](#is-square) and full [rank](#rank)ed).
 
 ### [decompositionCholesky](#decompositions)
 
@@ -649,14 +649,14 @@ This decomposition works only on symmetric and definite positive matrices.
     my $D = $matrix.decompositionCholesky( );  # $D is a left triangular matrix
     $D dot $D.T eq $matrix;                    # True
 
-[Matrix Math Operations](#methods)
-----------------------------------
+[Mathematical Operations](#methods)
+-----------------------------------
 
 Matrix math methods on full matrices and also parts (for gaussian table operations).
 
 They are: [equal](#equal), [add](#add), [multiply](#multiply), [dot-product](#dot-product), [tensor-product](#tensor-product).
 
-### [equal](#matrix-math-operations)
+### [equal](#mathematical-operations)
 
 Checks two matrices for equality. They have to be of same size and every element of the first matrix on a particular position has to be equal to the element (on the same position) of the second matrix (pass a check with ==).
 
@@ -664,11 +664,11 @@ Checks two matrices for equality. They have to be of same size and every element
     if $matrixa == $matrixb {
     if $matrixa ~~ $matrixb {
 
-### [add](#matrix-math-operations)
+### [add](#mathematical-operations)
 
 Adding a matrix, vector or scalar. Named arguments *:row* and *:column* have no fixed position.
 
-#### [add matrix](#matrix-math-operations)
+#### [add matrix](#add)
 
 When adding two matrices, they have to be of the same size. Instead of Math::matrix object you can also provide the cell data as [new []](#new--), [new ()](#new---1) or [new ""](#new---2) would accept it.
 
@@ -679,7 +679,7 @@ When adding two matrices, they have to be of the same size. Instead of Math::mat
     Example:    1 2  +  2 3  =  3 5
                 3 4     4 5     7 9
 
-#### [add vector](#matrix-math-operations)
+#### [add vector](#add)
 
 To add a vector you have to specify to which row or column it should be added and give a list or array (which have to fit the matrix size).
 
@@ -693,7 +693,7 @@ To add a vector you have to specify to which row or column it should be added an
     Example:    1 2  +   2   =  1 4
                 3 4      3      3 7
 
-#### [add scalar](#matrix-math-operations)
+#### [add scalar](#add)
 
 When adding a single number to the matrix, it will be added to every cell. If you provide a row or column number it will be only added to that row or column. In case you provide both, only a single cell gets a different value in the result matrix.
 
@@ -709,7 +709,7 @@ When adding a single number to the matrix, it will be added to every cell. If yo
     $matrix.add( row => 1, 3 ):             [[1,2],[6,7]]
     $matrix.add( row => 1, column=> 0, 2 ): [[1,2],[5,4]]
 
-### [multiply](#matrix-math-operations)
+### [multiply](#mathematical-operations)
 
 Unlike the [dot-product](#dot-product) and [tensor-product](#tensor-product), this operation is the simple, scalar multiplication applied to cells. That is why this method works analogous to the scalar variant of [add](#add-scalar). However, when a matrix of same size is given, the result will be a matrix of that size again. Each cell will be the product of two the two cells of the operands with the same indices (position).
 
@@ -740,15 +740,15 @@ Unlike the [dot-product](#dot-product) and [tensor-product](#tensor-product), th
 
     $matrix.multiply(row => 1, column => 1, 3) : [[1,2],[3,12]]
 
-### [dot-product](#matrix-math-operations)
+### [dot-product](#mathematical-operations)
 
 Matrix multiplication of two fitting matrices (colums left == rows right).
 
     Math::Matrix.new( [[1,2],[3,4]] ).dot-product(  Math::Matrix.new([[2,3],[4,5]]) );
 
     Example:    2  3
-           *    4  5
-
+                4  5
+             *
          1 2   10 13  =  1*2+2*4  1*3+2*5
          3 4   22 29     3*2+4*4  3*3+4*5
 
@@ -761,7 +761,7 @@ Matrix multiplication of two fitting matrices (colums left == rows right).
     my $c = $a ** -3;               # same as ($a dot $a dot $a).inverted
     my $c = $a **  0;               # created an right sized identity matrix
 
-### [tensor-product](#matrix-math-operations)
+### [tensor-product](#mathematical-operations)
 
 The tensor product (a.k.a Kronecker product) between a matrix a of size (m,n) and a matrix b of size (p,q) is a matrix c of size (m*p,n*q). All matrices you get by multiplying an element (cell) of matrix a with matrix b (as in $a.multiply($b.cell(..,..)) concatinated result in matrix c. (Or replace in a each cell with its product with b.)
 
@@ -966,7 +966,7 @@ Summary of all shortcut aliases (first) and their long form (second).
 [Operator Methods](#methods)
 ----------------------------
 
-Operators with method aliases, for more explanations loo into [ops chapter](#operators):
+Operators with the methods they refer to. (Most ops are just aliases.) For more explanations of the ops with examples see naext chapter: [ops chapter](#operators):
 
   * prefix ? --> [Bool](#bool)
 
@@ -1008,21 +1008,12 @@ Operators with method aliases, for more explanations loo into [ops chapter](#ope
 
   * postcircumfix [..] --> [AT-POS](#at-pos)
 
-[Export Tags](#synopsis)
-========================
-
-  * :MANDATORY (nothing is exported)
-
-  * :DEFAULT (same as no tag, most [ops](#operators) will be exported)
-
-  * :MM (only [MM](#new--) op exported)
-
-  * :ALL
-
 [Operators](#synopsis)
 ======================
 
-The Module overloads or introduces a range of well and lesser known ops. ==, +, * are commutative, -, ⋅, dot, ÷, x, ⊗ and ** are not.
+The Module overloads or introduces a range of well and lesser known ops, which are almost all [aliases](#operator-methods).
+
+==, +, * are commutative, -, ⋅, dot, ÷, x, ⊗ and ** are not. All ops have same precedence as its multi method siblings - unless stated otherwise.
 
 They are exported when using no flag or under the export flags :DEFAULT or :ALL, but not under :MANDATORY or :MM). The only exception is MM-operator, a shortcut to create a matrix. That has to be importet explicitly with the tag :MM or :ALL. The postcircumfix [] - op will always work.
 
@@ -1054,16 +1045,27 @@ They are exported when using no flag or under the export flags :DEFAULT or :ALL,
     my $c   =  $a ** -3;             # alias to ($a dot $a dot $a).inverted
     my $c   =  $a **  0;             # creats an right sized identity matrix
 
-    my $tp  =  $a X* $b;             # tensor product 
+    my $tp  =  $a X* $b;             # tensor product, same precedence as infix: x (category Replication)
     my $tp  =  $a ⊗ $b;              # tensor product, unicode (U+02297)
 
-     ｜ $matrix ｜                     # determinant, unicode (U+0FF5C)
+     ｜$matrix ｜                     # determinant, unicode (U+0FF5C)
      ‖ $matrix ‖                     # L2 norm (euclidean p=2 to the square), (U+02016)
 
        $matrix[1][2]                 # cell in second row and third column, works even when used :MANDATORY tag
 
-    MM [[1]]                         # a new matrix
+    MM [[1]]                         # a new matrix, has higher precedence than postcircumfix:[]
     MM '1'                           # string alias
+
+[Export Tags](#synopsis)
+========================
+
+  * :MANDATORY (nothing is exported)
+
+  * :DEFAULT (same as no tag, most [ops](#operators) will be exported)
+
+  * :MM (only [MM](#new--) op exported)
+
+  * :ALL
 
 [Authors](#synopsis)
 ====================
