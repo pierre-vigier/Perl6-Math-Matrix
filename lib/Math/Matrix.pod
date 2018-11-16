@@ -1090,7 +1090,8 @@ Summary of all shortcut aliases (first) and their long form (second).
 
 =head2 L<Operator Methods|#methods>
 
-Operators with method aliases, for more explanations loo into L<ops chapter|#operators>:
+Operators with the methods they refer to. (Most ops are just aliases.)
+For more explanations of the ops with examples see the L<ops chapter|#operators>:
 
 =item prefix ?  -->  L<Bool|#bool>
 =item prefix +  -->  L<Numeric|#numeric>

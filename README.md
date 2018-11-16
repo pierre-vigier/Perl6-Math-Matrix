@@ -966,7 +966,7 @@ Summary of all shortcut aliases (first) and their long form (second).
 [Operator Methods](#methods)
 ----------------------------
 
-Operators with method aliases, for more explanations loo into [ops chapter](#operators):
+Operators with the methods they refer to. (Most ops are just aliases.) For more explanations of the ops with examples see the [ops chapter](#operators):
 
   * prefix ? --> [Bool](#bool)
 
