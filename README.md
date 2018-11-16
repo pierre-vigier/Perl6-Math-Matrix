@@ -64,7 +64,7 @@ All computation heavy properties will be calculated lazily and will be cached.
 
   * [decompositions](#decompositions): [decompositionLUCrout](#decompositionlucrout), [decompositionLU](#decompositionlu), [decompositionCholesky](#decompositioncholesky)
 
-  * [matrix math ops](#matrix-math-operations): [equal](#equal), [add](#add), [multiply](#multiply), [dot-product](#dot-product), [tensor-product](#tensor-product)
+  * [math ops](#mathematical-operations): [equal](#equal), [add](#add), [multiply](#multiply), [dot-product](#dot-product), [tensor-product](#tensor-product)
 
   * [list like ops](#list-like-matrix-operations): [elems](#elems), [elem](#elem), [cont](#cont), [map-index](#map-index), [map-with-index](#map-with-index), [map](#map), [map-row](#map-row), [map-column](#map-column), [reduce](#reduce), [reduce-rows](#reduce-rows), [reduce-columns](#reduce-columns)
 
@@ -649,14 +649,14 @@ This decomposition works only on symmetric and definite positive matrices.
     my $D = $matrix.decompositionCholesky( );  # $D is a left triangular matrix
     $D dot $D.T eq $matrix;                    # True
 
-[Matrix Math Operations](#methods)
-----------------------------------
+[Mathematical Operations](#methods)
+-----------------------------------
 
 Matrix math methods on full matrices and also parts (for gaussian table operations).
 
 They are: [equal](#equal), [add](#add), [multiply](#multiply), [dot-product](#dot-product), [tensor-product](#tensor-product).
 
-### [equal](#matrix-math-operations)
+### [equal](#mathematical-operations)
 
 Checks two matrices for equality. They have to be of same size and every element of the first matrix on a particular position has to be equal to the element (on the same position) of the second matrix (pass a check with ==).
 
@@ -664,11 +664,11 @@ Checks two matrices for equality. They have to be of same size and every element
     if $matrixa == $matrixb {
     if $matrixa ~~ $matrixb {
 
-### [add](#matrix-math-operations)
+### [add](#mathematical-operations)
 
 Adding a matrix, vector or scalar. Named arguments *:row* and *:column* have no fixed position.
 
-#### [add matrix](#matrix-math-operations)
+#### [add matrix](#add)
 
 When adding two matrices, they have to be of the same size. Instead of Math::matrix object you can also provide the cell data as [new []](#new--), [new ()](#new---1) or [new ""](#new---2) would accept it.
 
@@ -679,7 +679,7 @@ When adding two matrices, they have to be of the same size. Instead of Math::mat
     Example:    1 2  +  2 3  =  3 5
                 3 4     4 5     7 9
 
-#### [add vector](#matrix-math-operations)
+#### [add vector](#add)
 
 To add a vector you have to specify to which row or column it should be added and give a list or array (which have to fit the matrix size).
 
@@ -693,7 +693,7 @@ To add a vector you have to specify to which row or column it should be added an
     Example:    1 2  +   2   =  1 4
                 3 4      3      3 7
 
-#### [add scalar](#matrix-math-operations)
+#### [add scalar](#add)
 
 When adding a single number to the matrix, it will be added to every cell. If you provide a row or column number it will be only added to that row or column. In case you provide both, only a single cell gets a different value in the result matrix.
 
@@ -709,7 +709,7 @@ When adding a single number to the matrix, it will be added to every cell. If yo
     $matrix.add( row => 1, 3 ):             [[1,2],[6,7]]
     $matrix.add( row => 1, column=> 0, 2 ): [[1,2],[5,4]]
 
-### [multiply](#matrix-math-operations)
+### [multiply](#mathematical-operations)
 
 Unlike the [dot-product](#dot-product) and [tensor-product](#tensor-product), this operation is the simple, scalar multiplication applied to cells. That is why this method works analogous to the scalar variant of [add](#add-scalar). However, when a matrix of same size is given, the result will be a matrix of that size again. Each cell will be the product of two the two cells of the operands with the same indices (position).
 
@@ -740,15 +740,15 @@ Unlike the [dot-product](#dot-product) and [tensor-product](#tensor-product), th
 
     $matrix.multiply(row => 1, column => 1, 3) : [[1,2],[3,12]]
 
-### [dot-product](#matrix-math-operations)
+### [dot-product](#mathematical-operations)
 
 Matrix multiplication of two fitting matrices (colums left == rows right).
 
     Math::Matrix.new( [[1,2],[3,4]] ).dot-product(  Math::Matrix.new([[2,3],[4,5]]) );
 
     Example:    2  3
-           *    4  5
-
+                4  5
+             *
          1 2   10 13  =  1*2+2*4  1*3+2*5
          3 4   22 29     3*2+4*4  3*3+4*5
 
@@ -761,7 +761,7 @@ Matrix multiplication of two fitting matrices (colums left == rows right).
     my $c = $a ** -3;               # same as ($a dot $a dot $a).inverted
     my $c = $a **  0;               # created an right sized identity matrix
 
-### [tensor-product](#matrix-math-operations)
+### [tensor-product](#mathematical-operations)
 
 The tensor product (a.k.a Kronecker product) between a matrix a of size (m,n) and a matrix b of size (p,q) is a matrix c of size (m*p,n*q). All matrices you get by multiplying an element (cell) of matrix a with matrix b (as in $a.multiply($b.cell(..,..)) concatinated result in matrix c. (Or replace in a each cell with its product with b.)
 
