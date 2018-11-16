@@ -62,7 +62,7 @@ All computation heavy properties will be calculated lazily and will be cached.
 =item L<structural ops|#structural-matrix-operations>: L<move-row|#move-row>, L<move-column|#move-column>, L<swap-rows|#swap-rows>, L<swap-columns|#swap-columns>,
       L<splice-rows|#splice-rows>, L<splice-columns|#splice-columns>
 =item L<shortcuts|#shortcuts>:   L<T|#transposed>,   L<conj|#conjugated>,   L<det|#determinant>,   L<rref|#reduced-row-echelon-form>
-=item L<operators|#operator-methods>:   MM,   ?,  ~,   |,  @,  %,  +,   -,   *,   **,   dot,   ⋅,   ÷,   X*,   ⊗,   ==,   ~~,   ❘ ❘,   ‖ ‖,   [ ]
+=item L<operators|#operator-methods>:   MM,  ?,  ~,  |,  @,  %,  +,  -,  *,  **,  dot,  ⋅,  ÷,  X*,  ⊗,  ==,  ~~,  ❘ ❘,  ‖ ‖,  [ ]
 
 
 =head2 L<Constructors|#methods>
@@ -532,7 +532,7 @@ List of two values: number of rows and number of columns.
 
 =head3 L<density|#numeric-properties>
 
-Density is the percentage of cell which are not zero.
+I<Density> is the percentage of cell which are not zero. I<sparsity> = 1 - I<density>.
 
     my $d = $matrix.density;
 
