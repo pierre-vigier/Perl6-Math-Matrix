@@ -54,25 +54,25 @@ All computation heavy properties will be calculated lazily and will be cached.
 
   * **[accessors](#accessors)**: [cell](#cell), [AT-POS](#at-pos), [row](#row), [column](#column), [diagonal](#diagonal), [submatrix](#submatrix)
 
-  * [converter](#type-conversion-and-output-formats): [Bool](#bool), [Numeric](#numeric), [Str](#str), [Array](#array), [Hash](#hash), [Range](#range), [list](#list), [list-rows](#list-rows), [list-columns](#list-columns), [gist](#gist), [perl](#perl)
+  * **[converter](#type-conversion-and-output-formats)**: [Bool](#bool), [Numeric](#numeric), [Str](#str), [Array](#array), [Hash](#hash), [Range](#range), [list](#list), [list-rows](#list-rows), [list-columns](#list-columns), [gist](#gist), [perl](#perl)
 
-  * [boolean properties](#boolean-properties): [zero](#is-zero), [identity](#identity), [square](#is-square), [diagonal](#is-diagonal), [diagonal-constant](#is-diagonal-constant), [diagonally-dominant](#is-diagonally-dominant), [upper-triangular](#is-upper-triangular), [lower-triangular](#is-lower-triangular), [invertible](#is-invertible), [symmetric](#is-symmetric), [antisymmetric](#is-antisymmetric), [unitary](#is-unitary), [self-adjoint](#is-self-adjoint), [orthogonal](#is-orthogonal), [positive-definite](#positive-definite), [positive-semidefinite](#is-positive-semidefinite)
+  * **[boolean properties](#boolean-properties)**: [zero](#is-zero), [identity](#identity), [square](#is-square), [diagonal](#is-diagonal), [diagonal-constant](#is-diagonal-constant), [diagonally-dominant](#is-diagonally-dominant), [upper-triangular](#is-upper-triangular), [lower-triangular](#is-lower-triangular), [invertible](#is-invertible), [symmetric](#is-symmetric), [antisymmetric](#is-antisymmetric), [unitary](#is-unitary), [self-adjoint](#is-self-adjoint), [orthogonal](#is-orthogonal), [positive-definite](#positive-definite), [positive-semidefinite](#is-positive-semidefinite)
 
-  * [numeric properties](#numeric-properties): [size](#size), [density](#density), [trace](#trace), [determinant](#determinant), [rank](#rank), [nullity](#nullity), [norm](#norm), [condition](#condition), [minor](#minor), [narrowest-](#narrowest-cell-type), [widest-cell-type](#widest-cell-type)
+  * **[numeric properties](#numeric-properties)**: [size](#size), [density](#density), [trace](#trace), [determinant](#determinant), [rank](#rank), [nullity](#nullity), [norm](#norm), [condition](#condition), [minor](#minor), [narrowest-](#narrowest-cell-type), [widest-cell-type](#widest-cell-type)
 
-  * [derived matrices](#derived-matrices): [transposed](#transposed), [negated](#negated), [conjugated](#conjugated), [adjugated](#adjugated), [inverted](#inverted), [reduced-row-echelon-form](#reduced-row-echelon-form)
+  * **[derived matrices](#derived-matrices)**: [transposed](#transposed), [negated](#negated), [conjugated](#conjugated), [adjugated](#adjugated), [inverted](#inverted), [reduced-row-echelon-form](#reduced-row-echelon-form)
 
-  * [decompositions](#decompositions): [LUCrout](#decompositionlucrout), [LU](#decompositionlu), [Cholesky](#decompositioncholesky)
+  * **[decompositions](#decompositions)**: [LUCrout](#decompositionlucrout), [LU](#decompositionlu), [Cholesky](#decompositioncholesky)
 
-  * [math ops](#mathematical-operations): [equal](#equal), [add](#add), [multiply](#multiply), [dot-product](#dot-product), [tensor-product](#tensor-product)
+  * **[math ops](#mathematical-operations)**: [equal](#equal), [add](#add), [multiply](#multiply), [dot-product](#dot-product), [tensor-product](#tensor-product)
 
-  * [list like ops](#list-like-matrix-operations): [elems](#elems), [elem](#elem), [cont](#cont), [map-index](#map-index), [map-with-index](#map-with-index), [map](#map), [map-row](#map-row), [map-column](#map-column), [reduce](#reduce), [reduce-rows](#reduce-rows), [reduce-columns](#reduce-columns)
+  * **[list like ops](#list-like-matrix-operations)**: [elems](#elems), [elem](#elem), [cont](#cont), [map-index](#map-index), [map-with-index](#map-with-index), [map](#map), [map-row](#map-row), [map-column](#map-column), [reduce](#reduce), [reduce-rows](#reduce-rows), [reduce-columns](#reduce-columns)
 
-  * [structural ops](#structural-matrix-operations): [move-row](#move-row), [move-column](#move-column), [swap-rows](#swap-rows), [swap-columns](#swap-columns), [splice-rows](#splice-rows), [splice-columns](#splice-columns)
+  * **[structural ops](#structural-matrix-operations)**: [move-row](#move-row), [move-column](#move-column), [swap-rows](#swap-rows), [swap-columns](#swap-columns), [splice-rows](#splice-rows), [splice-columns](#splice-columns)
 
-  * [shortcuts](#shortcuts): [T](#transposed), [conj](#conjugated), [det](#determinant), [rref](#reduced-row-echelon-form)
+  * **[shortcuts](#shortcuts)**: [T](#transposed), [conj](#conjugated), [det](#determinant), [rref](#reduced-row-echelon-form)
 
-  * [operators](#operator-methods): MM, ?, ~, |, @, %, +, -, *, **, dot, ⋅, ÷, X*, ⊗, ==, ~~, ❘ ❘, ‖ ‖, [ ]
+  * **[operators](#operator-methods)**: MM, ?, ~, |, @, %, +, -, *, **, dot, ⋅, ÷, X*, ⊗, ==, ~~, ❘ ❘, ‖ ‖, [ ]
 
 [Constructors](#methods)
 ------------------------

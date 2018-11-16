@@ -44,25 +44,25 @@ All computation heavy properties will be calculated lazily and will be cached.
 =item B<L<constructors|#constructors>>: L<new []|#new-->, L<new ()|#new---1>, L<new ""|#new---2>,
       L<new-zero|#new-zero>, L<new-identity|#new-identity>, L<new-diagonal|#new-diagonal>, L<new-vector-product|#new-vector-product>
 =item B<L<accessors|#accessors>>: L<cell|#cell>, L<AT-POS|#at-pos>, L<row|#row>, L<column|#column>, L<diagonal|#diagonal>, L<submatrix|#submatrix>
-=item L<converter|#type-conversion-and-output-formats>: L<Bool|#bool>, L<Numeric|#numeric>, L<Str|#str>,
+=item B<L<converter|#type-conversion-and-output-formats>>: L<Bool|#bool>, L<Numeric|#numeric>, L<Str|#str>,
       L<Array|#array>, L<Hash|#hash>, L<Range|#range>, L<list|#list>, L<list-rows|#list-rows>, L<list-columns|#list-columns>, L<gist|#gist>, L<perl|#perl>
-=item L<boolean properties|#boolean-properties>: L<zero|#is-zero>, L<identity|#identity>, L<square|#is-square>, L<diagonal|#is-diagonal>, L<diagonal-constant|#is-diagonal-constant>, 
+=item B<L<boolean properties|#boolean-properties>>: L<zero|#is-zero>, L<identity|#identity>, L<square|#is-square>, L<diagonal|#is-diagonal>, L<diagonal-constant|#is-diagonal-constant>, 
       L<diagonally-dominant|#is-diagonally-dominant>, L<upper-triangular|#is-upper-triangular>, L<lower-triangular|#is-lower-triangular>, L<invertible|#is-invertible>,
       L<symmetric|#is-symmetric>, L<antisymmetric|#is-antisymmetric>, L<unitary|#is-unitary>, L<self-adjoint|#is-self-adjoint>, L<orthogonal|#is-orthogonal>,
       L<positive-definite|#positive-definite>, L<positive-semidefinite|#is-positive-semidefinite>
-=item L<numeric properties|#numeric-properties>: L<size|#size>, L<density|#density>, L<trace|#trace>, L<determinant|#determinant>, L<rank|#rank>, L<nullity|#nullity>,
+=item B<L<numeric properties|#numeric-properties>>: L<size|#size>, L<density|#density>, L<trace|#trace>, L<determinant|#determinant>, L<rank|#rank>, L<nullity|#nullity>,
       L<norm|#norm>, L<condition|#condition>, L<minor|#minor>, L<narrowest-|#narrowest-cell-type>, L<widest-cell-type|#widest-cell-type>
-=item L<derived matrices|#derived-matrices>: L<transposed|#transposed>, L<negated|#negated>, L<conjugated|#conjugated>, L<adjugated|#adjugated>, L<inverted|#inverted>,
+=item B<L<derived matrices|#derived-matrices>>: L<transposed|#transposed>, L<negated|#negated>, L<conjugated|#conjugated>, L<adjugated|#adjugated>, L<inverted|#inverted>,
       L<reduced-row-echelon-form|#reduced-row-echelon-form>
-=item L<decompositions|#decompositions>: L<LUCrout|#decompositionlucrout>, L<LU|#decompositionlu>, L<Cholesky|#decompositioncholesky>
-=item L<math ops|#mathematical-operations>: L<equal|#equal>, L<add|#add>, L<multiply|#multiply>, L<dot-product|#dot-product>, L<tensor-product|#tensor-product>
-=item L<list like ops|#list-like-matrix-operations>: L<elems|#elems>, L<elem|#elem>, L<cont|#cont>,
+=item B<L<decompositions|#decompositions>>: L<LUCrout|#decompositionlucrout>, L<LU|#decompositionlu>, L<Cholesky|#decompositioncholesky>
+=item B<L<math ops|#mathematical-operations>>: L<equal|#equal>, L<add|#add>, L<multiply|#multiply>, L<dot-product|#dot-product>, L<tensor-product|#tensor-product>
+=item B<L<list like ops|#list-like-matrix-operations>>: L<elems|#elems>, L<elem|#elem>, L<cont|#cont>,
       L<map-index|#map-index>, L<map-with-index|#map-with-index>, L<map|#map>, L<map-row|#map-row>, L<map-column|#map-column>,
       L<reduce|#reduce>, L<reduce-rows|#reduce-rows>, L<reduce-columns|#reduce-columns>
-=item L<structural ops|#structural-matrix-operations>: L<move-row|#move-row>, L<move-column|#move-column>, L<swap-rows|#swap-rows>, L<swap-columns|#swap-columns>,
+=item B<L<structural ops|#structural-matrix-operations>>: L<move-row|#move-row>, L<move-column|#move-column>, L<swap-rows|#swap-rows>, L<swap-columns|#swap-columns>,
       L<splice-rows|#splice-rows>, L<splice-columns|#splice-columns>
-=item L<shortcuts|#shortcuts>:   L<T|#transposed>,   L<conj|#conjugated>,   L<det|#determinant>,   L<rref|#reduced-row-echelon-form>
-=item L<operators|#operator-methods>:   MM,   ?,  ~,   |,  @,  %,  +,   -,   *,   **,   dot,   ⋅,   ÷,   X*,   ⊗,   ==,   ~~,   ❘ ❘,   ‖ ‖,   [ ]
+=item B<L<shortcuts|#shortcuts>>:   L<T|#transposed>,   L<conj|#conjugated>,   L<det|#determinant>,   L<rref|#reduced-row-echelon-form>
+=item B<L<operators|#operator-methods>>:   MM,   ?,  ~,   |,  @,  %,  +,   -,   *,   **,   dot,   ⋅,   ÷,   X*,   ⊗,   ==,   ~~,   ❘ ❘,   ‖ ‖,   [ ]
 
 
 =head2 L<Constructors|#methods>
