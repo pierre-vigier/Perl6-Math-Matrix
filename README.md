@@ -30,9 +30,9 @@ Table of Content:
 
   * [Methods](#methods)
 
-  * [Export Tags](#export-tags)
-
   * [Operators](#operators)
+
+  * [Export Tags](#export-tags)
 
   * [Authors](#authors)
 
@@ -966,7 +966,7 @@ Summary of all shortcut aliases (first) and their long form (second).
 [Operator Methods](#methods)
 ----------------------------
 
-Operators with the methods they refer to. (Most ops are just aliases.) For more explanations of the ops with examples see the [ops chapter](#operators):
+Operators with the methods they refer to. (Most ops are just aliases.) For more explanations of the ops with examples see naext chapter: [ops chapter](#operators):
 
   * prefix ? --> [Bool](#bool)
 
@@ -1008,21 +1008,10 @@ Operators with the methods they refer to. (Most ops are just aliases.) For more 
 
   * postcircumfix [..] --> [AT-POS](#at-pos)
 
-[Export Tags](#synopsis)
-========================
-
-  * :MANDATORY (nothing is exported)
-
-  * :DEFAULT (same as no tag, most [ops](#operators) will be exported)
-
-  * :MM (only [MM](#new--) op exported)
-
-  * :ALL
-
 [Operators](#synopsis)
 ======================
 
-The Module overloads or introduces a range of well and lesser known ops. ==, +, * are commutative, -, ⋅, dot, ÷, x, ⊗ and ** are not.
+The Module overloads or introduces a range of well and lesser known ops. ==, +, * are commutative, -, ⋅, dot, ÷, x, ⊗ and ** are not. Most ops are [aliases](#operator-methods).
 
 They are exported when using no flag or under the export flags :DEFAULT or :ALL, but not under :MANDATORY or :MM). The only exception is MM-operator, a shortcut to create a matrix. That has to be importet explicitly with the tag :MM or :ALL. The postcircumfix [] - op will always work.
 
@@ -1054,7 +1043,7 @@ They are exported when using no flag or under the export flags :DEFAULT or :ALL,
     my $c   =  $a ** -3;             # alias to ($a dot $a dot $a).inverted
     my $c   =  $a **  0;             # creats an right sized identity matrix
 
-    my $tp  =  $a X* $b;             # tensor product 
+    my $tp  =  $a X* $b;             # tensor product, same precedence as infix: x (category Replication)
     my $tp  =  $a ⊗ $b;              # tensor product, unicode (U+02297)
 
      ｜ $matrix ｜                     # determinant, unicode (U+0FF5C)
@@ -1062,8 +1051,19 @@ They are exported when using no flag or under the export flags :DEFAULT or :ALL,
 
        $matrix[1][2]                 # cell in second row and third column, works even when used :MANDATORY tag
 
-    MM [[1]]                         # a new matrix
+    MM [[1]]                         # a new matrix, has higher precedence than postcircumfix:[]
     MM '1'                           # string alias
+
+[Export Tags](#synopsis)
+========================
+
+  * :MANDATORY (nothing is exported)
+
+  * :DEFAULT (same as no tag, most [ops](#operators) will be exported)
+
+  * :MM (only [MM](#new--) op exported)
+
+  * :ALL
 
 [Authors](#synopsis)
 ====================

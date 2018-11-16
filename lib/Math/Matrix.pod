@@ -22,8 +22,8 @@ of numbers (Numeric type - Bool or Int or Num or Rat or FatRat or Complex):
 Table of Content:
 
 =item L<Methods|#methods>
-=item L<Export Tags|#export-tags>
 =item L<Operators|#operators>
+=item L<Export Tags|#export-tags>
 =item L<Authors|#authors>
 =item L<License|#license>
 
@@ -1091,7 +1091,7 @@ Summary of all shortcut aliases (first) and their long form (second).
 =head2 L<Operator Methods|#methods>
 
 Operators with the methods they refer to. (Most ops are just aliases.)
-For more explanations of the ops with examples see the L<ops chapter|#operators>:
+For more explanations of the ops with examples see naext chapter: L<ops chapter|#operators>:
 
 =item prefix ?  -->  L<Bool|#bool>
 =item prefix +  -->  L<Numeric|#numeric>
@@ -1114,17 +1114,11 @@ For more explanations of the ops with examples see the L<ops chapter|#operators>
 =item circumfix ‖..‖  -->  L<norm|#norm>
 =item postcircumfix [..]  -->  L<AT-POS|#at-pos>
 
-=head1 L<Export Tags|#synopsis>
-
-=item :MANDATORY (nothing is exported)
-=item :DEFAULT (same as no tag, most L<ops|#operators> will be exported)
-=item :MM (only L<MM|#new--> op exported)
-=item :ALL
-
 =head1 L<Operators|#synopsis>
 
 The Module overloads or introduces a range of well and lesser known ops.
 ==, +, * are commutative, -, ⋅, dot, ÷, x, ⊗ and ** are not.
+Most ops are L<aliases|#operator-methods>.
 
 They are exported when using no flag or under the export flags :DEFAULT or :ALL,
 but not under :MANDATORY or :MM).
@@ -1160,7 +1154,7 @@ The postcircumfix [] - op will always work.
     my $c   =  $a ** -3;             # alias to ($a dot $a dot $a).inverted
     my $c   =  $a **  0;             # creats an right sized identity matrix
 
-    my $tp  =  $a X* $b;             # tensor product 
+    my $tp  =  $a X* $b;             # tensor product, same precedence as infix: x (category Replication)
     my $tp  =  $a ⊗ $b;              # tensor product, unicode (U+02297)
 
      ｜ $matrix ｜                     # determinant, unicode (U+0FF5C)
@@ -1168,8 +1162,15 @@ The postcircumfix [] - op will always work.
 
        $matrix[1][2]                 # cell in second row and third column, works even when used :MANDATORY tag
 
-    MM [[1]]                         # a new matrix
+    MM [[1]]                         # a new matrix, has higher precedence than postcircumfix:[]
     MM '1'                           # string alias
+
+=head1 L<Export Tags|#synopsis>
+
+=item :MANDATORY (nothing is exported)
+=item :DEFAULT (same as no tag, most L<ops|#operators> will be exported)
+=item :MM (only L<MM|#new--> op exported)
+=item :ALL
 
 =head1 L<Authors|#synopsis>
 
