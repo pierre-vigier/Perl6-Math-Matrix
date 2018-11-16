@@ -41,9 +41,9 @@ In that sense the library is thread safe.
 All computation heavy properties will be calculated lazily and will be cached.
 
 =head1 L<METHODS|#synopsis>
-=item L<constructors|#constructors>: L<new []|#new-->, L<new ()|#new---1>, L<new ""|#new---2>,
+=item B<L<constructors|#constructors>>: L<new []|#new-->, L<new ()|#new---1>, L<new ""|#new---2>,
       L<new-zero|#new-zero>, L<new-identity|#new-identity>, L<new-diagonal|#new-diagonal>, L<new-vector-product|#new-vector-product>
-=item L<accessors|#accessors>: L<cell|#cell>, L<AT-POS|#at-pos>, L<row|#row>, L<column|#column>, L<diagonal|#diagonal>, L<submatrix|#submatrix>
+=item B<L<accessors|#accessors>>: L<cell|#cell>, L<AT-POS|#at-pos>, L<row|#row>, L<column|#column>, L<diagonal|#diagonal>, L<submatrix|#submatrix>
 =item L<converter|#type-conversion-and-output-formats>: L<Bool|#bool>, L<Numeric|#numeric>, L<Str|#str>,
       L<Array|#array>, L<Hash|#hash>, L<Range|#range>, L<list|#list>, L<list-rows|#list-rows>, L<list-columns|#list-columns>, L<gist|#gist>, L<perl|#perl>
 =item L<boolean properties|#boolean-properties>: L<zero|#is-zero>, L<identity|#identity>, L<square|#is-square>, L<diagonal|#is-diagonal>, L<diagonal-constant|#is-diagonal-constant>, 
