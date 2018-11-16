@@ -199,7 +199,7 @@ Gets values of specified column (first required parameter) as a list.
 
 ### [diagonal](#accessors)
 
-Without an argument it returns values of main diagonal elements as a list. Use the optional parameter to get any other parallel diagonal. Positive value for the ones above - negative below and 0 for the main diagonal. Matrix does not have to be a quadratic (square).
+Without an argument it returns values of main diagonal elements as a list. Use the optional parameter to get any other parallel diagonal. Positive value for the ones above - negative below and 0 for the main diagonal. Matrix does not have to be a quadratic ([square](#is-square)).
 
     say Math::Matrix.new([[1,2],[3,4]]      ).diagonal    : (1, 4)
     say Math::Matrix.new([[1,2],[3,4]]      ).diagonal(1) : (2)
@@ -485,13 +485,13 @@ Density is the percentage of cell which are not zero.
 
 ### [trace](#numeric-properties)
 
-The trace of a square matrix is the sum of the cells on the main diagonal. In other words: sum of cells which row and column value is identical.
+The trace of a [square](#is-square) matrix is the sum of the cells on the main diagonal. In other words: sum of cells which row and column value is identical.
 
     my $tr = $matrix.trace;
 
 ### [determinant](#numeric-properties)
 
-If you see the columns as vectors, that describe the edges of a solid, the determinant of a square matrix tells you the volume of that solid. So if the solid is just in one dimension flat, the determinant is zero too.
+Only a [square](#is-square) matrice has a defined determinant, which tells the volume, spanned by the row or column vectors. So if the volume is just in one dimension flat, the determinant is zero, and has a kernel (not a full [rank](#rank) - thus is not [invertible](#is-invertable)).
 
     my $det = $matrix.determinant;
     my $d = $matrix.det;                # same thing
@@ -601,7 +601,7 @@ Creates a matrix out of the properly signed [minors](#minor) of the original. It
 
 ### [inverted](#derived-matrices)
 
-Matrices that have a square form and a full rank can be inverted (see [is-invertible](#is-invertible)). Inverse matrix regarding to matrix multiplication (see [dot-product](#dot-product)). The dot product of a matrix with its inverted results in a [identity](#is-identity) matrix (neutral element in this group).
+Matrices that have a [square](#is-square) form and a full [rank](#rank) can be inverted (see [is-invertible](#is-invertible)). Inverse matrix regarding to matrix multiplication (see [dot-product](#dot-product)). The dot product of a matrix with its inverted results in a [identity](#is-identity) matrix (neutral element in this group).
 
     my $i = $matrix.inverted();      # invert matrix
     my $i = $matrix ** -1;           # operator alias
@@ -630,7 +630,7 @@ Methods that return lists of matrices, which in their product or otherwise can b
     my ($L, $U) = $matrix.decompositionLUC(:!pivot);
     $L dot $U eq $matrix;                # True
 
-$L is a left triangular matrix and $R is a right one Without pivotisation the marix has to be invertible (square and full ranked). In case you whant two unipotent triangular matrices and a diagonal (D): use the :diagonal option, which can be freely combined with :pivot.
+$L is a left triangular matrix and $R is a right one Without pivotisation the marix has to be invertible ([square](#is-square) and full [rank](#rank)ed). In case you whant two unipotent triangular matrices and a diagonal (D): use the :diagonal option, which can be freely combined with :pivot.
 
     my ($L, $D, $U, $P) = $matrix.decompositionLU( :diagonal );
     $L dot $D dot $U eq $matrix dot $P;  # True
@@ -640,7 +640,7 @@ $L is a left triangular matrix and $R is a right one Without pivotisation the ma
     my ($L, $U) = $matrix.decompositionLUCrout( );
     $L dot $U eq $matrix;                # True
 
-$L is a left triangular matrix and $R is a right one This decomposition works only on invertible matrices (square and full ranked).
+$L is a left triangular matrix and $R is a right one This decomposition works only on invertible matrices ([square](#is-square) and full [rank](#rank)ed).
 
 ### [decompositionCholesky](#decompositions)
 
@@ -1046,7 +1046,7 @@ They are exported when using no flag or under the export flags :DEFAULT or :ALL,
     my $tp  =  $a X* $b;             # tensor product, same precedence as infix: x (category Replication)
     my $tp  =  $a ⊗ $b;              # tensor product, unicode (U+02297)
 
-     ｜ $matrix ｜                     # determinant, unicode (U+0FF5C)
+     ｜$matrix ｜                     # determinant, unicode (U+0FF5C)
      ‖ $matrix ‖                     # L2 norm (euclidean p=2 to the square), (U+02016)
 
        $matrix[1][2]                 # cell in second row and third column, works even when used :MANDATORY tag
