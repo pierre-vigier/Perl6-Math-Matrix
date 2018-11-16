@@ -62,7 +62,7 @@ All computation heavy properties will be calculated lazily and will be cached.
 
   * [derived matrices](#derived-matrices): [transposed](#transposed), [negated](#negated), [conjugated](#conjugated), [adjugated](#adjugated), [inverted](#inverted), [reduced-row-echelon-form](#reduced-row-echelon-form)
 
-  * [decompositions](#decompositions): [decompositionLUCrout](#decompositionlucrout), [decompositionLU](#decompositionlu), [decompositionCholesky](#decompositioncholesky)
+  * [decompositions](#decompositions): [LUCrout](#decompositionlucrout), [LU](#decompositionlu), [Cholesky](#decompositioncholesky)
 
   * [math ops](#mathematical-operations): [equal](#equal), [add](#add), [multiply](#multiply), [dot-product](#dot-product), [tensor-product](#tensor-product)
 
