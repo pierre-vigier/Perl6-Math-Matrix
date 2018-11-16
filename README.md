@@ -1011,7 +1011,9 @@ Operators with the methods they refer to. (Most ops are just aliases.) For more 
 [Operators](#synopsis)
 ======================
 
-The Module overloads or introduces a range of well and lesser known ops. ==, +, * are commutative, -, ⋅, dot, ÷, x, ⊗ and ** are not. Most ops are [aliases](#operator-methods).
+The Module overloads or introduces a range of well and lesser known ops, which are almost all [aliases](#operator-methods).
+
+==, +, * are commutative, -, ⋅, dot, ÷, x, ⊗ and ** are not. All ops have same precedence as its multi method siblings - unless stated otherwise.
 
 They are exported when using no flag or under the export flags :DEFAULT or :ALL, but not under :MANDATORY or :MM). The only exception is MM-operator, a shortcut to create a matrix. That has to be importet explicitly with the tag :MM or :ALL. The postcircumfix [] - op will always work.
 
