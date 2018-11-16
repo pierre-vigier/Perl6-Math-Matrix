@@ -447,7 +447,7 @@ A Hermitian or self-adjoint matrix is equal to its [transposed](#transposed) and
 
 ### [is-invertible](#boolean-properties)
 
-Also called nonsingular or nondegenerate. Is True if number of rows and colums are the same ([is-square](#is-square)) and [determinant](#determinant) is not zero. All rows or colums have to be independent vectors. Please use this method before $matrix.inverted, or you will get an exception.
+Also called nonsingular or nondegenerate. Is True if number of rows and colums are the same ([is-square](#is-square)) and [determinant](#determinant) is not zero. All rows or colums have to be independent vectors. Please use this method before use: $matrix.inverted, or you will get an exception.
 
 ### [is-orthogonal](#boolean-properties)
 
@@ -455,7 +455,7 @@ An orthogonal matrix multiplied ([dot-product](#dot-product)) with its transpose
 
 ### [is-unitary](#boolean-properties)
 
-An unitery matrix multiplied ([dot-product](#dot-product)) with its concjugate transposed derivative (.conj.T) is an identity matrix, or said differently: the concjugate transposed matrix equals the inverted matrix.
+An unitery matrix multiplied ([dot-product](#dot-product)) with its concjugate transposed derivative (.conj.T) is an identity matrix, or said differently: the concjugate transposed matrix equals the [inverted](#inverted) matrix.
 
 ### [is-positive-definite](#boolean-properties)
 
@@ -527,7 +527,7 @@ A norm is a single positive number, which is an abstraction to the concept of si
 
 ### [condition](#numeric-properties)
 
-Condition number of a matrix is L2 norm * L2 of inverted matrix.
+Condition number of a matrix is L2 norm * L2 of [inverted](#inverted) matrix.
 
     my $c = $matrix.condition( );
 
@@ -601,7 +601,7 @@ Creates a matrix out of the properly signed [minors](#minor) of the original. It
 
 ### [inverted](#derived-matrices)
 
-Matrices that have a [square](#is-square) form and a full [rank](#rank) can be inverted (see [is-invertible](#is-invertible)). Inverse matrix regarding to matrix multiplication (see [dot-product](#dot-product)). The dot product of a matrix with its inverted results in a [identity](#is-identity) matrix (neutral element in this group).
+Matrices that have a [square](#is-square) form and a full [rank](#rank) can be [inverted](#inverted) (see [is-invertible](#is-invertible)). Inverse matrix regarding to matrix multiplication (see [dot-product](#dot-product)). The dot product of a matrix with its [inverted](#inverted) results in a [identity](#is-identity) matrix (neutral element in this group).
 
     my $i = $matrix.inverted();      # invert matrix
     my $i = $matrix ** -1;           # operator alias

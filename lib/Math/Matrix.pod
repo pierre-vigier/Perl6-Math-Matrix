@@ -496,7 +496,7 @@ A Hermitian or self-adjoint matrix is equal to its L<transposed|#transposed> and
 
 Also called nonsingular or nondegenerate.
 Is True if number of rows and colums are the same (L<is-square|#is-square>) and L<determinant|#determinant> is not zero.
-All rows or colums have to be independent vectors. Please use this method before $matrix.inverted,
+All rows or colums have to be independent vectors. Please use this method before use: $matrix.inverted,
 or you will get an exception.
 
 =head3 L<is-orthogonal|#boolean-properties>
@@ -508,7 +508,7 @@ is an identity matrix or in other words: L<transposed|#transposed> and L<inverte
 
 An unitery matrix multiplied (L<dot-product|#dot-product>) with its concjugate transposed 
 derivative (.conj.T) is an identity matrix, or said differently:
-the concjugate transposed matrix equals the inverted matrix.
+the concjugate transposed matrix equals the L<inverted|#inverted> matrix.
 
 
 =head3 L<is-positive-definite|#boolean-properties>
@@ -592,7 +592,7 @@ In step 3 the sum of these are taken to the power of (1/q).
 
 =head3 L<condition|#numeric-properties>
 
-Condition number of a matrix is L2 norm * L2 of inverted matrix.
+Condition number of a matrix is L2 norm * L2 of L<inverted|#inverted> matrix.
 
     my $c = $matrix.condition( );        
 
@@ -672,9 +672,9 @@ It is called adjugate, classical adjoint or sometimes adjunct.
 
 =head3 L<inverted|#derived-matrices>
 
-Matrices that have a L<square|#is-square> form and a full L<rank|#rank> can be inverted (see L<is-invertible|#is-invertible>).
+Matrices that have a L<square|#is-square> form and a full L<rank|#rank> can be L<inverted|#inverted> (see L<is-invertible|#is-invertible>).
 Inverse matrix regarding to matrix multiplication (see L<dot-product|#dot-product>).
-The dot product of a matrix with its inverted results in a L<identity|#is-identity> matrix
+The dot product of a matrix with its L<inverted|#inverted> results in a L<identity|#is-identity> matrix
 (neutral element in this group).
 
     my $i = $matrix.inverted();      # invert matrix
