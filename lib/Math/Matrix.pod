@@ -46,9 +46,9 @@ All computation heavy properties will be calculated lazily and will be cached.
 =item B<L<accessors|#accessors>>: L<cell|#cell>, L<AT-POS|#at-pos>, L<row|#row>, L<column|#column>, L<diagonal|#diagonal>, L<submatrix|#submatrix>
 =item B<L<converter|#type-conversion-and-output-formats>>: L<Bool|#bool>, L<Numeric|#numeric>, L<Str|#str>,
       L<Array|#array>, L<Hash|#hash>, L<Range|#range>, L<list|#list>, L<list-rows|#list-rows>, L<list-columns|#list-columns>, L<gist|#gist>, L<perl|#perl>
-=item B<L<boolean properties|#boolean-properties>>: L<square|#is-square>, L<zero|#is-zero>, L<identity|#identity>, L<upper-triangular|#is-upper-triangular>, L<lower-triangular|#is-lower-triangular>,
-      L<diagonal|#is-diagonal>, L<diagonal-constant|#is-diagonal-constant>, L<diagonally-dominant|#is-diagonally-dominant>,
-      L<symmetric|#is-symmetric>, L<antisymmetric|#is-antisymmetric>, L<unitary|#is-unitary>, L<self-adjoint|#is-self-adjoint>, L<invertible|#is-invertible>, L<orthogonal|#is-orthogonal>,
+=item B<L<boolean properties|#boolean-properties>>: L<square|#is-square>, L<zero|#is-zero>, L<identity|#identity>, L<upper-|#is-upper-triangular>, L<lower-triangular|#is-lower-triangular>,
+      L<diagonal|#is-diagonal>, L<-constant|#is-diagonal-constant>, L<-dominant|#is-diagonally-dominant>,
+      L<anti-|#is-antisymmetric>, L<symmetric|#is-symmetric>, L<unitary|#is-unitary>, L<self-adjoint|#is-self-adjoint>, L<invertible|#is-invertible>, L<orthogonal|#is-orthogonal>,
       L<positive-definite|#is-positive-definite>, L<positive-semidefinite|#is-positive-semidefinite>
 =item B<L<numeric properties|#numeric-properties>>: L<size|#size>, L<density|#density>, L<trace|#trace>, L<determinant|#determinant>, L<rank|#rank>, L<nullity|#nullity>,
       L<norm|#norm>, L<condition|#condition>, L<minor|#minor>, L<narrowest-|#narrowest-cell-type>, L<widest-cell-type|#widest-cell-type>
