@@ -52,7 +52,7 @@ All computation heavy properties will be calculated lazily and will be cached.
 
   * **[constructors](#constructors)**: [new []](#new--), [new ()](#new---1), [new ""](#new---2), [new-zero](#new-zero), [new-identity](#new-identity), [new-diagonal](#new-diagonal), [new-vector-product](#new-vector-product)
 
-  * **[accessors](#accessors)**: [cell](#cell), [AT-POS](#at-pos), [row](#row), [column](#column), [diagonal](#diagonal), [submatrix](#submatrix)
+  * **[accessors](#accessors)**: [cell](#cell), [AT-POS](#at-pos), [row](#row), [column](#column), [diagonal](#diagonal), [skew-diagonal](#skew-diagonal), [submatrix](#submatrix)
 
   * **[converter](#type-conversion-and-output-formats)**: [Bool](#bool), [Numeric](#numeric), [Str](#str), [Array](#array), [Hash](#hash), [Range](#range), [list](#list), [list-rows](#list-rows), [list-columns](#list-columns), [gist](#gist), [perl](#perl)
 
@@ -199,11 +199,19 @@ Gets values of specified column (first required parameter) as a list.
 
 ### [diagonal](#accessors)
 
-Without an argument it returns values of main diagonal elements as a list. Use the optional parameter to get any other parallel diagonal. Positive value for the ones above - negative below and 0 for the main diagonal. Matrix does not have to be a quadratic ([square](#is-square)).
+Without an argument it returns values of main diagonal elements as a list. Use the optional parameter to get any other parallel diagonal. Positive value for the ones above - negative below and 0 for the main diagonal. The matrix does not have to be a quadratic ([square](#is-square)).
 
     say Math::Matrix.new([[1,2],[3,4]]      ).diagonal    : (1, 4)
     say Math::Matrix.new([[1,2],[3,4]]      ).diagonal(1) : (2)
     say Math::Matrix.new([[1,2],[3,4],[5,6]]).diagonal(-1): (3, 6)
+
+### [skew-diagonal](#accessors)
+
+Unlike a *diagonal*, a skew diagonal is only defined for [square](#is-square) matrixes. It runs from $matrix[n][0] to $matrix[0][n], n being row or column size - 1. Use the optional parameter to get any other parallel diagonal. Positive value for the ones above - negative below.
+
+    say $matrix.skew-diagonal    : (2, 3)
+    say $matrix.skew-diagonal(1) : (1)
+    say $matrix.skew-diagonal(-1): (4)
 
 ### [submatrix](#accessors)
 
@@ -423,7 +431,7 @@ Checks if caller is a *diagonal-constant* or *Töplitz matrix*. True if every [d
 
 ### [is-catalecticant](#boolean-properties)
 
-Checks if caller is a *catalecticant* or *Hankel matrix*. True if every skew diagonal is the a collection of cells that hold the same value. Catalecticant matrices are [symmetric](#is-symmetric).
+Checks if caller is a *catalecticant* or *Hankel matrix*. True if every [skew diagonal](#skew-diagonal) is the a collection of cells that hold the same value. Catalecticant matrices are [symmetric](#is-symmetric).
 
     Example:     0  1  2
                  1  2  3
@@ -439,7 +447,7 @@ True if every cell with coordinates x y has same value as the cell on y x. In ot
 
 ### [is-antisymmetric](#boolean-properties)
 
-Means the [transposed](#transposed) and *negated|#negated* matrix are the same.
+Means the [transposed](#transposed) and [negated](#negated) matrix are the same.
 
     Example:    0  2  3
                -2  0  4

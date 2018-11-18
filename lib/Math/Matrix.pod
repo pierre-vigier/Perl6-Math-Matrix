@@ -43,7 +43,7 @@ All computation heavy properties will be calculated lazily and will be cached.
 =head1 L<METHODS|#synopsis>
 =item B<L<constructors|#constructors>>: L<new []|#new-->, L<new ()|#new---1>, L<new ""|#new---2>,
       L<new-zero|#new-zero>, L<new-identity|#new-identity>, L<new-diagonal|#new-diagonal>, L<new-vector-product|#new-vector-product>
-=item B<L<accessors|#accessors>>: L<cell|#cell>, L<AT-POS|#at-pos>, L<row|#row>, L<column|#column>, L<diagonal|#diagonal>, L<submatrix|#submatrix>
+=item B<L<accessors|#accessors>>: L<cell|#cell>, L<AT-POS|#at-pos>, L<row|#row>, L<column|#column>, L<diagonal|#diagonal>, L<skew-diagonal|#skew-diagonal>, L<submatrix|#submatrix>
 =item B<L<converter|#type-conversion-and-output-formats>>: L<Bool|#bool>, L<Numeric|#numeric>, L<Str|#str>,
       L<Array|#array>, L<Hash|#hash>, L<Range|#range>, L<list|#list>, L<list-rows|#list-rows>, L<list-columns|#list-columns>, L<gist|#gist>, L<perl|#perl>
 =item B<L<boolean properties|#boolean-properties>>: L<square|#is-square>, L<zero|#is-zero>, L<identity|#identity>, L<upper-|#is-upper-triangular>, L<lower-triangular|#is-lower-triangular>,
@@ -209,11 +209,22 @@ Gets values of specified column (first required parameter) as a list.
 Without an argument it returns values of main diagonal elements as a list. 
 Use the optional parameter to get any other parallel diagonal. 
 Positive value for the ones above - negative below and 0 for the main diagonal.
-Matrix does not have to be a quadratic (L<square|#is-square>).
+The matrix does not have to be a quadratic (L<square|#is-square>).
 
     say Math::Matrix.new([[1,2],[3,4]]      ).diagonal    : (1, 4)
     say Math::Matrix.new([[1,2],[3,4]]      ).diagonal(1) : (2)
     say Math::Matrix.new([[1,2],[3,4],[5,6]]).diagonal(-1): (3, 6)
+
+=head3 L<skew-diagonal|#accessors>
+
+Unlike a I<diagonal>, a skew diagonal is only defined for L<square|#is-square> matrixes.
+It runs from $matrix[n][0] to $matrix[0][n], n being row or column size - 1.
+Use the optional parameter to get any other parallel diagonal. 
+Positive value for the ones above - negative below.
+
+    say $matrix.skew-diagonal    : (2, 3)
+    say $matrix.skew-diagonal(1) : (1)
+    say $matrix.skew-diagonal(-1): (4)
 
 =head3 L<submatrix|#accessors>
 
@@ -472,7 +483,7 @@ True if every L<diagonal|#diagonal> is the a collection of cells that hold the s
 =head3 L<is-catalecticant|#boolean-properties>
 
 Checks if caller is a I<catalecticant> or I<Hankel matrix>.
-True if every skew diagonal is the a collection of cells that hold the same value.
+True if every L<skew diagonal|#skew-diagonal> is the a collection of cells that hold the same value.
 Catalecticant matrices are L<symmetric|#is-symmetric>.
 
 
@@ -491,7 +502,7 @@ In other words: $matrix and $matrix.L<transposed|#transposed> (alias T) are the 
 
 =head3 L<is-antisymmetric|#boolean-properties>
 
-Means the L<transposed|#transposed> and I<negated|#negated> matrix are the same.
+Means the L<transposed|#transposed> and L<negated|#negated> matrix are the same.
 
     Example:    0  2  3
                -2  0  4
