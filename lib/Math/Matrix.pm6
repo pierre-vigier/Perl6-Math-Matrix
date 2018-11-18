@@ -32,6 +32,7 @@ has Int     $!nullity is lazy;
 has Rat     $!density is lazy;
 has Numeric $!trace is lazy;
 has Numeric $!determinant is lazy;
+has Numeric $!condition is lazy;
 has Numeric $!narrowest-cell-type is lazy;
 has Numeric $!widest-cell-type is lazy;
 
@@ -460,9 +461,9 @@ multi method norm(Math::Matrix:D: 'max' --> Numeric)      { max            @!row
 multi method norm(Math::Matrix:D: 'row-sum' --> Numeric)  { max            @!rows.map: {[+] .map: *.abs} }
 multi method norm(Math::Matrix:D: 'column-sum'--> Numeric){ max (^$!column-count).map: {[+] self.column($_).map: *.abs} }
 
-method condition(Math::Matrix:D:                    --> Numeric) { self.norm() * self.inverted.norm       }
+method !build_condition(Math::Matrix:D:              --> Numeric) { $.norm() * $.inverted.norm       }
 
-method minor(Math::Matrix:D: Int:D $row, Int:D $col --> Numeric) { self.submatrix($row, $col).determinant }
+method minor(Math::Matrix:D: Int:D $row, Int:D $col --> Numeric) { $.submatrix($row, $col).determinant }
 
 method !build_narrowest-cell-type(Math::Matrix:D: --> Numeric){
     return Bool if any( @!rows[*;*] ) ~~ Bool;
