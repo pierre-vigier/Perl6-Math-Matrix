@@ -231,7 +231,9 @@ In mathematics, a submatrix is built by leaving out one row and one column. In t
                                3 4 6
                                4 5 7
 
-#### [leaving out more](#submatrix) If you provide two ranges (row-min .. row-max, col-min .. col-max) to the appropriately named arguments, you get the two dimensional excerpt of the matrix that is defined by these ranges.
+#### [leaving out more](#submatrix)
+
+If you provide two ranges (row-min .. row-max, col-min .. col-max) to the appropriately named arguments, you get the two dimensional excerpt of the matrix that is defined by these ranges.
 
     say $m.submatrix( rows => 1..1, columns => 0..*) :    3 4 5
 
