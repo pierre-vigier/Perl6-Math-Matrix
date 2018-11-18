@@ -66,9 +66,9 @@ All computation heavy properties will be calculated lazily and will be cached.
 
   * **[math ops](#mathematical-operations)**: [equal](#equal), [add](#add), [multiply](#multiply), [dot-product](#dot-product), [tensor-product](#tensor-product)
 
-  * **[list like ops](#list-like-matrix-operations)**: [elems](#elems), [elem](#elem), [cont](#cont), [map-index](#map-index), [map-with-index](#map-with-index), [map](#map), [map-row](#map-row), [map-column](#map-column), [reduce](#reduce), [reduce-rows](#reduce-rows), [reduce-columns](#reduce-columns)
+  * **[list like ops](#list-like-operations)**: [elems](#elems), [elem](#elem), [cont](#cont), [map-index](#map-index), [map-with-index](#map-with-index), [map](#map), [map-row](#map-row), [map-column](#map-column), [reduce](#reduce), [reduce-rows](#reduce-rows), [reduce-columns](#reduce-columns)
 
-  * **[structural ops](#structural-matrix-operations)**: [move-row](#move-row), [move-column](#move-column), [swap-rows](#swap-rows), [swap-columns](#swap-columns), [splice-rows](#splice-rows), [splice-columns](#splice-columns)
+  * **[structural ops](#structural-operations)**: [move-row](#move-row), [move-column](#move-column), [swap-rows](#swap-rows), [swap-columns](#swap-columns), [splice-rows](#splice-rows), [splice-columns](#splice-columns)
 
   * **[shortcuts](#shortcuts)**: [T](#transposed), [conj](#conjugated), [det](#determinant), [rref](#reduced-row-echelon-form)
 
@@ -253,6 +253,8 @@ Arguments with ranges and lists can be mixed and are in both cases optional. If 
 
     $m.submatrix(rows => (1..*), columns => (3,2)):   5 4
                                                       6 5
+
+Even more powerful or explicit in syntax are the [structural ops](#structural-operations).
 
 [Converter](#methods)
 ---------------------
@@ -798,10 +800,10 @@ The *tensor product* (a.k.a *Kronecker product*) between a matrix a of *size|#si
     my $c = $a X* $b;               # works too as operator alias
     my $c = $a ⊗ $b;                # unicode operator alias
 
-[List Like Matrix Operations](#methods)
----------------------------------------
+[List Like Operations](#methods)
+--------------------------------
 
-Selection of methods that are also provided by Lists and Arrays and make also sense in context a 2D matrix. 
+Methods that usually are provided by Lists and Arrays, but make also sense in context of matrices. 
 
 ### [elems](#list-like-matrix-operations)
 
@@ -888,10 +890,10 @@ Similar to reduce-rows, this method reduces each column to one value in the resu
 
     say Math::Matrix.new([[1,2],[3,4]]).reduce-columns(&[*]): (3, 8)
 
-[Structural Matrix Operations](#methods)
-----------------------------------------
+[Structural Operations](#methods)
+---------------------------------
 
-Methods that reorder the rows and columns, delete some or even add new. The accessor .submatrix is also useful for that purpose.
+Methods that reorder rows and columns, delete some or even add new. The accessor [submatrix](#submatrix) is also useful for that purpose.
 
 ### [move-row](#structural-matrix-operations)
 
