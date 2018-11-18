@@ -17,6 +17,7 @@ has Bool $!is-zero is lazy;
 has Bool $!is-identity is lazy;
 has Bool $!is-diagonal is lazy;
 has Bool $!is-diagonal-constant is lazy;
+has Bool $!is-catalecticant is lazy;
 has Bool $!is-square is lazy;
 has Bool $!is-symmetric is lazy;
 has Bool $!is-antisymmetric is lazy;
@@ -159,10 +160,19 @@ method column(Math::Matrix:D: Int:D $column --> List) {
 }
 
 method diagonal(Math::Matrix:D: $start? = 0 --> List){
-    fail "start of requested diagonal is outside of the matrix" if $start <= -$!row-count or $start >= $!column-count;
+    fail "requested diagonal is outside of matrix boundaries" if $start <= -$!row-count or $start >= $!column-count;
     my $length = min($!row-count , $!column-count) - $start.abs;
     (gather if  $start < 0 { for ^$length -> $i { take @!rows[$i;$i-$start] }} 
             else           { for ^$length -> $i { take @!rows[$i+$start;$i] }}
+	).list;
+}
+
+method skew-diagonal(Math::Matrix:D: $start? = 0 --> List){
+    fail "skew diagonal is only defined for square matrices" unless $.is-square;
+    fail "requested skew diagonal is outside of matrix boundaries" if $start.abs >= $!row-count;
+    my $length = $!row-count - $start.abs;
+    (gather if  $start < 0 { for ^$length -> $i { take @!rows[$!row-count-1-$i;$i-$start] }} 
+            else           { for ^$length -> $i { take @!rows[$length-1-$i;$i] }}
 	).list;
 }
 
@@ -244,11 +254,11 @@ multi method perl(Math::Matrix:D: --> Str){ self.WHAT.perl ~ ".new(" ~ @!rows.pe
 # end of type conversion and handy shortcuts - start boolean matrix properties
 ################################################################################
 
-method !build_is-square(Math::Matrix:D: --> Bool) { $!column-count == $!row-count }
+method !build_is-square( Math::Matrix:D: --> Bool) { $!column-count == $!row-count }
 
-method !build_is-zero(Math::Matrix:D: --> Bool)   { self.density() == 0 }
+method !build_is-zero( Math::Matrix:D: --> Bool)   { self.density() == 0 }
 
-method !build_is-identity(Math::Matrix:D: --> Bool) {
+method !build_is-identity( Math::Matrix:D: --> Bool) {
     return False unless self.is-square;
     for ^$!row-count X ^$!column-count -> ($r, $c) {
         return False unless @!rows[$r][$c] == ($r == $c ?? 1 !! 0);
@@ -265,7 +275,7 @@ method is-upper-triangular(Math::Matrix:D: Bool :$strict = False --> Bool) {
     True;
 }
 
-method is-lower-triangular(Math::Matrix:D: Bool :$strict = False --> Bool) {
+method is-lower-triangular( Math::Matrix:D: Bool :$strict = False --> Bool) {
     return False unless self.is-square;
     my $cmp_op = $strict ?? &[<=] !! &[<];
     for ^$!row-count X ^$!column-count -> ($r, $c) {
@@ -274,15 +284,20 @@ method is-lower-triangular(Math::Matrix:D: Bool :$strict = False --> Bool) {
     True;
 }
 
-method !build_is-diagonal(Math::Matrix:D: --> Bool) {
+method !build_is-diagonal( Math::Matrix:D: --> Bool) {
     $.is-upper-triangular && $.is-lower-triangular;
 }
 
-method !build_is-diagonal-constant(Math::Matrix:D: --> Bool) {
+method !build_is-diagonal-constant( Math::Matrix:D: --> Bool) {
     [&&](map { [==] $.diagonal($_).list }, -$!column-count+1 .. $!row-count-1);
 }
 
-method is-diagonally-dominant(Math::Matrix:D: Bool :$strict = False, 
+method !build_is-catalecticant( Math::Matrix:D: --> Bool) {
+    return False unless $.is-square;
+    [&&](map { [==] $.skew-diagonal($_).list }, -$!column-count+1 .. $!row-count-1);
+}
+
+method is-diagonally-dominant( Math::Matrix:D: Bool :$strict = False, 
                               Str :$along where {$^orient eq any <column row both>} = 'column' --> Bool) {
     return False unless self.is-square;
     my $greater = $strict ?? &[>] !! &[>=];
@@ -298,7 +313,7 @@ method is-diagonally-dominant(Math::Matrix:D: Bool :$strict = False,
     $colwise and $rowwise;
 }
 
-method !build_is-symmetric(Math::Matrix:D: --> Bool) {
+method !build_is-symmetric( Math::Matrix:D: --> Bool) {
     return False unless self.is-square;
     return True if $!row-count < 2;
     for ^($!row-count - 1) -> $r {

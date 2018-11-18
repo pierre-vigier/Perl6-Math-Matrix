@@ -56,7 +56,7 @@ All computation heavy properties will be calculated lazily and will be cached.
 
   * **[converter](#type-conversion-and-output-formats)**: [Bool](#bool), [Numeric](#numeric), [Str](#str), [Array](#array), [Hash](#hash), [Range](#range), [list](#list), [list-rows](#list-rows), [list-columns](#list-columns), [gist](#gist), [perl](#perl)
 
-  * **[boolean properties](#boolean-properties)**: [square](#is-square), [zero](#is-zero), [identity](#identity), [upper-](#is-upper-triangular), [lower-triangular](#is-lower-triangular), [diagonal](#is-diagonal), [-constant](#is-diagonal-constant), [-dominant](#is-diagonally-dominant), [anti-](#is-antisymmetric), [symmetric](#is-symmetric), [unitary](#is-unitary), [self-adjoint](#is-self-adjoint), [invertible](#is-invertible), [orthogonal](#is-orthogonal), [positive-definite](#is-positive-definite), [positive-semidefinite](#is-positive-semidefinite)
+  * **[boolean properties](#boolean-properties)**: [square](#is-square), [zero](#is-zero), [identity](#identity), [upper-](#is-upper-triangular), [lower-triangular](#is-lower-triangular), [diagonal](#is-diagonal), [-dominant](#is-diagonally-dominant), [-constant](#is-diagonal-constant), [catalecticant](#is-catalecticant), [anti-](#is-antisymmetric), [symmetric](#is-symmetric), [unitary](#is-unitary), [self-adjoint](#is-self-adjoint), [invertible](#is-invertible), [orthogonal](#is-orthogonal), [positive-definite](#is-positive-definite), [positive-semidefinite](#is-positive-semidefinite)
 
   * **[numeric properties](#numeric-properties)**: [size](#size), [density](#density), [trace](#trace), [determinant](#determinant), [rank](#rank), [nullity](#nullity), [norm](#norm), [condition](#condition), [minor](#minor), [narrowest-](#narrowest-cell-type), [widest-cell-type](#widest-cell-type)
 
@@ -402,14 +402,6 @@ True if matrix is [square](#is-square) and only cells on the [diagonal](#diagona
                 0 3 0
                 0 0 7
 
-### [is-diagonal-constant](#boolean-properties)
-
-Checks if caller is a diagonal-constant or Töplitz matrix. True if every [diagonal](#diagonal) is the a collection of cells that hold the same value.
-
-    Example:     0  1  2
-                -1  0  1
-                -2 -1  0
-
 ### [is-diagonally-dominant](#boolean-properties)
 
 True when cells on the [diagonal](#diagonal) have a bigger (if strict) or at least equal (in none strict) absolute value than the sum of its row (sum of absolute values of the row except diagonal element).
@@ -421,9 +413,25 @@ True when cells on the [diagonal](#diagonal) have a bigger (if strict) or at lea
     $matrix.is-diagonally-dominant(:strict,  :along<row>)    # DE > sum of rest row
     $matrix.is-diagonally-dominant(:!strict, :along<both>)   # DE >= sum of rest row and rest column
 
+### [is-diagonal-constant](#boolean-properties)
+
+Checks if caller is a *diagonal-constant* or *Töplitz matrix*. True if every [diagonal](#diagonal) is the a collection of cells that hold the same value.
+
+    Example:     0  1  2
+                -1  0  1
+                -2 -1  0
+
+### [is-catalecticant](#boolean-properties)
+
+Checks if caller is a *catalecticant* or *Hankel matrix*. True if every skew diagonal is the a collection of cells that hold the same value. Catalecticant matrices are [symmetric](#is-symmetric).
+
+    Example:     0  1  2
+                 1  2  3
+                 2  3  4
+
 ### [is-symmetric](#boolean-properties)
 
-True if every cell with coordinates x y has same value as the cell on y x. In other words: $matrix and $matrix.transposed (alias T) are the same.
+True if every cell with coordinates x y has same value as the cell on y x. In other words: $matrix and $matrix.[transposed](#transposed) (alias T) are the same.
 
     Example:    1 2 3
                 2 5 4
@@ -431,7 +439,7 @@ True if every cell with coordinates x y has same value as the cell on y x. In ot
 
 ### [is-antisymmetric](#boolean-properties)
 
-Means the transposed and negated matrix are the same.
+Means the [transposed](#transposed) and *negated|#negated* matrix are the same.
 
     Example:    0  2  3
                -2  0  4
@@ -447,7 +455,7 @@ A Hermitian or self-adjoint matrix is equal to its [transposed](#transposed) and
 
 ### [is-invertible](#boolean-properties)
 
-Also called nonsingular or nondegenerate. Is True if number of rows and colums are the same ([is-square](#is-square)) and [determinant](#determinant) is not zero. All rows or colums have to be independent vectors. Please use this method before use: $matrix.inverted, or you will get an exception.
+Also called *nonsingular* or *nondegenerate*. Is True if number of rows and colums are the same ([is-square](#is-square)) and [determinant](#determinant) is not zero. All rows or colums have to be independent vectors. Please check this before using $matrix.[inverted](#inverted), or you will get an exception.
 
 ### [is-orthogonal](#boolean-properties)
 

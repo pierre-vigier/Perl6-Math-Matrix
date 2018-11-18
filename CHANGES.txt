@@ -1,6 +1,7 @@
  0.3.8:
     § 2018.11.
-    
+    + accessor skew-diagonal
+    + bool property catalecticant
     = streamlined TOC
 
  0.3.7:

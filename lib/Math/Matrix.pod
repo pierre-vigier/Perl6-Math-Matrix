@@ -47,7 +47,7 @@ All computation heavy properties will be calculated lazily and will be cached.
 =item B<L<converter|#type-conversion-and-output-formats>>: L<Bool|#bool>, L<Numeric|#numeric>, L<Str|#str>,
       L<Array|#array>, L<Hash|#hash>, L<Range|#range>, L<list|#list>, L<list-rows|#list-rows>, L<list-columns|#list-columns>, L<gist|#gist>, L<perl|#perl>
 =item B<L<boolean properties|#boolean-properties>>: L<square|#is-square>, L<zero|#is-zero>, L<identity|#identity>, L<upper-|#is-upper-triangular>, L<lower-triangular|#is-lower-triangular>,
-      L<diagonal|#is-diagonal>, L<-constant|#is-diagonal-constant>, L<-dominant|#is-diagonally-dominant>,
+      L<diagonal|#is-diagonal>, L<-dominant|#is-diagonally-dominant>, L<-constant|#is-diagonal-constant>, L<catalecticant|#is-catalecticant>,
       L<anti-|#is-antisymmetric>, L<symmetric|#is-symmetric>, L<unitary|#is-unitary>, L<self-adjoint|#is-self-adjoint>, L<invertible|#is-invertible>, L<orthogonal|#is-orthogonal>,
       L<positive-definite|#is-positive-definite>, L<positive-semidefinite|#is-positive-semidefinite>
 =item B<L<numeric properties|#numeric-properties>>: L<size|#size>, L<density|#density>, L<trace|#trace>, L<determinant|#determinant>, L<rank|#rank>, L<nullity|#nullity>,
@@ -448,15 +448,6 @@ In other words: if matrix is L<upper-triangular|#is-upper-triangular> and L<lowe
                 0 3 0
                 0 0 7
 
-=head3 L<is-diagonal-constant|#boolean-properties>
-
-Checks if caller is a diagonal-constant or Töplitz matrix.
-True if every L<diagonal|#diagonal> is the a collection of cells that hold the same value.
-
-    Example:     0  1  2
-                -1  0  1
-                -2 -1  0
-
 =head3 L<is-diagonally-dominant|#boolean-properties>
 
 True when cells on the L<diagonal|#diagonal> have a bigger (if strict) or at least equal (in none strict)
@@ -469,10 +460,30 @@ absolute value than the sum of its row (sum of absolute values of the row except
    $matrix.is-diagonally-dominant(:strict,  :along<row>)    # DE > sum of rest row
    $matrix.is-diagonally-dominant(:!strict, :along<both>)   # DE >= sum of rest row and rest column
 
+=head3 L<is-diagonal-constant|#boolean-properties>
+
+Checks if caller is a I<diagonal-constant> or I<Töplitz matrix>.
+True if every L<diagonal|#diagonal> is the a collection of cells that hold the same value.
+
+    Example:     0  1  2
+                -1  0  1
+                -2 -1  0
+                
+=head3 L<is-catalecticant|#boolean-properties>
+
+Checks if caller is a I<catalecticant> or I<Hankel matrix>.
+True if every skew diagonal is the a collection of cells that hold the same value.
+Catalecticant matrices are L<symmetric|#is-symmetric>.
+
+
+    Example:     0  1  2
+                 1  2  3
+                 2  3  4
+
 =head3 L<is-symmetric|#boolean-properties>
 
 True if every cell with coordinates x y has same value as the cell on y x.
-In other words: $matrix and $matrix.transposed (alias T) are the same.
+In other words: $matrix and $matrix.L<transposed|#transposed> (alias T) are the same.
 
     Example:    1 2 3
                 2 5 4
@@ -480,7 +491,7 @@ In other words: $matrix and $matrix.transposed (alias T) are the same.
 
 =head3 L<is-antisymmetric|#boolean-properties>
 
-Means the transposed and negated matrix are the same.
+Means the L<transposed|#transposed> and I<negated|#negated> matrix are the same.
 
     Example:    0  2  3
                -2  0  4
@@ -497,10 +508,10 @@ A Hermitian or self-adjoint matrix is equal to its L<transposed|#transposed> and
 
 =head3 L<is-invertible|#boolean-properties>
 
-Also called nonsingular or nondegenerate.
+Also called I<nonsingular> or I<nondegenerate>.
 Is True if number of rows and colums are the same (L<is-square|#is-square>) and L<determinant|#determinant> is not zero.
-All rows or colums have to be independent vectors. Please use this method before use: $matrix.inverted,
-or you will get an exception.
+All rows or colums have to be independent vectors. 
+Please check this before using $matrix.L<inverted|#inverted>, or you will get an exception.
 
 =head3 L<is-orthogonal|#boolean-properties>
 
