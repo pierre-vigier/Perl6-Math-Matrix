@@ -578,7 +578,7 @@ You can also check if all cells have the same type:
 [Derived Matrices](#methods)
 ----------------------------
 
-Single matrices that can be computed with only our original matrix as input.
+Single matrices, that can be computed with only our original matrix as input.
 
 ### [transposed](#derived-matrices)
 
@@ -645,7 +645,7 @@ Return the reduced row echelon form of a matrix, a.k.a. row canonical form
 [Decompositions](#methods)
 --------------------------
 
-Methods that return lists of matrices, which in their product or otherwise can be recombined to the original matrix. In case of cholesky only one matrix is returned, becasue the other one is its transposed.
+Methods that return lists of matrices, which in their product or otherwise can be recombined to the original matrix. In case of cholesky only one matrix is returned, because the other one is its transposed.
 
 ### [decompositionLU](#decompositions)
 
@@ -787,7 +787,7 @@ Matrix multiplication of two fitting matrices (colums left == rows right).
 
 ### [tensor-product](#mathematical-operations)
 
-The tensor product (a.k.a Kronecker product) between a matrix a of size (m,n) and a matrix b of size (p,q) is a matrix c of size (m*p,n*q). All matrices you get by multiplying an element (cell) of matrix a with matrix b (as in $a.multiply($b.cell(..,..)) concatinated result in matrix c. (Or replace in a each cell with its product with b.)
+The *tensor product* (a.k.a *Kronecker product*) between a matrix a of *size|#size* (m,n) and matrix b of size (p,q) is a matrix c of size (m*p,n*q). All matrices you get by multiplying an element (cell) of matrix a with matrix b (as in $a.multiply($b.cell(..,..)) concatinated result in matrix c. (Or replace in a each cell with its product with b.)
 
     Example:    1 2  *  2 3   =  1*[2 3] 2*[2 3]  =  2  3  4  6
                 3 4     4 5        [4 5]   [4 5]     4  5  8 10
