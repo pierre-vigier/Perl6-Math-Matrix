@@ -54,7 +54,7 @@ All computation heavy properties will be calculated lazily and will be cached.
 
   * **[accessors](#accessors)**: [cell](#cell), [AT-POS](#at-pos), [row](#row), [column](#column), [diagonal](#diagonal), [skew-diagonal](#skew-diagonal), [submatrix](#submatrix)
 
-  * **[converter](#type-conversion-and-output-formats)**: [Bool](#bool), [Numeric](#numeric), [Str](#str), [Array](#array), [Hash](#hash), [Range](#range), [list](#list), [list-rows](#list-rows), [list-columns](#list-columns), [gist](#gist), [perl](#perl)
+  * **[converter](#converter)**: [Bool](#bool), [Numeric](#numeric), [Str](#str), [Array](#array), [Hash](#hash), [Range](#range), [list](#list), [list-rows](#list-rows), [list-columns](#list-columns), [gist](#gist), [perl](#perl)
 
   * **[boolean properties](#boolean-properties)**: [square](#is-square), [zero](#is-zero), [identity](#identity), [upper-](#is-upper-triangular), [lower-triangular](#is-lower-triangular), [diagonal](#is-diagonal), [-dominant](#is-diagonally-dominant), [-constant](#is-diagonal-constant), [catalecticant](#is-catalecticant), [anti-](#is-antisymmetric), [symmetric](#is-symmetric), [unitary](#is-unitary), [self-adjoint](#is-self-adjoint), [invertible](#is-invertible), [orthogonal](#is-orthogonal), [positive-definite](#is-positive-definite), [positive-semidefinite](#is-positive-semidefinite)
 
@@ -233,32 +233,33 @@ In mathematics, a submatrix is built by leaving out one row and one column. In t
 
 #### [leaving out more](#submatrix)
 
-If you provide two ranges (row-min .. row-max, col-min .. col-max) to the appropriately named arguments, you get the two dimensional excerpt of the matrix that contains only the requested rows and columns, still in the original order.
+If you provide two ranges (row-min .. row-max, col-min .. col-max - both optional) to the appropriately named arguments, you get the excerpt of the matrix, that contains only the requested rows and columns - still in the original order.
 
-    say $m.submatrix( rows => 1..1, columns => 0..*) :    3 4 5
+    say $m.submatrix( rows => 1..1, columns => 1..*) :      4 5        
+    say $m.submatrix( rows => 1..1 )                 :    3 4 5
 
 #### [reordering](#submatrix)
 
-When provided with two lists (or arrays) of values (to the arguments named "rows" and "columns") a new matrix will be created with that selection of rows and columns. Please note, that you can pick any row/column in any order and as many times you prefer. They will displayed in the order they are listed in the arguments.
+Alternatively each (as previously) named argument can also take a list (or array) of values, as created my the sequence operator (...). The result will be a matrix with that selection of rows and columns. Please note, you may pick rows/columns in any order and as many times you prefer.
 
     $m.submatrix(rows => (1,2), columns => (3,2)):    5 4
                                                       6 5
                                                       
     $m.submatrix(rows => (1...2), columns => (3,2))  # same thing
 
-The named arguments of both types can be mixed and are in both cases optional. If you provide none of them, the result will be the original matrix.
+Arguments with ranges and lists can be mixed and are in both cases optional. If you provide none of them, the result will be the original matrix.
 
     say $m.submatrix( rows => (1,) )              :   3 4 5        
 
     $m.submatrix(rows => (1..*), columns => (3,2)):   5 4
                                                       6 5
 
-[Type Conversion And Output Formats](#methods)
-----------------------------------------------
+[Converter](#methods)
+---------------------
 
-Methods that convert a matrix into other types or allow different views on the overall content.
+Methods that convert a matrix into other types or allow different views on the overall content (output formats).
 
-### [Bool](#type-conversion-and-output-formats)
+### [Bool](#converter)
 
 Conversion into Bool context. Returns False if matrix is zero (all cells equal zero as in is-zero), otherwise True.
 
@@ -266,14 +267,14 @@ Conversion into Bool context. Returns False if matrix is zero (all cells equal z
     ? $matrix           # alias op
     if $matrix          # matrix in Bool context too
 
-### [Numeric](#type-conversion-and-output-formats)
+### [Numeric](#converter)
 
 Conversion into Numeric context. Returns Euclidean [norm](#norm). Please note, only a prefix operator + (as in: + $matrix) will call this Method. An infix (as in $matrix + $number) calls $matrix.add($number).
 
     $matrix.Numeric
     + $matrix           # alias op
 
-### [Str](#type-conversion-and-output-formats)
+### [Str](#converter)
 
 Returns all cell values separated by one whitespace, rows by new line. This is the same format as expected by [Math::Matrix.new("")](#new---2). Str is called implicitly by put and print. A shortened version is provided by [gist](#gist)
 
@@ -284,42 +285,42 @@ Returns all cell values separated by one whitespace, rows by new line. This is t
 
     ~$matrix            # alias op
 
-### [Array](#type-conversion-and-output-formats)
+### [Array](#converter)
 
 Content of all cells as an array of arrays (same format that was put into [Math::Matrix.new([...])](#new--)).
 
     say Math::Matrix.new([[1,2],[3,4]]).Array : [[1 2] [3 4]]
     say @ $matrix       # alias op, space between @ and $ needed
 
-### [list](#type-conversion-and-output-formats)
+### [list](#converter)
 
 Returns a flat list with all cells (same as .list-rows.flat.list).
 
     say $matrix.list    : (1 2 3 4)
     say |$matrix        # alias op
 
-### [list-rows](#type-conversion-and-output-formats)
+### [list-rows](#converter)
 
 Returns a list of lists, reflecting the row-wise content of the matrix. Same format as [new ()](#new---1) takes in.
 
     say Math::Matrix.new( [[1,2],[3,4]] ).list-rows      : ((1 2) (3 4))
     say Math::Matrix.new( [[1,2],[3,4]] ).list-rows.flat : (1 2 3 4)
 
-### [list-columns](#type-conversion-and-output-formats)
+### [list-columns](#converter)
 
 Returns a list of lists, reflecting the row-wise content of the matrix.
 
     say Math::Matrix.new( [[1,2],[3,4]] ).list-columns : ((1 3) (2 4))
     say Math::Matrix.new( [[1,2],[3,4]] ).list-columns.flat : (1 3 2 4)
 
-### [Hash](#type-conversion-and-output-formats)
+### [Hash](#converter)
 
 Gets you a nested key - value hash.
 
     say $matrix.Hash : { 0 => { 0 => 1, 1 => 2}, 1 => {0 => 3, 1 => 4} } 
     say % $matrix       # alias op, space between % and $ still needed
 
-### [Range](#type-conversion-and-output-formats)
+### [Range](#converter)
 
 Returns an range object that reflects the content of all cells. Please note that complex number can not be endpoints of ranges.
 
@@ -330,7 +331,7 @@ To get single endpoints you could write:
     say $matrix.Range.min: 1
     say $matrix.list.max:  4
 
-### [gist](#type-conversion-and-output-formats)
+### [gist](#converter)
 
 Limited tabular view, optimized for shell output. Just cuts off excessive columns that do not fit into standard terminal and also stops after 20 rows. If you call it explicitly, you can add width and height (char count) as optional arguments. Might even not show all decimals. Several dots will hint that something is missing. It is implicitly called by say. For a full view use [Str](#str).
 
@@ -348,7 +349,7 @@ max-chars is the maximum amount of characters in any row of output (default is 8
 
 You change the cache by calling gist with arguments again.
 
-### [perl](#type-conversion-and-output-formats)
+### [perl](#converter)
 
 Conversion into String that can reevaluated into the same object later using default constructor.
 

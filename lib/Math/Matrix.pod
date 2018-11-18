@@ -44,7 +44,7 @@ All computation heavy properties will be calculated lazily and will be cached.
 =item B<L<constructors|#constructors>>: L<new []|#new-->, L<new ()|#new---1>, L<new ""|#new---2>,
       L<new-zero|#new-zero>, L<new-identity|#new-identity>, L<new-diagonal|#new-diagonal>, L<new-vector-product|#new-vector-product>
 =item B<L<accessors|#accessors>>: L<cell|#cell>, L<AT-POS|#at-pos>, L<row|#row>, L<column|#column>, L<diagonal|#diagonal>, L<skew-diagonal|#skew-diagonal>, L<submatrix|#submatrix>
-=item B<L<converter|#type-conversion-and-output-formats>>: L<Bool|#bool>, L<Numeric|#numeric>, L<Str|#str>,
+=item B<L<converter|#converter>>: L<Bool|#bool>, L<Numeric|#numeric>, L<Str|#str>,
       L<Array|#array>, L<Hash|#hash>, L<Range|#range>, L<list|#list>, L<list-rows|#list-rows>, L<list-columns|#list-columns>, L<gist|#gist>, L<perl|#perl>
 =item B<L<boolean properties|#boolean-properties>>: L<square|#is-square>, L<zero|#is-zero>, L<identity|#identity>, L<upper-|#is-upper-triangular>, L<lower-triangular|#is-lower-triangular>,
       L<diagonal|#is-diagonal>, L<-dominant|#is-diagonally-dominant>, L<-constant|#is-diagonal-constant>, L<catalecticant|#is-catalecticant>,
@@ -63,6 +63,7 @@ All computation heavy properties will be calculated lazily and will be cached.
       L<splice-rows|#splice-rows>, L<splice-columns|#splice-columns>
 =item B<L<shortcuts|#shortcuts>>:   L<T|#transposed>,   L<conj|#conjugated>,   L<det|#determinant>,   L<rref|#reduced-row-echelon-form>
 =item B<L<operators|#operator-methods>>:   MM,  ?,  ~,  |,  @,  %,  +,  -,  *,  **,  dot,  ⋅,  ÷,  X*,  ⊗,  ==,  ~~,  ❘ ❘,  ‖ ‖,  [ ]
+
 
 
 =head2 L<Constructors|#methods>
@@ -100,7 +101,6 @@ Instead of square brackets you can use round ones too and use a list of lists as
 
    1 2
    3 4
-
 
 =head3 L<new( "..." )|#constructors>
 
@@ -169,6 +169,8 @@ as a tensor product of row and column.
     2  3  4     1*2  1*3  1*4
     4  6  8  =  2*2  2*3  2*4
     6  9 12     3*2  3*3  3*4
+
+
 
 =head2 L<Accessors|#methods>
 
@@ -252,25 +254,26 @@ In the two argument format you name these by their index ($row, $column).
 
 =head4 L<leaving out more|#submatrix>
 
-If you provide two ranges (row-min .. row-max, col-min .. col-max) to the appropriately named arguments,
-you get the two dimensional excerpt of the matrix that contains only the requested rows and columns,
-still in the original order.
+If you provide two ranges (row-min .. row-max, col-min .. col-max - both optional)
+to the appropriately named arguments, you get the excerpt of the matrix,
+that contains only the requested rows and columns - still in the original order.
 
-    say $m.submatrix( rows => 1..1, columns => 0..*) :    3 4 5        
+    say $m.submatrix( rows => 1..1, columns => 1..*) :      4 5        
+    say $m.submatrix( rows => 1..1 )                 :    3 4 5        
 
 =head4 L<reordering|#submatrix>
 
-When provided with two lists (or arrays) of values (to the arguments named "rows" and "columns")
-a new matrix will be created with that selection of rows and columns.
-Please note, that you can pick any row/column in any order and as many times you prefer.
-They will displayed in the order they are listed in the arguments.
+Alternatively each (as previously) named argument can also take a list (or array) of values,
+as created my the sequence operator (...).
+The result will be a matrix with that selection of rows and columns.
+Please note, you may pick rows/columns in any order and as many times you prefer.
     
     $m.submatrix(rows => (1,2), columns => (3,2)):    5 4
                                                       6 5
                                                       
     $m.submatrix(rows => (1...2), columns => (3,2))  # same thing
 
-The named arguments of both types can be mixed and are in both cases optional.
+Arguments with ranges and lists can be mixed and are in both cases optional.
 If you provide none of them, the result will be the original matrix.
 
 
@@ -280,11 +283,12 @@ If you provide none of them, the result will be the original matrix.
                                                       6 5
 
 
-=head2 L<Type Conversion And Output Formats|#methods>
 
-Methods that convert a matrix into other types or allow different views on the overall content.
+=head2 L<Converter|#methods>
 
-=head3 L<Bool|#type-conversion-and-output-formats>
+Methods that convert a matrix into other types or allow different views on the overall content (output formats).
+
+=head3 L<Bool|#converter>
 
 Conversion into Bool context. Returns False if matrix is zero
 (all cells equal zero as in is-zero), otherwise True.
@@ -293,7 +297,7 @@ Conversion into Bool context. Returns False if matrix is zero
     ? $matrix           # alias op
     if $matrix          # matrix in Bool context too
 
-=head3 L<Numeric|#type-conversion-and-output-formats>
+=head3 L<Numeric|#converter>
 
 Conversion into Numeric context. Returns Euclidean L<norm|#norm>.
 Please note, only a prefix operator + (as in: + $matrix) will call this Method.
@@ -302,7 +306,7 @@ An infix (as in $matrix + $number) calls $matrix.add($number).
     $matrix.Numeric
     + $matrix           # alias op
 
-=head3 L<Str|#type-conversion-and-output-formats>
+=head3 L<Str|#converter>
 
 Returns all cell values separated by one whitespace, rows by new line.
 This is the same format as expected by L<Math::Matrix.new("")|#new---2>.
@@ -315,14 +319,14 @@ Str is called implicitly by put and print. A shortened version is provided by L<
 
     ~$matrix            # alias op
 
-=head3 L<Array|#type-conversion-and-output-formats>
+=head3 L<Array|#converter>
 
 Content of all cells as an array of arrays (same format that was put into L<Math::Matrix.new([...])|#new-->).
 
     say Math::Matrix.new([[1,2],[3,4]]).Array : [[1 2] [3 4]]
     say @ $matrix       # alias op, space between @ and $ needed
 
-=head3 L<list|#type-conversion-and-output-formats>
+=head3 L<list|#converter>
 
 Returns a flat list with all cells (same as .list-rows.flat.list).
 
@@ -330,7 +334,7 @@ Returns a flat list with all cells (same as .list-rows.flat.list).
     say |$matrix        # alias op
 
 
-=head3 L<list-rows|#type-conversion-and-output-formats>
+=head3 L<list-rows|#converter>
 
 Returns a list of lists, reflecting the row-wise content of the matrix.
 Same format as L<new ()|#new---1> takes in.
@@ -338,21 +342,21 @@ Same format as L<new ()|#new---1> takes in.
     say Math::Matrix.new( [[1,2],[3,4]] ).list-rows      : ((1 2) (3 4))
     say Math::Matrix.new( [[1,2],[3,4]] ).list-rows.flat : (1 2 3 4)
 
-=head3 L<list-columns|#type-conversion-and-output-formats>
+=head3 L<list-columns|#converter>
 
 Returns a list of lists, reflecting the row-wise content of the matrix.
     
     say Math::Matrix.new( [[1,2],[3,4]] ).list-columns : ((1 3) (2 4))
     say Math::Matrix.new( [[1,2],[3,4]] ).list-columns.flat : (1 3 2 4)
 
-=head3 L<Hash|#type-conversion-and-output-formats>
+=head3 L<Hash|#converter>
 
 Gets you a nested key - value hash.
 
     say $matrix.Hash : { 0 => { 0 => 1, 1 => 2}, 1 => {0 => 3, 1 => 4} } 
     say % $matrix       # alias op, space between % and $ still needed
 
-=head3 L<Range|#type-conversion-and-output-formats>
+=head3 L<Range|#converter>
 
 Returns an range object that reflects the content of all cells.
 Please note that complex number can not be endpoints of ranges.
@@ -364,7 +368,7 @@ To get single endpoints you could write:
     say $matrix.Range.min: 1
     say $matrix.list.max:  4
 
-=head3 L<gist|#type-conversion-and-output-formats>
+=head3 L<gist|#converter>
 
 Limited tabular view, optimized for shell output. Just cuts off excessive
 columns that do not fit into standard terminal and also stops after 20 rows.
@@ -389,11 +393,12 @@ So next time you call:
 
 You change the cache by calling gist with arguments again.
 
-=head3 L<perl|#type-conversion-and-output-formats>
+=head3 L<perl|#converter>
 
 Conversion into String that can reevaluated into the same object later using default constructor.
 
     my $clone = eval $matrix.perl;       # same as: $matrix.clone
+
 
 
 
@@ -550,6 +555,8 @@ True if all main L<minors|#minor> or all Eigenvalues are strictly greater zero.
 =head3 L<is-positive-semidefinite|#boolean-properties>
 
 True if all main L<minors|#minor> or all Eigenvalues are greater equal zero.
+
+
 
 =head2 L<Numeric Properties|#methods>
 
