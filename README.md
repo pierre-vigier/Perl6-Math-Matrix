@@ -342,7 +342,7 @@ Conversion into String that can reevaluated into the same object later using def
 [Boolean Properties](#methods)
 ------------------------------
 
-These are mathematical properties a matrix can have or not.
+These are mathematical properties, a given matrix has or not. Thus, the return value is a always of boolean type. Arguments, like in case of [is-diagonally-dominant](#boolean-properties), are only necessary when a method can tell you about a group of relatd closely properties.
 
 ### [is-square](#boolean-properties)
 
