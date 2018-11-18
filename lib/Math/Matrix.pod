@@ -309,7 +309,7 @@ An infix (as in $matrix + $number) calls $matrix.add($number).
 =head3 L<Str|#converter>
 
 Returns all cell values separated by one whitespace, rows by new line.
-This is the same format as expected by L<Math::Matrix.new("")|#new---2>.
+This is the same format as expected by L<new("")|#new---2>.
 Str is called implicitly by put and print. A shortened version is provided by L<gist|#gist>
 
     say Math::Matrix.new([[1,2],[3,4]]).Str:
@@ -321,7 +321,7 @@ Str is called implicitly by put and print. A shortened version is provided by L<
 
 =head3 L<Array|#converter>
 
-Content of all cells as an array of arrays (same format that was put into L<Math::Matrix.new([...])|#new-->).
+Content of all cells as an array of arrays (same format that was put into L<new([...])|#new-->).
 
     say Math::Matrix.new([[1,2],[3,4]]).Array : [[1 2] [3 4]]
     say @ $matrix       # alias op, space between @ and $ needed
@@ -713,7 +713,7 @@ It is called adjugate, classical adjoint or sometimes adjunct.
 
 Matrices that have a L<square|#is-square> form and a full L<rank|#rank> can be L<inverted|#inverted> (see L<is-invertible|#is-invertible>).
 Inverse matrix regarding to matrix multiplication (see L<dot-product|#dot-product>).
-The dot product of a matrix with its L<inverted|#inverted> results in a L<identity|#is-identity> matrix
+The dot product of a matrix with it's inverted results in a L<identity|#is-identity> matrix
 (neutral element in this group).
 
     my $i = $matrix.inverted();      # invert matrix

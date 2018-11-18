@@ -276,7 +276,7 @@ Conversion into Numeric context. Returns Euclidean [norm](#norm). Please note, o
 
 ### [Str](#converter)
 
-Returns all cell values separated by one whitespace, rows by new line. This is the same format as expected by [Math::Matrix.new("")](#new---2). Str is called implicitly by put and print. A shortened version is provided by [gist](#gist)
+Returns all cell values separated by one whitespace, rows by new line. This is the same format as expected by [new("")](#new---2). Str is called implicitly by put and print. A shortened version is provided by [gist](#gist)
 
     say Math::Matrix.new([[1,2],[3,4]]).Str:
 
@@ -287,7 +287,7 @@ Returns all cell values separated by one whitespace, rows by new line. This is t
 
 ### [Array](#converter)
 
-Content of all cells as an array of arrays (same format that was put into [Math::Matrix.new([...])](#new--)).
+Content of all cells as an array of arrays (same format that was put into [new([...])](#new--)).
 
     say Math::Matrix.new([[1,2],[3,4]]).Array : [[1 2] [3 4]]
     say @ $matrix       # alias op, space between @ and $ needed
@@ -625,7 +625,7 @@ Creates a matrix out of the properly signed [minors](#minor) of the original. It
 
 ### [inverted](#derived-matrices)
 
-Matrices that have a [square](#is-square) form and a full [rank](#rank) can be [inverted](#inverted) (see [is-invertible](#is-invertible)). Inverse matrix regarding to matrix multiplication (see [dot-product](#dot-product)). The dot product of a matrix with its [inverted](#inverted) results in a [identity](#is-identity) matrix (neutral element in this group).
+Matrices that have a [square](#is-square) form and a full [rank](#rank) can be [inverted](#inverted) (see [is-invertible](#is-invertible)). Inverse matrix regarding to matrix multiplication (see [dot-product](#dot-product)). The dot product of a matrix with it's inverted results in a [identity](#is-identity) matrix (neutral element in this group).
 
     my $i = $matrix.inverted();      # invert matrix
     my $i = $matrix ** -1;           # operator alias
