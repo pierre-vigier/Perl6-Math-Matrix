@@ -207,9 +207,10 @@ Without an argument it returns values of main diagonal elements as a list. Use t
 
 ### [skew-diagonal](#accessors)
 
-Unlike a *diagonal*, a skew diagonal is only defined for [square](#is-square) matrixes. It runs from $matrix[n][0] to $matrix[0][n], n being row or column size - 1. Use the optional parameter to get any other parallel diagonal. Positive value for the ones above - negative below.
+Unlike a *diagonal*, a skew diagonal is only defined for [square](#is-square) matrixes. It runs from $matrix[n][0] to $matrix[0][n], n being row or column size - 1. Use the optional parameter to get any other parallel skew diagonal. Positive value for the ones above - negative below.
 
     say $matrix.skew-diagonal    : (2, 3)
+    say $matrix.skew-diagonal(0) : (2, 3)
     say $matrix.skew-diagonal(1) : (1)
     say $matrix.skew-diagonal(-1): (4)
 
@@ -222,15 +223,19 @@ Returns a matrix that might miss certain rows and columns of the original. This 
                3 4 5 6
                4 5 6 7
 
+#### [leaving out one](#submatrix)
+
 In mathematics, a submatrix is built by leaving out one row and one column. In the two argument format you name these by their index ($row, $column).
 
     say $m.submatrix(1,2) :    1 2 4
                                3 4 6
                                4 5 7
 
-If you provide two ranges (row-min .. row-max, col-min .. col-max) to the appropriately named arguments, you get the two dimensional excerpt of the matrix that is defined by these ranges.
+#### [leaving out more](#submatrix) If you provide two ranges (row-min .. row-max, col-min .. col-max) to the appropriately named arguments, you get the two dimensional excerpt of the matrix that is defined by these ranges.
 
     say $m.submatrix( rows => 1..1, columns => 0..*) :    3 4 5
+
+#### [reordering](#submatrix)
 
 When provided with two lists (or arrays) of values (to the arguments named "rows" and "columns") a new matrix will be created with that selection of rows and columns. Please note, that you can pick any row/column in any order and as many times you prefer. They will displayed in the order they are listed in the arguments.
 

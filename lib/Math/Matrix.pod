@@ -219,10 +219,11 @@ The matrix does not have to be a quadratic (L<square|#is-square>).
 
 Unlike a I<diagonal>, a skew diagonal is only defined for L<square|#is-square> matrixes.
 It runs from $matrix[n][0] to $matrix[0][n], n being row or column size - 1.
-Use the optional parameter to get any other parallel diagonal. 
+Use the optional parameter to get any other parallel skew diagonal. 
 Positive value for the ones above - negative below.
 
     say $matrix.skew-diagonal    : (2, 3)
+    say $matrix.skew-diagonal(0) : (2, 3)
     say $matrix.skew-diagonal(1) : (1)
     say $matrix.skew-diagonal(-1): (4)
 
@@ -240,7 +241,8 @@ we base the next examples upon this matrix:
                3 4 5 6
                4 5 6 7
 
- 
+=head4 L<leaving out one|#submatrix>
+
 In mathematics, a submatrix is built by leaving out one row and one column.
 In the two argument format you name these by their index ($row, $column).
 
@@ -248,10 +250,13 @@ In the two argument format you name these by their index ($row, $column).
                                3 4 6
                                4 5 7
 
+=head4 L<leaving out more|#submatrix>
 If you provide two ranges (row-min .. row-max, col-min .. col-max) to the appropriately named arguments,
 you get the two dimensional excerpt of the matrix that is defined by these ranges.
 
     say $m.submatrix( rows => 1..1, columns => 0..*) :    3 4 5        
+
+=head4 L<reordering|#submatrix>
 
 When provided with two lists (or arrays) of values (to the arguments named "rows" and "columns")
 a new matrix will be created with that selection of rows and columns.
