@@ -51,7 +51,7 @@ All computation heavy properties will be calculated lazily and will be cached.
       L<anti-|#is-antisymmetric>, L<symmetric|#is-symmetric>, L<unitary|#is-unitary>, L<self-adjoint|#is-self-adjoint>, L<invertible|#is-invertible>, L<orthogonal|#is-orthogonal>,
       L<positive-definite|#is-positive-definite>, L<positive-semidefinite|#is-positive-semidefinite>
 =item B<L<numeric properties|#numeric-properties>>: L<size|#size>, L<density|#density>, L<bandwith|#bandwith>, L<trace|#trace>, L<rank|#rank>, L<nullity|#nullity>,
-      L<determinant|#determinant>, L<minor|#minor>, L<norm|#norm>, L<condition|#condition>, L<narrowest-|#narrowest-cell-type>, L<widest-cell-type|#widest-cell-type>
+      L<determinant|#determinant>, L<minor|#minor>, L<norm|#norm>, L<condition|#condition>, L<cell-type|#cell-type>
 =item B<L<derived matrices|#derived-matrices>>: L<transposed|#transposed>, L<negated|#negated>, L<conjugated|#conjugated>, L<adjugated|#adjugated>, L<inverted|#inverted>,
       L<reduced-row-echelon-form|#reduced-row-echelon-form>
 =item B<L<decompositions|#decompositions>>: L<LUCrout|#decompositionlucrout>, L<LU|#decompositionlu>, L<Cholesky|#decompositioncholesky>
@@ -641,9 +641,11 @@ Condition number of a matrix is L2 norm * L2 of L<inverted|#inverted> matrix.
 
     my $c = $matrix.condition( );              
 
-=head3 L<narrowest-cell-type|#numeric-properties>
+=head3 L<cell-type|#numeric-properties>
 
-=head3 L<widest-cell-type|#numeric-properties>
+=head4 L<narrowest-cell-type|#numeric-properties>
+
+=head4 L<widest-cell-type|#numeric-properties>
 
 Matrix cells can be (from most narrow to widest), of type (Bool), (Int), (Num), (Rat), (FatRat) or (Complex). 
 The widest type of any cell will returned as type object.

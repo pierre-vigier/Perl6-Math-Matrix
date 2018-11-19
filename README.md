@@ -58,7 +58,7 @@ All computation heavy properties will be calculated lazily and will be cached.
 
   * **[boolean properties](#boolean-properties)**: [square](#is-square), [zero](#is-zero), [identity](#identity), [upper-](#is-upper-triangular), [lower-triangular](#is-lower-triangular), [diagonal](#is-diagonal), [-dominant](#is-diagonally-dominant), [-constant](#is-diagonal-constant), [catalecticant](#is-catalecticant), [anti-](#is-antisymmetric), [symmetric](#is-symmetric), [unitary](#is-unitary), [self-adjoint](#is-self-adjoint), [invertible](#is-invertible), [orthogonal](#is-orthogonal), [positive-definite](#is-positive-definite), [positive-semidefinite](#is-positive-semidefinite)
 
-  * **[numeric properties](#numeric-properties)**: [size](#size), [density](#density), [bandwith](#bandwith), [trace](#trace), [rank](#rank), [nullity](#nullity), [determinant](#determinant), [minor](#minor), [norm](#norm), [condition](#condition), [narrowest-](#narrowest-cell-type), [widest-cell-type](#widest-cell-type)
+  * **[numeric properties](#numeric-properties)**: [size](#size), [density](#density), [bandwith](#bandwith), [trace](#trace), [rank](#rank), [nullity](#nullity), [determinant](#determinant), [minor](#minor), [norm](#norm), [condition](#condition), [cell-type](#cell-type)
 
   * **[derived matrices](#derived-matrices)**: [transposed](#transposed), [negated](#negated), [conjugated](#conjugated), [adjugated](#adjugated), [inverted](#inverted), [reduced-row-echelon-form](#reduced-row-echelon-form)
 
@@ -563,9 +563,11 @@ Condition number of a matrix is L2 norm * L2 of [inverted](#inverted) matrix.
 
     my $c = $matrix.condition( );
 
-### [narrowest-cell-type](#numeric-properties)
+### [cell-type](#numeric-properties)
 
-### [widest-cell-type](#numeric-properties)
+#### [narrowest-cell-type](#numeric-properties)
+
+#### [widest-cell-type](#numeric-properties)
 
 Matrix cells can be (from most narrow to widest), of type (Bool), (Int), (Num), (Rat), (FatRat) or (Complex). The widest type of any cell will returned as type object.
 
