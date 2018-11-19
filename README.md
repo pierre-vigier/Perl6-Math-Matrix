@@ -136,7 +136,7 @@ This method is a constructor that returns an zero (sometimes called empty) matri
 
 ### [new-identity](#constructors)
 
-This method is a constructor that returns an identity matrix (as checked by is-identity) of the size given in the only and required parameter. All the cells are set to 0 except the top/left to bottom/right diagonale is set to 1.
+This method is a constructor that returns an identity matrix (as checked by [is-identity](#is-identity)) of the size given in the only and required parameter. All the cells are set to 0 except the top/left to bottom/right diagonale is set to 1.
 
     say Math::Matrix.new-identity( 3 ) :
       
@@ -146,7 +146,7 @@ This method is a constructor that returns an identity matrix (as checked by is-i
 
 ### [new-diagonal](#constructors)
 
-This method is a constructor that returns an diagonal matrix (as checked by is-diagonal) of the size given by count of the parameter. All the cells are set to 0 except the top/left to bottom/right diagonal, set to given values.
+This method is a constructor that returns an diagonal matrix (as checked by [is-diagonal](#is-diagonal)) of the size given by count of the parameter. All the cells are set to 0 except the top/left to bottom/right diagonal, set to given values.
 
     say Math::Matrix.new-diagonal( 2, 4, 5 ) :
 
@@ -477,11 +477,11 @@ Also called *nonsingular* or *nondegenerate*. Is True if number of rows and colu
 
 ### [is-orthogonal](#boolean-properties)
 
-An orthogonal matrix multiplied ([dot-product](#dot-product)) with its transposed derivative (T) is an identity matrix or in other words: [transposed](#transposed) and [inverted](#inverted) matrices are equal.
+An orthogonal matrix multiplied ([dot-product](#dot-product)) with its transposed derivative (T) is an [identity](#is-identity) matrix or in other words: [transposed](#transposed) and [inverted](#inverted) matrices are equal.
 
 ### [is-unitary](#boolean-properties)
 
-An unitery matrix multiplied ([dot-product](#dot-product)) with its concjugate transposed derivative (.conj.T) is an identity matrix, or said differently: the concjugate transposed matrix equals the [inverted](#inverted) matrix.
+An unitery matrix multiplied ([dot-product](#dot-product)) with its concjugate transposed derivative (.conj.T) is an [identity](#is-identity) matrix, or said differently: the concjugate transposed matrix equals the [inverted](#inverted) matrix.
 
 ### [is-positive-definite](#boolean-properties)
 

@@ -135,7 +135,7 @@ If only one parameter is given, the matrix is quadratic. All the cells are set t
 
 =head3 L<new-identity|#constructors>
 
-This method is a constructor that returns an identity matrix (as checked by is-identity)
+This method is a constructor that returns an identity matrix (as checked by L<is-identity|#is-identity>)
 of the size given in the only and required parameter.
 All the cells are set to 0 except the top/left to bottom/right diagonale is set to 1.
 
@@ -147,7 +147,7 @@ All the cells are set to 0 except the top/left to bottom/right diagonale is set 
 
 =head3 L<new-diagonal|#constructors>
 
-This method is a constructor that returns an diagonal matrix (as checked by is-diagonal)
+This method is a constructor that returns an diagonal matrix (as checked by L<is-diagonal|#is-diagonal>)
 of the size given by count of the parameter.
 All the cells are set to 0 except the top/left to bottom/right diagonal, set to given values.
 
@@ -539,12 +539,12 @@ Please check this before using $matrix.L<inverted|#inverted>, or you will get an
 =head3 L<is-orthogonal|#boolean-properties>
 
 An orthogonal matrix multiplied (L<dot-product|#dot-product>) with its transposed derivative (T)
-is an identity matrix or in other words: L<transposed|#transposed> and L<inverted|#inverted> matrices are equal.
+is an L<identity|#is-identity> matrix or in other words: L<transposed|#transposed> and L<inverted|#inverted> matrices are equal.
 
 =head3 L<is-unitary|#boolean-properties>
 
 An unitery matrix multiplied (L<dot-product|#dot-product>) with its concjugate transposed 
-derivative (.conj.T) is an identity matrix, or said differently:
+derivative (.conj.T) is an L<identity|#is-identity> matrix, or said differently:
 the concjugate transposed matrix equals the L<inverted|#inverted> matrix.
 
 
