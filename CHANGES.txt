@@ -2,7 +2,11 @@
     § 2018.11.
     + accessor skew-diagonal
     + bool property catalecticant
+    + bool property tridiagonal
+    + numeric property bandwith
     = streamlined TOC
+    = reordered some chapter
+    = rewrote some docs, more links
 
  0.3.7:
     § 2018.11.15

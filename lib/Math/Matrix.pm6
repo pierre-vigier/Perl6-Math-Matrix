@@ -28,6 +28,7 @@ has Bool $!is-invertible is lazy;
 has Bool $!is-positive-definite is lazy;
 has Bool $!is-positive-semidefinite is lazy;
 
+has Int     $!bandwith is lazy;
 has Int     $!rank is lazy;
 has Int     $!nullity is lazy;
 has Rat     $!density is lazy;
@@ -379,7 +380,7 @@ method !build_is-positive-semidefinite (Math::Matrix:D: --> Bool) { # with Sylve
 # end of boolean matrix properties - start numeric matrix properties
 ################################################################################
 
-method size(Math::Matrix:D: )          {  $!row-count, $!column-count }
+method size(Math::Matrix:D: --> List)          {  $!row-count, $!column-count }
 
 method !build_density(Math::Matrix:D: --> Rat) {
     my $valcount = 0;
