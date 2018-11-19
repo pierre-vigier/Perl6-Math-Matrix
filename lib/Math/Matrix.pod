@@ -286,7 +286,8 @@ Even more powerful or explicit in syntax are the L<structural ops|#structural-op
 
 =head2 L<Converter|#methods>
 
-Methods that convert a matrix into other types or allow different views on the overall content (output formats).
+Methods that convert a matrix into other types: L<Bool|#bool>, L<Numeric|#numeric>, L<Str|#str>, L<Array|#array>, L<Hash|#hash>, L<Range|#range>, L<list|#list>,
+L<list-rows|#list-rows>, L<list-columns|#list-columns> or allow different views on the overall content (output formats): L<gist|#gist>, L<perl|#perl>.
 
 =head3 L<Bool|#converter>
 

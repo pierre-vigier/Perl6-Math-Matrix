@@ -259,7 +259,7 @@ Even more powerful or explicit in syntax are the [structural ops](#structural-op
 [Converter](#methods)
 ---------------------
 
-Methods that convert a matrix into other types or allow different views on the overall content (output formats).
+Methods that convert a matrix into other types: [Bool](#bool), [Numeric](#numeric), [Str](#str), [Array](#array), [Hash](#hash), [Range](#range), [list](#list), [list-rows](#list-rows), [list-columns](#list-columns) or allow different views on the overall content (output formats): [gist](#gist), [perl](#perl).
 
 ### [Bool](#converter)
 
