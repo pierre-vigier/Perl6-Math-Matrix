@@ -1015,7 +1015,7 @@ The Module overloads or introduces a range of well and lesser known ops, which a
 
 ==, +, * are commutative, -, ⋅, dot, ÷, x, ⊗ and ** are not. All ops have same precedence as its multi method siblings - unless stated otherwise.
 
-They are exported when using no flag or under the export flags :DEFAULT or :ALL, but not under :MANDATORY or :MM). The only exception is MM-operator, a shortcut to create a matrix. That has to be importet explicitly with the tag :MM or :ALL. The postcircumfix [] - op will always work.
+They are exported when using no flag (same as :DEFAULT) or :ALL, but not under :MANDATORY or :MM). The only exception is MM operator, a shortcut to create a matrix. That has to be importet explicitly with the tag :MM or :ALL. The postcircumfix [] - op will always work.
 
     my $a   = +$matrix               # Num context, Euclidean norm
     my $b   = ?$matrix               # Bool context, True if any cell has a none zero value
