@@ -43,26 +43,27 @@ All computation heavy properties will be calculated lazily and will be cached.
 =head1 L<METHODS|#synopsis>
 =item B<L<constructors|#constructors>>: L<new []|#new-->, L<new ()|#new---1>, L<new ""|#new---2>,
       L<new-zero|#new-zero>, L<new-identity|#new-identity>, L<new-diagonal|#new-diagonal>, L<new-vector-product|#new-vector-product>
-=item B<L<accessors|#accessors>>: L<cell|#cell>, L<AT-POS|#at-pos>, L<row|#row>, L<column|#column>, L<diagonal|#diagonal>, L<submatrix|#submatrix>
-=item B<L<converter|#type-conversion-and-output-formats>>: L<Bool|#bool>, L<Numeric|#numeric>, L<Str|#str>,
+=item B<L<accessors|#accessors>>: L<cell|#cell>, L<AT-POS|#at-pos>, L<row|#row>, L<column|#column>, L<diagonal|#diagonal>, L<skew-diagonal|#skew-diagonal>, L<submatrix|#submatrix>
+=item B<L<converter|#converter>>: L<Bool|#bool>, L<Numeric|#numeric>, L<Str|#str>,
       L<Array|#array>, L<Hash|#hash>, L<Range|#range>, L<list|#list>, L<list-rows|#list-rows>, L<list-columns|#list-columns>, L<gist|#gist>, L<perl|#perl>
-=item B<L<boolean properties|#boolean-properties>>: L<zero|#is-zero>, L<identity|#identity>, L<square|#is-square>, L<diagonal|#is-diagonal>, L<diagonal-constant|#is-diagonal-constant>, 
-      L<diagonally-dominant|#is-diagonally-dominant>, L<upper-triangular|#is-upper-triangular>, L<lower-triangular|#is-lower-triangular>, L<invertible|#is-invertible>,
-      L<symmetric|#is-symmetric>, L<antisymmetric|#is-antisymmetric>, L<unitary|#is-unitary>, L<self-adjoint|#is-self-adjoint>, L<orthogonal|#is-orthogonal>,
-      L<positive-definite|#positive-definite>, L<positive-semidefinite|#is-positive-semidefinite>
+=item B<L<boolean properties|#boolean-properties>>: L<square|#is-square>, L<zero|#is-zero>, L<identity|#identity>, L<upper-|#is-upper-triangular>, L<lower-triangular|#is-lower-triangular>,
+      L<diagonal|#is-diagonal>, L<-dominant|#is-diagonally-dominant>, L<-constant|#is-diagonal-constant>, L<catalecticant|#is-catalecticant>,
+      L<anti-|#is-antisymmetric>, L<symmetric|#is-symmetric>, L<unitary|#is-unitary>, L<self-adjoint|#is-self-adjoint>, L<invertible|#is-invertible>, L<orthogonal|#is-orthogonal>,
+      L<positive-definite|#is-positive-definite>, L<positive-semidefinite|#is-positive-semidefinite>
 =item B<L<numeric properties|#numeric-properties>>: L<size|#size>, L<density|#density>, L<trace|#trace>, L<determinant|#determinant>, L<rank|#rank>, L<nullity|#nullity>,
       L<norm|#norm>, L<condition|#condition>, L<minor|#minor>, L<narrowest-|#narrowest-cell-type>, L<widest-cell-type|#widest-cell-type>
 =item B<L<derived matrices|#derived-matrices>>: L<transposed|#transposed>, L<negated|#negated>, L<conjugated|#conjugated>, L<adjugated|#adjugated>, L<inverted|#inverted>,
       L<reduced-row-echelon-form|#reduced-row-echelon-form>
 =item B<L<decompositions|#decompositions>>: L<LUCrout|#decompositionlucrout>, L<LU|#decompositionlu>, L<Cholesky|#decompositioncholesky>
 =item B<L<math ops|#mathematical-operations>>: L<equal|#equal>, L<add|#add>, L<multiply|#multiply>, L<dot-product|#dot-product>, L<tensor-product|#tensor-product>
-=item B<L<list like ops|#list-like-matrix-operations>>: L<elems|#elems>, L<elem|#elem>, L<cont|#cont>,
+=item B<L<list like ops|#list-like-operations>>: L<elems|#elems>, L<elem|#elem>, L<cont|#cont>,
       L<map-index|#map-index>, L<map-with-index|#map-with-index>, L<map|#map>, L<map-row|#map-row>, L<map-column|#map-column>,
       L<reduce|#reduce>, L<reduce-rows|#reduce-rows>, L<reduce-columns|#reduce-columns>
-=item B<L<structural ops|#structural-matrix-operations>>: L<move-row|#move-row>, L<move-column|#move-column>, L<swap-rows|#swap-rows>, L<swap-columns|#swap-columns>,
+=item B<L<structural ops|#structural-operations>>: L<move-row|#move-row>, L<move-column|#move-column>, L<swap-rows|#swap-rows>, L<swap-columns|#swap-columns>,
       L<splice-rows|#splice-rows>, L<splice-columns|#splice-columns>
 =item B<L<shortcuts|#shortcuts>>:   L<T|#transposed>,   L<conj|#conjugated>,   L<det|#determinant>,   L<rref|#reduced-row-echelon-form>
-=item B<L<operators|#operator-methods>>:   MM,   ?,  ~,   |,  @,  %,  +,   -,   *,   **,   dot,   ⋅,   ÷,   X*,   ⊗,   ==,   ~~,   ❘ ❘,   ‖ ‖,   [ ]
+=item B<L<operators|#operator-methods>>:   MM,  ?,  ~,  |,  @,  %,  +,  -,  *,  **,  dot,  ⋅,  ÷,  X*,  ⊗,  ==,  ~~,  ❘ ❘,  ‖ ‖,  [ ]
+
 
 
 =head2 L<Constructors|#methods>
@@ -100,7 +101,6 @@ Instead of square brackets you can use round ones too and use a list of lists as
 
    1 2
    3 4
-
 
 =head3 L<new( "..." )|#constructors>
 
@@ -170,6 +170,8 @@ as a tensor product of row and column.
     4  6  8  =  2*2  2*3  2*4
     6  9 12     3*2  3*3  3*4
 
+
+
 =head2 L<Accessors|#methods>
 
 Methods that return the content of selected elements (cells).
@@ -209,11 +211,23 @@ Gets values of specified column (first required parameter) as a list.
 Without an argument it returns values of main diagonal elements as a list. 
 Use the optional parameter to get any other parallel diagonal. 
 Positive value for the ones above - negative below and 0 for the main diagonal.
-Matrix does not have to be a quadratic (L<square|#is-square>).
+The matrix does not have to be a quadratic (L<square|#is-square>).
 
     say Math::Matrix.new([[1,2],[3,4]]      ).diagonal    : (1, 4)
     say Math::Matrix.new([[1,2],[3,4]]      ).diagonal(1) : (2)
     say Math::Matrix.new([[1,2],[3,4],[5,6]]).diagonal(-1): (3, 6)
+
+=head3 L<skew-diagonal|#accessors>
+
+Unlike a I<diagonal>, a skew diagonal is only defined for L<square|#is-square> matrixes.
+It runs from $matrix[n][0] to $matrix[0][n], n being row or column size - 1.
+Use the optional parameter to get any other parallel skew diagonal. 
+Positive value for the ones above - negative below.
+
+    say $matrix.skew-diagonal    : (2, 3)
+    say $matrix.skew-diagonal(0) : (2, 3)
+    say $matrix.skew-diagonal(1) : (1)
+    say $matrix.skew-diagonal(-1): (4)
 
 =head3 L<submatrix|#accessors>
 
@@ -229,7 +243,8 @@ we base the next examples upon this matrix:
                3 4 5 6
                4 5 6 7
 
- 
+=head4 L<leaving out one|#submatrix>
+
 In mathematics, a submatrix is built by leaving out one row and one column.
 In the two argument format you name these by their index ($row, $column).
 
@@ -237,22 +252,28 @@ In the two argument format you name these by their index ($row, $column).
                                3 4 6
                                4 5 7
 
-If you provide two ranges (row-min .. row-max, col-min .. col-max) to the appropriately named arguments,
-you get the two dimensional excerpt of the matrix that is defined by these ranges.
+=head4 L<leaving out more|#submatrix>
 
-    say $m.submatrix( rows => 1..1, columns => 0..*) :    3 4 5        
+If you provide two ranges (row-min .. row-max, col-min .. col-max - both optional)
+to the appropriately named arguments, you get the excerpt of the matrix,
+that contains only the requested rows and columns - still in the original order.
 
-When provided with two lists (or arrays) of values (to the arguments named "rows" and "columns")
-a new matrix will be created with that selection of rows and columns.
-Please note, that you can pick any row/column in any order and as many times you prefer.
-They will displayed in the order they are listed in the arguments.
+    say $m.submatrix( rows => 1..1, columns => 1..*) :      4 5        
+    say $m.submatrix( rows => 1..1 )                 :    3 4 5        
+
+=head4 L<reordering|#submatrix>
+
+Alternatively each (as previously) named argument can also take a list (or array) of values,
+as created my the sequence operator (...).
+The result will be a matrix with that selection of rows and columns.
+Please note, you may pick rows/columns in any order and as many times you prefer.
     
     $m.submatrix(rows => (1,2), columns => (3,2)):    5 4
                                                       6 5
                                                       
     $m.submatrix(rows => (1...2), columns => (3,2))  # same thing
 
-The named arguments of both types can be mixed and are in both cases optional.
+Arguments with ranges and lists can be mixed and are in both cases optional.
 If you provide none of them, the result will be the original matrix.
 
 
@@ -261,12 +282,13 @@ If you provide none of them, the result will be the original matrix.
     $m.submatrix(rows => (1..*), columns => (3,2)):   5 4
                                                       6 5
 
+Even more powerful or explicit in syntax are the L<structural ops|#structural-operations>.
 
-=head2 L<Type Conversion And Output Formats|#methods>
+=head2 L<Converter|#methods>
 
-Methods that convert a matrix into other types or allow different views on the overall content.
+Methods that convert a matrix into other types or allow different views on the overall content (output formats).
 
-=head3 L<Bool|#type-conversion-and-output-formats>
+=head3 L<Bool|#converter>
 
 Conversion into Bool context. Returns False if matrix is zero
 (all cells equal zero as in is-zero), otherwise True.
@@ -275,7 +297,7 @@ Conversion into Bool context. Returns False if matrix is zero
     ? $matrix           # alias op
     if $matrix          # matrix in Bool context too
 
-=head3 L<Numeric|#type-conversion-and-output-formats>
+=head3 L<Numeric|#converter>
 
 Conversion into Numeric context. Returns Euclidean L<norm|#norm>.
 Please note, only a prefix operator + (as in: + $matrix) will call this Method.
@@ -284,10 +306,10 @@ An infix (as in $matrix + $number) calls $matrix.add($number).
     $matrix.Numeric
     + $matrix           # alias op
 
-=head3 L<Str|#type-conversion-and-output-formats>
+=head3 L<Str|#converter>
 
 Returns all cell values separated by one whitespace, rows by new line.
-This is the same format as expected by L<Math::Matrix.new("")|#new---2>.
+This is the same format as expected by L<new("")|#new---2>.
 Str is called implicitly by put and print. A shortened version is provided by L<gist|#gist>
 
     say Math::Matrix.new([[1,2],[3,4]]).Str:
@@ -297,14 +319,14 @@ Str is called implicitly by put and print. A shortened version is provided by L<
 
     ~$matrix            # alias op
 
-=head3 L<Array|#type-conversion-and-output-formats>
+=head3 L<Array|#converter>
 
-Content of all cells as an array of arrays (same format that was put into L<Math::Matrix.new([...])|#new-->).
+Content of all cells as an array of arrays (same format that was put into L<new([...])|#new-->).
 
     say Math::Matrix.new([[1,2],[3,4]]).Array : [[1 2] [3 4]]
     say @ $matrix       # alias op, space between @ and $ needed
 
-=head3 L<list|#type-conversion-and-output-formats>
+=head3 L<list|#converter>
 
 Returns a flat list with all cells (same as .list-rows.flat.list).
 
@@ -312,7 +334,7 @@ Returns a flat list with all cells (same as .list-rows.flat.list).
     say |$matrix        # alias op
 
 
-=head3 L<list-rows|#type-conversion-and-output-formats>
+=head3 L<list-rows|#converter>
 
 Returns a list of lists, reflecting the row-wise content of the matrix.
 Same format as L<new ()|#new---1> takes in.
@@ -320,21 +342,21 @@ Same format as L<new ()|#new---1> takes in.
     say Math::Matrix.new( [[1,2],[3,4]] ).list-rows      : ((1 2) (3 4))
     say Math::Matrix.new( [[1,2],[3,4]] ).list-rows.flat : (1 2 3 4)
 
-=head3 L<list-columns|#type-conversion-and-output-formats>
+=head3 L<list-columns|#converter>
 
 Returns a list of lists, reflecting the row-wise content of the matrix.
     
     say Math::Matrix.new( [[1,2],[3,4]] ).list-columns : ((1 3) (2 4))
     say Math::Matrix.new( [[1,2],[3,4]] ).list-columns.flat : (1 3 2 4)
 
-=head3 L<Hash|#type-conversion-and-output-formats>
+=head3 L<Hash|#converter>
 
 Gets you a nested key - value hash.
 
     say $matrix.Hash : { 0 => { 0 => 1, 1 => 2}, 1 => {0 => 3, 1 => 4} } 
     say % $matrix       # alias op, space between % and $ still needed
 
-=head3 L<Range|#type-conversion-and-output-formats>
+=head3 L<Range|#converter>
 
 Returns an range object that reflects the content of all cells.
 Please note that complex number can not be endpoints of ranges.
@@ -346,7 +368,7 @@ To get single endpoints you could write:
     say $matrix.Range.min: 1
     say $matrix.list.max:  4
 
-=head3 L<gist|#type-conversion-and-output-formats>
+=head3 L<gist|#converter>
 
 Limited tabular view, optimized for shell output. Just cuts off excessive
 columns that do not fit into standard terminal and also stops after 20 rows.
@@ -371,7 +393,7 @@ So next time you call:
 
 You change the cache by calling gist with arguments again.
 
-=head3 L<perl|#type-conversion-and-output-formats>
+=head3 L<perl|#converter>
 
 Conversion into String that can reevaluated into the same object later using default constructor.
 
@@ -379,9 +401,13 @@ Conversion into String that can reevaluated into the same object later using def
 
 
 
+
 =head2 L<Boolean Properties|#methods>
 
-These are mathematical properties a matrix can have or not.
+These are mathematical properties, a given matrix has or not.
+Thus, the return value is a always of boolean type.
+Arguments, like in case of L<is-diagonally-dominant|#boolean-properties>,
+are only necessary when a method can tell you about a group of relatd closely properties.
 
 =head3 L<is-square|#boolean-properties>
 
@@ -445,15 +471,6 @@ In other words: if matrix is L<upper-triangular|#is-upper-triangular> and L<lowe
                 0 3 0
                 0 0 7
 
-=head3 L<is-diagonal-constant|#boolean-properties>
-
-Checks if caller is a diagonal-constant or Töplitz matrix.
-True if every L<diagonal|#diagonal> is the a collection of cells that hold the same value.
-
-    Example:     0  1  2
-                -1  0  1
-                -2 -1  0
-
 =head3 L<is-diagonally-dominant|#boolean-properties>
 
 True when cells on the L<diagonal|#diagonal> have a bigger (if strict) or at least equal (in none strict)
@@ -466,10 +483,30 @@ absolute value than the sum of its row (sum of absolute values of the row except
    $matrix.is-diagonally-dominant(:strict,  :along<row>)    # DE > sum of rest row
    $matrix.is-diagonally-dominant(:!strict, :along<both>)   # DE >= sum of rest row and rest column
 
+=head3 L<is-diagonal-constant|#boolean-properties>
+
+Checks if caller is a I<diagonal-constant> or I<Töplitz matrix>.
+True if every L<diagonal|#diagonal> is the a collection of cells that hold the same value.
+
+    Example:     0  1  2
+                -1  0  1
+                -2 -1  0
+                
+=head3 L<is-catalecticant|#boolean-properties>
+
+Checks if caller is a I<catalecticant> or I<Hankel matrix>.
+True if every L<skew diagonal|#skew-diagonal> is the a collection of cells that hold the same value.
+Catalecticant matrices are L<symmetric|#is-symmetric>.
+
+
+    Example:     0  1  2
+                 1  2  3
+                 2  3  4
+
 =head3 L<is-symmetric|#boolean-properties>
 
 True if every cell with coordinates x y has same value as the cell on y x.
-In other words: $matrix and $matrix.transposed (alias T) are the same.
+In other words: $matrix and $matrix.L<transposed|#transposed> (alias T) are the same.
 
     Example:    1 2 3
                 2 5 4
@@ -477,7 +514,7 @@ In other words: $matrix and $matrix.transposed (alias T) are the same.
 
 =head3 L<is-antisymmetric|#boolean-properties>
 
-Means the transposed and negated matrix are the same.
+Means the L<transposed|#transposed> and L<negated|#negated> matrix are the same.
 
     Example:    0  2  3
                -2  0  4
@@ -494,10 +531,10 @@ A Hermitian or self-adjoint matrix is equal to its L<transposed|#transposed> and
 
 =head3 L<is-invertible|#boolean-properties>
 
-Also called nonsingular or nondegenerate.
+Also called I<nonsingular> or I<nondegenerate>.
 Is True if number of rows and colums are the same (L<is-square|#is-square>) and L<determinant|#determinant> is not zero.
-All rows or colums have to be independent vectors. Please use this method before use: $matrix.inverted,
-or you will get an exception.
+All rows or colums have to be independent vectors. 
+Please check this before using $matrix.L<inverted|#inverted>, or you will get an exception.
 
 =head3 L<is-orthogonal|#boolean-properties>
 
@@ -519,6 +556,8 @@ True if all main L<minors|#minor> or all Eigenvalues are strictly greater zero.
 
 True if all main L<minors|#minor> or all Eigenvalues are greater equal zero.
 
+
+
 =head2 L<Numeric Properties|#methods>
 
 Matrix properties that are expressed with a single number.
@@ -532,7 +571,7 @@ List of two values: number of rows and number of columns.
 
 =head3 L<density|#numeric-properties>
 
-Density is the percentage of cell which are not zero.
+I<Density> is the percentage of cell which are not zero. I<sparsity> = 1 - I<density>.
 
     my $d = $matrix.density;
 
@@ -624,7 +663,7 @@ You can also check if all cells have the same type:
 
 =head2 L<Derived Matrices|#methods>
 
-Single matrices that can be computed with only our original matrix as input.
+Single matrices, that can be computed with only our original matrix as input.
 
 =head3 L<transposed|#derived-matrices>
 
@@ -674,7 +713,7 @@ It is called adjugate, classical adjoint or sometimes adjunct.
 
 Matrices that have a L<square|#is-square> form and a full L<rank|#rank> can be L<inverted|#inverted> (see L<is-invertible|#is-invertible>).
 Inverse matrix regarding to matrix multiplication (see L<dot-product|#dot-product>).
-The dot product of a matrix with its L<inverted|#inverted> results in a L<identity|#is-identity> matrix
+The dot product of a matrix with it's inverted results in a L<identity|#is-identity> matrix
 (neutral element in this group).
 
     my $i = $matrix.inverted();      # invert matrix
@@ -699,7 +738,7 @@ Return the reduced row echelon form of a matrix, a.k.a. row canonical form
 
 Methods that return lists of matrices, which in their product or otherwise
 can be recombined to the original matrix. In case of cholesky only one
-matrix is returned, becasue the other one is its transposed.
+matrix is returned, because the other one is its transposed.
 
 =head3 L<decompositionLU|#decompositions>
 
@@ -862,8 +901,8 @@ Matrix multiplication of two fitting matrices (colums left == rows right).
 
 =head3 L<tensor-product|#mathematical-operations>
 
-The tensor product (a.k.a Kronecker product) between a matrix a of size (m,n)
-and a matrix b of size (p,q) is a matrix c of size (m*p,n*q).
+The I<tensor product> (a.k.a I<Kronecker product>) between a matrix a of I<size|#size> (m,n)
+and matrix b of size (p,q) is a matrix c of size (m*p,n*q).
 All matrices you get by multiplying an element (cell) of matrix a with
  matrix b (as in $a.multiply($b.cell(..,..)) concatinated result in matrix c. 
 (Or replace in a each cell with its product with b.)
@@ -879,9 +918,9 @@ All matrices you get by multiplying an element (cell) of matrix a with
 
 
 
-=head2 L<List Like Matrix Operations|#methods>
+=head2 L<List Like Operations|#methods>
 
-Selection of methods that are also provided by Lists and Arrays and make also sense in context a 2D matrix. 
+Methods that usually are provided by Lists and Arrays, but make also sense in context of matrices. 
 
 =head3 L<elems|#list-like-matrix-operations>
 
@@ -959,7 +998,6 @@ Map only specified row (row number is first parameter).
     1 0
     3 0
 
-
 =head3 L<reduce|#list-like-matrix-operations>
 
 Like the built in reduce method, it iterates over all elements and joins
@@ -987,10 +1025,10 @@ resulting list:
 
 
 
-=head2 L<Structural Matrix Operations|#methods>
+=head2 L<Structural Operations|#methods>
 
-Methods that reorder the rows and columns, delete some or even add new. 
-The accessor .submatrix is also useful for that purpose.
+Methods that reorder rows and columns, delete some or even add new. 
+The accessor L<submatrix|#submatrix> is also useful for that purpose.
 
 =head3 L<move-row|#structural-matrix-operations>
 

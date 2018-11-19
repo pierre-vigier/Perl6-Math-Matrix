@@ -52,11 +52,11 @@ All computation heavy properties will be calculated lazily and will be cached.
 
   * **[constructors](#constructors)**: [new []](#new--), [new ()](#new---1), [new ""](#new---2), [new-zero](#new-zero), [new-identity](#new-identity), [new-diagonal](#new-diagonal), [new-vector-product](#new-vector-product)
 
-  * **[accessors](#accessors)**: [cell](#cell), [AT-POS](#at-pos), [row](#row), [column](#column), [diagonal](#diagonal), [submatrix](#submatrix)
+  * **[accessors](#accessors)**: [cell](#cell), [AT-POS](#at-pos), [row](#row), [column](#column), [diagonal](#diagonal), [skew-diagonal](#skew-diagonal), [submatrix](#submatrix)
 
-  * **[converter](#type-conversion-and-output-formats)**: [Bool](#bool), [Numeric](#numeric), [Str](#str), [Array](#array), [Hash](#hash), [Range](#range), [list](#list), [list-rows](#list-rows), [list-columns](#list-columns), [gist](#gist), [perl](#perl)
+  * **[converter](#converter)**: [Bool](#bool), [Numeric](#numeric), [Str](#str), [Array](#array), [Hash](#hash), [Range](#range), [list](#list), [list-rows](#list-rows), [list-columns](#list-columns), [gist](#gist), [perl](#perl)
 
-  * **[boolean properties](#boolean-properties)**: [zero](#is-zero), [identity](#identity), [square](#is-square), [diagonal](#is-diagonal), [diagonal-constant](#is-diagonal-constant), [diagonally-dominant](#is-diagonally-dominant), [upper-triangular](#is-upper-triangular), [lower-triangular](#is-lower-triangular), [invertible](#is-invertible), [symmetric](#is-symmetric), [antisymmetric](#is-antisymmetric), [unitary](#is-unitary), [self-adjoint](#is-self-adjoint), [orthogonal](#is-orthogonal), [positive-definite](#positive-definite), [positive-semidefinite](#is-positive-semidefinite)
+  * **[boolean properties](#boolean-properties)**: [square](#is-square), [zero](#is-zero), [identity](#identity), [upper-](#is-upper-triangular), [lower-triangular](#is-lower-triangular), [diagonal](#is-diagonal), [-dominant](#is-diagonally-dominant), [-constant](#is-diagonal-constant), [catalecticant](#is-catalecticant), [anti-](#is-antisymmetric), [symmetric](#is-symmetric), [unitary](#is-unitary), [self-adjoint](#is-self-adjoint), [invertible](#is-invertible), [orthogonal](#is-orthogonal), [positive-definite](#is-positive-definite), [positive-semidefinite](#is-positive-semidefinite)
 
   * **[numeric properties](#numeric-properties)**: [size](#size), [density](#density), [trace](#trace), [determinant](#determinant), [rank](#rank), [nullity](#nullity), [norm](#norm), [condition](#condition), [minor](#minor), [narrowest-](#narrowest-cell-type), [widest-cell-type](#widest-cell-type)
 
@@ -66,9 +66,9 @@ All computation heavy properties will be calculated lazily and will be cached.
 
   * **[math ops](#mathematical-operations)**: [equal](#equal), [add](#add), [multiply](#multiply), [dot-product](#dot-product), [tensor-product](#tensor-product)
 
-  * **[list like ops](#list-like-matrix-operations)**: [elems](#elems), [elem](#elem), [cont](#cont), [map-index](#map-index), [map-with-index](#map-with-index), [map](#map), [map-row](#map-row), [map-column](#map-column), [reduce](#reduce), [reduce-rows](#reduce-rows), [reduce-columns](#reduce-columns)
+  * **[list like ops](#list-like-operations)**: [elems](#elems), [elem](#elem), [cont](#cont), [map-index](#map-index), [map-with-index](#map-with-index), [map](#map), [map-row](#map-row), [map-column](#map-column), [reduce](#reduce), [reduce-rows](#reduce-rows), [reduce-columns](#reduce-columns)
 
-  * **[structural ops](#structural-matrix-operations)**: [move-row](#move-row), [move-column](#move-column), [swap-rows](#swap-rows), [swap-columns](#swap-columns), [splice-rows](#splice-rows), [splice-columns](#splice-columns)
+  * **[structural ops](#structural-operations)**: [move-row](#move-row), [move-column](#move-column), [swap-rows](#swap-rows), [swap-columns](#swap-columns), [splice-rows](#splice-rows), [splice-columns](#splice-columns)
 
   * **[shortcuts](#shortcuts)**: [T](#transposed), [conj](#conjugated), [det](#determinant), [rref](#reduced-row-echelon-form)
 
@@ -199,11 +199,20 @@ Gets values of specified column (first required parameter) as a list.
 
 ### [diagonal](#accessors)
 
-Without an argument it returns values of main diagonal elements as a list. Use the optional parameter to get any other parallel diagonal. Positive value for the ones above - negative below and 0 for the main diagonal. Matrix does not have to be a quadratic ([square](#is-square)).
+Without an argument it returns values of main diagonal elements as a list. Use the optional parameter to get any other parallel diagonal. Positive value for the ones above - negative below and 0 for the main diagonal. The matrix does not have to be a quadratic ([square](#is-square)).
 
     say Math::Matrix.new([[1,2],[3,4]]      ).diagonal    : (1, 4)
     say Math::Matrix.new([[1,2],[3,4]]      ).diagonal(1) : (2)
     say Math::Matrix.new([[1,2],[3,4],[5,6]]).diagonal(-1): (3, 6)
+
+### [skew-diagonal](#accessors)
+
+Unlike a *diagonal*, a skew diagonal is only defined for [square](#is-square) matrixes. It runs from $matrix[n][0] to $matrix[0][n], n being row or column size - 1. Use the optional parameter to get any other parallel skew diagonal. Positive value for the ones above - negative below.
+
+    say $matrix.skew-diagonal    : (2, 3)
+    say $matrix.skew-diagonal(0) : (2, 3)
+    say $matrix.skew-diagonal(1) : (1)
+    say $matrix.skew-diagonal(-1): (4)
 
 ### [submatrix](#accessors)
 
@@ -214,36 +223,45 @@ Returns a matrix that might miss certain rows and columns of the original. This 
                3 4 5 6
                4 5 6 7
 
+#### [leaving out one](#submatrix)
+
 In mathematics, a submatrix is built by leaving out one row and one column. In the two argument format you name these by their index ($row, $column).
 
     say $m.submatrix(1,2) :    1 2 4
                                3 4 6
                                4 5 7
 
-If you provide two ranges (row-min .. row-max, col-min .. col-max) to the appropriately named arguments, you get the two dimensional excerpt of the matrix that is defined by these ranges.
+#### [leaving out more](#submatrix)
 
-    say $m.submatrix( rows => 1..1, columns => 0..*) :    3 4 5
+If you provide two ranges (row-min .. row-max, col-min .. col-max - both optional) to the appropriately named arguments, you get the excerpt of the matrix, that contains only the requested rows and columns - still in the original order.
 
-When provided with two lists (or arrays) of values (to the arguments named "rows" and "columns") a new matrix will be created with that selection of rows and columns. Please note, that you can pick any row/column in any order and as many times you prefer. They will displayed in the order they are listed in the arguments.
+    say $m.submatrix( rows => 1..1, columns => 1..*) :      4 5        
+    say $m.submatrix( rows => 1..1 )                 :    3 4 5
+
+#### [reordering](#submatrix)
+
+Alternatively each (as previously) named argument can also take a list (or array) of values, as created my the sequence operator (...). The result will be a matrix with that selection of rows and columns. Please note, you may pick rows/columns in any order and as many times you prefer.
 
     $m.submatrix(rows => (1,2), columns => (3,2)):    5 4
                                                       6 5
                                                       
     $m.submatrix(rows => (1...2), columns => (3,2))  # same thing
 
-The named arguments of both types can be mixed and are in both cases optional. If you provide none of them, the result will be the original matrix.
+Arguments with ranges and lists can be mixed and are in both cases optional. If you provide none of them, the result will be the original matrix.
 
     say $m.submatrix( rows => (1,) )              :   3 4 5        
 
     $m.submatrix(rows => (1..*), columns => (3,2)):   5 4
                                                       6 5
 
-[Type Conversion And Output Formats](#methods)
-----------------------------------------------
+Even more powerful or explicit in syntax are the [structural ops](#structural-operations).
 
-Methods that convert a matrix into other types or allow different views on the overall content.
+[Converter](#methods)
+---------------------
 
-### [Bool](#type-conversion-and-output-formats)
+Methods that convert a matrix into other types or allow different views on the overall content (output formats).
+
+### [Bool](#converter)
 
 Conversion into Bool context. Returns False if matrix is zero (all cells equal zero as in is-zero), otherwise True.
 
@@ -251,16 +269,16 @@ Conversion into Bool context. Returns False if matrix is zero (all cells equal z
     ? $matrix           # alias op
     if $matrix          # matrix in Bool context too
 
-### [Numeric](#type-conversion-and-output-formats)
+### [Numeric](#converter)
 
 Conversion into Numeric context. Returns Euclidean [norm](#norm). Please note, only a prefix operator + (as in: + $matrix) will call this Method. An infix (as in $matrix + $number) calls $matrix.add($number).
 
     $matrix.Numeric
     + $matrix           # alias op
 
-### [Str](#type-conversion-and-output-formats)
+### [Str](#converter)
 
-Returns all cell values separated by one whitespace, rows by new line. This is the same format as expected by [Math::Matrix.new("")](#new---2). Str is called implicitly by put and print. A shortened version is provided by [gist](#gist)
+Returns all cell values separated by one whitespace, rows by new line. This is the same format as expected by [new("")](#new---2). Str is called implicitly by put and print. A shortened version is provided by [gist](#gist)
 
     say Math::Matrix.new([[1,2],[3,4]]).Str:
 
@@ -269,42 +287,42 @@ Returns all cell values separated by one whitespace, rows by new line. This is t
 
     ~$matrix            # alias op
 
-### [Array](#type-conversion-and-output-formats)
+### [Array](#converter)
 
-Content of all cells as an array of arrays (same format that was put into [Math::Matrix.new([...])](#new--)).
+Content of all cells as an array of arrays (same format that was put into [new([...])](#new--)).
 
     say Math::Matrix.new([[1,2],[3,4]]).Array : [[1 2] [3 4]]
     say @ $matrix       # alias op, space between @ and $ needed
 
-### [list](#type-conversion-and-output-formats)
+### [list](#converter)
 
 Returns a flat list with all cells (same as .list-rows.flat.list).
 
     say $matrix.list    : (1 2 3 4)
     say |$matrix        # alias op
 
-### [list-rows](#type-conversion-and-output-formats)
+### [list-rows](#converter)
 
 Returns a list of lists, reflecting the row-wise content of the matrix. Same format as [new ()](#new---1) takes in.
 
     say Math::Matrix.new( [[1,2],[3,4]] ).list-rows      : ((1 2) (3 4))
     say Math::Matrix.new( [[1,2],[3,4]] ).list-rows.flat : (1 2 3 4)
 
-### [list-columns](#type-conversion-and-output-formats)
+### [list-columns](#converter)
 
 Returns a list of lists, reflecting the row-wise content of the matrix.
 
     say Math::Matrix.new( [[1,2],[3,4]] ).list-columns : ((1 3) (2 4))
     say Math::Matrix.new( [[1,2],[3,4]] ).list-columns.flat : (1 3 2 4)
 
-### [Hash](#type-conversion-and-output-formats)
+### [Hash](#converter)
 
 Gets you a nested key - value hash.
 
     say $matrix.Hash : { 0 => { 0 => 1, 1 => 2}, 1 => {0 => 3, 1 => 4} } 
     say % $matrix       # alias op, space between % and $ still needed
 
-### [Range](#type-conversion-and-output-formats)
+### [Range](#converter)
 
 Returns an range object that reflects the content of all cells. Please note that complex number can not be endpoints of ranges.
 
@@ -315,7 +333,7 @@ To get single endpoints you could write:
     say $matrix.Range.min: 1
     say $matrix.list.max:  4
 
-### [gist](#type-conversion-and-output-formats)
+### [gist](#converter)
 
 Limited tabular view, optimized for shell output. Just cuts off excessive columns that do not fit into standard terminal and also stops after 20 rows. If you call it explicitly, you can add width and height (char count) as optional arguments. Might even not show all decimals. Several dots will hint that something is missing. It is implicitly called by say. For a full view use [Str](#str).
 
@@ -333,7 +351,7 @@ max-chars is the maximum amount of characters in any row of output (default is 8
 
 You change the cache by calling gist with arguments again.
 
-### [perl](#type-conversion-and-output-formats)
+### [perl](#converter)
 
 Conversion into String that can reevaluated into the same object later using default constructor.
 
@@ -342,7 +360,7 @@ Conversion into String that can reevaluated into the same object later using def
 [Boolean Properties](#methods)
 ------------------------------
 
-These are mathematical properties a matrix can have or not.
+These are mathematical properties, a given matrix has or not. Thus, the return value is a always of boolean type. Arguments, like in case of [is-diagonally-dominant](#boolean-properties), are only necessary when a method can tell you about a group of relatd closely properties.
 
 ### [is-square](#boolean-properties)
 
@@ -402,14 +420,6 @@ True if matrix is [square](#is-square) and only cells on the [diagonal](#diagona
                 0 3 0
                 0 0 7
 
-### [is-diagonal-constant](#boolean-properties)
-
-Checks if caller is a diagonal-constant or Töplitz matrix. True if every [diagonal](#diagonal) is the a collection of cells that hold the same value.
-
-    Example:     0  1  2
-                -1  0  1
-                -2 -1  0
-
 ### [is-diagonally-dominant](#boolean-properties)
 
 True when cells on the [diagonal](#diagonal) have a bigger (if strict) or at least equal (in none strict) absolute value than the sum of its row (sum of absolute values of the row except diagonal element).
@@ -421,9 +431,25 @@ True when cells on the [diagonal](#diagonal) have a bigger (if strict) or at lea
     $matrix.is-diagonally-dominant(:strict,  :along<row>)    # DE > sum of rest row
     $matrix.is-diagonally-dominant(:!strict, :along<both>)   # DE >= sum of rest row and rest column
 
+### [is-diagonal-constant](#boolean-properties)
+
+Checks if caller is a *diagonal-constant* or *Töplitz matrix*. True if every [diagonal](#diagonal) is the a collection of cells that hold the same value.
+
+    Example:     0  1  2
+                -1  0  1
+                -2 -1  0
+
+### [is-catalecticant](#boolean-properties)
+
+Checks if caller is a *catalecticant* or *Hankel matrix*. True if every [skew diagonal](#skew-diagonal) is the a collection of cells that hold the same value. Catalecticant matrices are [symmetric](#is-symmetric).
+
+    Example:     0  1  2
+                 1  2  3
+                 2  3  4
+
 ### [is-symmetric](#boolean-properties)
 
-True if every cell with coordinates x y has same value as the cell on y x. In other words: $matrix and $matrix.transposed (alias T) are the same.
+True if every cell with coordinates x y has same value as the cell on y x. In other words: $matrix and $matrix.[transposed](#transposed) (alias T) are the same.
 
     Example:    1 2 3
                 2 5 4
@@ -431,7 +457,7 @@ True if every cell with coordinates x y has same value as the cell on y x. In ot
 
 ### [is-antisymmetric](#boolean-properties)
 
-Means the transposed and negated matrix are the same.
+Means the [transposed](#transposed) and [negated](#negated) matrix are the same.
 
     Example:    0  2  3
                -2  0  4
@@ -447,7 +473,7 @@ A Hermitian or self-adjoint matrix is equal to its [transposed](#transposed) and
 
 ### [is-invertible](#boolean-properties)
 
-Also called nonsingular or nondegenerate. Is True if number of rows and colums are the same ([is-square](#is-square)) and [determinant](#determinant) is not zero. All rows or colums have to be independent vectors. Please use this method before use: $matrix.inverted, or you will get an exception.
+Also called *nonsingular* or *nondegenerate*. Is True if number of rows and colums are the same ([is-square](#is-square)) and [determinant](#determinant) is not zero. All rows or colums have to be independent vectors. Please check this before using $matrix.[inverted](#inverted), or you will get an exception.
 
 ### [is-orthogonal](#boolean-properties)
 
@@ -479,7 +505,7 @@ List of two values: number of rows and number of columns.
 
 ### [density](#numeric-properties)
 
-Density is the percentage of cell which are not zero.
+*Density* is the percentage of cell which are not zero. *sparsity* = 1 - *density*.
 
     my $d = $matrix.density;
 
@@ -554,7 +580,7 @@ You can also check if all cells have the same type:
 [Derived Matrices](#methods)
 ----------------------------
 
-Single matrices that can be computed with only our original matrix as input.
+Single matrices, that can be computed with only our original matrix as input.
 
 ### [transposed](#derived-matrices)
 
@@ -601,7 +627,7 @@ Creates a matrix out of the properly signed [minors](#minor) of the original. It
 
 ### [inverted](#derived-matrices)
 
-Matrices that have a [square](#is-square) form and a full [rank](#rank) can be [inverted](#inverted) (see [is-invertible](#is-invertible)). Inverse matrix regarding to matrix multiplication (see [dot-product](#dot-product)). The dot product of a matrix with its [inverted](#inverted) results in a [identity](#is-identity) matrix (neutral element in this group).
+Matrices that have a [square](#is-square) form and a full [rank](#rank) can be [inverted](#inverted) (see [is-invertible](#is-invertible)). Inverse matrix regarding to matrix multiplication (see [dot-product](#dot-product)). The dot product of a matrix with it's inverted results in a [identity](#is-identity) matrix (neutral element in this group).
 
     my $i = $matrix.inverted();      # invert matrix
     my $i = $matrix ** -1;           # operator alias
@@ -621,7 +647,7 @@ Return the reduced row echelon form of a matrix, a.k.a. row canonical form
 [Decompositions](#methods)
 --------------------------
 
-Methods that return lists of matrices, which in their product or otherwise can be recombined to the original matrix. In case of cholesky only one matrix is returned, becasue the other one is its transposed.
+Methods that return lists of matrices, which in their product or otherwise can be recombined to the original matrix. In case of cholesky only one matrix is returned, because the other one is its transposed.
 
 ### [decompositionLU](#decompositions)
 
@@ -763,7 +789,7 @@ Matrix multiplication of two fitting matrices (colums left == rows right).
 
 ### [tensor-product](#mathematical-operations)
 
-The tensor product (a.k.a Kronecker product) between a matrix a of size (m,n) and a matrix b of size (p,q) is a matrix c of size (m*p,n*q). All matrices you get by multiplying an element (cell) of matrix a with matrix b (as in $a.multiply($b.cell(..,..)) concatinated result in matrix c. (Or replace in a each cell with its product with b.)
+The *tensor product* (a.k.a *Kronecker product*) between a matrix a of *size|#size* (m,n) and matrix b of size (p,q) is a matrix c of size (m*p,n*q). All matrices you get by multiplying an element (cell) of matrix a with matrix b (as in $a.multiply($b.cell(..,..)) concatinated result in matrix c. (Or replace in a each cell with its product with b.)
 
     Example:    1 2  *  2 3   =  1*[2 3] 2*[2 3]  =  2  3  4  6
                 3 4     4 5        [4 5]   [4 5]     4  5  8 10
@@ -774,10 +800,10 @@ The tensor product (a.k.a Kronecker product) between a matrix a of size (m,n) an
     my $c = $a X* $b;               # works too as operator alias
     my $c = $a ⊗ $b;                # unicode operator alias
 
-[List Like Matrix Operations](#methods)
----------------------------------------
+[List Like Operations](#methods)
+--------------------------------
 
-Selection of methods that are also provided by Lists and Arrays and make also sense in context a 2D matrix. 
+Methods that usually are provided by Lists and Arrays, but make also sense in context of matrices. 
 
 ### [elems](#list-like-matrix-operations)
 
@@ -864,10 +890,10 @@ Similar to reduce-rows, this method reduces each column to one value in the resu
 
     say Math::Matrix.new([[1,2],[3,4]]).reduce-columns(&[*]): (3, 8)
 
-[Structural Matrix Operations](#methods)
-----------------------------------------
+[Structural Operations](#methods)
+---------------------------------
 
-Methods that reorder the rows and columns, delete some or even add new. The accessor .submatrix is also useful for that purpose.
+Methods that reorder rows and columns, delete some or even add new. The accessor [submatrix](#submatrix) is also useful for that purpose.
 
 ### [move-row](#structural-matrix-operations)
 
