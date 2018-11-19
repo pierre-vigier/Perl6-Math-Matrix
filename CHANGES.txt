@@ -105,12 +105,12 @@
     = added and clarified docs
 
 Legend:
-
+  § release info
   + new (added) feature
   - removed feature
   * enhanced feature
   / reduced feature 
   x bug fiX
   ! API change
-  & project infrastructure
   = documentation
+  & project infrastructure

@@ -388,14 +388,41 @@ method !build_density(Math::Matrix:D: --> Rat) {
     $valcount / self.elems;
 }
 
+method !build_bandwith(Math::Matrix:D: --> Int) {
+    0;
+}
+
 method !build_trace(Math::Matrix:D: --> Numeric) {
-    fail "Not square matrix" unless self.is-square;
+    fail "trace is only defined for a square matrix" unless self.is-square;
     self.diagonal.sum;
+}
+
+method !build_rank(Math::Matrix:D: --> Int) {
+    my $rank = 0;
+    my @clone =  @!rows.clone();
+    for ^$!column-count -> $c {            # make upper triangle via gauss elimination
+        last if $rank == $!row-count;      # rank cant get bigger thean dim
+        my $swap_row_nr = $rank;
+        $swap_row_nr++ while $swap_row_nr < $!row-count and @clone[$swap_row_nr][$c] == 0;
+        next if $swap_row_nr == $!row-count;
+        (@clone[$rank], @clone[$swap_row_nr]) = (@clone[$swap_row_nr], @clone[$rank]);
+        for $rank + 1 ..^ $!row-count -> $r {
+            next if @clone[$r][$c] == 0;
+            my $q = @clone[$rank][$c] / @clone[$r][$c];
+            @clone[$r] = @clone[$rank] >>-<< $q <<*<< @clone[$r];
+        }
+        $rank++;
+    }
+    $rank;
+}
+
+method !build_nullity(Math::Matrix:D: --> Int) {
+    min(self.size) - self.rank;
 }
 
 method det(Math::Matrix:D: --> Numeric )        { self.determinant }  # the usual short name
 method !build_determinant(Math::Matrix:D: --> Numeric) {
-    fail "Number of columns has to be same as number of rows" unless self.is-square;
+    fail "number of columns has to be same as number of rows" unless self.is-square;
     return 1            if $!row-count == 0;
     return @!rows[0][0] if $!row-count == 1;
     if $!row-count > 4 {
@@ -436,29 +463,7 @@ multi sub σ_permutations ([$x, *@xs]) {
     σ_permutations(@xs).map({ |order($_.value, insert($x, $_.key)) }) Z=> |(1,-1) xx *
 }
 
-
-method !build_rank(Math::Matrix:D: --> Int) {
-    my $rank = 0;
-    my @clone =  @!rows.clone();
-    for ^$!column-count -> $c {            # make upper triangle via gauss elimination
-        last if $rank == $!row-count;      # rank cant get bigger thean dim
-        my $swap_row_nr = $rank;
-        $swap_row_nr++ while $swap_row_nr < $!row-count and @clone[$swap_row_nr][$c] == 0;
-        next if $swap_row_nr == $!row-count;
-        (@clone[$rank], @clone[$swap_row_nr]) = (@clone[$swap_row_nr], @clone[$rank]);
-        for $rank + 1 ..^ $!row-count -> $r {
-            next if @clone[$r][$c] == 0;
-            my $q = @clone[$rank][$c] / @clone[$r][$c];
-            @clone[$r] = @clone[$rank] >>-<< $q <<*<< @clone[$r];
-        }
-        $rank++;
-    }
-    $rank;
-}
-
-method !build_nullity(Math::Matrix:D: --> Int) {
-    min(self.size) - self.rank;
-}
+method minor(Math::Matrix:D: Int:D $row, Int:D $col --> Numeric) { $.submatrix($row, $col).determinant }
 
 multi method norm(Math::Matrix:D: PosInt :$p = 2, PosInt :$q = $p --> Numeric) {
     my $norm = 0;
@@ -478,8 +483,6 @@ multi method norm(Math::Matrix:D: 'row-sum' --> Numeric)  { max            @!row
 multi method norm(Math::Matrix:D: 'column-sum'--> Numeric){ max (^$!column-count).map: {[+] self.column($_).map: *.abs} }
 
 method !build_condition(Math::Matrix:D:              --> Numeric) { $.norm() * $.inverted.norm       }
-
-method minor(Math::Matrix:D: Int:D $row, Int:D $col --> Numeric) { $.submatrix($row, $col).determinant }
 
 method !build_narrowest-cell-type(Math::Matrix:D: --> Numeric){
     return Bool if any( @!rows[*;*] ) ~~ Bool;
@@ -701,7 +704,6 @@ multi method add(Math::Matrix:D: Numeric $s, Int :$row, Int :$column --> Math::M
     return self.map-column( $column, { $_ + $s} ) if $column.defined;
            self.map(                   *  + $s  );
 }
-
 
 
 multi method multiply(Math::Matrix:D: Str $b --> Math::Matrix:D ) { self.multiply( Math::Matrix.new( $b ) ) }

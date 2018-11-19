@@ -58,7 +58,7 @@ All computation heavy properties will be calculated lazily and will be cached.
 
   * **[boolean properties](#boolean-properties)**: [square](#is-square), [zero](#is-zero), [identity](#identity), [upper-](#is-upper-triangular), [lower-triangular](#is-lower-triangular), [diagonal](#is-diagonal), [-dominant](#is-diagonally-dominant), [-constant](#is-diagonal-constant), [catalecticant](#is-catalecticant), [anti-](#is-antisymmetric), [symmetric](#is-symmetric), [unitary](#is-unitary), [self-adjoint](#is-self-adjoint), [invertible](#is-invertible), [orthogonal](#is-orthogonal), [positive-definite](#is-positive-definite), [positive-semidefinite](#is-positive-semidefinite)
 
-  * **[numeric properties](#numeric-properties)**: [size](#size), [density](#density), [trace](#trace), [determinant](#determinant), [rank](#rank), [nullity](#nullity), [norm](#norm), [condition](#condition), [minor](#minor), [narrowest-](#narrowest-cell-type), [widest-cell-type](#widest-cell-type)
+  * **[numeric properties](#numeric-properties)**: [size](#size), [density](#density), [bandwith](#bandwith), [trace](#trace), [rank](#rank), [nullity](#nullity), [determinant](#determinant), [minor](#minor), [norm](#norm), [condition](#condition), [narrowest-](#narrowest-cell-type), [widest-cell-type](#widest-cell-type)
 
   * **[derived matrices](#derived-matrices)**: [transposed](#transposed), [negated](#negated), [conjugated](#conjugated), [adjugated](#adjugated), [inverted](#inverted), [reduced-row-echelon-form](#reduced-row-echelon-form)
 
@@ -515,14 +515,6 @@ The trace of a [square](#is-square) matrix is the sum of the cells on the main d
 
     my $tr = $matrix.trace;
 
-### [determinant](#numeric-properties)
-
-Only a [square](#is-square) matrice has a defined determinant, which tells the volume, spanned by the row or column vectors. So if the volume is just in one dimension flat, the determinant is zero, and has a kernel (not a full [rank](#rank) - thus is not [invertible](#is-invertable)).
-
-    my $det = $matrix.determinant;
-    my $d = $matrix.det;                # same thing
-    my $d = ❘ $matrix ❘;                # unicode operator shortcut
-
 ### [rank](#numeric-properties)
 
 Rank is the number of independent row or column vectors or also called independent dimensions (thats why this command is sometimes calles dim)
@@ -534,6 +526,20 @@ Rank is the number of independent row or column vectors or also called independe
 Nullity of a matrix is the number of dependent rows or columns (rank + nullity = dim). Or number of dimensions of the kernel (vector space mapped by the matrix into zero).
 
     my $n = $matrix.nullity;
+
+### [determinant](#numeric-properties)
+
+Only a [square](#is-square) matrice has a defined determinant, which tells the volume, spanned by the row or column vectors. So if the volume is just in one dimension flat, the determinant is zero, and has a kernel (not a full [rank](#rank) - thus is not [invertible](#is-invertable)).
+
+    my $det = $matrix.determinant;
+    my $d = $matrix.det;                # same thing
+    my $d = ❘ $matrix ❘;                # unicode operator shortcut
+
+### [minor](#numeric-properties)
+
+Arguments are row and column of an existing cell. A Minor is the determinant of a [submatrix](#submatrix) (2 scalar argument, first variant).
+
+    my $m = $matrix.minor(1,2);
 
 ### [norm](#numeric-properties)
 
@@ -556,12 +562,6 @@ A norm is a single positive number, which is an abstraction to the concept of si
 Condition number of a matrix is L2 norm * L2 of [inverted](#inverted) matrix.
 
     my $c = $matrix.condition( );
-
-### [minor](#numeric-properties)
-
-Arguments are row and column of an existing cell. A Minor is the determinant of a [submatrix](#submatrix) (2 scalar argument, first variant).
-
-    my $m = $matrix.minor(1,2);
 
 ### [narrowest-cell-type](#numeric-properties)
 

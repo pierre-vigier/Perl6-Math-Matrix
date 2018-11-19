@@ -50,8 +50,8 @@ All computation heavy properties will be calculated lazily and will be cached.
       L<diagonal|#is-diagonal>, L<-dominant|#is-diagonally-dominant>, L<-constant|#is-diagonal-constant>, L<catalecticant|#is-catalecticant>,
       L<anti-|#is-antisymmetric>, L<symmetric|#is-symmetric>, L<unitary|#is-unitary>, L<self-adjoint|#is-self-adjoint>, L<invertible|#is-invertible>, L<orthogonal|#is-orthogonal>,
       L<positive-definite|#is-positive-definite>, L<positive-semidefinite|#is-positive-semidefinite>
-=item B<L<numeric properties|#numeric-properties>>: L<size|#size>, L<density|#density>, L<trace|#trace>, L<determinant|#determinant>, L<rank|#rank>, L<nullity|#nullity>,
-      L<norm|#norm>, L<condition|#condition>, L<minor|#minor>, L<narrowest-|#narrowest-cell-type>, L<widest-cell-type|#widest-cell-type>
+=item B<L<numeric properties|#numeric-properties>>: L<size|#size>, L<density|#density>, L<bandwith|#bandwith>, L<trace|#trace>, L<rank|#rank>, L<nullity|#nullity>,
+      L<determinant|#determinant>, L<minor|#minor>, L<norm|#norm>, L<condition|#condition>, L<narrowest-|#narrowest-cell-type>, L<widest-cell-type|#widest-cell-type>
 =item B<L<derived matrices|#derived-matrices>>: L<transposed|#transposed>, L<negated|#negated>, L<conjugated|#conjugated>, L<adjugated|#adjugated>, L<inverted|#inverted>,
       L<reduced-row-echelon-form|#reduced-row-echelon-form>
 =item B<L<decompositions|#decompositions>>: L<LUCrout|#decompositionlucrout>, L<LU|#decompositionlu>, L<Cholesky|#decompositioncholesky>
@@ -582,17 +582,6 @@ In other words: sum of cells which row and column value is identical.
 
     my $tr = $matrix.trace; 
 
-=head3 L<determinant|#numeric-properties>
-
-Only a L<square|#is-square> matrice has a defined determinant,
-which tells the volume, spanned by the row or column vectors.
-So if the volume is just in one dimension flat, the determinant is zero,
-and has a kernel (not a full L<rank|#rank> - thus is not L<invertible|#is-invertable>).
-
-    my $det = $matrix.determinant;
-    my $d = $matrix.det;                # same thing
-    my $d = ❘ $matrix ❘;                # unicode operator shortcut
-
 =head3 L<rank|#numeric-properties>
 
 Rank is the number of independent row or column vectors or also called independent
@@ -607,6 +596,23 @@ Or number of dimensions of the kernel (vector space mapped by the matrix into ze
 
     my $n = $matrix.nullity;
 
+=head3 L<determinant|#numeric-properties>
+
+Only a L<square|#is-square> matrice has a defined determinant,
+which tells the volume, spanned by the row or column vectors.
+So if the volume is just in one dimension flat, the determinant is zero,
+and has a kernel (not a full L<rank|#rank> - thus is not L<invertible|#is-invertable>).
+
+    my $det = $matrix.determinant;
+    my $d = $matrix.det;                # same thing
+    my $d = ❘ $matrix ❘;                # unicode operator shortcut
+
+=head3 L<minor|#numeric-properties>
+
+Arguments are row and column of an existing cell.
+A Minor is the determinant of a L<submatrix|#submatrix> (2 scalar argument, first variant).
+
+    my $m = $matrix.minor(1,2);
 
 =head3 L<norm|#numeric-properties>
 
@@ -633,14 +639,7 @@ In step 3 the sum of these are taken to the power of (1/q).
 
 Condition number of a matrix is L2 norm * L2 of L<inverted|#inverted> matrix.
 
-    my $c = $matrix.condition( );        
-
-=head3 L<minor|#numeric-properties>
-
-Arguments are row and column of an existing cell.
-A Minor is the determinant of a L<submatrix|#submatrix> (2 scalar argument, first variant).
-
-    my $m = $matrix.minor(1,2);        
+    my $c = $matrix.condition( );              
 
 =head3 L<narrowest-cell-type|#numeric-properties>
 
