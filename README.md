@@ -23,8 +23,8 @@ SYNOPSIS
 
 Matrices are tables with rows and columns (index counting from 0) of numbers (Numeric type - Bool or Int or Num or Rat or FatRat or Complex): 
 
-    transpose, invert, negate, add, multiply, dot product, tensor product, 22 ops, determinant, rank,
-    norm, 13 numerical properties, 17 boolean properties, 3 decompositions, submatrix, splice, map, reduce and more
+    transpose, invert, negate, add, multiply, dot product, tensor product, 22 ops, determinant, rank, norm
+    13 numerical properties, 17 boolean properties, 3 decompositions, submatrix, splice, map, reduce and more
 
 Table of Content:
 
