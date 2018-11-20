@@ -171,7 +171,7 @@ method skew-diagonal(Math::Matrix:D: $start? = 0 --> List){
     fail "skew diagonal is only defined for square matrices" unless $.is-square;
     fail "requested skew diagonal is outside of matrix boundaries" if $start.abs >= $!row-count;
     ($start > 0 ?? map { @!rows[$!row-count -1 -$^i; $start+$^i] }, ^($!row-count - $start)
-                !! map { @!rows[$!row-count -1 -$^i -$start;$^i] }, ^($!row-count + $start) ).list;
+                !! map { @!rows[$!row-count -1 -$^i +$start;$^i] }, ^($!row-count + $start) ).list;
 }
 
 multi method submatrix(Math::Matrix:D: Int:D $row, Int:D $column --> Math::Matrix:D ){
