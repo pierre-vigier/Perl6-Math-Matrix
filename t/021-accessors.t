@@ -32,21 +32,28 @@ subtest {
 }, "Column";
 
 subtest {
-    plan 13;
+    plan 18;
     my $matrix =   Math::Matrix.new([[4,0,1],[2,1,0],[2,2,3]]);
     my $identity = Math::Matrix.new-identity(3);
-    my $fsmatrix = Math::Matrix.new([[6,7,8],[10,11,12]]);
+    my $morerows = Math::Matrix.new([[1,2],[3,4],[5,6]]);
+    my $morecols = Math::Matrix.new([[6,7,8],[10,11,12]]);
 
     ok $matrix.diagonal() ~~ $matrix.diagonal(0),"main diagonal is default";
     ok $matrix.diagonal() ~~ (4,1,3),           "custom diagonal";
     ok $matrix.diagonal(-1) ~~ (0,0),          "short custom diagonal";
     ok $identity.diagonal() ~~ (1,1,1),       "identity diagonal";
     ok ($identity.diagonal(2) ~~ (0,)),      "short identity diagonal";
-    ok $fsmatrix.diagonal(0) ~~ (6,11),     "main diagonal of none square matrix";
     
-    ok $identity.skew-diagonal() ~~ (0,1,0), "main skew diagonal of identity matrix";
-    ok $matrix.skew-diagonal(-1)  ~~ (2,0),  "upper skew diagonal";
-    ok $matrix.skew-diagonal(2) ~~ (3,),     "lower skew diagonal";
+    ok $morerows.diagonal(0) ~~ (1,4),      "main diagonal of matrix with more rows";
+    ok $morerows.diagonal(1) == (3,6),      "low diagonal of matrix with more rows";
+    ok $morerows.diagonal(-1) ~~ (2,),      "high diagonal of matrix with more rows";
+    ok $morecols.diagonal(0) ~~ (6,11),     "main diagonal of matrix with more cols";
+    ok $morecols.diagonal(1) ~~ (10,),      "low diagonal of matrix with more cols";
+    ok $morecols.diagonal(-1) ~~ (7,12),    "high diagonal of matrix with more cols";
+    
+    ok $identity.skew-diagonal() == (0,1,0),"main skew diagonal of identity matrix";
+    ok $matrix.skew-diagonal(-1) == (2,0),  "upper skew diagonal";
+    ok $matrix.skew-diagonal(2) == (3,),    "lower skew diagonal";
     
     dies-ok { Math::Matrix.new([[2,2,3]]).diagonal(1); },     "tried get diagonal outside of bound";
     dies-ok { $identity.diagonal(-3); },                      "tried get diagonal of identity outside of bound";
