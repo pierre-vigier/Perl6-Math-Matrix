@@ -118,9 +118,9 @@ Alternatively you can define the matrix from a string, which makes most sense wh
 
 =head3 L<new-zero|#constructors>
 
-This method is a constructor that returns an zero (sometimes called empty) matrix
-(as checked by is-zero) of the size given by parameter.
-If only one parameter is given, the matrix is quadratic. All the cells are set to 0.
+This method is a constructor, that returns a zero matrix (sometimes called empty),
+as checked by L<is-zero|#is-zero>. It has the L<size|#size> as given by arguments.
+If only one argument is given, the matrix is L<quadratic|#is-square>. All the cells are set to 0.
 
     say Math::Matrix.new-zero( 3, 4 ) :
 
@@ -413,15 +413,15 @@ are only necessary when a method can tell you about a group of relatd closely pr
 
 =head3 L<is-square|#boolean-properties>
 
-True if number of rows and colums are the same.
+True if number of rows and colums are the same (see L<size|#size>).
 
 =head3 L<is-zero|#boolean-properties>
 
-True if every cell (element) has value of 0 (as created by new-zero).
+True if every cell (element) has value of 0 (as created by L<new-zero|#new-zero>).
 
 =head3 L<is-identity|#boolean-properties>
 
-True if every cell on the diagonal (where row index equals column index) is 1
+True if every cell on the main L<diagonal|#diagonal> (where row index equals column index) is 1
 and any other cell is 0.
 
     Example:    1 0 0

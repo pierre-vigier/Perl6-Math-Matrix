@@ -121,7 +121,7 @@ Alternatively you can define the matrix from a string, which makes most sense wh
 
 ### [new-zero](#constructors)
 
-This method is a constructor that returns an zero (sometimes called empty) matrix (as checked by is-zero) of the size given by parameter. If only one parameter is given, the matrix is quadratic. All the cells are set to 0.
+This method is a constructor, that returns a zero matrix (sometimes called empty), as checked by [is-zero](#is-zero). It has the [size](#size) as given by arguments. If only one argument is given, the matrix is [quadratic](#is-square). All the cells are set to 0.
 
     say Math::Matrix.new-zero( 3, 4 ) :
 
@@ -365,15 +365,15 @@ These are mathematical properties, a given matrix has or not. Thus, the return v
 
 ### [is-square](#boolean-properties)
 
-True if number of rows and colums are the same.
+True if number of rows and colums are the same (see [size](#size)).
 
 ### [is-zero](#boolean-properties)
 
-True if every cell (element) has value of 0 (as created by new-zero).
+True if every cell (element) has value of 0 (as created by [new-zero](#new-zero)).
 
 ### [is-identity](#boolean-properties)
 
-True if every cell on the diagonal (where row index equals column index) is 1 and any other cell is 0.
+True if every cell on the main [diagonal](#diagonal) (where row index equals column index) is 1 and any other cell is 0.
 
     Example:    1 0 0
                 0 1 0
