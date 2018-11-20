@@ -28,7 +28,8 @@ has Bool $!is-invertible is lazy;
 has Bool $!is-positive-definite is lazy;
 has Bool $!is-positive-semidefinite is lazy;
 
-has Int     $!bandwith is lazy;
+has Int     $!upper-bandwith is lazy;
+has Int     $!lower-bandwith is lazy;
 has Int     $!rank is lazy;
 has Int     $!nullity is lazy;
 has Rat     $!density is lazy;
@@ -161,20 +162,16 @@ method column(Math::Matrix:D: Int:D $column --> List) {
 }
 
 method diagonal(Math::Matrix:D: $start? = 0 --> List){
-    fail "requested diagonal is outside of matrix boundaries" if $start <= -$!row-count or $start >= $!column-count;
-    my $length = min($!row-count , $!column-count) - $start.abs;
-    (gather if  $start < 0 { for ^$length -> $i { take @!rows[$i;$i-$start] }} 
-            else           { for ^$length -> $i { take @!rows[$i+$start;$i] }}
-	).list;
+    fail "requested diagonal is outside of matrix boundaries" if $start >= $!row-count or $start <= -$!column-count;
+    ($start > 0 ?? map { @!rows[$^i+$start;$^i] }, ^min($!column-count, $!row-count - $start)
+                !! map { @!rows[$^i;$^i-$start] }, ^min($!row-count, $!column-count + $start) ).list;
 }
 
 method skew-diagonal(Math::Matrix:D: $start? = 0 --> List){
     fail "skew diagonal is only defined for square matrices" unless $.is-square;
     fail "requested skew diagonal is outside of matrix boundaries" if $start.abs >= $!row-count;
-    my $length = $!row-count - $start.abs;
-    (gather if  $start < 0 { for ^$length -> $i { take @!rows[$!row-count-1-$i;$i-$start] }} 
-            else           { for ^$length -> $i { take @!rows[$length-1-$i;$i] }}
-	).list;
+    ($start > 0 ?? map { @!rows[$!row-count -1 -$^i; $start+$^i] }, ^($!row-count - $start)
+                !! map { @!rows[$!row-count -1 -$^i -$start;$^i] }, ^($!row-count + $start) ).list;
 }
 
 multi method submatrix(Math::Matrix:D: Int:D $row, Int:D $column --> Math::Matrix:D ){
@@ -388,9 +385,20 @@ method !build_density(Math::Matrix:D: --> Rat) {
     $valcount / self.elems;
 }
 
-method !build_bandwith(Math::Matrix:D: --> Int) {
+method !build_upper-bandwith(Math::Matrix:D: --> Int) {
+    for $!column-count-1 ... 1  -> $i {
+        return $i unless [&&](map * == 0, $.diagonal(-$i).list)
+    }
     0;
 }
+method !build_lower-bandwith(Math::Matrix:D: --> Int) {
+    for $!row-count-1 ... 1  -> $i {
+        return $i unless [&&](map * == 0, $.diagonal($i).list)
+    }   
+    0;
+}
+method bandwith(Math::Matrix:D: Str $which = '' --> Int) { max $.upper-bandwith, $.lower-bandwith }
+
 
 method !build_trace(Math::Matrix:D: --> Numeric) {
     fail "trace is only defined for a square matrix" unless self.is-square;

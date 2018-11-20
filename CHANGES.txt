@@ -3,7 +3,7 @@
     + accessor skew-diagonal
     + bool property catalecticant
     + bool property tridiagonal
-    + numeric property bandwith
+    + numeric property bandwith, lower-bandwith, upper-bandwith
     = streamlined TOC
     = reordered some chapter
     = rewrote some docs, more links

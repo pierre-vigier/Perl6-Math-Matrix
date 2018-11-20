@@ -1,19 +1,7 @@
 use lib "lib";
 use Test;
 use Math::Matrix;
-plan 8;
-
-subtest {
-    my $matrixa = Math::Matrix.new([[1,2],[3,4]]);
-    my $matrixm = Math::Matrix.new([[Bool,2.3],[3-i, 4.1.FatRat]]);
-    my $matrixr = Math::Matrix.new([[4e-3,2.3],[12, 4.1.FatRat]]);
-    ok $matrixa.narrowest-cell-type ~~ Int, "got narrowest type of default example correct";
-    ok $matrixa.widest-cell-type ~~ Int, "got widest type of default example correct";
-    ok $matrixm.narrowest-cell-type ~~ Bool, "got narrowest type of mixed matrix correct";
-    ok $matrixm.widest-cell-type ~~ Complex, "got widest type of mixed matrix correct";
-    ok $matrixr.narrowest-cell-type ~~ Int, "got narrowest type of mostly rational matrix correct";
-    ok $matrixr.widest-cell-type ~~ FatRat, "got widest type of mostly rational typed matrix correct";
-}, 'Cell Type';
+plan 9;
 
 subtest {
     plan 4;
@@ -27,7 +15,6 @@ subtest {
     ok $matrixb.size eqv (3,2),  "Non square matrix, right size";
 }, "Size";
 
-
 subtest {
     plan 3;
     my $zero = Math::Matrix.new-zero(3,4);
@@ -39,6 +26,31 @@ subtest {
     ok $matrix.density == 1       ,"full matrix has density of 1";
 }, "Density";
 
+subtest {
+    plan 15;
+    my $zero = Math::Matrix.new-zero(3,4);
+    my $identity = Math::Matrix.new-identity(3);
+    my $matrix = Math::Matrix.new([[1,2,3],[2,4,6],[3,6,9]]);
+    my $matrixb = Math::Matrix.new([[1,0],[3,4],[5,6]]);
+    my $matrixc = Math::Matrix.new([[1,2,3],[0,4,5]]);
+
+    ok $zero.upper-bandwith == 0    ,"Zero matrix has upper bandwith of 0";
+    ok $zero.lower-bandwith == 0    ,"Zero matrix has lower bandwith of 0";
+    ok $zero.bandwith == 0          ,"Zero matrix has bandwith of 0";
+    ok $identity.upper-bandwith == 0,"Identity matrix has upper bandwith of 0";
+    ok $identity.lower-bandwith == 0,"Identity matrix has lower bandwith of 0";
+    ok $identity.bandwith == 0      ,"Identity matrix has bandwith of 0";
+    ok $matrix.upper-bandwith == 2,  "full matrix has upper bandwith of 2";
+    ok $matrix.lower-bandwith == 2,  "full matrix has lower bandwith of 2";
+    ok $matrix.bandwith == 2        ,"full matrix has bandwith of 2";
+    ok $matrixb.upper-bandwith == 0, "custom matrix has upper bandwith of 0";
+    ok $matrixb.lower-bandwith == 2, "custom matrix has lower bandwith of 2";
+    ok $matrixb.bandwith == 2     ,  "custom matrix has bandwith of 2";
+    ok $matrixc.upper-bandwith == 2, "custom mirror matrix has upper bandwith of 2";
+    ok $matrixc.lower-bandwith == 0, "custom mirror matrix has lower bandwith of 0";
+    ok $matrixc.bandwith == 2     ,  "custom mirror matrix has bandwith of 2";
+}, "Bandwith";
+
 
 subtest {
     plan 2;
@@ -47,7 +59,6 @@ subtest {
     my $matrix2 = Math::Matrix.new([[1,2,5,4],[1,2,3,2],[9,8,4,1]]);
     dies-ok { $matrix2.trace() } , "Non square matrix, no trace";
 }, "Trace";
-
 
 subtest {
     plan 7;
@@ -140,3 +151,16 @@ subtest {
 
 
 }, "Norm";
+
+
+subtest {
+    my $matrixa = Math::Matrix.new([[1,2],[3,4]]);
+    my $matrixm = Math::Matrix.new([[Bool,2.3],[3-i, 4.1.FatRat]]);
+    my $matrixr = Math::Matrix.new([[4e-3,2.3],[12, 4.1.FatRat]]);
+    ok $matrixa.narrowest-cell-type ~~ Int, "got narrowest type of default example correct";
+    ok $matrixa.widest-cell-type ~~ Int, "got widest type of default example correct";
+    ok $matrixm.narrowest-cell-type ~~ Bool, "got narrowest type of mixed matrix correct";
+    ok $matrixm.widest-cell-type ~~ Complex, "got widest type of mixed matrix correct";
+    ok $matrixr.narrowest-cell-type ~~ Int, "got narrowest type of mostly rational matrix correct";
+    ok $matrixr.widest-cell-type ~~ FatRat, "got widest type of mostly rational typed matrix correct";
+}, 'Cell Type';

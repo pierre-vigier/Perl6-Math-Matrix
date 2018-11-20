@@ -44,9 +44,9 @@ subtest {
     ok ($identity.diagonal(2) ~~ (0,)),      "short identity diagonal";
     ok $fsmatrix.diagonal(0) ~~ (6,11),     "main diagonal of none square matrix";
     
-    ok $identity.skew-diagonal() ~~ (0,1,0),"main skew diagonal of identity matrix";
-    ok $matrix.skew-diagonal(1)  ~~ (2,0),  "upper skew diagonal of identity matrix";
-    ok $matrix.skew-diagonal(-2) ~~ (3,),   "lower skew diagonal of identity matrix";
+    ok $identity.skew-diagonal() ~~ (0,1,0), "main skew diagonal of identity matrix";
+    ok $matrix.skew-diagonal(-1)  ~~ (2,0),  "upper skew diagonal";
+    ok $matrix.skew-diagonal(2) ~~ (3,),     "lower skew diagonal";
     
     dies-ok { Math::Matrix.new([[2,2,3]]).diagonal(1); },     "tried get diagonal outside of bound";
     dies-ok { $identity.diagonal(-3); },                      "tried get diagonal of identity outside of bound";

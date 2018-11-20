@@ -24,7 +24,7 @@ SYNOPSIS
 Matrices are tables with rows and columns (index counting from 0) of numbers (Numeric type - Bool or Int or Num or Rat or FatRat or Complex): 
 
     transpose, invert, negate, add, multiply, dot product, tensor product, 22 ops, determinant, rank,
-    trace, norm, 16 boolean properties, 3 decompositions, submatrix, splice, map, reduce and more
+    norm, 13 numerical properties, 17 boolean properties, 3 decompositions, submatrix, splice, map, reduce and more
 
 Table of Content:
 
@@ -156,13 +156,14 @@ This method is a constructor that returns an diagonal matrix (as checked by [is-
 
 ### [new-vector-product](#constructors)
 
-This method is a constructor that returns a matrix which is a result of the matrix product (method dotProduct, or operator dot) of a column vector (first argument) and a row vector (second argument). It can also be understood as a tensor product of row and column.
+This method is a constructor that returns a matrix which is a result of the matrix product (method [dot-product](#dot-product), or operator dot) of a column vector (first argument) and a row vector (second argument). It can also be understood as a tensor product of row and column.
 
     say Math::Matrix.new-vector-product([1,2,3],[2,3,4]) :
 
-    2  3  4     1*2  1*3  1*4
-    4  6  8  =  2*2  2*3  2*4
-    6  9 12     3*2  3*3  3*4
+    *    2    3    4
+    1  1*2  1*3  1*4     2  3  4
+    2  2*2  2*3  2*4  =  4  6  8
+    3  3*2  3*3  3*4     6  9 12
 
 [Accessors](#methods)
 ---------------------
@@ -207,12 +208,12 @@ Without an argument it returns values of main diagonal elements as a list. Use t
 
 ### [skew-diagonal](#accessors)
 
-Unlike a *diagonal*, a skew diagonal is only defined for [square](#is-square) matrixes. It runs from $matrix[n][0] to $matrix[0][n], n being row or column size - 1. Use the optional parameter to get any other parallel skew diagonal. Positive value for the ones above - negative below.
+Unlike a *diagonal*, a skew diagonal is only defined for [square](#is-square) matrixes. It runs from $matrix[n][0] to $matrix[0][n], n being row or column size - 1. Use the optional parameter to get any other parallel skew diagonal. Positive value for the ones below - negative above.
 
     say $matrix.skew-diagonal    : (2, 3)
     say $matrix.skew-diagonal(0) : (2, 3)
-    say $matrix.skew-diagonal(1) : (1)
-    say $matrix.skew-diagonal(-1): (4)
+    say $matrix.skew-diagonal(-1) : (1)
+    say $matrix.skew-diagonal(1): (4)
 
 ### [submatrix](#accessors)
 
@@ -508,6 +509,20 @@ List of two values: number of rows and number of columns.
 *Density* is the percentage of cell which are not zero. *sparsity* = 1 - *density*.
 
     my $d = $matrix.density;
+
+### [bandwith](#numeric-properties)
+
+Is roughly the greatest distance of a none zero value from the main [diagonal](#diagonal). A matrix that [is-diagonal](#is-diagonal) has a bandwith of 0. If there is a none zero value on an diagonal above or below the main diagonal, tha bandwith would be one.
+
+    my $bw = $matrix.bandwith;
+
+#### [lower-bandwith](#bandwith)
+
+In a matrix with the lower bandwith of k, every cell with row index m and column index n, for which holds m - k > n, the content has to be zero. Literally speaking: there are k [diagonal](#diagonal)s below the main diagonal, that contain none zero values.
+
+#### [upper-bandwith](#bandwith)
+
+Analogously, every cell with m + k < n is zero if matrix has an upper bandwith of k.
 
 ### [trace](#numeric-properties)
 
