@@ -170,9 +170,11 @@ This method is a constructor that returns a matrix which is a result of the matr
 
 Methods that return the content of selected elements (cells).
 
+[cell](#cell), [AT-POS](#at-pos), [row](#row), [column](#column), [diagonal](#diagonal), [skew-diagonal](#skew-diagonal), [submatrix](#submatrix)
+
 ### [cell](#accessors)
 
-Gets value of element in row (first parameter) and column (second parameter). (counting always from 0)
+Gets value of one cell in row (first parameter) and column (second parameter - counting always from 0).
 
     my $matrix = Math::Matrix.new([[1,2],[3,4]]);
     say $matrix.cell(0,1)               : 2
@@ -499,7 +501,7 @@ True if all main [minors](#minor) or all Eigenvalues are greater equal zero.
 
 Matrix properties that are expressed with a single number, which will be calculated without further input.
 
-[size](#size), [density](#density), [bandwith](#bandwith), [trace](#trace), [rank](#rank), [nullity](#nullity), [determinant](#determinant), [minor](#minor), [norm](#norm), [condition](#condition), [narrowest-cell-type](#narrowest-cell-type), [widest-cell-type](#widest-cell-type)
+[size](#size), [density](#density), **[bandwith](#bandwith)**: ([lower-bandwith](#lower-bandwith), [upper-bandwith](#upper-bandwith)), [trace](#trace), [rank](#rank), [nullity](#nullity), [determinant](#determinant), [minor](#minor), [norm](#norm), [condition](#condition), **[cell-type](#cell-type)**: ([narrowest-cell-type](#narrowest-cell-type), [widest-cell-type](#widest-cell-type))
 
 ### [size](#numeric-properties)
 
@@ -602,6 +604,8 @@ You can also check if all cells have the same type:
 ----------------------------
 
 Single matrices, that can be computed with only our original matrix as input.
+
+[transposed](#transposed), [negated](#negated), [conjugated](#conjugated), [adjugated](#adjugated), [inverted](#inverted), [reduced-row-echelon-form](#reduced-row-echelon-form)
 
 ### [transposed](#derived-matrices)
 

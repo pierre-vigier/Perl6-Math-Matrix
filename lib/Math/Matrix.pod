@@ -176,10 +176,12 @@ as a tensor product of row and column.
 
 Methods that return the content of selected elements (cells).
 
+L<cell|#cell>, L<AT-POS|#at-pos>, L<row|#row>, L<column|#column>, L<diagonal|#diagonal>, L<skew-diagonal|#skew-diagonal>, L<submatrix|#submatrix>
+
 =head3 L<cell|#accessors>
 
-Gets value of element in row (first parameter) and column (second parameter).
-(counting always from 0)
+Gets value of one cell in row (first parameter) and column (second parameter - counting always from 0).
+
 
     my $matrix = Math::Matrix.new([[1,2],[3,4]]);
     say $matrix.cell(0,1)               : 2
@@ -568,9 +570,9 @@ True if all main L<minors|#minor> or all Eigenvalues are greater equal zero.
 
 Matrix properties that are expressed with a single number, which will be calculated without further input.
 
-L<size|#size>, L<density|#density>, L<bandwith|#bandwith>, L<trace|#trace>, L<rank|#rank>, L<nullity|#nullity>,
-L<determinant|#determinant>, L<minor|#minor>, L<norm|#norm>, L<condition|#condition>,
-L<narrowest-cell-type|#narrowest-cell-type>, L<widest-cell-type|#widest-cell-type>
+L<size|#size>, L<density|#density>, B<L<bandwith|#bandwith>>: (L<lower-bandwith|#lower-bandwith>, L<upper-bandwith|#upper-bandwith>), L<trace|#trace>, L<rank|#rank>, L<nullity|#nullity>,
+L<determinant|#determinant>, L<minor|#minor>, L<norm|#norm>, L<condition|#condition>, B<L<cell-type|#cell-type>>:
+(L<narrowest-cell-type|#narrowest-cell-type>, L<widest-cell-type|#widest-cell-type>)
 
 =head3 L<size|#numeric-properties>
 
@@ -693,6 +695,9 @@ You can also check if all cells have the same type:
 =head2 L<Derived Matrices|#methods>
 
 Single matrices, that can be computed with only our original matrix as input.
+
+L<transposed|#transposed>, L<negated|#negated>, L<conjugated|#conjugated>, L<adjugated|#adjugated>,
+L<inverted|#inverted>, L<reduced-row-echelon-form|#reduced-row-echelon-form>
 
 =head3 L<transposed|#derived-matrices>
 
