@@ -776,10 +776,11 @@ multi method cont (Math::Matrix:D: Range $r  --> Bool) { # is any cell value in 
     False;
 }
 
-method map-index(Math::Matrix:D: &coderef --> Math::Matrix:D) {
-    my @aoa;
-    for ^$!row-count X ^$!column-count -> ($r, $c) { @aoa[$r][$c] = &coderef($r, $c) }
-    Math::Matrix.new( @aoa );
+
+method map(Math::Matrix:D: &coderef --> Math::Matrix:D) {
+    Math::Matrix.new( [ 
+        @!rows.map: { [ .map: &coderef ] }
+    ] );
 }
 
 method map-with-index(Math::Matrix:D: &coderef --> Math::Matrix:D) {
@@ -788,11 +789,13 @@ method map-with-index(Math::Matrix:D: &coderef --> Math::Matrix:D) {
     Math::Matrix.new( @aoa );
 }
 
-method map(Math::Matrix:D: &coderef --> Math::Matrix:D) {
-    Math::Matrix.new( [ 
-        @!rows.map: { [ .map: &coderef ] }
-    ] );
+
+method map-index(Math::Matrix:D: &coderef --> Math::Matrix:D) {
+    my @aoa;
+    for ^$!row-count X ^$!column-count -> ($r, $c) { @aoa[$r][$c] = &coderef($r, $c) }
+    Math::Matrix.new( @aoa );
 }
+
 
 method map-row(Math::Matrix:D: Int $row, &coderef --> Math::Matrix:D ) {
     self!check-row-index($row);

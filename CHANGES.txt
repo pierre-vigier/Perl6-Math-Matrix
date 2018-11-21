@@ -1,5 +1,8 @@
  0.3.8:
     § 2018.11.
+    ! reworked all map methods
+    * map, map-with-index, map-index enhanced
+    - map-row, map-column
     + accessor skew-diagonal
     + bool property catalecticant
     + bool property tridiagonal

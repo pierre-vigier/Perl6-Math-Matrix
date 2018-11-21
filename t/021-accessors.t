@@ -15,6 +15,7 @@ subtest {
 
 }, "Cell";
 
+
 subtest {
     plan 2;
     my $matrix =   Math::Matrix.new([[4,0,1],[2,1,0],[2,2,3]]);
@@ -23,6 +24,7 @@ subtest {
     dies-ok { $matrix.row(5) },   "tried none existing row";
 }, "Row";
 
+
 subtest {
     plan 2;
     my $matrix =   Math::Matrix.new([[4,0,1],[2,1,0],[2,2,3]]);
@@ -30,6 +32,7 @@ subtest {
     ok $matrix.column(1) == (0,1,2), "got second column";
     dies-ok { $matrix.column(5) },   "tried none existing column";
 }, "Column";
+
 
 subtest {
     plan 18;

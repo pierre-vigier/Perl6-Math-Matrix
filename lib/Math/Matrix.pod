@@ -38,7 +38,7 @@ Matrices are readonly - operations and functions do create new matrix objects.
 All methods return readonly data or deep clones - also the constructor does a deep clone of provided data.
 In that sense the library is thread safe.
 
-All computation heavy properties will be calculated lazily and will be cached.
+All computation heavy properties will be calculated lazily and cached.
 
 =head1 L<METHODS|#synopsis>
 =item B<L<constructors|#constructors>>: L<new []|#new-->, L<new ()|#new---1>, L<new ""|#new---2>,
@@ -56,8 +56,7 @@ All computation heavy properties will be calculated lazily and will be cached.
       L<reduced-row-echelon-form|#reduced-row-echelon-form>
 =item B<L<decompositions|#decompositions>>: L<LUCrout|#decompositionlucrout>, L<LU|#decompositionlu>, L<Cholesky|#decompositioncholesky>
 =item B<L<math ops|#mathematical-operations>>: L<equal|#equal>, L<add|#add>, L<multiply|#multiply>, L<dot-product|#dot-product>, L<tensor-product|#tensor-product>
-=item B<L<list like ops|#list-like-operations>>: L<elems|#elems>, L<elem|#elem>, L<cont|#cont>,
-      L<map-index|#map-index>, L<map-with-index|#map-with-index>, L<map|#map>, L<map-row|#map-row>, L<map-column|#map-column>,
+=item B<L<list like ops|#list-like-operations>>: L<elems|#elems>, L<elem|#elem>, L<cont|#cont>, L<map|#map>, L<map-with-index|#map-with-index>, L<map-index|#map-index>, 
       L<reduce|#reduce>, L<reduce-rows|#reduce-rows>, L<reduce-columns|#reduce-columns>
 =item B<L<structural ops|#structural-operations>>: L<move-row|#move-row>, L<move-column|#move-column>, L<swap-rows|#swap-rows>, L<swap-columns|#swap-columns>,
       L<splice-rows|#splice-rows>, L<splice-columns|#splice-columns>
@@ -408,8 +407,13 @@ Conversion into String that can reevaluated into the same object later using def
 
 These are mathematical properties, a given matrix has or not.
 Thus, the return value is a always of boolean type.
-Arguments, like in case of L<is-diagonally-dominant|#boolean-properties>,
-are only necessary when a method can tell you about a group of relatd closely properties.
+Arguments, like in case of L<is-diagonally-dominant|#is-diagonally-dominant>,
+are only necessary when a method can tell you about a group of closely related properties.
+
+L<is-square|#is-square>, L<is-zero|#is-zero>, L<is-identity|#identity>, L<is-upper-triangular|#is-upper-triangular>, L<is-lower-triangular|#is-lower-triangular>,
+L<is-diagonal|#is-diagonal>, L<is-diagonally-dominant|#is-diagonally-dominant>, L<is-diagonal-constant|#is-diagonal-constant>, L<is-catalecticant|#is-catalecticant>,
+L<is-symmetric|#is-symmetric>, L<is-anti-symmetric|#is-antisymmetric>, L<is-unitary|#is-unitary>, L<is-self-adjoint|#is-self-adjoint>, L<is-invertible|#is-invertible>,
+L<is-orthogonal|#is-orthogonal>, L<is-positive-definite|#is-positive-definite>, L<is-positive-semidefinite|#is-positive-semidefinite>
 
 =head3 L<is-square|#boolean-properties>
 
@@ -562,7 +566,11 @@ True if all main L<minors|#minor> or all Eigenvalues are greater equal zero.
 
 =head2 L<Numeric Properties|#methods>
 
-Matrix properties that are expressed with a single number.
+Matrix properties that are expressed with a single number, which will be calculated without further input.
+
+L<size|#size>, L<density|#density>, L<bandwith|#bandwith>, L<trace|#trace>, L<rank|#rank>, L<nullity|#nullity>,
+L<determinant|#determinant>, L<minor|#minor>, L<norm|#norm>, L<condition|#condition>,
+L<narrowest-cell-type|#narrowest-cell-type>, L<widest-cell-type|#widest-cell-type>
 
 =head3 L<size|#numeric-properties>
 
@@ -941,21 +949,22 @@ All matrices you get by multiplying an element (cell) of matrix a with
 
 =head2 L<List Like Operations|#methods>
 
-Methods that usually are provided by Lists and Arrays, but make also sense in context of matrices. 
+Methods that usually are provided by Lists and Arrays, but make also sense in context of matrices.
+
 
 =head3 L<elems|#list-like-matrix-operations>
 
-Number (count) of elements = rows * columns.
+Number (count) of elements = rows * columns (see L<size|#size>).
 
     say $matrix.elems();
 
 =head3 L<elem|#list-like-matrix-operations>
 
-Asks if all cell values are part an element of the set/range provided.
+Asks if all cell values are an element of the given set or range.
 
 
     Math::Matrix.new([[1,2],[3,4]]).elem(1..4) :   True
-    Math::Matrix.new([[1,2],[3,4]]).elem(2..5) :   False
+    Math::Matrix.new([[1,2],[3,4]]).elem(2..5) :   False, 1 is not in 2..5
 
 
 =head3 L<cont|#list-like-matrix-operations>
@@ -970,27 +979,6 @@ within this range to make the result true.
     
     MM [[1,2],[3,4]] (cont) 1                 # True too
 
-=head3 L<map-index|#list-like-matrix-operations>
-
-Runs a code block (only required argument) for every cell of the matrix.
-Arguments to the anonymous block are current row and column index.
-The results for a new matrix.
-
-    say Math::Matrix.new([[1,2],[3,4]]).map-index: {$^m == $^n ?? 1 !! 0 } :
-
-    1 0
-    0 1
-
-=head3 L<map-with-index|#list-like-matrix-operations>
-
-Runs a code block (only required argument) for every cell of the matrix.
-Arguments to the anonymous block are current row and column index 
-and the content of the cell. The results for a new matrix.
-
-    say Math::Matrix.new([[1,2],[3,4]]).map-with-index: {$^m == $^n ?? $^value !! 0 } :
-
-    1 0
-    0 4
 
 =head3 L<map|#list-like-matrix-operations>
 
@@ -998,23 +986,48 @@ Like the built in map it iterates over all elements (cell values),
 running a code block (only required argument) that gets the cell value as argument.
 The results build a new matrix.
 
-    say Math::Matrix.new([[1,2],[3,4]]).map(* + 1) :
+    say $matrix.map(* + 1) :
 
     2 3
     4 5
+
+=head3 L<map-with-index|#list-like-matrix-operations>
+
+Runs a code block (only required argument) for every cell of the matrix.
+Arguments to the anonymous block are current row and column index 
+and the content of the cell. The results for a new matrix.
+
+    say $matrix.map-with-index: {$^m == $^n ?? $^value !! 0 } :
+
+    1 0
+    0 4
+
+
+=head3 L<map-index|#list-like-matrix-operations>
+
+Runs a code block (only required argument) for every cell of the matrix.
+Arguments to the anonymous block are current row and column index.
+The results for a new matrix.
+
+    say $matrix.map-index: {$^m == $^n ?? 1 !! 0 } :
+
+    1 0
+    0 1
+
+
 
 =head3 L<map-row|#list-like-matrix-operations>
 
 Map only specified row (row number is first parameter).
     
-    say Math::Matrix.new([[1,2],[3,4]]).map-row(1, {$_ + 1}) :
+    say $matrix.map-row(1, {$_ + 1}) :
 
     1 2
     4 5
 
 =head3 L<map-column|#list-like-matrix-operations>
 
-    say Math::Matrix.new([[1,2],[3,4]]).map-column(1, {0}) :
+    say $matrix.map-column(1, {0}) :
 
     1 0
     3 0
@@ -1027,8 +1040,8 @@ to the previous result and the next element. I starts with the cell [0][0]
 and moving from left to right in the first row and continue with the first
 cell of the next row.
     
-    Math::Matrix.new([[1,2],[3,4]]).reduce(&[+]): 10
-    Math::Matrix.new([[1,2],[3,4]]).reduce(&[*]): 10
+    Math::Matrix.new([[1,2],[3,4]]).reduce(&[+]): 10 = 1 + 2 + 3 + 4
+    Math::Matrix.new([[1,2],[3,4]]).reduce(&[*]): 10 = 1 * 2 * 3 * 4
 
 =head3 L<reduce-rows|#list-like-matrix-operations>
 

@@ -24,7 +24,7 @@ SYNOPSIS
 Matrices are tables with rows and columns (index counting from 0) of numbers (Numeric type - Bool or Int or Num or Rat or FatRat or Complex): 
 
     transpose, invert, negate, add, multiply, dot product, tensor product, 22 ops, determinant, rank, norm
-    13 numerical properties, 17 boolean properties, 3 decompositions, submatrix, splice, map, reduce and more
+    13 numerical properties, 19 boolean properties, 3 decompositions, submatrix, splice, map, reduce and more
 
 Table of Content:
 
@@ -45,7 +45,7 @@ Because the list based, functional toolbox of Perl 6 is not enough to calculate 
 
 Matrices are readonly - operations and functions do create new matrix objects. All methods return readonly data or deep clones - also the constructor does a deep clone of provided data. In that sense the library is thread safe.
 
-All computation heavy properties will be calculated lazily and will be cached.
+All computation heavy properties will be calculated lazily and cached.
 
 [METHODS](#synopsis)
 ====================
@@ -66,7 +66,7 @@ All computation heavy properties will be calculated lazily and will be cached.
 
   * **[math ops](#mathematical-operations)**: [equal](#equal), [add](#add), [multiply](#multiply), [dot-product](#dot-product), [tensor-product](#tensor-product)
 
-  * **[list like ops](#list-like-operations)**: [elems](#elems), [elem](#elem), [cont](#cont), [map-index](#map-index), [map-with-index](#map-with-index), [map](#map), [map-row](#map-row), [map-column](#map-column), [reduce](#reduce), [reduce-rows](#reduce-rows), [reduce-columns](#reduce-columns)
+  * **[list like ops](#list-like-operations)**: [elems](#elems), [elem](#elem), [cont](#cont), [map](#map), [map-with-index](#map-with-index), [map-index](#map-index), [reduce](#reduce), [reduce-rows](#reduce-rows), [reduce-columns](#reduce-columns)
 
   * **[structural ops](#structural-operations)**: [move-row](#move-row), [move-column](#move-column), [swap-rows](#swap-rows), [swap-columns](#swap-columns), [splice-rows](#splice-rows), [splice-columns](#splice-columns)
 
@@ -361,7 +361,9 @@ Conversion into String that can reevaluated into the same object later using def
 [Boolean Properties](#methods)
 ------------------------------
 
-These are mathematical properties, a given matrix has or not. Thus, the return value is a always of boolean type. Arguments, like in case of [is-diagonally-dominant](#boolean-properties), are only necessary when a method can tell you about a group of relatd closely properties.
+These are mathematical properties, a given matrix has or not. Thus, the return value is a always of boolean type. Arguments, like in case of [is-diagonally-dominant](#is-diagonally-dominant), are only necessary when a method can tell you about a group of closely related properties.
+
+[is-square](#is-square), [is-zero](#is-zero), [is-identity](#identity), [is-upper-triangular](#is-upper-triangular), [is-lower-triangular](#is-lower-triangular), [is-diagonal](#is-diagonal), [is-diagonally-dominant](#is-diagonally-dominant), [is-diagonal-constant](#is-diagonal-constant), [is-catalecticant](#is-catalecticant), [is-symmetric](#is-symmetric), [is-anti-symmetric](#is-antisymmetric), [is-unitary](#is-unitary), [is-self-adjoint](#is-self-adjoint), [is-invertible](#is-invertible), [is-orthogonal](#is-orthogonal), [is-positive-definite](#is-positive-definite), [is-positive-semidefinite](#is-positive-semidefinite)
 
 ### [is-square](#boolean-properties)
 
@@ -495,7 +497,9 @@ True if all main [minors](#minor) or all Eigenvalues are greater equal zero.
 [Numeric Properties](#methods)
 ------------------------------
 
-Matrix properties that are expressed with a single number.
+Matrix properties that are expressed with a single number, which will be calculated without further input.
+
+[size](#size), [density](#density), [bandwith](#bandwith), [trace](#trace), [rank](#rank), [nullity](#nullity), [determinant](#determinant), [minor](#minor), [norm](#norm), [condition](#condition), [narrowest-cell-type](#narrowest-cell-type), [widest-cell-type](#widest-cell-type)
 
 ### [size](#numeric-properties)
 
@@ -820,20 +824,20 @@ The *tensor product* (a.k.a *Kronecker product*) between a matrix a of *size|#si
 [List Like Operations](#methods)
 --------------------------------
 
-Methods that usually are provided by Lists and Arrays, but make also sense in context of matrices. 
+Methods that usually are provided by Lists and Arrays, but make also sense in context of matrices.
 
 ### [elems](#list-like-matrix-operations)
 
-Number (count) of elements = rows * columns.
+Number (count) of elements = rows * columns (see [size](#size)).
 
     say $matrix.elems();
 
 ### [elem](#list-like-matrix-operations)
 
-Asks if all cell values are part an element of the set/range provided.
+Asks if all cell values are an element of the given set or range.
 
     Math::Matrix.new([[1,2],[3,4]]).elem(1..4) :   True
-    Math::Matrix.new([[1,2],[3,4]]).elem(2..5) :   False
+    Math::Matrix.new([[1,2],[3,4]]).elem(2..5) :   False, 1 is not in 2..5
 
 ### [cont](#list-like-matrix-operations)
 
@@ -845,45 +849,45 @@ Asks if the matrix contains a value equal to the only argument of the method. If
 
     MM [[1,2],[3,4]] (cont) 1                 # True too
 
-### [map-index](#list-like-matrix-operations)
+### [map](#list-like-matrix-operations)
 
-Runs a code block (only required argument) for every cell of the matrix. Arguments to the anonymous block are current row and column index. The results for a new matrix.
+Like the built in map it iterates over all elements (cell values), running a code block (only required argument) that gets the cell value as argument. The results build a new matrix.
 
-    say Math::Matrix.new([[1,2],[3,4]]).map-index: {$^m == $^n ?? 1 !! 0 } :
+    say $matrix.map(* + 1) :
 
-    1 0
-    0 1
+    2 3
+    4 5
 
 ### [map-with-index](#list-like-matrix-operations)
 
 Runs a code block (only required argument) for every cell of the matrix. Arguments to the anonymous block are current row and column index and the content of the cell. The results for a new matrix.
 
-    say Math::Matrix.new([[1,2],[3,4]]).map-with-index: {$^m == $^n ?? $^value !! 0 } :
+    say $matrix.map-with-index: {$^m == $^n ?? $^value !! 0 } :
 
     1 0
     0 4
 
-### [map](#list-like-matrix-operations)
+### [map-index](#list-like-matrix-operations)
 
-Like the built in map it iterates over all elements (cell values), running a code block (only required argument) that gets the cell value as argument. The results build a new matrix.
+Runs a code block (only required argument) for every cell of the matrix. Arguments to the anonymous block are current row and column index. The results for a new matrix.
 
-    say Math::Matrix.new([[1,2],[3,4]]).map(* + 1) :
+    say $matrix.map-index: {$^m == $^n ?? 1 !! 0 } :
 
-    2 3
-    4 5
+    1 0
+    0 1
 
 ### [map-row](#list-like-matrix-operations)
 
 Map only specified row (row number is first parameter).
 
-    say Math::Matrix.new([[1,2],[3,4]]).map-row(1, {$_ + 1}) :
+    say $matrix.map-row(1, {$_ + 1}) :
 
     1 2
     4 5
 
 ### [map-column](#list-like-matrix-operations)
 
-    say Math::Matrix.new([[1,2],[3,4]]).map-column(1, {0}) :
+    say $matrix.map-column(1, {0}) :
 
     1 0
     3 0
@@ -892,8 +896,8 @@ Map only specified row (row number is first parameter).
 
 Like the built in reduce method, it iterates over all elements and joins them into one value, by applying the given operator or method to the previous result and the next element. I starts with the cell [0][0] and moving from left to right in the first row and continue with the first cell of the next row.
 
-    Math::Matrix.new([[1,2],[3,4]]).reduce(&[+]): 10
-    Math::Matrix.new([[1,2],[3,4]]).reduce(&[*]): 10
+    Math::Matrix.new([[1,2],[3,4]]).reduce(&[+]): 10 = 1 + 2 + 3 + 4
+    Math::Matrix.new([[1,2],[3,4]]).reduce(&[*]): 10 = 1 * 2 * 3 * 4
 
 ### [reduce-rows](#list-like-matrix-operations)
 
