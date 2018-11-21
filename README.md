@@ -830,20 +830,20 @@ The *tensor product* (a.k.a *Kronecker product*) between a matrix a of *size|#si
 
 Methods that usually are provided by Lists and Arrays, but make also sense in context of matrices.
 
-### [elems](#list-like-matrix-operations)
+### [elems](#list-like-operations)
 
 Number (count) of elements = rows * columns (see [size](#size)).
 
     say $matrix.elems();
 
-### [elem](#list-like-matrix-operations)
+### [elem](#list-like-operations)
 
 Asks if all cell values are an element of the given set or range.
 
     Math::Matrix.new([[1,2],[3,4]]).elem(1..4) :   True
     Math::Matrix.new([[1,2],[3,4]]).elem(2..5) :   False, 1 is not in 2..5
 
-### [cont](#list-like-matrix-operations)
+### [cont](#list-like-operations)
 
 Asks if the matrix contains a value equal to the only argument of the method. If a range is provided as argument, at least one cell value has to be within this range to make the result true.
 
@@ -853,7 +853,7 @@ Asks if the matrix contains a value equal to the only argument of the method. If
 
     MM [[1,2],[3,4]] (cont) 1                 # True too
 
-### [map](#list-like-matrix-operations)
+### [map](#list-like-operations)
 
 Like the built in map it iterates over all elements (cell values), running a code block (only required argument) that gets the cell value as argument. The results build a new matrix.
 
@@ -862,7 +862,7 @@ Like the built in map it iterates over all elements (cell values), running a cod
     2 3
     4 5
 
-### [map-with-index](#list-like-matrix-operations)
+### [map-with-index](#list-like-operations)
 
 Runs a code block (only required argument) for every cell of the matrix. Arguments to the anonymous block are current row and column index and the content of the cell. The results for a new matrix.
 
@@ -871,7 +871,7 @@ Runs a code block (only required argument) for every cell of the matrix. Argumen
     1 0
     0 4
 
-### [map-index](#list-like-matrix-operations)
+### [map-index](#list-like-operations)
 
 Runs a code block (only required argument) for every cell of the matrix. Arguments to the anonymous block are current row and column index. The results for a new matrix.
 
@@ -880,7 +880,7 @@ Runs a code block (only required argument) for every cell of the matrix. Argumen
     1 0
     0 1
 
-### [map-row](#list-like-matrix-operations)
+### [map-row](#list-like-operations)
 
 Map only specified row (row number is first parameter).
 
@@ -889,27 +889,27 @@ Map only specified row (row number is first parameter).
     1 2
     4 5
 
-### [map-column](#list-like-matrix-operations)
+### [map-column](#list-like-operations)
 
     say $matrix.map-column(1, {0}) :
 
     1 0
     3 0
 
-### [reduce](#list-like-matrix-operations)
+### [reduce](#list-like-operations)
 
 Like the built in reduce method, it iterates over all elements and joins them into one value, by applying the given operator or method to the previous result and the next element. I starts with the cell [0][0] and moving from left to right in the first row and continue with the first cell of the next row.
 
     Math::Matrix.new([[1,2],[3,4]]).reduce(&[+]): 10 = 1 + 2 + 3 + 4
     Math::Matrix.new([[1,2],[3,4]]).reduce(&[*]): 10 = 1 * 2 * 3 * 4
 
-### [reduce-rows](#list-like-matrix-operations)
+### [reduce-rows](#list-like-operations)
 
 Reduces (as described above) every row into one value, so the overall result will be a list. In this example we calculate the sum of all cells in a row:
 
     say Math::Matrix.new([[1,2],[3,4]]).reduce-rows(&[+]): (3, 7)
 
-### [reduce-columns](#list-like-matrix-operations)
+### [reduce-columns](#list-like-operations)
 
 Similar to reduce-rows, this method reduces each column to one value in the resulting list:
 

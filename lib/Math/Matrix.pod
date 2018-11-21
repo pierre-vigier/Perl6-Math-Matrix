@@ -957,13 +957,13 @@ All matrices you get by multiplying an element (cell) of matrix a with
 Methods that usually are provided by Lists and Arrays, but make also sense in context of matrices.
 
 
-=head3 L<elems|#list-like-matrix-operations>
+=head3 L<elems|#list-like-operations>
 
 Number (count) of elements = rows * columns (see L<size|#size>).
 
     say $matrix.elems();
 
-=head3 L<elem|#list-like-matrix-operations>
+=head3 L<elem|#list-like-operations>
 
 Asks if all cell values are an element of the given set or range.
 
@@ -972,7 +972,7 @@ Asks if all cell values are an element of the given set or range.
     Math::Matrix.new([[1,2],[3,4]]).elem(2..5) :   False, 1 is not in 2..5
 
 
-=head3 L<cont|#list-like-matrix-operations>
+=head3 L<cont|#list-like-operations>
 
 Asks if the matrix contains a value equal to the only argument of the method.
 If a range is provided as argument, at least one cell value has to be 
@@ -985,7 +985,7 @@ within this range to make the result true.
     MM [[1,2],[3,4]] (cont) 1                 # True too
 
 
-=head3 L<map|#list-like-matrix-operations>
+=head3 L<map|#list-like-operations>
 
 Like the built in map it iterates over all elements (cell values), 
 running a code block (only required argument) that gets the cell value as argument.
@@ -996,7 +996,7 @@ The results build a new matrix.
     2 3
     4 5
 
-=head3 L<map-with-index|#list-like-matrix-operations>
+=head3 L<map-with-index|#list-like-operations>
 
 Runs a code block (only required argument) for every cell of the matrix.
 Arguments to the anonymous block are current row and column index 
@@ -1008,7 +1008,7 @@ and the content of the cell. The results for a new matrix.
     0 4
 
 
-=head3 L<map-index|#list-like-matrix-operations>
+=head3 L<map-index|#list-like-operations>
 
 Runs a code block (only required argument) for every cell of the matrix.
 Arguments to the anonymous block are current row and column index.
@@ -1021,7 +1021,7 @@ The results for a new matrix.
 
 
 
-=head3 L<map-row|#list-like-matrix-operations>
+=head3 L<map-row|#list-like-operations>
 
 Map only specified row (row number is first parameter).
     
@@ -1030,14 +1030,14 @@ Map only specified row (row number is first parameter).
     1 2
     4 5
 
-=head3 L<map-column|#list-like-matrix-operations>
+=head3 L<map-column|#list-like-operations>
 
     say $matrix.map-column(1, {0}) :
 
     1 0
     3 0
 
-=head3 L<reduce|#list-like-matrix-operations>
+=head3 L<reduce|#list-like-operations>
 
 Like the built in reduce method, it iterates over all elements and joins
 them into one value, by applying the given operator or method
@@ -1048,14 +1048,14 @@ cell of the next row.
     Math::Matrix.new([[1,2],[3,4]]).reduce(&[+]): 10 = 1 + 2 + 3 + 4
     Math::Matrix.new([[1,2],[3,4]]).reduce(&[*]): 10 = 1 * 2 * 3 * 4
 
-=head3 L<reduce-rows|#list-like-matrix-operations>
+=head3 L<reduce-rows|#list-like-operations>
 
 Reduces (as described above) every row into one value, so the overall result
 will be a list. In this example we calculate the sum of all cells in a row:
     
     say Math::Matrix.new([[1,2],[3,4]]).reduce-rows(&[+]): (3, 7)
 
-=head3 L<reduce-columns|#list-like-matrix-operations>
+=head3 L<reduce-columns|#list-like-operations>
 
 Similar to reduce-rows, this method reduces each column to one value in the 
 resulting list:
