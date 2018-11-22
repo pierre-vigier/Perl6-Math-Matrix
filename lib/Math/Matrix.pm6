@@ -549,6 +549,7 @@ method inverted(Math::Matrix:D: --> Math::Matrix:D) {
     Math::Matrix.new( @inverted );
 }
 
+method rref(                    Math::Matrix:D: --> Math::Matrix:D) { self.reduced-row-echelon-form }
 method reduced-row-echelon-form(Math::Matrix:D: --> Math::Matrix:D) {
     my @ref = self!clone-cells();
     my $lead = 0;
@@ -574,16 +575,13 @@ method reduced-row-echelon-form(Math::Matrix:D: --> Math::Matrix:D) {
     }
     return Math::Matrix.new( @ref );
 }
-method rref(Math::Matrix:D: --> Math::Matrix:D) {
-    self.reduced-row-echelon-form;
-}
 
 ################################################################################
 # end of derivative matrices - start decompositions
 ################################################################################
 
 # LU factorization with optional partial pivoting and optional diagonal matrix
-multi method decompositionLU(Math::Matrix:D: Bool :$pivot = True, :$diagonal = False) {
+method decompositionLU(Math::Matrix:D: Bool :$pivot = True, :$diagonal = False) {
     fail "Not an square matrix" unless self.is-square;
     fail "Has to be invertible when not using pivoting" if not $pivot and not self.is-invertible;
     my $size = $!row-count;
@@ -768,6 +766,15 @@ multi method cont (Math::Matrix:D: Range $r  --> Bool) { # is any cell value in 
     False;
 }
 
+#multi method submatrix(Math::Matrix:D: :@rows    = (^$!row-count).list,
+#                                       :@columns = (^$!column-count).list --> Math::Matrix:D) {
+#    my @r = @rows.max    == Inf ?? (@rows.min    .. $!row-count-1).list    !! @rows.list;
+#    my @c = @columns.max == Inf ?? (@columns.min .. $!column-count-1).list !! @columns.list;
+#    fail "Need at least one row number" if @r == 0;
+#    fail "Need at least one column number" if @c == 0;
+#    self!check-indices(@r, @c);
+#    Math::Matrix.new([ @r.map( { [ @!rows[$^row][|@c] ] } ) ]);
+#}
 
 method map(Math::Matrix:D: &coderef --> Math::Matrix:D) {
     Math::Matrix.new( [ 

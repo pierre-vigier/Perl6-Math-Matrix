@@ -44,8 +44,8 @@ All computation heavy properties will be calculated lazily and cached.
 =item B<L<constructors|#constructors>>: L<new []|#new-->, L<new ()|#new---1>, L<new ""|#new---2>,
       L<new-zero|#new-zero>, L<new-identity|#new-identity>, L<new-diagonal|#new-diagonal>, L<new-vector-product|#new-vector-product>
 =item B<L<accessors|#accessors>>: L<cell|#cell>, L<AT-POS|#at-pos>, L<row|#row>, L<column|#column>, L<diagonal|#diagonal>, L<skew-diagonal|#skew-diagonal>, L<submatrix|#submatrix>
-=item B<L<converter|#converter>>: L<Bool|#bool>, L<Numeric|#numeric>, L<Str|#str>,
-      L<Array|#array>, L<Hash|#hash>, L<Range|#range>, L<list|#list>, L<list-rows|#list-rows>, L<list-columns|#list-columns>, L<gist|#gist>, L<perl|#perl>
+=item B<L<converter|#converter>>: L<Bool|#bool>, L<Str|#str>, L<Numeric|#numeric>, L<Range|#range>,
+      L<Array|#array>, L<list|#list>, L<list-rows|#list-rows>, L<list-columns|#list-columns>, L<Hash|#hash>, L<gist|#gist>, L<perl|#perl>
 =item B<L<boolean properties|#boolean-properties>>: L<square|#is-square>, L<zero|#is-zero>, L<identity|#identity>, L<upper-|#is-upper-triangular>, L<lower-triangular|#is-lower-triangular>,
       L<diagonal|#is-diagonal>, L<-dominant|#is-diagonally-dominant>, L<-constant|#is-diagonal-constant>, L<catalecticant|#is-catalecticant>,
       L<anti-|#is-antisymmetric>, L<symmetric|#is-symmetric>, L<unitary|#is-unitary>, L<self-adjoint|#is-self-adjoint>, L<invertible|#is-invertible>, L<orthogonal|#is-orthogonal>,
@@ -288,7 +288,7 @@ Even more powerful or explicit in syntax are the L<structural ops|#structural-op
 
 =head2 L<Converter|#methods>
 
-Methods that convert a matrix into other types: L<Bool|#bool>, L<Numeric|#numeric>, L<Str|#str>, L<Array|#array>, L<Hash|#hash>, L<Range|#range>, L<list|#list>,
+Methods that convert a matrix into other types: L<Bool|#bool>, L<Str|#str>, L<Numeric|#numeric>, L<Range|#range>, L<Array|#array>, L<Hash|#hash>, L<list|#list>,
 L<list-rows|#list-rows>, L<list-columns|#list-columns> or allow different views on the overall content (output formats): L<gist|#gist>, L<perl|#perl>.
 
 =head3 L<Bool|#converter>
@@ -299,15 +299,6 @@ Conversion into Bool context. Returns False if matrix is zero
     $matrix.Bool
     ? $matrix           # alias op
     if $matrix          # matrix in Bool context too
-
-=head3 L<Numeric|#converter>
-
-Conversion into Numeric context. Returns Euclidean L<norm|#norm>.
-Please note, only a prefix operator + (as in: + $matrix) will call this Method.
-An infix (as in $matrix + $number) calls $matrix.add($number).
-    
-    $matrix.Numeric
-    + $matrix           # alias op
 
 =head3 L<Str|#converter>
 
@@ -321,6 +312,27 @@ Str is called implicitly by put and print. A shortened version is provided by L<
     3 4                
 
     ~$matrix            # alias op
+
+=head3 L<Numeric|#converter>
+
+Conversion into Numeric context. Returns Euclidean L<norm|#norm>.
+Please note, only a prefix operator + (as in: + $matrix) will call this Method.
+An infix (as in $matrix + $number) calls $matrix.add($number).
+    
+    $matrix.Numeric
+    + $matrix           # alias op
+
+=head3 L<Range|#converter>
+
+Returns an range object that reflects the content of all cells.
+Please note that complex number can not be endpoints of ranges.
+
+    say $matrix.Range: 1..4
+
+To get single endpoints you could write:
+
+    say $matrix.Range.min: 1
+    say $matrix.list.max:  4
 
 =head3 L<Array|#converter>
 
@@ -358,18 +370,6 @@ Gets you a nested key - value hash.
 
     say $matrix.Hash : { 0 => { 0 => 1, 1 => 2}, 1 => {0 => 3, 1 => 4} } 
     say % $matrix       # alias op, space between % and $ still needed
-
-=head3 L<Range|#converter>
-
-Returns an range object that reflects the content of all cells.
-Please note that complex number can not be endpoints of ranges.
-
-    say $matrix.Range: 1..4
-
-To get single endpoints you could write:
-
-    say $matrix.Range.min: 1
-    say $matrix.list.max:  4
 
 =head3 L<gist|#converter>
 

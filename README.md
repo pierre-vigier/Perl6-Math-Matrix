@@ -54,7 +54,7 @@ All computation heavy properties will be calculated lazily and cached.
 
   * **[accessors](#accessors)**: [cell](#cell), [AT-POS](#at-pos), [row](#row), [column](#column), [diagonal](#diagonal), [skew-diagonal](#skew-diagonal), [submatrix](#submatrix)
 
-  * **[converter](#converter)**: [Bool](#bool), [Numeric](#numeric), [Str](#str), [Array](#array), [Hash](#hash), [Range](#range), [list](#list), [list-rows](#list-rows), [list-columns](#list-columns), [gist](#gist), [perl](#perl)
+  * **[converter](#converter)**: [Bool](#bool), [Str](#str), [Numeric](#numeric), [Range](#range), [Array](#array), [list](#list), [list-rows](#list-rows), [list-columns](#list-columns), [Hash](#hash), [gist](#gist), [perl](#perl)
 
   * **[boolean properties](#boolean-properties)**: [square](#is-square), [zero](#is-zero), [identity](#identity), [upper-](#is-upper-triangular), [lower-triangular](#is-lower-triangular), [diagonal](#is-diagonal), [-dominant](#is-diagonally-dominant), [-constant](#is-diagonal-constant), [catalecticant](#is-catalecticant), [anti-](#is-antisymmetric), [symmetric](#is-symmetric), [unitary](#is-unitary), [self-adjoint](#is-self-adjoint), [invertible](#is-invertible), [orthogonal](#is-orthogonal), [positive-definite](#is-positive-definite), [positive-semidefinite](#is-positive-semidefinite)
 
@@ -262,7 +262,7 @@ Even more powerful or explicit in syntax are the [structural ops](#structural-op
 [Converter](#methods)
 ---------------------
 
-Methods that convert a matrix into other types: [Bool](#bool), [Numeric](#numeric), [Str](#str), [Array](#array), [Hash](#hash), [Range](#range), [list](#list), [list-rows](#list-rows), [list-columns](#list-columns) or allow different views on the overall content (output formats): [gist](#gist), [perl](#perl).
+Methods that convert a matrix into other types: [Bool](#bool), [Str](#str), [Numeric](#numeric), [Range](#range), [Array](#array), [Hash](#hash), [list](#list), [list-rows](#list-rows), [list-columns](#list-columns) or allow different views on the overall content (output formats): [gist](#gist), [perl](#perl).
 
 ### [Bool](#converter)
 
@@ -271,13 +271,6 @@ Conversion into Bool context. Returns False if matrix is zero (all cells equal z
     $matrix.Bool
     ? $matrix           # alias op
     if $matrix          # matrix in Bool context too
-
-### [Numeric](#converter)
-
-Conversion into Numeric context. Returns Euclidean [norm](#norm). Please note, only a prefix operator + (as in: + $matrix) will call this Method. An infix (as in $matrix + $number) calls $matrix.add($number).
-
-    $matrix.Numeric
-    + $matrix           # alias op
 
 ### [Str](#converter)
 
@@ -289,6 +282,24 @@ Returns all cell values separated by one whitespace, rows by new line. This is t
     3 4                
 
     ~$matrix            # alias op
+
+### [Numeric](#converter)
+
+Conversion into Numeric context. Returns Euclidean [norm](#norm). Please note, only a prefix operator + (as in: + $matrix) will call this Method. An infix (as in $matrix + $number) calls $matrix.add($number).
+
+    $matrix.Numeric
+    + $matrix           # alias op
+
+### [Range](#converter)
+
+Returns an range object that reflects the content of all cells. Please note that complex number can not be endpoints of ranges.
+
+    say $matrix.Range: 1..4
+
+To get single endpoints you could write:
+
+    say $matrix.Range.min: 1
+    say $matrix.list.max:  4
 
 ### [Array](#converter)
 
@@ -324,17 +335,6 @@ Gets you a nested key - value hash.
 
     say $matrix.Hash : { 0 => { 0 => 1, 1 => 2}, 1 => {0 => 3, 1 => 4} } 
     say % $matrix       # alias op, space between % and $ still needed
-
-### [Range](#converter)
-
-Returns an range object that reflects the content of all cells. Please note that complex number can not be endpoints of ranges.
-
-    say $matrix.Range: 1..4
-
-To get single endpoints you could write:
-
-    say $matrix.Range.min: 1
-    say $matrix.list.max:  4
 
 ### [gist](#converter)
 
