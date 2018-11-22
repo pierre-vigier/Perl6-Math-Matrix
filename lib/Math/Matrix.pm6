@@ -197,12 +197,12 @@ multi method submatrix(Math::Matrix:D: :@rows    = (^$!row-count).list,
 method Bool(        Math::Matrix:D: --> Bool)   { ! self.is-zero }
 method Numeric (    Math::Matrix:D: --> Numeric){   self.norm   }
 method Str(         Math::Matrix:D: --> Str)    {   join("\n", @!rows.map: *.Str) }
+method Range(       Math::Matrix:D: --> Range)  {   self.list.minmax }
 method Array(       Math::Matrix:D: --> Array)  {   self!clone-cells }
-method Hash(        Math::Matrix:D: --> Hash)   {  ((^$!row-count).map: {$_ => @!rows[$_].kv.Hash}).Hash}
 method list(        Math::Matrix:D: --> List)   {   self.list-rows.flat.list }
 method list-rows(   Math::Matrix:D: --> List)   {  (@!rows.map: {.flat}).list }
 method list-columns(Math::Matrix:D: --> List)   {  ((^$!column-count).map: {self.column($_)}).list }
-method Range(       Math::Matrix:D: --> Range)  {   self.list.minmax }
+method Hash(        Math::Matrix:D: --> Hash)   {  ((^$!row-count).map: {$_ => @!rows[$_].kv.Hash}).Hash}
 
 multi method gist(Math::Matrix:U: --> Str) { "({self.^name})" }
 multi method gist(Math::Matrix:D: Int :$max-chars?, Int :$max-rows? --> Str) {
@@ -757,8 +757,8 @@ method elems (Math::Matrix:D: --> Int)               {  $!row-count * $!column-c
 method elem (Math::Matrix:D: Range $r --> Bool) {  # is every cell value element in the set/range
     self.list.map: {return False unless $_ ~~ $r};
     True;
-
 }
+
 multi method cont (Math::Matrix:D: Numeric $e  --> Bool) { # matrix contains element ?
     self.list.map: {return True if $_ == $e};
     False;
@@ -795,7 +795,6 @@ method map-row(Math::Matrix:D: Int $row, &coderef --> Math::Matrix:D ) {
     @m[$row] = @m[$row].map(&coderef);
     Math::Matrix.new( @m );
 }
-
 method map-column(Math::Matrix:D: Int $col, &coderef --> Math::Matrix:D ) {
     self!check-column-index($col);
     my @m = self!clone-cells;
@@ -803,18 +802,9 @@ method map-column(Math::Matrix:D: Int $col, &coderef --> Math::Matrix:D ) {
     Math::Matrix.new( @m );
 }
 
-
-method reduce(Math::Matrix:D: &coderef ) {
-    (@!rows.map: {$_.flat}).flat.reduce( &coderef )
-}
-
-method reduce-rows (Math::Matrix:D: &coderef){
-    @!rows.map: { $_.flat.reduce( &coderef ) }
-}
-
-method reduce-columns (Math::Matrix:D: &coderef){
-    (^$!column-count).map: { self.column($_).reduce( &coderef ) }
-}
+method reduce(        Math::Matrix:D: &coderef) {(@!rows.map: {$_.flat}).flat.reduce( &coderef )}
+method reduce-rows   (Math::Matrix:D: &coderef) { @!rows.map: { $_.flat.reduce( &coderef) }}
+method reduce-columns(Math::Matrix:D: &coderef) {(^$!column-count).map: { self.column($_).reduce( &coderef )}}
 
 ################################################################################
 # end of list like operations - start structural matrix operations

@@ -1,7 +1,7 @@
 use lib "lib";
 use Test;
 use Math::Matrix;
-plan 22;
+plan 23;
 
 my $matrixi = Math::Matrix.new([[1,2],[3,4]]);
 my $matrixr = Math::Matrix.new([[ 1.1, 2.2 ],[ 3.3 , 4.4 ]]);
@@ -20,6 +20,7 @@ is  +$matrixi, sqrt(30)               , "content is correct in numeric context b
 ok   $matrixi.Bool ~~ Bool            , "method .Bool returns right type";
 is  ?$matrixi, True                   , "content is correct in bool context by prefix op";
 ok   $matrixi.list ~~ List            , "method .List returns correct type";
+ok   $matrixi.list ~~ (1,2,3,4)       , "method .List returns correct content";
 ok  |$matrixi == (1,2,3,4)            , "correct list context conversion with prefix op";
 ok   $matrixi.Hash ~~ Hash            , "method .Hash return correct type";
 ok  %$matrixi == { 0=> {0=>1, 1=>2}, 1=> {0=>3, 1=>4}}, "correct hash context conversion with prefix op";
