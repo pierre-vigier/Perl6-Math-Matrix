@@ -62,8 +62,6 @@ method !column-count  { $!column-count }
 # public methods: constructors
 ################################################################################
 
-method clone { self.bless( rows => @!rows ) }
-
 multi method new( @m ) {
     self!check-matrix-data( @m );
     self.bless( rows => @m );
@@ -87,6 +85,8 @@ submethod BUILD( :@rows!, :$density, :$trace, :$determinant, :$rank, :$nullity, 
     $!is-identity = $is-identity if $is-identity.defined;
     $!is-symmetric = $is-symmetric if $is-symmetric.defined;
 }
+
+method clone { self.bless( rows => @!rows ) }
 
 multi method new-zero(PosInt $size) {
     self.bless( rows => self!zero-array($size, $size),
@@ -141,19 +141,19 @@ method new-vector-product (@column_vector, @row_vector){
 # end of constructor - start accessors
 ################################################################################
 
-multi method AT-POS (Math::Matrix:D: Int:D $row){
-    self!check-row-index($row);
-    @!rows[$row];
-}
-
 method cell(Math::Matrix:D: Int:D $row, Int:D $column --> Numeric ) {
     self!check-index($row, $column);
     @!rows[$row][$column];
 }
 
+multi method AT-POS (Math::Matrix:D: Int:D $row){
+    self!check-row-index($row);
+    @!rows[$row];
+}
+
 method row(Math::Matrix:D: Int:D $row  --> List) {
     self!check-row-index($row);
-    |@!rows[$row];
+    @!rows[$row];
 }
 
 method column(Math::Matrix:D: Int:D $column --> List) {
@@ -190,8 +190,6 @@ multi method submatrix(Math::Matrix:D: :@rows    = (^$!row-count).list,
     Math::Matrix.new([ @r.map( { [ @!rows[$^row][|@c] ] } ) ]);
 }
 
-
-
 ################################################################################
 # end of accessors - start with type conversion and handy shortcuts
 ################################################################################
@@ -203,7 +201,7 @@ method Array(       Math::Matrix:D: --> Array)  {   self!clone-cells }
 method Hash(        Math::Matrix:D: --> Hash)   {  ((^$!row-count).map: {$_ => @!rows[$_].kv.Hash}).Hash}
 method list(        Math::Matrix:D: --> List)   {   self.list-rows.flat.list }
 method list-rows(   Math::Matrix:D: --> List)   {  (@!rows.map: {.flat}).list }
-method list-columns(Math::Matrix:D: --> List)   { ((^$!column-count).map: {self.column($_)}).list }
+method list-columns(Math::Matrix:D: --> List)   {  ((^$!column-count).map: {self.column($_)}).list }
 method Range(       Math::Matrix:D: --> Range)  {   self.list.minmax }
 
 multi method gist(Math::Matrix:U: --> Str) { "({self.^name})" }
@@ -252,10 +250,8 @@ multi method perl(Math::Matrix:D: --> Str){ self.WHAT.perl ~ ".new(" ~ @!rows.pe
 # end of type conversion and handy shortcuts - start boolean matrix properties
 ################################################################################
 
-method !build_is-square( Math::Matrix:D: --> Bool) { $!column-count == $!row-count }
-
-method !build_is-zero( Math::Matrix:D: --> Bool)   { self.density() == 0 }
-
+method !build_is-square( Math::Matrix:D: --> Bool)   { $!column-count == $!row-count }
+method !build_is-zero(    Math::Matrix:D: --> Bool)  { self.density() == 0 }
 method !build_is-identity( Math::Matrix:D: --> Bool) {
     return False unless self.is-square;
     for ^$!row-count X ^$!column-count -> ($r, $c) {
@@ -289,7 +285,6 @@ method !build_is-diagonal( Math::Matrix:D: --> Bool) {
 method !build_is-diagonal-constant( Math::Matrix:D: --> Bool) {
     [&&](map { [==] $.diagonal($_).list }, -$!column-count+1 .. $!row-count-1);
 }
-
 method !build_is-catalecticant( Math::Matrix:D: --> Bool) {
     return False unless $.is-square;
     [&&](map { [==] $.skew-diagonal($_).list }, -$!column-count+1 .. $!row-count-1);
@@ -361,7 +356,6 @@ method !build_is-positive-definite (Math::Matrix:D: --> Bool) { # with Sylvester
     }
     True;
 }
-
 method !build_is-positive-semidefinite (Math::Matrix:D: --> Bool) { # with Sylvester's criterion
     return False unless self.is-square;
     return False unless self.determinant >= 0;
@@ -399,7 +393,6 @@ method !build_lower-bandwith(Math::Matrix:D: --> Int) {
 }
 method bandwith(Math::Matrix:D: Str $which = '' --> Int) { max $.upper-bandwith, $.lower-bandwith }
 
-
 method !build_trace(Math::Matrix:D: --> Numeric) {
     fail "trace is only defined for a square matrix" unless self.is-square;
     self.diagonal.sum;
@@ -423,7 +416,6 @@ method !build_rank(Math::Matrix:D: --> Int) {
     }
     $rank;
 }
-
 method !build_nullity(Math::Matrix:D: --> Int) {
     min(self.size) - self.rank;
 }
@@ -924,7 +916,7 @@ multi sub infix:<**>( Math::Matrix:D $a where { $a.is-square }, Int $e --> Math:
     return Math::Matrix.new-identity( $a!row-count ) if $e == 0;
     my $p = $a.clone;
     $p = $p.dot-product( $a ) for 2 .. abs $e;
-    $p = $p.inverted         if  $e < 0;
+    $p = $p.inverted          if  $e < 0;
     $p;
 }
 
