@@ -174,7 +174,7 @@ Methods that return the content of selected elements (cells).
 
 ### [cell](#accessors)
 
-Gets value of one cell in row (first parameter) and column (second parameter - counting always from 0).
+Gets value of one cell (element) in row (first parameter) and column (second parameter - counting always from 0).
 
     my $matrix = Math::Matrix.new([[1,2],[3,4]]);
     say $matrix.cell(0,1)               : 2

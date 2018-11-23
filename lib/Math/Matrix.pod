@@ -180,7 +180,7 @@ L<cell|#cell>, L<AT-POS|#at-pos>, L<row|#row>, L<column|#column>, L<diagonal|#di
 
 =head3 L<cell|#accessors>
 
-Gets value of one cell in row (first parameter) and column (second parameter - counting always from 0).
+Gets value of one cell (element) in row (first parameter) and column (second parameter - counting always from 0).
 
 
     my $matrix = Math::Matrix.new([[1,2],[3,4]]);
