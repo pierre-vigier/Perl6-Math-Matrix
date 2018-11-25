@@ -861,14 +861,14 @@ Creates a new matrix of same size by iterating over all or some [element](#eleme
     2 3
     4 5
 
-By provding values (Lists, Arrays, Ranges or Seqences) to the named arguments *rows* and *columns* (no special order required), only a subset of rows or columns will be mapped - the rest will be just copied.
+By provding values (Ranges) to the named arguments *rows* and *columns* (no special order required), only a subset of rows or columns will be mapped - the rest will be just copied.
 
-    say $matrix.map( rows => (0,), {$_ * 2}) :
+    say $matrix.map( rows => (0..0), {$_ * 2}) :
 
     2 4
     3 4
 
-    say $matrix.map( rows => (1,), columns => (1,), {$_ ** 2}) :
+    say $matrix.map( rows => (1..*), columns => (1..1), {$_ ** 2}) :
 
     1  2
     3 16

@@ -34,8 +34,8 @@ subtest {
     plan 4;
     ok $morecols.map( * - 1 )              ~~ MM[[0,1,2],[3,4,5]], "simple mapping";
     ok $morecols.map({$^v %% 2 ?? 1 !! 0}) ~~ MM[[0,1,0],[1,0,1]], "constructing binary map";
-    ok $morecols.map-row(1, {$_ + 1})      ~~ MM[[1,2,3],[5,6,7]], "mapping row";
-    ok $morecols.map-column(0, {0})        ~~ MM[[0,2,3],[0,5,6]], "mapping column";
+    ok $morecols.map(rows=>1..1, {$_ + 1}) ~~ MM[[1,2,3],[5,6,7]], "mapping row";
+    ok $morecols.map(columns => 0..0, {0}) ~~ MM[[0,2,3],[0,5,6]], "mapping column";
 }, "Map";
 
 

@@ -665,6 +665,7 @@ method equal(Math::Matrix:D: Math::Matrix $b --> Bool)           { @!rows ~~ $b!
 multi method ACCEPTS(Math::Matrix:D: Math::Matrix:D $b --> Bool) { self.equal( $b )  }
 
 
+# add matrix
 multi method add(Math::Matrix:D: Str $b --> Math::Matrix:D ) { self.add( Math::Matrix.new( $b ) ) }
 multi method add(Math::Matrix:D:     @b --> Math::Matrix:D ) { self.add( Math::Matrix.new( @b ) ) }
 multi method add(Math::Matrix:D: Math::Matrix $b where {self.size eqv $b.size} --> Math::Matrix:D ) {
@@ -675,6 +676,8 @@ multi method add(Math::Matrix:D: Math::Matrix $b where {self.size eqv $b.size} -
     Math::Matrix.new( @sum );
 }
 
+
+# add vector
 multi method add(Math::Matrix:D: @v where {@v.all ~~ Numeric}, Int :$row! --> Math::Matrix:D) {
     fail "Matrix has $!column-count columns, but got "~ +@v ~ "element row." unless $!column-count == +@v;
     self!check-row-index($row);
@@ -690,17 +693,14 @@ multi method add(Math::Matrix:D: @v where {@v.all ~~ Numeric}, Int :$column! -->
     Math::Matrix.new( @m );
 }
 
-multi method add(Math::Matrix:D: Numeric $s, Int :$row, Int :$column --> Math::Matrix:D ) {
+
+# add scalar
+multi method add(Math::Matrix:D: Numeric $s, --> Math::Matrix:D )             { self.map( *  + $s  ) }
+multi method add(Math::Matrix:D: Numeric $s, Int :$row!, Int :$column --> Math::Matrix:D ) {
     self!check-row-index($row)       if $row.defined;
     self!check-column-index($column) if $column.defined;
-    if $row.defined and $column.defined {
-        my @m = self!clone-cells;
-        @m[$row][$column] += $s;
-        return Math::Matrix.new(@m);
-    }
-    return self.map-row(       $row, { $_ + $s} ) if $row.defined;
-    return self.map-column( $column, { $_ + $s} ) if $column.defined;
-           self.map(                   *  + $s  );
+    self.map(rows  => $row.defined ?? ($row..$row) !! ^$!row-count, 
+             colums => $column.defined ?? ($column..$column) !! ^$!column-count, { $_ + $s } );
 }
 
 
@@ -750,9 +750,9 @@ method tensor-product(Math::Matrix:D: Math::Matrix $b  --> Math::Matrix:D) {
 # end of matrix math operations - start list like operations
 ################################################################################
 
-method elems (Math::Matrix:D: --> Int)               {  $!row-count * $!column-count }
+method elems (Math::Matrix:D: --> Int)           {  $!row-count * $!column-count }
 
-method elem (Math::Matrix:D: Range $r --> Bool) {  # is every element value element in the set/range
+method elem (Math::Matrix:D: Range $r --> Bool)  {         # is every element value element in the set/range
     self.list.map: {return False unless $_ ~~ $r};
     True;
 }
@@ -761,53 +761,40 @@ multi method cont (Math::Matrix:D: Numeric $e  --> Bool) { # matrix contains ele
     self.list.map: {return True if $_ == $e};
     False;
 }
-multi method cont (Math::Matrix:D: Range $r  --> Bool) { # is any element value in this set/range
+multi method cont (Math::Matrix:D: Range $r  --> Bool) {   # is any element value in this set/range
     self.list.map: {return True if $_ ~~ $r};
     False;
 }
 
-#multi method submatrix(Math::Matrix:D: :@rows    = (^$!row-count).list,
-#                                       :@columns = (^$!column-count).list --> Math::Matrix:D) {
-#    my @r = @rows.max    == Inf ?? (@rows.min    .. $!row-count-1).list    !! @rows.list;
-#    my @c = @columns.max == Inf ?? (@columns.min .. $!column-count-1).list !! @columns.list;
-#    fail "Need at least one row number" if @r == 0;
-#    fail "Need at least one column number" if @c == 0;
-#    self!check-indices(@r, @c);
-#    Math::Matrix.new([ @r.map( { [ @!rows[$^row][|@c] ] } ) ]);
-#}
-
-method map(Math::Matrix:D: &coderef --> Math::Matrix:D) {
-    Math::Matrix.new( [ 
-        @!rows.map: { [ .map: &coderef ] }
-    ] );
-}
-
-method map-with-index(Math::Matrix:D: &coderef --> Math::Matrix:D) {
-    my @aoa;
-    for ^$!row-count X ^$!column-count -> ($r, $c) { @aoa[$r][$c] = &coderef($r, $c, @!rows[$r][$c]) }
-    Math::Matrix.new( @aoa );
-}
-
-
-method map-index(Math::Matrix:D: &coderef --> Math::Matrix:D) {
-    my @aoa;
-    for ^$!row-count X ^$!column-count -> ($r, $c) { @aoa[$r][$c] = &coderef($r, $c) }
-    Math::Matrix.new( @aoa );
-}
-
-
-method map-row(Math::Matrix:D: Int $row, &coderef --> Math::Matrix:D ) {
-    self!check-row-index($row);
-    my @m = self!clone-cells;
-    @m[$row] = @m[$row].map(&coderef);
+method map(Math::Matrix:D: &coderef, Range :$rows = ^$!row-count,
+                                     Range :$columns = ^$!column-count --> Math::Matrix:D) {
+    self!check-index($rows.min, $columns.min);
+    self!check-row-index($rows.minmax[1]) unless $rows.max          == Inf;
+    self!check-column-index($columns.minmax[1]) unless $columns.max == Inf;
+    my @r = $rows.max    == Inf ?? ($rows.min    .. $!row-count-1).list    !! $rows.list;
+    my @c = $columns.max == Inf ?? ($columns.min .. $!column-count-1).list !! $columns.list;
+    my @m;
+    for @r X @c                        -> ($r, $c) { @m[$r][$c] = &coderef(@!rows[$r][$c])}
+    for ^$!row-count X ^$!column-count -> ($r, $c) { @m[$r][$c] //= @!rows[$r][$c] }
     Math::Matrix.new( @m );
 }
-method map-column(Math::Matrix:D: Int $col, &coderef --> Math::Matrix:D ) {
-    self!check-column-index($col);
-    my @m = self!clone-cells;
-    (^$!row-count).map:{ @m[$_;$col] = &coderef( @m[$_;$col] ) };
+
+method map-with-index(Math::Matrix:D: &coderef, Range :$rows = ^$!row-count,
+                                                Range :$columns = ^$!column-count --> Math::Matrix:D) {
+    fail "block has to receive between one and three arguments" unless &coderef.arity ~~ 1..3;
+    self!check-index($rows.min, $columns.min);
+    self!check-row-index($rows.minmax[1]) unless $rows.max          == Inf;
+    self!check-column-index($columns.minmax[1]) unless $columns.max == Inf;
+    my @r = $rows.max    == Inf ?? ($rows.min    .. $!row-count-1).list    !! $rows.list;
+    my @c = $columns.max == Inf ?? ($columns.min .. $!column-count-1).list !! $columns.list;
+    my @m;
+    if    &coderef.arity == 1 {for @r X @c -> ($r, $c) { @m[$r][$c] = &coderef($r) }}
+    elsif &coderef.arity == 2 {for @r X @c -> ($r, $c) { @m[$r][$c] = &coderef($r, $c) }}
+    elsif &coderef.arity == 3 {for @r X @c -> ($r, $c) { @m[$r][$c] = &coderef($r, $c, @!rows[$r][$c]) }}
+    for ^$!row-count X ^$!column-count     -> ($r, $c) { @m[$r][$c] //= @!rows[$r][$c] }
     Math::Matrix.new( @m );
 }
+
 
 method reduce(        Math::Matrix:D: &coderef) {(@!rows.map: {$_.flat}).flat.reduce( &coderef )}
 method reduce-rows   (Math::Matrix:D: &coderef) { @!rows.map: { $_.flat.reduce( &coderef) }}
