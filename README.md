@@ -99,7 +99,8 @@ The default constructor, takes arrays of arrays of numbers as the only required 
 
 Instead of square brackets you can use round ones too and use a list of lists as argument too.
 
-    say Math::Matrix.new( ((1,2),(3,4)) ) :
+    say Math::Matrix.new( ((1,2),(3,4)) );
+    say MM ((1,2),(3,4)) :
 
     1 2
     3 4
@@ -115,7 +116,7 @@ Alternatively you can define the matrix from a string, which makes most sense wh
       END
 
     use Math::Matrix :ALL;          # 
-    MM '1';                         # this case begs for a shortcut
+    MM '1';                         # 1 * 1 matrix, this case begs for a shortcut
 
 ### [new-zero](#constructors)
 
