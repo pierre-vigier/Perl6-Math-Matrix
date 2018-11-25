@@ -853,30 +853,33 @@ Asks if the matrix contains a value equal to the only argument of the method. If
 
 ### [map](#list-like-operations)
 
-Like the well known *map* function that works on lists, this method iterates over all or some elements of the matrix. Each time a code block (only required argument) will be called with the that gets the element value as argument. The results build a new matrix.
+Creates a new matrix of same size by iterating over all or some [element](#element)s. For every chosen element with the indices (m,n), a provided code block (required argument) will be run once. That block will be given the elements(m,n) value as an argument. The return value of the block will be the content of the element(m,n) of the resulting matrix.
 
     say $matrix.map(* + 1) :
 
     2 3
     4 5
 
+By provding values (Lists, Arrays, Ranges or Seqences) to the named arguments *rows* and *columns* (no special order required), only a subset of rows or columns will be mapped - the rest will be just copied.
+
+    say $matrix.map( rows => (0,), {$_ * 2}) :
+
+    2 4
+    3 4
+
+    say $matrix.map( rows => (1,), columns => (1,), {$_ ** 2}) :
+
+    1  2
+    3 16
+
 ### [map-with-index](#list-like-operations)
 
-Runs a code block (only required argument) for every element of the matrix. Arguments to the anonymous block are current row and column index and the content of the element. The results for a new matrix.
+Works just like [map](#map) with the only difference that the given block can recieve one to three arguments: (row index, column index and cell value).
 
     say $matrix.map-with-index: {$^m == $^n ?? $^value !! 0 } :
 
     1 0
     0 4
-
-### [map-index](#list-like-operations)
-
-Runs a code block (only required argument) for every element of the matrix. Arguments to the anonymous block are current row and column index. The results for a new matrix.
-
-    say $matrix.map-index: {$^m == $^n ?? 1 !! 0 } :
-
-    1 0
-    0 1
 
 ### [map-row](#list-like-operations)
 
