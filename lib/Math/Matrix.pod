@@ -43,7 +43,7 @@ All computation heavy properties will be calculated lazily and cached.
 =head1 L<METHODS|#synopsis>
 =item B<L<constructors|#constructors>>: L<new []|#new-->, L<new ()|#new---1>, L<new ""|#new---2>,
       L<new-zero|#new-zero>, L<new-identity|#new-identity>, L<new-diagonal|#new-diagonal>, L<new-vector-product|#new-vector-product>
-=item B<L<accessors|#accessors>>: L<cell|#cell>, L<AT-POS|#at-pos>, L<row|#row>, L<column|#column>, L<diagonal|#diagonal>, L<skew-diagonal|#skew-diagonal>, L<submatrix|#submatrix>
+=item B<L<accessors|#accessors>>: L<element|#element>, L<AT-POS|#at-pos>, L<row|#row>, L<column|#column>, L<diagonal|#diagonal>, L<skew-diagonal|#skew-diagonal>, L<submatrix|#submatrix>
 =item B<L<converter|#converter>>: L<Bool|#bool>, L<Str|#str>, L<Numeric|#numeric>, L<Range|#range>,
       L<Array|#array>, L<list|#list>, L<list-rows|#list-rows>, L<list-columns|#list-columns>, L<Hash|#hash>, L<gist|#gist>, L<perl|#perl>
 =item B<L<boolean properties|#boolean-properties>>: L<square|#is-square>, L<zero|#is-zero>, L<identity|#identity>, L<upper-|#is-upper-triangular>, L<lower-triangular|#is-lower-triangular>,
@@ -51,12 +51,12 @@ All computation heavy properties will be calculated lazily and cached.
       L<anti-|#is-antisymmetric>, L<symmetric|#is-symmetric>, L<unitary|#is-unitary>, L<self-adjoint|#is-self-adjoint>, L<invertible|#is-invertible>, L<orthogonal|#is-orthogonal>,
       L<positive-definite|#is-positive-definite>, L<positive-semidefinite|#is-positive-semidefinite>
 =item B<L<numeric properties|#numeric-properties>>: L<size|#size>, L<density|#density>, L<bandwith|#bandwith>, L<trace|#trace>, L<rank|#rank>, L<nullity|#nullity>,
-      L<determinant|#determinant>, L<minor|#minor>, L<norm|#norm>, L<condition|#condition>, L<cell-type|#cell-type>
+      L<determinant|#determinant>, L<minor|#minor>, L<norm|#norm>, L<condition|#condition>, L<element-type|#element-type>
 =item B<L<derived matrices|#derived-matrices>>: L<transposed|#transposed>, L<negated|#negated>, L<conjugated|#conjugated>, L<adjugated|#adjugated>, L<inverted|#inverted>,
       L<reduced-row-echelon-form|#reduced-row-echelon-form>
 =item B<L<decompositions|#decompositions>>: L<LUCrout|#decompositionlucrout>, L<LU|#decompositionlu>, L<Cholesky|#decompositioncholesky>
 =item B<L<math ops|#mathematical-operations>>: L<equal|#equal>, L<add|#add>, L<multiply|#multiply>, L<dot-product|#dot-product>, L<tensor-product|#tensor-product>
-=item B<L<list like ops|#list-like-operations>>: L<elems|#elems>, L<elem|#elem>, L<cont|#cont>, L<map|#map>, L<map-with-index|#map-with-index>, L<map-index|#map-index>, 
+=item B<L<list like ops|#list-like-operations>>: L<elems|#elems>, L<elem|#elem>, L<cont|#cont>, L<map|#map>, L<map-with-index|#map-with-index>, 
       L<reduce|#reduce>, L<reduce-rows|#reduce-rows>, L<reduce-columns|#reduce-columns>
 =item B<L<structural ops|#structural-operations>>: L<move-row|#move-row>, L<move-column|#move-column>, L<swap-rows|#swap-rows>, L<swap-columns|#swap-columns>,
       L<splice-rows|#splice-rows>, L<splice-columns|#splice-columns>
@@ -84,7 +84,7 @@ Empty rows or columns we not be accepted.
    3 4
 
    Math::Matrix.new([<1 2>,<3 4>]); # does the same, WARNING: doesn't work with complex numbers
-   Math::Matrix.new( [[1]] );       # one cell 1*1 matrix (exception where you don't have to mind comma)
+   Math::Matrix.new( [[1]] );       # one element 1*1 matrix (exception where you don't have to mind comma)
    Math::Matrix.new( [[1,2,3],] );  # one row 1*3 matrix, mind the trailing comma
    Math::Matrix.new( [$[1,2,3]] );  # does the same, if you don't like trailing comma
    Math::Matrix.new( [[1],[2]] );   # one column 2*1 matrix
@@ -119,7 +119,7 @@ Alternatively you can define the matrix from a string, which makes most sense wh
 
 This method is a constructor, that returns a zero matrix (sometimes called empty),
 as checked by L<is-zero|#is-zero>. It has the L<size|#size> as given by arguments.
-If only one argument is given, the matrix is L<quadratic|#is-square>. All the cells are set to 0.
+If only one argument is given, the matrix is L<quadratic|#is-square>. All the elements are set to 0.
 
     say Math::Matrix.new-zero( 3, 4 ) :
 
@@ -136,7 +136,7 @@ If only one argument is given, the matrix is L<quadratic|#is-square>. All the ce
 
 This method is a constructor that returns an identity matrix (as checked by L<is-identity|#is-identity>)
 of the size given in the only and required parameter.
-All the cells are set to 0 except the top/left to bottom/right diagonale is set to 1.
+All the elements are set to 0 except the top/left to bottom/right diagonale is set to 1.
 
     say Math::Matrix.new-identity( 3 ) :
   
@@ -148,7 +148,7 @@ All the cells are set to 0 except the top/left to bottom/right diagonale is set 
 
 This method is a constructor that returns an diagonal matrix (as checked by L<is-diagonal|#is-diagonal>)
 of the size given by count of the parameter.
-All the cells are set to 0 except the top/left to bottom/right diagonal, set to given values.
+All the elements are set to 0 except the top/left to bottom/right diagonal, set to given values.
 
     say Math::Matrix.new-diagonal( 2, 4, 5 ) :
 
@@ -174,17 +174,18 @@ as a tensor product of row and column.
 
 =head2 L<Accessors|#methods>
 
-Methods that return the content of selected elements (cells).
+Methods that return the content of selected elements.
 
-L<cell|#cell>, L<AT-POS|#at-pos>, L<row|#row>, L<column|#column>, L<diagonal|#diagonal>, L<skew-diagonal|#skew-diagonal>, L<submatrix|#submatrix>
+L<element|#element>, L<AT-POS|#at-pos>, L<row|#row>, L<column|#column>, L<diagonal|#diagonal>, L<skew-diagonal|#skew-diagonal>, L<submatrix|#submatrix>
 
-=head3 L<cell|#accessors>
+=head3 L<element|#accessors>
 
-Gets value of one cell (element) in row (first parameter) and column (second parameter - counting always from 0).
-
+Gets value of one element in row (first parameter) and column (second parameter - counting always from 0).
+Sometimes its called matrix cell, to ditinct from other type of elements.
+See: L<elems|#elems>, L<elem|#elem>, L<element-type|#element-type>
 
     my $matrix = Math::Matrix.new([[1,2],[3,4]]);
-    say $matrix.cell(0,1)               : 2
+    say $matrix.element(0,1)            : 2
     say $matrix[0][1]                   # array syntax alias             
 
 
@@ -294,7 +295,7 @@ L<list-rows|#list-rows>, L<list-columns|#list-columns> or allow different views 
 =head3 L<Bool|#converter>
 
 Conversion into Bool context. Returns False if matrix is zero
-(all cells equal zero as in is-zero), otherwise True.
+(all elements equal zero as in is-zero), otherwise True.
     
     $matrix.Bool
     ? $matrix           # alias op
@@ -302,7 +303,7 @@ Conversion into Bool context. Returns False if matrix is zero
 
 =head3 L<Str|#converter>
 
-Returns all cell values separated by one whitespace, rows by new line.
+Returns values of all elements, separated by one whitespace, rows by new line.
 This is the same format as expected by L<new("")|#new---2>.
 Str is called implicitly by put and print. A shortened version is provided by L<gist|#gist>
 
@@ -324,7 +325,7 @@ An infix (as in $matrix + $number) calls $matrix.add($number).
 
 =head3 L<Range|#converter>
 
-Returns an range object that reflects the content of all cells.
+Returns an range object that reflects the content of all elements.
 Please note that complex number can not be endpoints of ranges.
 
     say $matrix.Range: 1..4
@@ -336,14 +337,14 @@ To get single endpoints you could write:
 
 =head3 L<Array|#converter>
 
-Content of all cells as an array of arrays (same format that was put into L<new([...])|#new-->).
+Content of all elements as an array of arrays (same format that was put into L<new([...])|#new-->).
 
     say Math::Matrix.new([[1,2],[3,4]]).Array : [[1 2] [3 4]]
     say @ $matrix       # alias op, space between @ and $ needed
 
 =head3 L<list|#converter>
 
-Returns a flat list with all cells (same as .list-rows.flat.list).
+Returns a flat list with all elements (same as .list-rows.flat.list).
 
     say $matrix.list    : (1 2 3 4)
     say |$matrix        # alias op
@@ -379,7 +380,7 @@ If you call it explicitly, you can add width and height (char count) as optional
 Might even not show all decimals. Several dots will hint that something is missing. 
 It is implicitly called by say. For a full view use L<Str|#str>.
     
-    say $matrix;      # output when matrix has more than 100 cells
+    say $matrix;      # output of a matrix with more than 100 elements
 
     1 2 3 4 5 ..
     3 4 5 6 7 ..
@@ -423,12 +424,12 @@ True if number of rows and colums are the same (see L<size|#size>).
 
 =head3 L<is-zero|#boolean-properties>
 
-True if every cell (element) has value of 0 (as created by L<new-zero|#new-zero>).
+True if every element has value of 0 (as created by L<new-zero|#new-zero>).
 
 =head3 L<is-identity|#boolean-properties>
 
-True if every cell on the main L<diagonal|#diagonal> (where row index equals column index) is 1
-and any other cell is 0.
+True if every element on the main L<diagonal|#diagonal> (where row index equals column index) is 1
+and any other element is 0.
 
     Example:    1 0 0
                 0 1 0
@@ -436,7 +437,7 @@ and any other cell is 0.
 
 =head3 L<is-upper-triangular|#boolean-properties>
 
-True if every cell below the L<diagonal|#diagonal> (where row index is greater than column index) is 0.
+True if every element below the L<diagonal|#diagonal> (where row index is greater than column index) is 0.
 
     Example:    1 2 5
                 0 3 8
@@ -454,7 +455,7 @@ There is an optional, boolean argument named :strict.
 
 =head3 L<is-lower-triangular|#boolean-properties>
 
-True if every cell above the L<diagonal|#diagonal> (where row index is smaller than column index) is 0.
+True if every element above the L<diagonal|#diagonal> (where row index is smaller than column index) is 0.
 
     Example:    1 0 0
                 2 3 0
@@ -472,7 +473,7 @@ Has also an optional, boolean argument named :strict.
 
 =head3 L<is-diagonal|#boolean-properties>
 
-True if matrix is L<square|#is-square> and only cells on the L<diagonal|#diagonal> differ from 0.
+True if matrix is L<square|#is-square> and only elements on the L<diagonal|#diagonal> differ from 0.
 In other words: if matrix is L<upper-triangular|#is-upper-triangular> and L<lower-triangular|#is-lower-triangular>.
 
     Example:    1 0 0
@@ -481,7 +482,7 @@ In other words: if matrix is L<upper-triangular|#is-upper-triangular> and L<lowe
 
 =head3 L<is-diagonally-dominant|#boolean-properties>
 
-True when cells on the L<diagonal|#diagonal> have a bigger (if strict) or at least equal (in none strict)
+True when elements on the L<diagonal|#diagonal> have a bigger (if strict) or at least equal (in none strict)
 absolute value than the sum of its row (sum of absolute values of the row except diagonal element).
 
    if $matrix.is-diagonally-dominant {
@@ -494,7 +495,7 @@ absolute value than the sum of its row (sum of absolute values of the row except
 =head3 L<is-diagonal-constant|#boolean-properties>
 
 Checks if caller is a I<diagonal-constant> or I<Töplitz matrix>.
-True if every L<diagonal|#diagonal> is the a collection of cells that hold the same value.
+True if every L<diagonal|#diagonal> is the a collection of elements that hold the same value.
 
     Example:     0  1  2
                 -1  0  1
@@ -503,7 +504,7 @@ True if every L<diagonal|#diagonal> is the a collection of cells that hold the s
 =head3 L<is-catalecticant|#boolean-properties>
 
 Checks if caller is a I<catalecticant> or I<Hankel matrix>.
-True if every L<skew diagonal|#skew-diagonal> is the a collection of cells that hold the same value.
+True if every L<skew diagonal|#skew-diagonal> is the a collection of elements that hold the same value.
 Catalecticant matrices are L<symmetric|#is-symmetric>.
 
 
@@ -513,7 +514,7 @@ Catalecticant matrices are L<symmetric|#is-symmetric>.
 
 =head3 L<is-symmetric|#boolean-properties>
 
-True if every cell with coordinates x y has same value as the cell on y x.
+True if every element with coordinates x y has same value as the element on y x.
 In other words: $matrix and $matrix.L<transposed|#transposed> (alias T) are the same.
 
     Example:    1 2 3
@@ -571,8 +572,8 @@ True if all main L<minors|#minor> or all Eigenvalues are greater equal zero.
 Matrix properties that are expressed with a single number, which will be calculated without further input.
 
 L<size|#size>, L<density|#density>, B<L<bandwith|#bandwith>>: (L<lower-bandwith|#lower-bandwith>, L<upper-bandwith|#upper-bandwith>), L<trace|#trace>, L<rank|#rank>, L<nullity|#nullity>,
-L<determinant|#determinant>, L<minor|#minor>, L<norm|#norm>, L<condition|#condition>, B<L<cell-type|#cell-type>>:
-(L<narrowest-cell-type|#narrowest-cell-type>, L<widest-cell-type|#widest-cell-type>)
+L<determinant|#determinant>, L<minor|#minor>, L<norm|#norm>, L<condition|#condition>, B<L<element-type|#element-type>>:
+(L<narrowest-element-type|#narrowest-element-type>, L<widest-element-type|#widest-element-type>)
 
 =head3 L<size|#numeric-properties>
 
@@ -583,7 +584,7 @@ List of two values: number of rows and number of columns.
 
 =head3 L<density|#numeric-properties>
 
-I<Density> is the percentage of cell which are not zero. I<sparsity> = 1 - I<density>.
+I<Density> is the percentage of element which are not zero. I<sparsity> = 1 - I<density>.
 
     my $d = $matrix.density;
 
@@ -597,18 +598,18 @@ value on an diagonal above or below the main diagonal, tha bandwith would be one
     
 =head4 L<lower-bandwith|#bandwith>
 
-In a matrix with the lower bandwith of k, every cell with row index m and column index n,
+In a matrix with the lower bandwith of k, every element with row index m and column index n,
 for which holds m - k > n, the content has to be zero. Literally speaking: there are k L<diagonal|#diagonal>s
 below the main diagonal, that contain none zero values.
 
 =head4 L<upper-bandwith|#bandwith>
 
-Analogously, every cell with m + k < n is zero if matrix has an upper bandwith of k.
+Analogously, every element with m + k < n is zero if matrix has an upper bandwith of k.
 
 =head3 L<trace|#numeric-properties>
 
-The trace of a L<square|#is-square> matrix is the sum of the cells on the main diagonal.
-In other words: sum of cells which row and column value is identical.
+The trace of a L<square|#is-square> matrix is the sum of the elements on the main diagonal.
+In other words: sum of elements which row and column value is identical.
 
     my $tr = $matrix.trace; 
 
@@ -639,7 +640,7 @@ and has a kernel (not a full L<rank|#rank> - thus is not L<invertible|#is-invert
 
 =head3 L<minor|#numeric-properties>
 
-Arguments are row and column of an existing cell.
+Arguments are row and column of an existing L<element|#element>.
 A Minor is the determinant of a L<submatrix|#submatrix> (2 scalar argument, first variant).
 
     my $m = $matrix.minor(1,2);
@@ -648,7 +649,7 @@ A Minor is the determinant of a L<submatrix|#submatrix> (2 scalar argument, firs
 
 A norm is a single positive number, which is an abstraction to the concept of size.
 Most common form for matrices is the p-norm, where in step 1
-the absolute value of every cell is taken to the power of p.
+the absolute value of every element is taken to the power of p.
 The sum of these results is taken to the power of 1/p. 
 The p-q-Norm extents this process. In his step 2 every column-sum is taken to the power of (p/q).
 In step 3 the sum of these are taken to the power of (1/q).
@@ -656,12 +657,12 @@ In step 3 the sum of these are taken to the power of (1/q).
     my $norm = $matrix.norm( );           # euclidian norm aka L2 (p = 2, q = 2)
     my $norm = + $matrix;                 # context op shortcut
     my $norm = ‖ $matrix ‖;               # unicode op shortcut
-    my $norm = $matrix.norm(1);           # p-norm aka L1 = sum of all cells absolute values (p = 1, q = 1)
+    my $norm = $matrix.norm(1);           # p-norm aka L1 = sum of all elements absolute values (p = 1, q = 1)
     my $norm = $matrix.norm(p:<4>,q:<3>); # p,q - norm, p = 4, q = 3
     my $norm = $matrix.norm(p:<2>,q:<2>); # L2 aka Euclidean aka Frobenius norm
     my $norm = $matrix.norm('euclidean'); # same thing, more expressive to some
     my $norm = $matrix.norm('frobenius'); # same thing, more expressive to some
-    my $norm = $matrix.norm('max');       # maximum norm - biggest absolute value of a cell
+    my $norm = $matrix.norm('max');       # maximum norm - biggest absolute value of a element
     $matrix.norm('row-sum');              # row sum norm - biggest abs. value-sum of a row
     $matrix.norm('column-sum');           # column sum norm - same column wise
 
@@ -671,23 +672,23 @@ Condition number of a matrix is L2 norm * L2 of L<inverted|#inverted> matrix.
 
     my $c = $matrix.condition( );              
 
-=head3 L<cell-type|#numeric-properties>
+=head3 L<element-type|#numeric-properties>
 
-=head4 L<narrowest-cell-type|#numeric-properties>
+=head4 L<narrowest-element-type|#numeric-properties>
 
-=head4 L<widest-cell-type|#numeric-properties>
+=head4 L<widest-element-type|#numeric-properties>
 
-Matrix cells can be (from most narrow to widest), of type (Bool), (Int), (Num), (Rat), (FatRat) or (Complex). 
-The widest type of any cell will returned as type object.
+Matrix elements can be (from most narrow to widest), of type (Bool), (Int), (Num), (Rat), (FatRat) or (Complex). 
+The widest type of any element will returned as type object.
 
-In the next example the smartmatch returns true, because no cell of our default example matrix has wider type
-than (Int). After such a test all cells can be safely treated as Int or Bool.
+In the next example the smartmatch returns true, because no element of our default example matrix has wider type
+than (Int). After such a test all elements can be safely treated as Int or Bool.
 
-    if $matrix.widest-cell-type ~~ Int { ...
+    if $matrix.widest-element-type ~~ Int { ...
 
-You can also check if all cells have the same type:
+You can also check if all elements have the same type:
 
-    if $matrix.widest-cell-type eqv $matrix.narrowest-cell-type
+    if $matrix.widest-element-type eqv $matrix.narrowest-element-type
 
 
 
@@ -713,9 +714,9 @@ Returns a new, transposed Matrix, where rows became colums and vice versa.
                              
 =head3 L<negated|#derived-matrices>
 
-Creates a matrix where every cell has the negated value of the original (invertion of sign).
+Creates a matrix where every element has the negated value of the original (invertion of sign).
 
-    my $new = $matrix.negated();     # invert sign of all cells
+    my $new = $matrix.negated();     # invert sign of all elements
     my $neg = - $matrix;             # operator alias
     
     say $neg:  -1 -2
@@ -723,7 +724,7 @@ Creates a matrix where every cell has the negated value of the original (inverti
 
 =head3 L<conjugated|#derived-matrices>
 
-Creates a matrix where every cell has the complex conjugated of the original.
+Creates a matrix where every element has the complex conjugated of the original.
 
     my $c = $matrix.conjugated();    # change every value to its complex conjugated
     my $c = $matrix.conj();          # short alias (official Perl 6 name)
@@ -833,7 +834,7 @@ Adding a matrix, vector or scalar. Named arguments I<:row> and I<:column> have n
 =head4 L<add matrix|#add>
 
 When adding two matrices, they have to be of the same size. Instead of
-Math::matrix object you can also provide the cell data as 
+Math::matrix object you can also provide the element data as 
 L<new []|#new-->, L<new ()|#new---1> or L<new ""|#new---2> would accept it.
 
     $matrix.add( $matrix2 );
@@ -860,11 +861,11 @@ and give a list or array (which have to fit the matrix size).
 
 =head4 L<add scalar|#add>
 
-When adding a single number to the matrix, it will be added to every cell.
+When adding a single number to the matrix, it will be added to every element.
 If you provide a row or column number it will be only added to that row or column.
-In case you provide both, only a single cell gets a different value in the result matrix.
+In case you provide both, only a single element gets a different value in the result matrix.
 
-    $matrix.add( $number );       # adds number from every cell 
+    $matrix.add( $number );       # adds number from every element 
     $matrix + $number;            # works too
 
     Example:    1 2  +  5    =  6 7 
@@ -879,19 +880,19 @@ In case you provide both, only a single cell gets a different value in the resul
 =head3 L<multiply|#mathematical-operations>
 
 Unlike the L<dot-product|#dot-product> and L<tensor-product|#tensor-product>,
-this operation is the simple, scalar multiplication applied to cells.
+this operation is the simple, scalar multiplication applied to elements.
 That is why this method works analogous to the scalar variant of L<add|#add-scalar>.
 However, when a matrix of same size is given, the result will be a matrix
-of that size again. Each cell will be the product of two the two cells of the 
+of that size again. Each element will be the product of two the two elements of the 
 operands with the same indices (position).
 
-    my $product = $matrix.multiply( $number );   # multiply every cell with number
+    my $product = $matrix.multiply( $number );   # multiply every element with number
     my $p = $matrix * $number;                   # works too
 
     Example:    1 2  *  5    =   5 10 
                 3 4             15 20
 
-    my $product = $matrix.multiply( $matrix2 );  # cell wise multiplication of same size matrices
+    my $product = $matrix.multiply( $matrix2 );  # element wise multiplication of same size matrices
     my $p = $matrix * $matrix2;                  # works too
 
     Example:    1 2  *  2 3  =   2  6
@@ -935,16 +936,15 @@ Matrix multiplication of two fitting matrices (colums left == rows right).
 
 =head3 L<tensor-product|#mathematical-operations>
 
-The I<tensor product> (a.k.a I<Kronecker product>) between a matrix a of I<size|#size> (m,n)
-and matrix b of size (p,q) is a matrix c of size (m*p,n*q).
-All matrices you get by multiplying an element (cell) of matrix a with
- matrix b (as in $a.multiply($b.cell(..,..)) concatinated result in matrix c. 
-(Or replace in a each cell with its product with b.)
+The I<tensor product> (a.k.a I<Kronecker product>) between a matrix A of I<size|#size> (m,n)
+and matrix B of size (p,q) is a matrix C of size (m*p,n*q).
+C is a concatination of matrices you get if you take every L<element|#element> of A
+and do a L<scalar multiplication|#multiply> with B as in $B.multiply($A.element(..,..)).
 
-    Example:    1 2  *  2 3   =  1*[2 3] 2*[2 3]  =  2  3  4  6
-                3 4     4 5        [4 5]   [4 5]     4  5  8 10
-                                 3*[2 3] 4*[2 3]     6  9  8 12
-                                   [4 5]   [4 5]     8 15 16 20
+    Example:    1 2  X*  2 3   =  1*[2 3] 2*[2 3]  =  2  3  4  6
+                3 4      4 5        [4 5]   [4 5]     4  5  8 10
+                                  3*[2 3] 4*[2 3]     6  9  8 12
+                                    [4 5]   [4 5]     8 15 16 20
     
     my $c = $matrixa.tensor-product( $matrixb );
     my $c = $a X* $b;               # works too as operator alias
@@ -965,7 +965,7 @@ Number (count) of elements = rows * columns (see L<size|#size>).
 
 =head3 L<elem|#list-like-operations>
 
-Asks if all cell values are an element of the given set or range.
+Asks if all L<element|#element> of Matrix (cell) values are an element of the given set or range.
 
 
     Math::Matrix.new([[1,2],[3,4]]).elem(1..4) :   True
@@ -975,7 +975,7 @@ Asks if all cell values are an element of the given set or range.
 =head3 L<cont|#list-like-operations>
 
 Asks if the matrix contains a value equal to the only argument of the method.
-If a range is provided as argument, at least one cell value has to be 
+If a range is provided as argument, at least one value has to be 
 within this range to make the result true.
 
     Math::Matrix.new([[1,2],[3,4]]).cont(1)   : True
@@ -987,8 +987,9 @@ within this range to make the result true.
 
 =head3 L<map|#list-like-operations>
 
-Like the built in map it iterates over all elements (cell values), 
-running a code block (only required argument) that gets the cell value as argument.
+Like the well known I<map> function that works on lists,
+this method iterates over all or some elements of the matrix.
+Each time a code block (only required argument) will be called with the that gets the element value as argument.
 The results build a new matrix.
 
     say $matrix.map(* + 1) :
@@ -998,9 +999,9 @@ The results build a new matrix.
 
 =head3 L<map-with-index|#list-like-operations>
 
-Runs a code block (only required argument) for every cell of the matrix.
+Runs a code block (only required argument) for every element of the matrix.
 Arguments to the anonymous block are current row and column index 
-and the content of the cell. The results for a new matrix.
+and the content of the element. The results for a new matrix.
 
     say $matrix.map-with-index: {$^m == $^n ?? $^value !! 0 } :
 
@@ -1010,7 +1011,7 @@ and the content of the cell. The results for a new matrix.
 
 =head3 L<map-index|#list-like-operations>
 
-Runs a code block (only required argument) for every cell of the matrix.
+Runs a code block (only required argument) for every element of the matrix.
 Arguments to the anonymous block are current row and column index.
 The results for a new matrix.
 
@@ -1041,9 +1042,9 @@ Map only specified row (row number is first parameter).
 
 Like the built in reduce method, it iterates over all elements and joins
 them into one value, by applying the given operator or method
-to the previous result and the next element. I starts with the cell [0][0]
+to the previous result and the next element. I starts with the element [0][0]
 and moving from left to right in the first row and continue with the first
-cell of the next row.
+element of the next row.
     
     Math::Matrix.new([[1,2],[3,4]]).reduce(&[+]): 10 = 1 + 2 + 3 + 4
     Math::Matrix.new([[1,2],[3,4]]).reduce(&[*]): 10 = 1 * 2 * 3 * 4
@@ -1051,7 +1052,7 @@ cell of the next row.
 =head3 L<reduce-rows|#list-like-operations>
 
 Reduces (as described above) every row into one value, so the overall result
-will be a list. In this example we calculate the sum of all cells in a row:
+will be a list. In this example we calculate the sum of all elements in a row:
     
     say Math::Matrix.new([[1,2],[3,4]]).reduce-rows(&[+]): (3, 7)
 
@@ -1205,24 +1206,24 @@ That has to be importet explicitly with the tag :MM or :ALL.
 The postcircumfix [] - op will always work.
 
     my $a   = +$matrix               # Num context, Euclidean norm
-    my $b   = ?$matrix               # Bool context, True if any cell has a none zero value
+    my $b   = ?$matrix               # Bool context, True if any element has a none zero value
     my $str = ~$matrix               # String context, matrix content, space and new line separated as table
-    my $l   = |$matrix               # list context, list of all cells, row-wise
+    my $l   = |$matrix               # list context, list of all elements, row-wise
     my $a   = @ $matrix              # same thing, but as Array
-    my $h   = % $matrix              # hash context, similar to .kv, so that %$matrix{0}{0} is first cell
+    my $h   = % $matrix              # hash context, similar to .kv, so that %$matrix{0}{0} is first element
 
-    $matrixa == $matrixb             # check if both have same size and they are cell wise equal
+    $matrixa == $matrixb             # check if both have same size and they are element wise equal
     $matrixa ~~ $matrixb             # same thing
 
-    my $sum =  $matrixa + $matrixb;  # cell wise sum of two same sized matrices
-    my $sum =  $matrix  + $number;   # add number to every cell
+    my $sum =  $matrixa + $matrixb;  # element wise sum of two same sized matrices
+    my $sum =  $matrix  + $number;   # add number to every element
 
-    my $dif =  $matrixa - $matrixb;  # cell wise difference of two same sized matrices
-    my $dif =  $matrix  - $number;   # subtract number from every cell
-    my $neg = -$matrix               # negate value of every cell
+    my $dif =  $matrixa - $matrixb;  # element wise difference of two same sized matrices
+    my $dif =  $matrix  - $number;   # subtract number from every element
+    my $neg = -$matrix               # negate value of every element
 
-    my $p   =  $matrixa * $matrixb;  # cell wise product of two same sized matrices
-    my $sp  =  $matrix  * $number;   # multiply number to every cell
+    my $p   =  $matrixa * $matrixb;  # element wise product of two same sized matrices
+    my $sp  =  $matrix  * $number;   # multiply number to every element
 
     my $dp  =  $a dot $b;            # dot product of two fitting matrices (cols a = rows b)
     my $dp  =  $a ⋅ $b;              # dot product, unicode (U+022C5)
@@ -1238,7 +1239,7 @@ The postcircumfix [] - op will always work.
      ｜$matrix ｜                     # determinant, unicode (U+0FF5C)
      ‖ $matrix ‖                     # L2 norm (euclidean p=2 to the square), (U+02016)
 
-       $matrix[1][2]                 # cell in second row and third column, works even when used :MANDATORY tag
+       $matrix[1][2]                 # element in second row and third column, works even when used :MANDATORY tag
 
     MM [[1]]                         # a new matrix, has higher precedence than postcircumfix:[]
     MM '1'                           # string alias
@@ -1261,6 +1262,6 @@ The postcircumfix [] - op will always work.
 
 =head1 L<License|#synopsis>
 
-Artistic License 2.0
+Artistic License 2.0 (GPL and BSD at the same time)
 
 =end pod

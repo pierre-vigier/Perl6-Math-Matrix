@@ -8,12 +8,12 @@ subtest {
     plan 4;
     my $matrix =   Math::Matrix.new([[4,0,1],[2,1,0],[2,2,3]]);
 
-    ok $matrix.cell(0,0) == 4, "first cell";
-    ok $matrix.cell(2,1) == 2, "first cell";
-    dies-ok { my $cell = $matrix.cell(5,0); }, "Out of range row";
-    dies-ok { my $cell = $matrix.cell(0,5); }, "Out of range column";
+    ok $matrix.element(0,0) == 4, "first element";
+    ok $matrix.element(2,1) == 2, "first element";
+    dies-ok { my $element = $matrix.element(5,0); }, "Out of range row";
+    dies-ok { my $element = $matrix.element(0,5); }, "Out of range column";
 
-}, "Cell";
+}, "Element";
 
 
 subtest {
@@ -76,12 +76,12 @@ subtest {
 
     dies-ok { $matrix.submatrix(10,1); },                    "demanded rows are out of range";
     dies-ok { $matrix.submatrix(1,5); },                     "demanded colums are out of range";
-    dies-ok { $matrix.submatrix( rows =>   -1..7, columns => 2..8) },   "demanded submatrix goes out of scope due second cell";
+    dies-ok { $matrix.submatrix( rows =>   -1..7, columns => 2..8) },   "demanded submatrix goes out of scope due second element";
     dies-ok { $matrix.submatrix( rows => 1.1 ..2, columns => 2.. 3) },  "reject none int indices";
     dies-ok { $matrix.submatrix( rows =>  (2..4), columns => (1..5)) }, "rows and colums are out of range";
 
-    ok $matrix.submatrix(0,0)                              ~~ $fsmatrix, "submatrix built by removing first cell";
-    ok $matrix.submatrix(2,3)                              ~~ $lsmatrix, "submatrix built by removing last cell";
+    ok $matrix.submatrix(0,0)                              ~~ $fsmatrix, "submatrix built by removing first element";
+    ok $matrix.submatrix(2,3)                              ~~ $lsmatrix, "submatrix built by removing last element";
     ok $matrix.submatrix( rows => 1..2, columns => 1 .. 3) ~~ $fsmatrix, "submatrix with range syntax";
     ok $matrix.submatrix( rows => 1..2, columns => 1 .. *) ~~ $fsmatrix, "submatrix with range syntax using * aka Inf";
     ok $matrix.submatrix( rows => (1,2),columns => (1...3))~~ $fsmatrix, "simple submatrix created with list syntax";

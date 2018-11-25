@@ -36,8 +36,8 @@ has Rat     $!density is lazy;
 has Numeric $!trace is lazy;
 has Numeric $!determinant is lazy;
 has Numeric $!condition is lazy;
-has Numeric $!narrowest-cell-type is lazy;
-has Numeric $!widest-cell-type is lazy;
+has Numeric $!narrowest-element-type is lazy;
+has Numeric $!widest-element-type is lazy;
 
 has Str     $!gist;
 
@@ -141,7 +141,7 @@ method new-vector-product (@column_vector, @row_vector){
 # end of constructor - start accessors
 ################################################################################
 
-method cell(Math::Matrix:D: Int:D $row, Int:D $column --> Numeric ) {
+method element(Math::Matrix:D: Int:D $row, Int:D $column --> Numeric ) {
     self!check-index($row, $column);
     @!rows[$row][$column];
 }
@@ -214,7 +214,7 @@ multi method gist(Math::Matrix:D: Int :$max-chars?, Int :$max-rows? --> Str) {
                     $_ ~~ Complex ?? %( re => $_.re.fmt("%g"),im => (($_.im >= 0 ??'+'!!'')~$_.im.fmt("%g")~'i') ) !!
                                      %( re => $_.fmt("%g"),   im => '' )
         }).Array};
-        my @col-width;                     # width of the formatted cell content in n column
+        my @col-width;                     # width of the formatted element content in n column
         @fmt-content.map: {
             for .kv -> $ci, $val {
                 @col-width[$ci]<re>.push: $val<re>.chars;
@@ -484,7 +484,7 @@ multi method norm(Math::Matrix:D: 'column-sum'--> Numeric){ max (^$!column-count
 
 method !build_condition(Math::Matrix:D:              --> Numeric) { $.norm() * $.inverted.norm       }
 
-method !build_narrowest-cell-type(Math::Matrix:D: --> Numeric){
+method !build_narrowest-element-type(Math::Matrix:D: --> Numeric){
     return Bool if any( @!rows[*;*] ) ~~ Bool;
     return Int  if any( @!rows[*;*] ) ~~ Int;
     return Num  if any( @!rows[*;*] ) ~~ Num;
@@ -492,7 +492,7 @@ method !build_narrowest-cell-type(Math::Matrix:D: --> Numeric){
     return FatRat if any( @!rows[*;*] ) ~~ FatRat;
     Complex;
 }
-method !build_widest-cell-type(Math::Matrix:D: --> Numeric){
+method !build_widest-element-type(Math::Matrix:D: --> Numeric){
     return Complex if any( @!rows[*;*] ) ~~ Complex;
     return FatRat if any( @!rows[*;*] ) ~~ FatRat;
     return Rat   if any( @!rows[*;*] ) ~~ Rat;
@@ -752,7 +752,7 @@ method tensor-product(Math::Matrix:D: Math::Matrix $b  --> Math::Matrix:D) {
 
 method elems (Math::Matrix:D: --> Int)               {  $!row-count * $!column-count }
 
-method elem (Math::Matrix:D: Range $r --> Bool) {  # is every cell value element in the set/range
+method elem (Math::Matrix:D: Range $r --> Bool) {  # is every element value element in the set/range
     self.list.map: {return False unless $_ ~~ $r};
     True;
 }
@@ -761,7 +761,7 @@ multi method cont (Math::Matrix:D: Numeric $e  --> Bool) { # matrix contains ele
     self.list.map: {return True if $_ == $e};
     False;
 }
-multi method cont (Math::Matrix:D: Range $r  --> Bool) { # is any cell value in this set/range
+multi method cont (Math::Matrix:D: Range $r  --> Bool) { # is any element value in this set/range
     self.list.map: {return True if $_ ~~ $r};
     False;
 }
