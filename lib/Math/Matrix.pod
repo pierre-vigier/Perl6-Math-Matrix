@@ -640,8 +640,9 @@ and has a kernel (not a full L<rank|#rank> - thus is not L<invertible|#is-invert
 
 =head3 L<minor|#numeric-properties>
 
-Arguments are row and column of an existing L<element|#element>.
-A Minor is the determinant of a L<submatrix|#submatrix> (2 scalar argument, first variant).
+A Minor is the determinant of a L<submatrix|#leaving-one-out> (first variant with same 2 scalar arguments a minor method).
+The two required positional arguments are row and column indices of an existing L<element|#element>.
+
 
     my $m = $matrix.minor(1,2);
 

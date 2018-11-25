@@ -556,7 +556,7 @@ Only a [square](#is-square) matrice has a defined determinant, which tells the v
 
 ### [minor](#numeric-properties)
 
-Arguments are row and column of an existing [element](#element). A Minor is the determinant of a [submatrix](#submatrix) (2 scalar argument, first variant).
+A Minor is the determinant of a [submatrix](#leaving-one-out) (first variant with same 2 scalar arguments a minor method). The two required positional arguments are row and column indices of an existing [element](#element).
 
     my $m = $matrix.minor(1,2);
 
