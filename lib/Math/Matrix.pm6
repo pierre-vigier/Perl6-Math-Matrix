@@ -925,4 +925,4 @@ multi sub infix:<⊗>( Math::Matrix:D $a, Math::Matrix:D $b --> Math::Matrix:D) 
 multi sub infix:<X*>( Math::Matrix:D $a, Math::Matrix:D $b --> Math::Matrix:D) is equiv(&infix:<x>) is export { $a.tensor-product( $b ) }
 
 multi sub prefix:<MM>(Str   $m --> Math::Matrix:D) is tighter(&postcircumfix:<[ ]>) is export(:MM) { Math::Matrix.new($m) }
-multi sub prefix:<MM>(Array $m --> Math::Matrix:D) is tighter(&postcircumfix:<[ ]>) is export(:MM) { Math::Matrix.new(@$m) }
+multi sub prefix:<MM>(List  $m --> Math::Matrix:D) is tighter(&postcircumfix:<[ ]>) is export(:MM) { Math::Matrix.new(@$m) }
