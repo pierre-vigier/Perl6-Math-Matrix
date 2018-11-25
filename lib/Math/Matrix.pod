@@ -119,7 +119,7 @@ Alternatively you can define the matrix from a string, which makes most sense wh
 
 This method is a constructor, that returns a zero matrix (sometimes called empty),
 as checked by L<is-zero|#is-zero>. It has the L<size|#size> as given by arguments.
-If only one argument is given, the matrix is L<quadratic|#is-square>. All the elements are set to 0.
+If only one argument is given, the matrix is L<quadratic|#is-square>. All the L<element|#element>s are set to 0.
 
     say Math::Matrix.new-zero( 3, 4 ) :
 
@@ -136,7 +136,7 @@ If only one argument is given, the matrix is L<quadratic|#is-square>. All the el
 
 This method is a constructor that returns an identity matrix (as checked by L<is-identity|#is-identity>)
 of the size given in the only and required parameter.
-All the elements are set to 0 except the top/left to bottom/right diagonale is set to 1.
+All the L<element|#element>s are set to 0 except the top/left to bottom/right diagonale is set to 1.
 
     say Math::Matrix.new-identity( 3 ) :
   
@@ -148,7 +148,7 @@ All the elements are set to 0 except the top/left to bottom/right diagonale is s
 
 This method is a constructor that returns an diagonal matrix (as checked by L<is-diagonal|#is-diagonal>)
 of the size given by count of the parameter.
-All the elements are set to 0 except the top/left to bottom/right diagonal, set to given values.
+All the L<element|#element>s are set to 0 except the top/left to bottom/right diagonal, set to given values.
 
     say Math::Matrix.new-diagonal( 2, 4, 5 ) :
 
@@ -295,7 +295,7 @@ L<list-rows|#list-rows>, L<list-columns|#list-columns> or allow different views 
 =head3 L<Bool|#converter>
 
 Conversion into Bool context. Returns False if matrix is zero
-(all elements equal zero as in is-zero), otherwise True.
+(all elements equal zero as in L<is-zero|#is-zero>), otherwise True.
     
     $matrix.Bool
     ? $matrix           # alias op
@@ -303,7 +303,7 @@ Conversion into Bool context. Returns False if matrix is zero
 
 =head3 L<Str|#converter>
 
-Returns values of all elements, separated by one whitespace, rows by new line.
+Returns values of all L<element|#element>s, separated by one whitespace, rows by new line.
 This is the same format as expected by L<new("")|#new---2>.
 Str is called implicitly by put and print. A shortened version is provided by L<gist|#gist>
 
@@ -325,7 +325,7 @@ An infix (as in $matrix + $number) calls $matrix.add($number).
 
 =head3 L<Range|#converter>
 
-Returns an range object that reflects the content of all elements.
+Returns an range object that reflects the content of all L<element|#element>s.
 Please note that complex number can not be endpoints of ranges.
 
     say $matrix.Range: 1..4
@@ -337,14 +337,14 @@ To get single endpoints you could write:
 
 =head3 L<Array|#converter>
 
-Content of all elements as an array of arrays (same format that was put into L<new([...])|#new-->).
+Content of all L<element|#element>s as an array of arrays (same format that was put into L<new([...])|#new-->).
 
     say Math::Matrix.new([[1,2],[3,4]]).Array : [[1 2] [3 4]]
     say @ $matrix       # alias op, space between @ and $ needed
 
 =head3 L<list|#converter>
 
-Returns a flat list with all elements (same as .list-rows.flat.list).
+Returns a flat list with all L<element|#element>s (same as .list-rows.flat.list).
 
     say $matrix.list    : (1 2 3 4)
     say |$matrix        # alias op
@@ -424,11 +424,11 @@ True if number of rows and colums are the same (see L<size|#size>).
 
 =head3 L<is-zero|#boolean-properties>
 
-True if every element has value of 0 (as created by L<new-zero|#new-zero>).
+True if every L<element|#element> has value of 0 (as created by L<new-zero|#new-zero>).
 
 =head3 L<is-identity|#boolean-properties>
 
-True if every element on the main L<diagonal|#diagonal> (where row index equals column index) is 1
+True if every L<element|#element> on the main L<diagonal|#diagonal> (where row index equals column index) is 1
 and any other element is 0.
 
     Example:    1 0 0
@@ -437,7 +437,7 @@ and any other element is 0.
 
 =head3 L<is-upper-triangular|#boolean-properties>
 
-True if every element below the L<diagonal|#diagonal> (where row index is greater than column index) is 0.
+True if every L<element|#element> below the L<diagonal|#diagonal> (where row index is greater than column index) is 0.
 
     Example:    1 2 5
                 0 3 8
@@ -455,7 +455,7 @@ There is an optional, boolean argument named :strict.
 
 =head3 L<is-lower-triangular|#boolean-properties>
 
-True if every element above the L<diagonal|#diagonal> (where row index is smaller than column index) is 0.
+True if every L<element|#element> above the L<diagonal|#diagonal> (where row index is smaller than column index) is 0.
 
     Example:    1 0 0
                 2 3 0
@@ -482,7 +482,7 @@ In other words: if matrix is L<upper-triangular|#is-upper-triangular> and L<lowe
 
 =head3 L<is-diagonally-dominant|#boolean-properties>
 
-True when elements on the L<diagonal|#diagonal> have a bigger (if strict) or at least equal (in none strict)
+True when L<element|#element>s on the L<diagonal|#diagonal> have a bigger (if strict) or at least equal (in none strict)
 absolute value than the sum of its row (sum of absolute values of the row except diagonal element).
 
    if $matrix.is-diagonally-dominant {
@@ -495,7 +495,7 @@ absolute value than the sum of its row (sum of absolute values of the row except
 =head3 L<is-diagonal-constant|#boolean-properties>
 
 Checks if caller is a I<diagonal-constant> or I<Töplitz matrix>.
-True if every L<diagonal|#diagonal> is the a collection of elements that hold the same value.
+True if every L<diagonal|#diagonal> is the a collection of L<element|#element>s that hold the same value.
 
     Example:     0  1  2
                 -1  0  1
@@ -514,7 +514,7 @@ Catalecticant matrices are L<symmetric|#is-symmetric>.
 
 =head3 L<is-symmetric|#boolean-properties>
 
-True if every element with coordinates x y has same value as the element on y x.
+True if every L<element|#element> with coordinates x y has same value as the element on y x.
 In other words: $matrix and $matrix.L<transposed|#transposed> (alias T) are the same.
 
     Example:    1 2 3
@@ -584,7 +584,7 @@ List of two values: number of rows and number of columns.
 
 =head3 L<density|#numeric-properties>
 
-I<Density> is the percentage of element which are not zero. I<sparsity> = 1 - I<density>.
+I<Density> is the percentage of L<element|#element>s which are not zero. I<sparsity> = 1 - I<density>.
 
     my $d = $matrix.density;
 
@@ -598,17 +598,17 @@ value on an diagonal above or below the main diagonal, tha bandwith would be one
     
 =head4 L<lower-bandwith|#bandwith>
 
-In a matrix with the lower bandwith of k, every element with row index m and column index n,
+In a matrix with the lower bandwith of k, every L<element|#element> with row index m and column index n,
 for which holds m - k > n, the content has to be zero. Literally speaking: there are k L<diagonal|#diagonal>s
 below the main diagonal, that contain none zero values.
 
 =head4 L<upper-bandwith|#bandwith>
 
-Analogously, every element with m + k < n is zero if matrix has an upper bandwith of k.
+Analogously, every L<element|#element> with m + k < n is zero if matrix has an upper bandwith of k.
 
 =head3 L<trace|#numeric-properties>
 
-The trace of a L<square|#is-square> matrix is the sum of the elements on the main diagonal.
+The trace of a L<square|#is-square> matrix is the sum of the L<element|#element>s on the main diagonal.
 In other words: sum of elements which row and column value is identical.
 
     my $tr = $matrix.trace; 
@@ -649,7 +649,7 @@ A Minor is the determinant of a L<submatrix|#submatrix> (2 scalar argument, firs
 
 A norm is a single positive number, which is an abstraction to the concept of size.
 Most common form for matrices is the p-norm, where in step 1
-the absolute value of every element is taken to the power of p.
+the absolute value of every L<element|#element> is taken to the power of p.
 The sum of these results is taken to the power of 1/p. 
 The p-q-Norm extents this process. In his step 2 every column-sum is taken to the power of (p/q).
 In step 3 the sum of these are taken to the power of (1/q).
@@ -678,7 +678,7 @@ Condition number of a matrix is L2 norm * L2 of L<inverted|#inverted> matrix.
 
 =head4 L<widest-element-type|#numeric-properties>
 
-Matrix elements can be (from most narrow to widest), of type (Bool), (Int), (Num), (Rat), (FatRat) or (Complex). 
+Matrix L<element|#element>s can be (from most narrow to widest), of type (Bool), (Int), (Num), (Rat), (FatRat) or (Complex). 
 The widest type of any element will returned as type object.
 
 In the next example the smartmatch returns true, because no element of our default example matrix has wider type
@@ -714,7 +714,7 @@ Returns a new, transposed Matrix, where rows became colums and vice versa.
                              
 =head3 L<negated|#derived-matrices>
 
-Creates a matrix where every element has the negated value of the original (invertion of sign).
+Creates a matrix where every L<element|#element> has the negated value of the original (invertion of sign).
 
     my $new = $matrix.negated();     # invert sign of all elements
     my $neg = - $matrix;             # operator alias
@@ -724,7 +724,7 @@ Creates a matrix where every element has the negated value of the original (inve
 
 =head3 L<conjugated|#derived-matrices>
 
-Creates a matrix where every element has the complex conjugated of the original.
+Creates a matrix where every L<element|#element> is the complex conjugated of the original.
 
     my $c = $matrix.conjugated();    # change every value to its complex conjugated
     my $c = $matrix.conj();          # short alias (official Perl 6 name)
@@ -817,7 +817,7 @@ They are: L<equal|#equal>, L<add|#add>, L<multiply|#multiply>, L<dot-product|#do
 
 =head3 L<equal|#mathematical-operations>
 
-Checks two matrices for equality. They have to be of same size and every element
+Checks two matrices for equality. They have to be of same size and every L<element|#element>
 of the first matrix on a particular position has to be equal to the element
 (on the same position) of the second matrix (pass a check with ==).
     
@@ -861,7 +861,7 @@ and give a list or array (which have to fit the matrix size).
 
 =head4 L<add scalar|#add>
 
-When adding a single number to the matrix, it will be added to every element.
+When adding a single number to the matrix, it will be added to every L<element|#element>.
 If you provide a row or column number it will be only added to that row or column.
 In case you provide both, only a single element gets a different value in the result matrix.
 
@@ -880,7 +880,7 @@ In case you provide both, only a single element gets a different value in the re
 =head3 L<multiply|#mathematical-operations>
 
 Unlike the L<dot-product|#dot-product> and L<tensor-product|#tensor-product>,
-this operation is the simple, scalar multiplication applied to elements.
+this operation is the simple, scalar multiplication applied to L<element|#element>s.
 That is why this method works analogous to the scalar variant of L<add|#add-scalar>.
 However, when a matrix of same size is given, the result will be a matrix
 of that size again. Each element will be the product of two the two elements of the 
@@ -959,7 +959,7 @@ Methods that usually are provided by Lists and Arrays, but make also sense in co
 
 =head3 L<elems|#list-like-operations>
 
-Number (count) of elements = rows * columns (see L<size|#size>).
+Number (count) of L<element|#element>s = rows * columns (see L<size|#size>).
 
     say $matrix.elems();
 
@@ -1040,7 +1040,7 @@ Map only specified row (row number is first parameter).
 
 =head3 L<reduce|#list-like-operations>
 
-Like the built in reduce method, it iterates over all elements and joins
+Like the built in reduce method, it iterates over all L<element|#element>s and joins
 them into one value, by applying the given operator or method
 to the previous result and the next element. I starts with the element [0][0]
 and moving from left to right in the first row and continue with the first

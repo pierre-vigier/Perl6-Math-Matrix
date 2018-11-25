@@ -1,7 +1,8 @@
- 0.3.8:
+ 0.4.0:
     § 2018.11.
     ! reworked all map methods
-    * map, map-with-index, map-index enhanced
+    ! renamed cell to element
+    * map, map-with-index enhanced
     - map-row, map-column
     + accessor skew-diagonal
     + bool property catalecticant

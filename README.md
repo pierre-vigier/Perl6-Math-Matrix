@@ -119,7 +119,7 @@ Alternatively you can define the matrix from a string, which makes most sense wh
 
 ### [new-zero](#constructors)
 
-This method is a constructor, that returns a zero matrix (sometimes called empty), as checked by [is-zero](#is-zero). It has the [size](#size) as given by arguments. If only one argument is given, the matrix is [quadratic](#is-square). All the elements are set to 0.
+This method is a constructor, that returns a zero matrix (sometimes called empty), as checked by [is-zero](#is-zero). It has the [size](#size) as given by arguments. If only one argument is given, the matrix is [quadratic](#is-square). All the [element](#element)s are set to 0.
 
     say Math::Matrix.new-zero( 3, 4 ) :
 
@@ -134,7 +134,7 @@ This method is a constructor, that returns a zero matrix (sometimes called empty
 
 ### [new-identity](#constructors)
 
-This method is a constructor that returns an identity matrix (as checked by [is-identity](#is-identity)) of the size given in the only and required parameter. All the elements are set to 0 except the top/left to bottom/right diagonale is set to 1.
+This method is a constructor that returns an identity matrix (as checked by [is-identity](#is-identity)) of the size given in the only and required parameter. All the [element](#element)s are set to 0 except the top/left to bottom/right diagonale is set to 1.
 
     say Math::Matrix.new-identity( 3 ) :
       
@@ -144,7 +144,7 @@ This method is a constructor that returns an identity matrix (as checked by [is-
 
 ### [new-diagonal](#constructors)
 
-This method is a constructor that returns an diagonal matrix (as checked by [is-diagonal](#is-diagonal)) of the size given by count of the parameter. All the elements are set to 0 except the top/left to bottom/right diagonal, set to given values.
+This method is a constructor that returns an diagonal matrix (as checked by [is-diagonal](#is-diagonal)) of the size given by count of the parameter. All the [element](#element)s are set to 0 except the top/left to bottom/right diagonal, set to given values.
 
     say Math::Matrix.new-diagonal( 2, 4, 5 ) :
 
@@ -264,7 +264,7 @@ Methods that convert a matrix into other types: [Bool](#bool), [Str](#str), [Num
 
 ### [Bool](#converter)
 
-Conversion into Bool context. Returns False if matrix is zero (all elements equal zero as in is-zero), otherwise True.
+Conversion into Bool context. Returns False if matrix is zero (all elements equal zero as in [is-zero](#is-zero)), otherwise True.
 
     $matrix.Bool
     ? $matrix           # alias op
@@ -272,7 +272,7 @@ Conversion into Bool context. Returns False if matrix is zero (all elements equa
 
 ### [Str](#converter)
 
-Returns values of all elements, separated by one whitespace, rows by new line. This is the same format as expected by [new("")](#new---2). Str is called implicitly by put and print. A shortened version is provided by [gist](#gist)
+Returns values of all [element](#element)s, separated by one whitespace, rows by new line. This is the same format as expected by [new("")](#new---2). Str is called implicitly by put and print. A shortened version is provided by [gist](#gist)
 
     say Math::Matrix.new([[1,2],[3,4]]).Str:
 
@@ -290,7 +290,7 @@ Conversion into Numeric context. Returns Euclidean [norm](#norm). Please note, o
 
 ### [Range](#converter)
 
-Returns an range object that reflects the content of all elements. Please note that complex number can not be endpoints of ranges.
+Returns an range object that reflects the content of all [element](#element)s. Please note that complex number can not be endpoints of ranges.
 
     say $matrix.Range: 1..4
 
@@ -301,14 +301,14 @@ To get single endpoints you could write:
 
 ### [Array](#converter)
 
-Content of all elements as an array of arrays (same format that was put into [new([...])](#new--)).
+Content of all [element](#element)s as an array of arrays (same format that was put into [new([...])](#new--)).
 
     say Math::Matrix.new([[1,2],[3,4]]).Array : [[1 2] [3 4]]
     say @ $matrix       # alias op, space between @ and $ needed
 
 ### [list](#converter)
 
-Returns a flat list with all elements (same as .list-rows.flat.list).
+Returns a flat list with all [element](#element)s (same as .list-rows.flat.list).
 
     say $matrix.list    : (1 2 3 4)
     say |$matrix        # alias op
@@ -371,11 +371,11 @@ True if number of rows and colums are the same (see [size](#size)).
 
 ### [is-zero](#boolean-properties)
 
-True if every element has value of 0 (as created by [new-zero](#new-zero)).
+True if every [element](#element) has value of 0 (as created by [new-zero](#new-zero)).
 
 ### [is-identity](#boolean-properties)
 
-True if every element on the main [diagonal](#diagonal) (where row index equals column index) is 1 and any other element is 0.
+True if every [element](#element) on the main [diagonal](#diagonal) (where row index equals column index) is 1 and any other element is 0.
 
     Example:    1 0 0
                 0 1 0
@@ -383,7 +383,7 @@ True if every element on the main [diagonal](#diagonal) (where row index equals 
 
 ### [is-upper-triangular](#boolean-properties)
 
-True if every element below the [diagonal](#diagonal) (where row index is greater than column index) is 0.
+True if every [element](#element) below the [diagonal](#diagonal) (where row index is greater than column index) is 0.
 
     Example:    1 2 5
                 0 3 8
@@ -400,7 +400,7 @@ There is an optional, boolean argument named :strict.
 
 ### [is-lower-triangular](#boolean-properties)
 
-True if every element above the [diagonal](#diagonal) (where row index is smaller than column index) is 0.
+True if every [element](#element) above the [diagonal](#diagonal) (where row index is smaller than column index) is 0.
 
     Example:    1 0 0
                 2 3 0
@@ -425,7 +425,7 @@ True if matrix is [square](#is-square) and only elements on the [diagonal](#diag
 
 ### [is-diagonally-dominant](#boolean-properties)
 
-True when elements on the [diagonal](#diagonal) have a bigger (if strict) or at least equal (in none strict) absolute value than the sum of its row (sum of absolute values of the row except diagonal element).
+True when [element](#element)s on the [diagonal](#diagonal) have a bigger (if strict) or at least equal (in none strict) absolute value than the sum of its row (sum of absolute values of the row except diagonal element).
 
     if $matrix.is-diagonally-dominant {
     $matrix.is-diagonally-dominant(:!strict)      # same thing (default)
@@ -436,7 +436,7 @@ True when elements on the [diagonal](#diagonal) have a bigger (if strict) or at 
 
 ### [is-diagonal-constant](#boolean-properties)
 
-Checks if caller is a *diagonal-constant* or *Töplitz matrix*. True if every [diagonal](#diagonal) is the a collection of elements that hold the same value.
+Checks if caller is a *diagonal-constant* or *Töplitz matrix*. True if every [diagonal](#diagonal) is the a collection of [element](#element)s that hold the same value.
 
     Example:     0  1  2
                 -1  0  1
@@ -452,7 +452,7 @@ Checks if caller is a *catalecticant* or *Hankel matrix*. True if every [skew di
 
 ### [is-symmetric](#boolean-properties)
 
-True if every element with coordinates x y has same value as the element on y x. In other words: $matrix and $matrix.[transposed](#transposed) (alias T) are the same.
+True if every [element](#element) with coordinates x y has same value as the element on y x. In other words: $matrix and $matrix.[transposed](#transposed) (alias T) are the same.
 
     Example:    1 2 3
                 2 5 4
@@ -510,7 +510,7 @@ List of two values: number of rows and number of columns.
 
 ### [density](#numeric-properties)
 
-*Density* is the percentage of element which are not zero. *sparsity* = 1 - *density*.
+*Density* is the percentage of [element](#element)s which are not zero. *sparsity* = 1 - *density*.
 
     my $d = $matrix.density;
 
@@ -522,15 +522,15 @@ Is roughly the greatest distance of a none zero value from the main [diagonal](#
 
 #### [lower-bandwith](#bandwith)
 
-In a matrix with the lower bandwith of k, every element with row index m and column index n, for which holds m - k > n, the content has to be zero. Literally speaking: there are k [diagonal](#diagonal)s below the main diagonal, that contain none zero values.
+In a matrix with the lower bandwith of k, every [element](#element) with row index m and column index n, for which holds m - k > n, the content has to be zero. Literally speaking: there are k [diagonal](#diagonal)s below the main diagonal, that contain none zero values.
 
 #### [upper-bandwith](#bandwith)
 
-Analogously, every element with m + k < n is zero if matrix has an upper bandwith of k.
+Analogously, every [element](#element) with m + k < n is zero if matrix has an upper bandwith of k.
 
 ### [trace](#numeric-properties)
 
-The trace of a [square](#is-square) matrix is the sum of the elements on the main diagonal. In other words: sum of elements which row and column value is identical.
+The trace of a [square](#is-square) matrix is the sum of the [element](#element)s on the main diagonal. In other words: sum of elements which row and column value is identical.
 
     my $tr = $matrix.trace;
 
@@ -562,7 +562,7 @@ Arguments are row and column of an existing [element](#element). A Minor is the 
 
 ### [norm](#numeric-properties)
 
-A norm is a single positive number, which is an abstraction to the concept of size. Most common form for matrices is the p-norm, where in step 1 the absolute value of every element is taken to the power of p. The sum of these results is taken to the power of 1/p. The p-q-Norm extents this process. In his step 2 every column-sum is taken to the power of (p/q). In step 3 the sum of these are taken to the power of (1/q).
+A norm is a single positive number, which is an abstraction to the concept of size. Most common form for matrices is the p-norm, where in step 1 the absolute value of every [element](#element) is taken to the power of p. The sum of these results is taken to the power of 1/p. The p-q-Norm extents this process. In his step 2 every column-sum is taken to the power of (p/q). In step 3 the sum of these are taken to the power of (1/q).
 
     my $norm = $matrix.norm( );           # euclidian norm aka L2 (p = 2, q = 2)
     my $norm = + $matrix;                 # context op shortcut
@@ -588,7 +588,7 @@ Condition number of a matrix is L2 norm * L2 of [inverted](#inverted) matrix.
 
 #### [widest-element-type](#numeric-properties)
 
-Matrix elements can be (from most narrow to widest), of type (Bool), (Int), (Num), (Rat), (FatRat) or (Complex). The widest type of any element will returned as type object.
+Matrix [element](#element)s can be (from most narrow to widest), of type (Bool), (Int), (Num), (Rat), (FatRat) or (Complex). The widest type of any element will returned as type object.
 
 In the next example the smartmatch returns true, because no element of our default example matrix has wider type than (Int). After such a test all elements can be safely treated as Int or Bool.
 
@@ -619,7 +619,7 @@ Returns a new, transposed Matrix, where rows became colums and vice versa.
 
 ### [negated](#derived-matrices)
 
-Creates a matrix where every element has the negated value of the original (invertion of sign).
+Creates a matrix where every [element](#element) has the negated value of the original (invertion of sign).
 
     my $new = $matrix.negated();     # invert sign of all elements
     my $neg = - $matrix;             # operator alias
@@ -629,7 +629,7 @@ Creates a matrix where every element has the negated value of the original (inve
 
 ### [conjugated](#derived-matrices)
 
-Creates a matrix where every element has the complex conjugated of the original.
+Creates a matrix where every [element](#element) is the complex conjugated of the original.
 
     my $c = $matrix.conjugated();    # change every value to its complex conjugated
     my $c = $matrix.conj();          # short alias (official Perl 6 name)
@@ -707,7 +707,7 @@ They are: [equal](#equal), [add](#add), [multiply](#multiply), [dot-product](#do
 
 ### [equal](#mathematical-operations)
 
-Checks two matrices for equality. They have to be of same size and every element of the first matrix on a particular position has to be equal to the element (on the same position) of the second matrix (pass a check with ==).
+Checks two matrices for equality. They have to be of same size and every [element](#element) of the first matrix on a particular position has to be equal to the element (on the same position) of the second matrix (pass a check with ==).
 
     if $matrixa.equal( $matrixb ) {
     if $matrixa == $matrixb {
@@ -744,7 +744,7 @@ To add a vector you have to specify to which row or column it should be added an
 
 #### [add scalar](#add)
 
-When adding a single number to the matrix, it will be added to every element. If you provide a row or column number it will be only added to that row or column. In case you provide both, only a single element gets a different value in the result matrix.
+When adding a single number to the matrix, it will be added to every [element](#element). If you provide a row or column number it will be only added to that row or column. In case you provide both, only a single element gets a different value in the result matrix.
 
     $matrix.add( $number );       # adds number from every element 
     $matrix + $number;            # works too
@@ -760,7 +760,7 @@ When adding a single number to the matrix, it will be added to every element. If
 
 ### [multiply](#mathematical-operations)
 
-Unlike the [dot-product](#dot-product) and [tensor-product](#tensor-product), this operation is the simple, scalar multiplication applied to elements. That is why this method works analogous to the scalar variant of [add](#add-scalar). However, when a matrix of same size is given, the result will be a matrix of that size again. Each element will be the product of two the two elements of the operands with the same indices (position).
+Unlike the [dot-product](#dot-product) and [tensor-product](#tensor-product), this operation is the simple, scalar multiplication applied to [element](#element)s. That is why this method works analogous to the scalar variant of [add](#add-scalar). However, when a matrix of same size is given, the result will be a matrix of that size again. Each element will be the product of two the two elements of the operands with the same indices (position).
 
     my $product = $matrix.multiply( $number );   # multiply every element with number
     my $p = $matrix * $number;                   # works too
@@ -830,7 +830,7 @@ Methods that usually are provided by Lists and Arrays, but make also sense in co
 
 ### [elems](#list-like-operations)
 
-Number (count) of elements = rows * columns (see [size](#size)).
+Number (count) of [element](#element)s = rows * columns (see [size](#size)).
 
     say $matrix.elems();
 
@@ -896,7 +896,7 @@ Map only specified row (row number is first parameter).
 
 ### [reduce](#list-like-operations)
 
-Like the built in reduce method, it iterates over all elements and joins them into one value, by applying the given operator or method to the previous result and the next element. I starts with the element [0][0] and moving from left to right in the first row and continue with the first element of the next row.
+Like the built in reduce method, it iterates over all [element](#element)s and joins them into one value, by applying the given operator or method to the previous result and the next element. I starts with the element [0][0] and moving from left to right in the first row and continue with the first element of the next row.
 
     Math::Matrix.new([[1,2],[3,4]]).reduce(&[+]): 10 = 1 + 2 + 3 + 4
     Math::Matrix.new([[1,2],[3,4]]).reduce(&[*]): 10 = 1 * 2 * 3 * 4
