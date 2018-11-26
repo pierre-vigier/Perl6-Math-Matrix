@@ -882,22 +882,6 @@ Works just like [map](#map) with the only difference that the given block can re
     1 0
     0 4
 
-### [map-row](#list-like-operations)
-
-Map only specified row (row number is first parameter).
-
-    say $matrix.map-row(1, {$_ + 1}) :
-
-    1 2
-    4 5
-
-### [map-column](#list-like-operations)
-
-    say $matrix.map-column(1, {0}) :
-
-    1 0
-    3 0
-
 ### [reduce](#list-like-operations)
 
 Like the built in reduce method, it iterates over all [element](#element)s and joins them into one value, by applying the given operator or method to the previous result and the next element. I starts with the element [0][0] and moving from left to right in the first row and continue with the first element of the next row.
