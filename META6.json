@@ -5,9 +5,7 @@
     "github:lichtkind"
   ],
   "build-depends" : [ ],
-  "depends" : [
-    "AttrX::Lazy"
-  ],
+  "depends" : [ "AttrX::Lazy" ],
   "description" : "create, compare, compute and measure matrices",
   "license" : "Artistic-2.0",
   "name" : "Math::Matrix",
@@ -19,6 +17,6 @@
   "resources" : [ ],
   "source-url" : "git://github.com/pierre-vigier/Perl6-Math-Matrix.git",
   "tags" : [ "Math" ],
-  "test-depends" : [ ],
-  "version" : "0.3.7"
+  "test-depends" : [ "Test", "Test::META"],
+  "version" : "0.3.8"
 }

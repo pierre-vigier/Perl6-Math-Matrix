@@ -1,5 +1,5 @@
- 0.4.0:
-    § 2018.11.
+ 0.3.8:
+    § 2018.11.26
     ! reworked all map methods
     ! renamed cell to element
     * map, map-with-index enhanced
@@ -8,6 +8,7 @@
     + bool property catalecticant
     + bool property tridiagonal
     + numeric property bandwith, lower-bandwith, upper-bandwith
+    x MM list of lists works now
     = streamlined TOC
     = reordered some chapter
     = rewrote some docs, more links
@@ -114,7 +115,7 @@ Legend:
   - removed feature
   * enhanced feature
   / reduced feature 
-  x bug fiX
   ! API change
+  x bug fiX
   = documentation
   & project infrastructure
