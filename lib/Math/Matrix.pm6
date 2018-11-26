@@ -675,8 +675,6 @@ multi method add(Math::Matrix:D: Math::Matrix $b where {self.size eqv $b.size} -
     }
     Math::Matrix.new( @sum );
 }
-
-
 # add vector
 multi method add(Math::Matrix:D: @v where {@v.all ~~ Numeric}, Int :$row! --> Math::Matrix:D) {
     fail "Matrix has $!column-count columns, but got "~ +@v ~ "element row." unless $!column-count == +@v;
@@ -692,15 +690,13 @@ multi method add(Math::Matrix:D: @v where {@v.all ~~ Numeric}, Int :$column! -->
     @v.keys.map:{ @m[$_][$column] += @v[$_] };
     Math::Matrix.new( @m );
 }
-
-
 # add scalar
-multi method add(Math::Matrix:D: Numeric $s, --> Math::Matrix:D )             { self.map( *  + $s  ) }
+multi method add(Math::Matrix:D: Numeric $s, --> Math::Matrix:D )                          { self.map( *  + $s  ) }
 multi method add(Math::Matrix:D: Numeric $s, Int :$row!, Int :$column --> Math::Matrix:D ) {
     self!check-row-index($row)       if $row.defined;
     self!check-column-index($column) if $column.defined;
     self.map(rows  => $row.defined ?? ($row..$row) !! ^$!row-count, 
-             colums => $column.defined ?? ($column..$column) !! ^$!column-count, { $_ + $s } );
+             columns => $column.defined ?? ($column..$column) !! ^$!column-count, { $_ + $s } );
 }
 
 
@@ -713,17 +709,12 @@ multi method multiply(Math::Matrix:D: Math::Matrix $b where {self.size eqv $b.si
     }
     Math::Matrix.new( @product );
 }
+multi method multiply(Math::Matrix:D: Numeric $f --> Math::Matrix:D )                          { self.map( *  * $f  ) }
 multi method multiply(Math::Matrix:D: Numeric $f, Int :$row, Int :$column --> Math::Matrix:D ) {
     self!check-row-index($row)       if $row.defined;
     self!check-column-index($column) if $column.defined;
-    if $row.defined and $column.defined {
-        my @m = self!clone-cells;
-        @m[$row][$column] *= $f;
-        return  Math::Matrix.new(@m);
-    }
-    return self.map-row(       $row, { $_ * $f} ) if $row.defined;
-    return self.map-column( $column, { $_ * $f} ) if $column.defined;
-           self.map(                   *  * $f  );
+    self.map(rows  => $row.defined ?? ($row..$row) !! ^$!row-count,
+             columns => $column.defined ?? ($column..$column) !! ^$!column-count, { $_ * $f } );
 }
 
 method dot-product(Math::Matrix:D: Math::Matrix $b --> Math::Matrix:D ) {
