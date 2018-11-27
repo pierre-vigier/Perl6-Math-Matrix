@@ -33,7 +33,7 @@ nok $diagonal.is-identity,        "diagonal is not an identity matrix";
 nok $almostidentity.is-identity,  "none square is not an identity matrix";
 
 my $z3 = Math::Matrix.new-zero(3);
-my $sut = Math::Matrix.new([[0,1],[0,0]]);
+my $sut = Math::Matrix.new([[0,1],[0,0]]); # strictly upper triangular matrix
 ok $ut.is-upper-triangular,          "Is an upper triangular matrix";
 ok $ut.is-upper-triangular(:!strict),"Is an upper triangular, none strict matrix";
 nok $ut.is-upper-triangular(:strict),"Upper triangular matrix is not strict";
@@ -42,7 +42,7 @@ ok $diagonal.is-upper-triangular,    "Diagonal are upper triangular";
 nok $matrixa.is-upper-triangular,    "Is not an upper triangular matrix";
 nok $lt.is-upper-triangular,         "lower triangular is no upper triangular matrix";
 
-my $slt = Math::Matrix.new([[0,0],[1,0]]);
+my $slt = Math::Matrix.new([[0,0],[1,0]]); # strictly lower triangular matrix
 ok $lt.is-lower-triangular,          "Is an lower triangular matrix";
 ok $lt.is-lower-triangular(:!strict),"Is an lower triangular, none strict matrix";
 nok $lt.is-lower-triangular(:strict),"Lower triangugal matrix is not strict";

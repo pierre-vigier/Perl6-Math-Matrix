@@ -438,7 +438,8 @@ and any other element is 0.
 
 =head3 L<is-upper-triangular|#boolean-properties>
 
-True if every L<element|#element> below the L<diagonal|#diagonal> (where row index is greater than column index) is 0.
+a.k.a I<right triangular> matrix: every L<element|#element> below the L<diagonal|#diagonal> (where row index is greater than column index) is 0.
+In other words: the L<lower-bandwith|#lower-bandwith> is zero.
 
     Example:    1 2 5
                 0 3 8
@@ -456,7 +457,8 @@ There is an optional, boolean argument named :strict.
 
 =head3 L<is-lower-triangular|#boolean-properties>
 
-True if every L<element|#element> above the L<diagonal|#diagonal> (where row index is smaller than column index) is 0.
+a.k.a I<left triangular> matrix: every L<element|#element> above the L<diagonal|#diagonal> (where row index is smaller than column index) is 0.
+In other words: the L<upper-bandwith|#upper-bandwith> is zero.
 
     Example:    1 0 0
                 2 3 0
@@ -606,6 +608,13 @@ below the main diagonal, that contain none zero values.
 =head4 L<upper-bandwith|#bandwith>
 
 Analogously, every L<element|#element> with m + k < n is zero if matrix has an upper bandwith of k.
+
+    Example:    1  0  0
+                4  2  0
+                0  5  3
+
+The example matrix has an upper bandwith of zero and lower bandwith of one, so the overall bandwith is one.
+
 
 =head3 L<trace|#numeric-properties>
 
