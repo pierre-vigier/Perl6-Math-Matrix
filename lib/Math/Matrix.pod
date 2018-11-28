@@ -1240,7 +1240,7 @@ The postcircumfix [] - op will always work.
      ｜$matrix ｜                     # determinant, unicode (U+0FF5C)
      ‖ $matrix ‖                     # L2 norm (euclidean p=2 to the square), (U+02016)
 
-       $matrix[1][2]                 # element in second row and third column, works even when used :MANDATORY tag
+       $matrix[1][2]                 # 2nd row, 3rd column element - works even under :MANDATORY tag
 
     MM [[1]]                         # a new matrix, has higher precedence than postcircumfix:[]
     MM '1'                           # string alias
