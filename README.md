@@ -533,7 +533,7 @@ Analogously, every [element](#element) with m + k < n is zero if matrix has an u
                 4  2  0
                 0  5  3
 
-The example matrix has an upper bandwith of zero and lower bandwith of one, so the overall bandwith is one.
+The *bidiagonal* example matrix has an upper bandwith of zero and lower bandwith of one, so the overall bandwith is one.
 
 ### [trace](#numeric-properties)
 

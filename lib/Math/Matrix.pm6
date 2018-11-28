@@ -8,7 +8,7 @@ use AttrX::Lazy;
 # attributes
 ################################################################################
 
-has @!rows is required;
+has @!rows is required; # primary content
 
 has Int $!row-count;
 has Int $!column-count;
@@ -74,16 +74,16 @@ multi method new (Str $m){
 }
 
 submethod BUILD( :@rows!, :$density, :$trace, :$determinant, :$rank, :$nullity, :$is-zero, :$is-identity, :$is-symmetric) {
-    @!rows        = self!AoA-clone(@rows);
-    $!row-count   = @rows.elems;
+    @!rows         = self!AoA-clone(@rows);
+    $!row-count    = @rows.elems;
     $!column-count = @rows[0].elems;
-    $!density     = $density if $density.defined;
-    $!trace       = $trace if $trace.defined;
-    $!determinant = $determinant if $determinant.defined;
-    $!rank        = $rank if $rank.defined;
-    $!nullity     = $nullity if $nullity.defined;
-    $!is-zero     = $is-zero if $is-zero.defined;
-    $!is-identity = $is-identity if $is-identity.defined;
+    $!density      = $density if $density.defined;
+    $!trace        = $trace if $trace.defined;
+    $!determinant  = $determinant if $determinant.defined;
+    $!rank         = $rank if $rank.defined;
+    $!nullity      = $nullity if $nullity.defined;
+    $!is-zero      = $is-zero if $is-zero.defined;
+    $!is-identity  = $is-identity if $is-identity.defined;
     $!is-symmetric = $is-symmetric if $is-symmetric.defined;
 }
 
