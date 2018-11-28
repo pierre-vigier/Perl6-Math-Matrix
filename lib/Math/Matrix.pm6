@@ -13,12 +13,12 @@ has @!rows is required;
 has Int $!row-count;
 has Int $!column-count;
 
+has Bool $!is-square is lazy;
 has Bool $!is-zero is lazy;
 has Bool $!is-identity is lazy;
 has Bool $!is-diagonal is lazy;
 has Bool $!is-diagonal-constant is lazy;
 has Bool $!is-catalecticant is lazy;
-has Bool $!is-square is lazy;
 has Bool $!is-symmetric is lazy;
 has Bool $!is-antisymmetric is lazy;
 has Bool $!is-self-adjoint is lazy;

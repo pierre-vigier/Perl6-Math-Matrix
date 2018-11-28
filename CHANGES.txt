@@ -1,12 +1,16 @@
+ 0.3.9:
+    § 2018.12.
+    + bool property tridiagonal
+
+
  0.3.8:
     § 2018.11.26
     ! reworked all map methods
     ! renamed cell to element
     * map, map-with-index enhanced
-    - map-row, map-column
+    - map-row, map-column, map-index
     + accessor skew-diagonal
     + bool property catalecticant
-    + bool property tridiagonal
     + numeric property bandwith, lower-bandwith, upper-bandwith
     x MM list of lists works now
     = streamlined TOC
