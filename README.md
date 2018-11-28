@@ -384,7 +384,7 @@ True if every [element](#element) on the main [diagonal](#diagonal) (where row i
 
 ### [is-upper-triangular](#boolean-properties)
 
-True if every [element](#element) below the [diagonal](#diagonal) (where row index is greater than column index) is 0.
+a.k.a *right triangular* matrix: every [element](#element) below the [diagonal](#diagonal) (where row index is greater than column index) is 0. In other words: the [lower-bandwith](#lower-bandwith) is zero.
 
     Example:    1 2 5
                 0 3 8
@@ -401,7 +401,7 @@ There is an optional, boolean argument named :strict.
 
 ### [is-lower-triangular](#boolean-properties)
 
-True if every [element](#element) above the [diagonal](#diagonal) (where row index is smaller than column index) is 0.
+a.k.a *left triangular* matrix: every [element](#element) above the [diagonal](#diagonal) (where row index is smaller than column index) is 0. In other words: the [upper-bandwith](#upper-bandwith) is zero.
 
     Example:    1 0 0
                 2 3 0
@@ -528,6 +528,12 @@ In a matrix with the lower bandwith of k, every [element](#element) with row ind
 #### [upper-bandwith](#bandwith)
 
 Analogously, every [element](#element) with m + k < n is zero if matrix has an upper bandwith of k.
+
+    Example:    1  0  0
+                4  2  0
+                0  5  3
+
+The *bidiagonal* example matrix has an upper bandwith of zero and lower bandwith of one, so the overall bandwith is one.
 
 ### [trace](#numeric-properties)
 

@@ -8,13 +8,14 @@ use AttrX::Lazy;
 # attributes
 ################################################################################
 
-has @!rows is required;
+has @!rows is required; # primary content
 
 has Int $!row-count;
 has Int $!column-count;
 
 has Bool $!is-square is lazy;
 has Bool $!is-zero is lazy;
+has Bool $!is-main-diagonal-zero is lazy;
 has Bool $!is-identity is lazy;
 has Bool $!is-diagonal is lazy;
 has Bool $!is-diagonal-constant is lazy;
@@ -73,16 +74,16 @@ multi method new (Str $m){
 }
 
 submethod BUILD( :@rows!, :$density, :$trace, :$determinant, :$rank, :$nullity, :$is-zero, :$is-identity, :$is-symmetric) {
-    @!rows        = self!AoA-clone(@rows);
-    $!row-count   = @rows.elems;
+    @!rows         = self!AoA-clone(@rows);
+    $!row-count    = @rows.elems;
     $!column-count = @rows[0].elems;
-    $!density     = $density if $density.defined;
-    $!trace       = $trace if $trace.defined;
-    $!determinant = $determinant if $determinant.defined;
-    $!rank        = $rank if $rank.defined;
-    $!nullity     = $nullity if $nullity.defined;
-    $!is-zero     = $is-zero if $is-zero.defined;
-    $!is-identity = $is-identity if $is-identity.defined;
+    $!density      = $density if $density.defined;
+    $!trace        = $trace if $trace.defined;
+    $!determinant  = $determinant if $determinant.defined;
+    $!rank         = $rank if $rank.defined;
+    $!nullity      = $nullity if $nullity.defined;
+    $!is-zero      = $is-zero if $is-zero.defined;
+    $!is-identity  = $is-identity if $is-identity.defined;
     $!is-symmetric = $is-symmetric if $is-symmetric.defined;
 }
 
@@ -250,44 +251,27 @@ multi method perl(Math::Matrix:D: --> Str){ self.WHAT.perl ~ ".new(" ~ @!rows.pe
 # end of type conversion and handy shortcuts - start boolean matrix properties
 ################################################################################
 
-method !build_is-square( Math::Matrix:D: --> Bool)   { $!column-count == $!row-count }
-method !build_is-zero(    Math::Matrix:D: --> Bool)  { self.density() == 0 }
-method !build_is-identity( Math::Matrix:D: --> Bool) {
-    return False unless self.is-square;
-    for ^$!row-count X ^$!column-count -> ($r, $c) {
-        return False unless @!rows[$r][$c] == ($r == $c ?? 1 !! 0);
-    }
-    True;
-}
+method !build_is-square( Math::Matrix:D: --> Bool)        { $!column-count == $!row-count }
+method !build_is-zero(    Math::Matrix:D: --> Bool)        { self.density() == 0 }
+method !build_is-identity( Math::Matrix:D: --> Bool)        { $.is-diagonal and [==](($.diagonal.flat,1).flat)}
+method !build_is-main-diagonal-zero(Math::Matrix:D: --> Bool){ [==](($.diagonal.flat,0).flat) }
 
 method is-upper-triangular(Math::Matrix:D: Bool :$strict = False --> Bool) {
-    return False unless self.is-square;
-    my $cmp_op = $strict ?? &[>=] !! &[>];
-    for ^$!row-count X ^$!column-count -> ($r, $c) {
-        return False if @!rows[$r][$c] != 0 and $cmp_op.($r, $c);
-    }
-    True;
+    $.is-square and $.lower-bandwith == 0 and (!$strict or $.is-main-diagonal-zero)
 }
-
 method is-lower-triangular( Math::Matrix:D: Bool :$strict = False --> Bool) {
-    return False unless self.is-square;
-    my $cmp_op = $strict ?? &[<=] !! &[<];
-    for ^$!row-count X ^$!column-count -> ($r, $c) {
-        return False if @!rows[$r][$c] != 0 and $cmp_op.($r, $c);
-    }
-    True;
+    $.is-square and $.upper-bandwith == 0 and (!$strict or $.is-main-diagonal-zero)
 }
 
 method !build_is-diagonal( Math::Matrix:D: --> Bool) {
-    $.is-upper-triangular && $.is-lower-triangular;
+    self.is-square and $.lower-bandwith == 0 and $.upper-bandwith == 0;
 }
 
 method !build_is-diagonal-constant( Math::Matrix:D: --> Bool) {
     [&&](map { [==] $.diagonal($_).list }, -$!column-count+1 .. $!row-count-1);
 }
 method !build_is-catalecticant( Math::Matrix:D: --> Bool) {
-    return False unless $.is-square;
-    [&&](map { [==] $.skew-diagonal($_).list }, -$!column-count+1 .. $!row-count-1);
+    $.is-square and [&&](map { [==] $.skew-diagonal($_).list }, -$!column-count+1 .. $!row-count-1);
 }
 
 method is-diagonally-dominant( Math::Matrix:D: Bool :$strict = False, 
@@ -328,18 +312,15 @@ method !build_is-antisymmetric(Math::Matrix:D: --> Bool) {
 }
 
 method !build_is-self-adjoint(Math::Matrix:D: --> Bool) {
-    return False unless self.is-square;
-    self.T.conj ~~ self;
+    self.is-square and self.T.conj ~~ self
 }
 
 method !build_is-unitary(Math::Matrix:D: --> Bool) {
-    return False unless self.is-square;
-    self.dot-product( self.T.conj ) ~~ Math::Matrix.new-identity( $!row-count );
+    self.is-square and self.dot-product( self.T.conj ) ~~ Math::Matrix.new-identity( $!row-count );
 }
 
 method !build_is-orthogonal(Math::Matrix:D: --> Bool) {
-    return False unless self.is-square;
-    self.dot-product( self.T ) ~~ Math::Matrix.new-identity( $!row-count );
+    self.is-square and self.dot-product( self.T ) ~~ Math::Matrix.new-identity( $!row-count );
 }
 
 method !build_is-invertible(Math::Matrix:D: --> Bool) {
