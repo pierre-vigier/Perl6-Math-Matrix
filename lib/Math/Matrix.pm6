@@ -256,6 +256,9 @@ method !build_is-zero(    Math::Matrix:D: --> Bool)        { self.density() == 0
 method !build_is-identity( Math::Matrix:D: --> Bool)        { $.is-diagonal and [==](($.diagonal.flat,1).flat)}
 method !build_is-main-diagonal-zero(Math::Matrix:D: --> Bool){ [==](($.diagonal.flat,0).flat) }
 
+method is-triangular(Math::Matrix:D: --> Bool) {
+    $.is-square and ($.lower-bandwith == 0 or $.upper-bandwith == 0) 
+}
 method is-upper-triangular(Math::Matrix:D: Bool :$strict = False --> Bool) {
     $.is-square and $.lower-bandwith == 0 and (!$strict or $.is-main-diagonal-zero)
 }

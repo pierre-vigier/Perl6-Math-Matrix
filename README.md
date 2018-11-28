@@ -22,7 +22,7 @@ SYNOPSIS
 Matrices are tables with rows and columns (index counting from 0) of numbers (Numeric type - Bool or Int or Num or Rat or FatRat or Complex): 
 
     transpose, invert, negate, add, multiply, dot product, tensor product, 22 ops, determinant, rank, norm
-    13 numerical properties, 19 boolean properties, 3 decompositions, submatrix, splice, map, reduce and more
+    13 numerical properties, 20 boolean properties, 3 decompositions, submatrix, splice, map, reduce and more
 
 Table of Content:
 
@@ -54,7 +54,7 @@ All computation heavy properties will be calculated lazily and cached.
 
   * **[converter](#converter)**: [Bool](#bool), [Str](#str), [Numeric](#numeric), [Range](#range), [Array](#array), [list](#list), [list-rows](#list-rows), [list-columns](#list-columns), [Hash](#hash), [gist](#gist), [perl](#perl)
 
-  * **[boolean properties](#boolean-properties)**: [square](#is-square), [zero](#is-zero), [identity](#identity), [upper-](#is-upper-triangular), [lower-triangular](#is-lower-triangular), [diagonal](#is-diagonal), [-dominant](#is-diagonally-dominant), [-constant](#is-diagonal-constant), [catalecticant](#is-catalecticant), [anti-](#is-antisymmetric), [symmetric](#is-symmetric), [unitary](#is-unitary), [self-adjoint](#is-self-adjoint), [invertible](#is-invertible), [orthogonal](#is-orthogonal), [positive-definite](#is-positive-definite), [positive-semidefinite](#is-positive-semidefinite)
+  * **[boolean properties](#boolean-properties)**: [square](#is-square), [zero](#is-zero), [identity](#identity), [triangular](#is-triangular), [diagonal](#is-diagonal), [-dominant](#is-diagonally-dominant), [-constant](#is-diagonal-constant), [catalecticant](#is-catalecticant), [anti-](#is-antisymmetric), [symmetric](#is-symmetric), [unitary](#is-unitary), [self-adjoint](#is-self-adjoint), [invertible](#is-invertible), [orthogonal](#is-orthogonal), [positive-definite](#is-positive-definite), [positive-semidefinite](#is-positive-semidefinite)
 
   * **[numeric properties](#numeric-properties)**: [size](#size), [density](#density), [bandwith](#bandwith), [trace](#trace), [rank](#rank), [nullity](#nullity), [determinant](#determinant), [minor](#minor), [norm](#norm), [condition](#condition), [element-type](#element-type)
 
@@ -364,7 +364,7 @@ Conversion into String that can reevaluated into the same object later using def
 
 These are mathematical properties, a given matrix has or not. Thus, the return value is a always of boolean type. Arguments, like in case of [is-diagonally-dominant](#is-diagonally-dominant), are only necessary when a method can tell you about a group of closely related properties.
 
-[is-square](#is-square), [is-zero](#is-zero), [is-identity](#identity), [is-upper-triangular](#is-upper-triangular), [is-lower-triangular](#is-lower-triangular), [is-diagonal](#is-diagonal), [is-diagonally-dominant](#is-diagonally-dominant), [is-diagonal-constant](#is-diagonal-constant), [is-catalecticant](#is-catalecticant), [is-symmetric](#is-symmetric), [is-anti-symmetric](#is-antisymmetric), [is-unitary](#is-unitary), [is-self-adjoint](#is-self-adjoint), [is-invertible](#is-invertible), [is-orthogonal](#is-orthogonal), [is-positive-definite](#is-positive-definite), [is-positive-semidefinite](#is-positive-semidefinite)
+[is-square](#is-square), [is-zero](#is-zero), [is-identity](#identity), [is-triangular](#is-triangular), [is-upper-triangular](#is-upper-triangular), [is-lower-triangular](#is-lower-triangular), [is-diagonal](#is-diagonal), [is-diagonally-dominant](#is-diagonally-dominant), [is-diagonal-constant](#is-diagonal-constant), [is-catalecticant](#is-catalecticant), [is-symmetric](#is-symmetric), [is-anti-symmetric](#is-antisymmetric), [is-unitary](#is-unitary), [is-self-adjoint](#is-self-adjoint), [is-invertible](#is-invertible), [is-orthogonal](#is-orthogonal), [is-positive-definite](#is-positive-definite), [is-positive-semidefinite](#is-positive-semidefinite)
 
 ### [is-square](#boolean-properties)
 
@@ -382,7 +382,11 @@ True if every [element](#element) on the main [diagonal](#diagonal) (where row i
                 0 1 0
                 0 0 1
 
-### [is-upper-triangular](#boolean-properties)
+### [is-triangular](#boolean-properties)
+
+True if matrix *is-upper-triangular*- or *is-lower-triangular* (none - strict).
+
+#### [is-upper-triangular](#boolean-properties)
 
 a.k.a *right triangular* matrix: every [element](#element) below the [diagonal](#diagonal) (where row index is greater than column index) is 0. In other words: the [lower-bandwith](#lower-bandwith) is zero.
 
@@ -399,7 +403,7 @@ There is an optional, boolean argument named :strict.
                 0 0 8
                 0 0 0
 
-### [is-lower-triangular](#boolean-properties)
+#### [is-lower-triangular](#boolean-properties)
 
 a.k.a *left triangular* matrix: every [element](#element) above the [diagonal](#diagonal) (where row index is smaller than column index) is 0. In other words: the [upper-bandwith](#upper-bandwith) is zero.
 
