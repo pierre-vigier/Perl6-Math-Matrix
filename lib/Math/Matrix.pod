@@ -414,11 +414,11 @@ Thus, the return value is a always of boolean type.
 Arguments, like in case of L<is-diagonally-dominant|#is-diagonally-dominant>,
 are only necessary when a method can tell you about a group of closely related properties.
 
-L<is-square|#is-square>, L<is-zero|#is-zero>, L<is-identity|#identity>,
-L<is-triangular|#is-triangular>, L<is-upper-triangular|#is-upper-triangular>, L<is-lower-triangular|#is-lower-triangular>,
-L<is-diagonal|#is-diagonal>, L<is-diagonally-dominant|#is-diagonally-dominant>, L<is-diagonal-constant|#is-diagonal-constant>, L<is-catalecticant|#is-catalecticant>,
-L<is-symmetric|#is-symmetric>, L<is-anti-symmetric|#is-antisymmetric>, L<is-unitary|#is-unitary>, L<is-self-adjoint|#is-self-adjoint>, L<is-invertible|#is-invertible>,
-L<is-orthogonal|#is-orthogonal>, L<is-positive-definite|#is-positive-definite>, L<is-positive-semidefinite|#is-positive-semidefinite>
+L<square|#is-square>, L<zero|#is-zero>, L<identity|#identity>,
+L<triangular|#is-triangular>, L<upper-triangular|#is-upper-triangular>, L<lower-triangular|#is-lower-triangular>,
+L<diagonal|#is-diagonal>, L<diagonally-dominant|#is-diagonally-dominant>, L<diagonal-constant|#is-diagonal-constant>, L<catalecticant|#is-catalecticant>,
+L<symmetric|#is-symmetric>, L<anti-symmetric|#is-antisymmetric>, L<unitary|#is-unitary>, L<self-adjoint|#is-self-adjoint>, L<invertible|#is-invertible>,
+L<orthogonal|#is-orthogonal>, L<positive-definite|#is-positive-definite>, L<positive-semidefinite|#is-positive-semidefinite>
 
 =head3 L<is-square|#boolean-properties>
 
@@ -439,7 +439,7 @@ and any other element is 0.
 
 =head3 L<is-triangular|#boolean-properties>
 
-True if matrix  I<is-upper-triangular>- or I<is-lower-triangular> (none - strict).
+True if matrix  I<is-upper-triangular> or I<is-lower-triangular> (none - strict).
 
 
 =head4 L<is-upper-triangular|#boolean-properties>

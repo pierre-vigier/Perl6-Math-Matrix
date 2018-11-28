@@ -364,7 +364,7 @@ Conversion into String that can reevaluated into the same object later using def
 
 These are mathematical properties, a given matrix has or not. Thus, the return value is a always of boolean type. Arguments, like in case of [is-diagonally-dominant](#is-diagonally-dominant), are only necessary when a method can tell you about a group of closely related properties.
 
-[is-square](#is-square), [is-zero](#is-zero), [is-identity](#identity), [is-triangular](#is-triangular), [is-upper-triangular](#is-upper-triangular), [is-lower-triangular](#is-lower-triangular), [is-diagonal](#is-diagonal), [is-diagonally-dominant](#is-diagonally-dominant), [is-diagonal-constant](#is-diagonal-constant), [is-catalecticant](#is-catalecticant), [is-symmetric](#is-symmetric), [is-anti-symmetric](#is-antisymmetric), [is-unitary](#is-unitary), [is-self-adjoint](#is-self-adjoint), [is-invertible](#is-invertible), [is-orthogonal](#is-orthogonal), [is-positive-definite](#is-positive-definite), [is-positive-semidefinite](#is-positive-semidefinite)
+[square](#is-square), [zero](#is-zero), [identity](#identity), [triangular](#is-triangular), [upper-triangular](#is-upper-triangular), [lower-triangular](#is-lower-triangular), [diagonal](#is-diagonal), [diagonally-dominant](#is-diagonally-dominant), [diagonal-constant](#is-diagonal-constant), [catalecticant](#is-catalecticant), [symmetric](#is-symmetric), [anti-symmetric](#is-antisymmetric), [unitary](#is-unitary), [self-adjoint](#is-self-adjoint), [invertible](#is-invertible), [orthogonal](#is-orthogonal), [positive-definite](#is-positive-definite), [positive-semidefinite](#is-positive-semidefinite)
 
 ### [is-square](#boolean-properties)
 
@@ -384,7 +384,7 @@ True if every [element](#element) on the main [diagonal](#diagonal) (where row i
 
 ### [is-triangular](#boolean-properties)
 
-True if matrix *is-upper-triangular*- or *is-lower-triangular* (none - strict).
+True if matrix *is-upper-triangular* or *is-lower-triangular* (none - strict).
 
 #### [is-upper-triangular](#boolean-properties)
 
