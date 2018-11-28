@@ -541,7 +541,7 @@ Means the L<transposed|#transposed> and L<negated|#negated> matrix are the same.
 
 =head3 L<is-self-adjoint|#boolean-properties>
 
-A Hermitian or self-adjoint matrix is equal to its L<transposed|#transposed> and complex L<conjugated|#conjugated>.
+A Hermitian or self-adjoint matrix is L<equal|#equal> to its L<transposed|#transposed> and complex L<conjugated|#conjugated>.
 
     Example:    1   2   3+i
                 2   5   4
@@ -549,15 +549,16 @@ A Hermitian or self-adjoint matrix is equal to its L<transposed|#transposed> and
 
 =head3 L<is-invertible|#boolean-properties>
 
-Also called I<nonsingular> or I<nondegenerate>.
-Is True if number of rows and colums are the same (L<is-square|#is-square>) and L<determinant|#determinant> is not zero.
+Also called I<nonsingular> or I<nondegenerate>. 
+(To ask if matrix is degenerate or singular - simply negate the result with ! or I<not>).
+Is True if matrix (L<is-square|#is-square>) and L<determinant|#determinant> is not zero.
 All rows or colums have to be independent vectors. 
-Please check this before using $matrix.L<inverted|#inverted>, or you will get an exception.
+Please check this before using $matrix.L<inverted|#inverted>, or you will get an exception, in case it was degenerate.
 
 =head3 L<is-orthogonal|#boolean-properties>
 
 An orthogonal matrix multiplied (L<dot-product|#dot-product>) with its transposed derivative (T)
-is an L<identity|#is-identity> matrix or in other words: L<transposed|#transposed> and L<inverted|#inverted> matrices are equal.
+is an L<identity|#is-identity> matrix or in other words: L<transposed|#transposed> and L<inverted|#inverted> matrices are L<equal|#equal>.
 
 =head3 L<is-unitary|#boolean-properties>
 
@@ -834,13 +835,13 @@ They are: L<equal|#equal>, L<add|#add>, L<multiply|#multiply>, L<dot-product|#do
 
 =head3 L<equal|#mathematical-operations>
 
-Checks two matrices for equality. They have to be of same size and every L<element|#element>
-of the first matrix on a particular position has to be equal to the element
-(on the same position) of the second matrix (pass a check with ==).
+Checks two matrices for equality. They have to be of same L<size|#size> and every L<element|#element>
+of the first matrix on a particular position has to be numerically equal (as checked by I<==>) to the element
+(on the same position) of the second matrix.
     
-    if $matrixa.equal( $matrixb ) {
-    if $matrixa == $matrixb {
-    if $matrixa ~~ $matrixb {
+    if $matrixa.equal( $matrixb ) {   # method variant
+    if $matrixa == $matrixb {         # operator alias
+    if $matrixa ~~ $matrixb {         # smart match redirects to ==
 
 
 =head3 L<add|#mathematical-operations>

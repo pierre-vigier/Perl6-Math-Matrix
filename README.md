@@ -473,7 +473,7 @@ Means the [transposed](#transposed) and [negated](#negated) matrix are the same.
 
 ### [is-self-adjoint](#boolean-properties)
 
-A Hermitian or self-adjoint matrix is equal to its [transposed](#transposed) and complex [conjugated](#conjugated).
+A Hermitian or self-adjoint matrix is [equal](#equal) to its [transposed](#transposed) and complex [conjugated](#conjugated).
 
     Example:    1   2   3+i
                 2   5   4
@@ -481,11 +481,11 @@ A Hermitian or self-adjoint matrix is equal to its [transposed](#transposed) and
 
 ### [is-invertible](#boolean-properties)
 
-Also called *nonsingular* or *nondegenerate*. Is True if number of rows and colums are the same ([is-square](#is-square)) and [determinant](#determinant) is not zero. All rows or colums have to be independent vectors. Please check this before using $matrix.[inverted](#inverted), or you will get an exception.
+Also called *nonsingular* or *nondegenerate*. (To ask if matrix is degenerate or singular - simply negate the result with ! or *not*). Is True if matrix ([is-square](#is-square)) and [determinant](#determinant) is not zero. All rows or colums have to be independent vectors. Please check this before using $matrix.[inverted](#inverted), or you will get an exception, in case it was degenerate.
 
 ### [is-orthogonal](#boolean-properties)
 
-An orthogonal matrix multiplied ([dot-product](#dot-product)) with its transposed derivative (T) is an [identity](#is-identity) matrix or in other words: [transposed](#transposed) and [inverted](#inverted) matrices are equal.
+An orthogonal matrix multiplied ([dot-product](#dot-product)) with its transposed derivative (T) is an [identity](#is-identity) matrix or in other words: [transposed](#transposed) and [inverted](#inverted) matrices are [equal](#equal).
 
 ### [is-unitary](#boolean-properties)
 
@@ -718,11 +718,11 @@ They are: [equal](#equal), [add](#add), [multiply](#multiply), [dot-product](#do
 
 ### [equal](#mathematical-operations)
 
-Checks two matrices for equality. They have to be of same size and every [element](#element) of the first matrix on a particular position has to be equal to the element (on the same position) of the second matrix (pass a check with ==).
+Checks two matrices for equality. They have to be of same [size](#size) and every [element](#element) of the first matrix on a particular position has to be numerically equal (as checked by *==*) to the element (on the same position) of the second matrix.
 
-    if $matrixa.equal( $matrixb ) {
-    if $matrixa == $matrixb {
-    if $matrixa ~~ $matrixb {
+    if $matrixa.equal( $matrixb ) {   # method variant
+    if $matrixa == $matrixb {         # operator alias
+    if $matrixa ~~ $matrixb {         # smart match redirects to ==
 
 ### [add](#mathematical-operations)
 
