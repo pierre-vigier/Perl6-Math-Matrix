@@ -173,7 +173,7 @@ Methods that return the content of selected elements.
 
 ### [element](#accessors)
 
-Gets value of one element in row (first parameter) and column (second parameter - counting always from 0). Sometimes its called matrix cell, to ditinct from other type of elements. See: [elems](#elems), [elem](#elem), [element-type](#element-type)
+Gets value of one element in row (first parameter) and column (second parameter - counting always from 0). Sometimes its called matrix cell, to distinct from other type of elements. See: [elems](#elems), [elem](#elem), [element-type](#element-type)
 
     my $matrix = Math::Matrix.new([[1,2],[3,4]]);
     say $matrix.element(0,1)            : 2

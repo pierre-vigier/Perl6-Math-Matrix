@@ -182,7 +182,7 @@ L<element|#element>, L<AT-POS|#at-pos>, L<row|#row>, L<column|#column>, L<diagon
 =head3 L<element|#accessors>
 
 Gets value of one element in row (first parameter) and column (second parameter - counting always from 0).
-Sometimes its called matrix cell, to ditinct from other type of elements.
+Sometimes its called matrix cell, to distinct from other type of elements.
 See: L<elems|#elems>, L<elem|#elem>, L<element-type|#element-type>
 
     my $matrix = Math::Matrix.new([[1,2],[3,4]]);
