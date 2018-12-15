@@ -1161,7 +1161,7 @@ Same as splice-rows, just horizontally.
 
 =head2 L<Shortcuts|#methods>
 
-Summary of all shortcut aliases (first) and their long form (second). 
+Summary of all shortcut aliases (left) and their long form (right). 
 
 =item T  -->  L<transposed|#transposed>
 =item conj  -->  L<conjugated|#conjugated>
@@ -1171,8 +1171,8 @@ Summary of all shortcut aliases (first) and their long form (second).
 
 =head2 L<Operator Methods|#methods>
 
-Operators with the methods they refer to. (Most ops are just aliases.)
-For more explanations of the ops with examples see naext chapter: L<ops chapter|#operators>:
+Operators (left) with the methods they refer to (right). (Most ops are just aliases.)
+For more explanations of the ops (with examples) see the L<next chapter|#operators>:
 
 =item prefix ?  -->  L<Bool|#bool>
 =item prefix +  -->  L<Numeric|#numeric>

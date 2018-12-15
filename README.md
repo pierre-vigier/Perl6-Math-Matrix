@@ -1000,7 +1000,7 @@ Same as splice-rows, just horizontally.
 [Shortcuts](#methods)
 ---------------------
 
-Summary of all shortcut aliases (first) and their long form (second). 
+Summary of all shortcut aliases (left) and their long form (right). 
 
   * T --> [transposed](#transposed)
 
@@ -1013,7 +1013,7 @@ Summary of all shortcut aliases (first) and their long form (second).
 [Operator Methods](#methods)
 ----------------------------
 
-Operators with the methods they refer to. (Most ops are just aliases.) For more explanations of the ops with examples see naext chapter: [ops chapter](#operators):
+Operators (left) with the methods they refer to (right). (Most ops are just aliases.) For more explanations of the ops (with examples) see the [next chapter](#operators):
 
   * prefix ? --> [Bool](#bool)
 
