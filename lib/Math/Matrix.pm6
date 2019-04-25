@@ -135,7 +135,8 @@ method new-vector-product (@column_vector, @row_vector){
     for ^+@column_vector X ^+@row_vector -> ($r, $c) { 
         @p[$r][$c] = @column_vector[$r] * @row_vector[$c] 
     }
-    self.bless( rows => @p, determinant => 0 , rank => 1 );
+    my $rank = ( all(@column_vector) ~~ 0 or all(@row_vector) ~~ 0) ?? 0 !! 1;
+    self.bless( rows => @p, determinant => 0 , rank => $rank );
 }
 
 ################################################################################
