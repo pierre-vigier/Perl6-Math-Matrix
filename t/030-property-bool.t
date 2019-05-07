@@ -69,7 +69,7 @@ nok $symmetric.is-frobenius,          "a fully ranked matrix is not a frobenius 
 ok $zero.is-zero,         "Is a zero matrix";
 ok $z3.is-zero,           "Another zero matrix";
 nok $identity.is-zero,    "Is not a zero matrix";
-nok $ut.is-triangular,    "An upper triangular matrix is not zero";
+nok $ut.is-zero,          "An upper triangular matrix is not zero";
 
 ok $identity.is-identity,         "Is an identity matrix";
 nok $diagonal.is-identity,        "diagonal is not an identity matrix";
