@@ -19,7 +19,7 @@ This repo will be moved to a [different place](https://github.com/lichtkind/Perl
 SYNOPSIS
 ========
 
-Matrices are tables with rows and columns (index counting from 0) of numbers (Numeric type - Bool or Int or Num or Rat or FatRat or Complex): 
+Matrices are tables with rows and columns (index counting from 0) of numbers (Numeric type - Bool or Int or Num or Rat or FatRat or Complex):
 
     transpose, invert, negate, add, multiply, dot product, tensor product, 22 ops, determinant, rank, norm
     14 numerical properties, 23 boolean properties, 3 decompositions, submatrix, splice, map, reduce and more
@@ -54,7 +54,7 @@ All computation heavy properties will be calculated lazily and cached.
 
   * **[converter](#converter)**: [Bool](#bool), [Str](#str), [Numeric](#numeric), [Range](#range), [Array](#array), [list](#list), [list-rows](#list-rows), [list-columns](#list-columns), [Hash](#hash), [gist](#gist), [perl](#perl)
 
-  * **[boolean properties](#boolean-properties)**: [square](#is-square), [zero](#is-zero), [identity](#identity), [triangular](#is-triangular), [diagonal](#is-diagonal), [-dominant](#is-diagonally-dominant), [-constant](#is-diagonal-constant), [catalecticant](#is-catalecticant), [anti-](#is-antisymmetric), [symmetric](#is-symmetric), [unitary](#is-unitary), [self-adjoint](#is-self-adjoint), [invertible](#is-invertible), [orthogonal](#is-orthogonal), [positive-definite](#is-positive-definite), [positive-semidefinite](#is-positive-semidefinite)
+  * **[boolean properties](#boolean-properties)**: [square](#is-square), [triangular](#is-triangular), [frobenius](#is-frobenius), [zero](#is-zero), [identity](#identity), [diagonal](#is-diagonal), [-dominant](#is-diagonally-dominant), [-constant](#is-diagonal-constant), [catalecticant](#is-catalecticant), [anti-](#is-antisymmetric), [symmetric](#is-symmetric), [unitary](#is-unitary), [self-adjoint](#is-self-adjoint), [invertible](#is-invertible), [orthogonal](#is-orthogonal), [positive-definite](#is-positive-definite), [positive-semidefinite](#is-positive-semidefinite)
 
   * **[numeric properties](#numeric-properties)**: [size](#size), [density](#density), [bandwith](#bandwith), [trace](#trace), [rank](#rank), [nullity](#nullity), [determinant](#determinant), [minor](#minor), [norm](#norm), [condition](#condition), [element-type](#element-type)
 
@@ -79,7 +79,7 @@ Methods that create a new Math::Matrix object. The default is of course .new, wh
 
 ### [new( [[...],...,[...]] )](#constructors)
 
-The default constructor, takes arrays of arrays of numbers as the only required parameter. Each second level array represents a row in the matrix. That is why their length has to be the same. Empty rows or columns we not be accepted. 
+The default constructor, takes arrays of arrays of numbers as the only required parameter. Each second level array represents a row in the matrix. That is why their length has to be the same. Empty rows or columns we not be accepted.
 
     say Math::Matrix.new( [[1,2],[3,4]] ) :
 
@@ -115,7 +115,7 @@ Alternatively you can define the matrix from a string, which makes most sense wh
         3 4
       END
 
-    use Math::Matrix :ALL;          # 
+    use Math::Matrix :ALL;          #
     MM '1';                         # 1 * 1 matrix, this case begs for a shortcut
 
 ### [new-zero](#constructors)
@@ -138,7 +138,7 @@ This method is a constructor, that returns a zero matrix (sometimes called empty
 This method is a constructor that returns an identity matrix (as checked by [is-identity](#is-identity)) of the size given in the only and required parameter. All the [element](#element)s are set to 0 except the top/left to bottom/right diagonale is set to 1.
 
     say Math::Matrix.new-identity( 3 ) :
-      
+
     1 0 0
     0 1 0
     0 0 1
@@ -237,7 +237,7 @@ In mathematics, a submatrix is built by leaving out one row and one column. In t
 
 If you provide two ranges (row-min .. row-max, col-min .. col-max - both optional) to the appropriately named arguments, you get the excerpt of the matrix, that contains only the requested rows and columns - still in the original order.
 
-    say $m.submatrix( rows => 1..1, columns => 1..*) :      4 5        
+    say $m.submatrix( rows => 1..1, columns => 1..*) :      4 5
     say $m.submatrix( rows => 1..1 )                 :    3 4 5
 
 #### [reordering](#submatrix)
@@ -246,12 +246,12 @@ Alternatively each (as previously) named argument can also take a list (or array
 
     $m.submatrix(rows => (1,2), columns => (3,2)):    5 4
                                                       6 5
-                                                      
+
     $m.submatrix(rows => (1...2), columns => (3,2))  # same thing
 
 Arguments with ranges and lists can be mixed and are in both cases optional. If you provide none of them, the result will be the original matrix.
 
-    say $m.submatrix( rows => (1,) )              :   3 4 5        
+    say $m.submatrix( rows => (1,) )              :   3 4 5
 
     $m.submatrix(rows => (1..*), columns => (3,2)):   5 4
                                                       6 5
@@ -278,7 +278,7 @@ Returns values of all [element](#element)s, separated by one whitespace, rows by
     say Math::Matrix.new([[1,2],[3,4]]).Str:
 
     1 2                 # meaning: "1 2\n3 4"
-    3 4                
+    3 4
 
     ~$matrix            # alias op
 
@@ -332,7 +332,7 @@ Returns a list of lists, reflecting the row-wise content of the matrix.
 
 Gets you a nested key - value hash.
 
-    say $matrix.Hash : { 0 => { 0 => 1, 1 => 2}, 1 => {0 => 3, 1 => 4} } 
+    say $matrix.Hash : { 0 => { 0 => 1, 1 => 2}, 1 => {0 => 3, 1 => 4} }
     say % $matrix       # alias op, space between % and $ still needed
 
 ### [gist](#converter)
@@ -364,23 +364,11 @@ Conversion into String that can reevaluated into the same object later using def
 
 These are mathematical properties, a given matrix has or not. Thus, the return value is a always of boolean type. Arguments, like in case of [is-diagonally-dominant](#is-diagonally-dominant), are only necessary when a method can tell you about a group of closely related properties.
 
-[square](#is-square), [zero](#is-zero), [identity](#identity), [triangular](#is-triangular), [upper-triangular](#is-upper-triangular), [lower-triangular](#is-lower-triangular), [diagonal](#is-diagonal), [diagonally-dominant](#is-diagonally-dominant), [diagonal-constant](#is-diagonal-constant), [catalecticant](#is-catalecticant), [symmetric](#is-symmetric), [anti-symmetric](#is-antisymmetric), [unitary](#is-unitary), [self-adjoint](#is-self-adjoint), [invertible](#is-invertible), [orthogonal](#is-orthogonal), [positive-definite](#is-positive-definite), [positive-semidefinite](#is-positive-semidefinite)
+[square](#is-square), [triangular](#is-triangular), [upper-triangular](#is-upper-triangular), [lower-triangular](#is-lower-triangular), [frobenius](#is-frobenius), [zero](#is-zero), [identity](#identity), [diagonal](#is-diagonal), [diagonally-dominant](#is-diagonally-dominant), [diagonal-constant](#is-diagonal-constant), [catalecticant](#is-catalecticant), [symmetric](#is-symmetric), [anti-symmetric](#is-antisymmetric), [unitary](#is-unitary), [self-adjoint](#is-self-adjoint), [invertible](#is-invertible), [orthogonal](#is-orthogonal), [positive-definite](#is-positive-definite), [positive-semidefinite](#is-positive-semidefinite)
 
 ### [is-square](#boolean-properties)
 
 True if number of rows and colums are the same (see [size](#size)).
-
-### [is-zero](#boolean-properties)
-
-True if every [element](#element) has value of 0 (as created by [new-zero](#new-zero)).
-
-### [is-identity](#boolean-properties)
-
-True if every [element](#element) on the main [diagonal](#diagonal) (where row index equals column index) is 1 and any other element is 0.
-
-    Example:    1 0 0
-                0 1 0
-                0 0 1
 
 ### [is-triangular](#boolean-properties)
 
@@ -419,6 +407,24 @@ Has also an optional, boolean argument named :strict.
     Example:    0 0 0
                 2 0 0
                 5 8 0
+
+### [is-frobenius](#boolean-properties)
+
+[Square](#is-square) matrix which differs from [identity](#is-identity) only in the lower part (below diagonal) of one column. (Main diagonal consist of ones and rest is zero.)
+
+Example: 1 0 0 2 1 0 5 0 1
+
+### [is-zero](#boolean-properties)
+
+True if every [element](#element) has value of 0 (as created by [new-zero](#new-zero)).
+
+### [is-identity](#boolean-properties)
+
+True if every [element](#element) on the main [diagonal](#diagonal) (where row index equals column index) is 1 and any other element is 0.
+
+    Example:    1 0 0
+                0 1 0
+                0 0 1
 
 ### [is-diagonal](#boolean-properties)
 
@@ -647,7 +653,7 @@ Creates a matrix where every [element](#element) is the complex conjugated of th
 
     say Math::Matrix.new([[1+i,2],[3,4-i]]).conj :
 
-    1-1i  2   
+    1-1i  2
     3     4+1i
 
 ### [adjugated](#derived-matrices)
@@ -757,10 +763,10 @@ To add a vector you have to specify to which row or column it should be added an
 
 When adding a single number to the matrix, it will be added to every [element](#element). If you provide a row or column number it will be only added to that row or column. In case you provide both, only a single element gets a different value in the result matrix.
 
-    $matrix.add( $number );       # adds number from every element 
+    $matrix.add( $number );       # adds number from every element
     $matrix + $number;            # works too
 
-    Example:    1 2  +  5    =  6 7 
+    Example:    1 2  +  5    =  6 7
                 3 4             8 9
 
                 1 2  +  2 3  =  3 5
@@ -776,7 +782,7 @@ Unlike the [dot-product](#dot-product) and [tensor-product](#tensor-product), th
     my $product = $matrix.multiply( $number );   # multiply every element with number
     my $p = $matrix * $number;                   # works too
 
-    Example:    1 2  *  5    =   5 10 
+    Example:    1 2  *  5    =   5 10
                 3 4             15 20
 
     my $product = $matrix.multiply( $matrix2 );  # element wise multiplication of same size matrices
@@ -795,7 +801,7 @@ Unlike the [dot-product](#dot-product) and [tensor-product](#tensor-product), th
 
     Example:    1 2   =  2 2
                 3 4      6 4
-            
+
                *2
 
     $matrix.multiply(row => 1, column => 1, 3) : [[1,2],[3,12]]
@@ -958,7 +964,7 @@ Like the splice for lists: the first two parameter are position and amount (opti
     Math::Matrix.new([[1,2],[3,4]]).splice-rows(0,0,                  [[5,6],[7,8]]  ); # same result
 
     5 6
-    7 8 
+    7 8
     1 2
     3 4
 
@@ -974,15 +980,15 @@ Like the splice for lists: the first two parameter are position and amount (opti
     Math::Matrix.new([[1,2],[3,4]]).splice-rows(1,1,                  [[5,6],[7,8]]  ); # same result
 
     1 2
-    5 6 
+    5 6
     7 8
 
     Math::Matrix.new([[1,2],[3,4]]).splice-rows(2,0, Math::Matrix.new([[5,6],[7,8]]) ); # aka append
     Math::Matrix.new([[1,2],[3,4]]).splice-rows(2,0,                  [[5,6],[7,8]]  ); # same result
     Math::Matrix.new([[1,2],[3,4]]).splice-rows(-1,0,                 [[5,6],[7,8]]  ); # with negative index
 
-    1 2 
-    3 4     
+    1 2
+    3 4
     5 6
     7 8
 
@@ -1000,7 +1006,7 @@ Same as splice-rows, just horizontally.
 [Shortcuts](#methods)
 ---------------------
 
-Summary of all shortcut aliases (left) and their long form (right). 
+Summary of all shortcut aliases (left) and their long form (right).
 
   * T --> [transposed](#transposed)
 
@@ -1086,7 +1092,7 @@ They are exported when using no flag (same as :DEFAULT) or :ALL, but not under :
 
     my $dp  =  $a dot $b;            # dot product of two fitting matrices (cols a = rows b)
     my $dp  =  $a ⋅ $b;              # dot product, unicode (U+022C5)
-    my $dp  =  $a ÷ $b;              # alias to $a dot $b.inverted, (U+000F7) 
+    my $dp  =  $a ÷ $b;              # alias to $a dot $b.inverted, (U+000F7)
 
     my $c   =  $a **  3;             # $a to the power of 3, same as $a dot $a dot $a
     my $c   =  $a ** -3;             # alias to ($a dot $a dot $a).inverted
