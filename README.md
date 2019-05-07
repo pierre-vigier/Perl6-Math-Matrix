@@ -372,7 +372,7 @@ True if number of rows and colums are the same (see [size](#size)).
 
 ### [is-triangular](#boolean-properties)
 
-True if matrix *is-upper-triangular* or *is-lower-triangular* (none - strict).
+True if matrix *is-upper-triangular* or *is-lower-triangular*. When optional named boolean argument :strict is added, the matrix has to be a strictly upper triangula or a strictly lower triangular (default is none strict).
 
 #### [is-upper-triangular](#boolean-properties)
 
@@ -399,7 +399,7 @@ a.k.a *left triangular* matrix: every [element](#element) above the [diagonal](#
                 2 3 0
                 5 8 7
 
-Has also an optional, boolean argument named :strict.
+Has also an optional, named boolean argument named :strict.
 
     $matrix.is-lower-triangular(:!strict);   # asks for matrix is none strict triangular (default)
     $matrix.is-lower-triangular(:strict);    # search for strictly triangular matrix
@@ -412,7 +412,10 @@ Has also an optional, boolean argument named :strict.
 
 [Square](#is-square) matrix which differs from [identity](#is-identity) only in the lower part (below diagonal) of one column. (Main diagonal consist of ones and rest is zero.)
 
-Example: 1 0 0 2 1 0 5 0 1
+    Example:    1 0 0 0
+                0 1 0 0
+                0 2 1 0
+                0 5 0 1
 
 ### [is-zero](#boolean-properties)
 

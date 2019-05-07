@@ -427,7 +427,9 @@ True if number of rows and colums are the same (see L<size|#size>).
 
 =head3 L<is-triangular|#boolean-properties>
 
-True if matrix  I<is-upper-triangular> or I<is-lower-triangular> (none - strict).
+True if matrix  I<is-upper-triangular> or I<is-lower-triangular>.
+When optional named boolean argument :strict is added, the matrix has to be a
+strictly upper triangula or a strictly lower triangular (default is none strict).
 
 
 =head4 L<is-upper-triangular|#boolean-properties>
@@ -457,7 +459,7 @@ In other words: the L<upper-bandwith|#upper-bandwith> is zero.
                 2 3 0
                 5 8 7
 
-Has also an optional, boolean argument named :strict.
+Has also an optional, named boolean argument named :strict.
 
     $matrix.is-lower-triangular(:!strict);   # asks for matrix is none strict triangular (default)
     $matrix.is-lower-triangular(:strict);    # search for strictly triangular matrix
@@ -471,9 +473,10 @@ Has also an optional, boolean argument named :strict.
 L<Square|#is-square> matrix which differs from L<identity|#is-identity> only in the lower part (below diagonal)
 of one column. (Main diagonal consist of ones and rest is zero.)
 
-Example:    1 0 0
-            2 1 0
-            5 0 1
+    Example:    1 0 0 0
+                0 1 0 0
+                0 2 1 0
+                0 5 0 1
 
 =head3 L<is-zero|#boolean-properties>
 
