@@ -46,7 +46,7 @@ All computation heavy properties will be calculated lazily and cached.
 =item B<L<accessors|#accessors>>: L<element|#element>, L<AT-POS|#at-pos>, L<row|#row>, L<column|#column>, L<diagonal|#diagonal>, L<skew-diagonal|#skew-diagonal>, L<submatrix|#submatrix>
 =item B<L<converter|#converter>>: L<Bool|#bool>, L<Str|#str>, L<Numeric|#numeric>, L<Range|#range>,
       L<Array|#array>, L<list|#list>, L<list-rows|#list-rows>, L<list-columns|#list-columns>, L<Hash|#hash>, L<gist|#gist>, L<perl|#perl>
-=item B<L<boolean properties|#boolean-properties>>: L<square|#is-square>, L<triangular|#is-triangular>,
+=item B<L<boolean properties|#boolean-properties>>: L<square|#is-square>, L<triangular|#is-triangular>, L<frobenius|#is-frobenius>,
       L<zero|#is-zero>, L<identity|#identity>, L<diagonal|#is-diagonal>, L<-dominant|#is-diagonally-dominant>, L<-constant|#is-diagonal-constant>, L<catalecticant|#is-catalecticant>,
       L<anti-|#is-antisymmetric>, L<symmetric|#is-symmetric>, L<unitary|#is-unitary>, L<self-adjoint|#is-self-adjoint>, L<invertible|#is-invertible>, L<orthogonal|#is-orthogonal>,
       L<positive-definite|#is-positive-definite>, L<positive-semidefinite|#is-positive-semidefinite>
@@ -414,9 +414,10 @@ Thus, the return value is a always of boolean type.
 Arguments, like in case of L<is-diagonally-dominant|#is-diagonally-dominant>,
 are only necessary when a method can tell you about a group of closely related properties.
 
-L<square|#is-square>, L<zero|#is-zero>, L<identity|#identity>,
-L<triangular|#is-triangular>, L<upper-triangular|#is-upper-triangular>, L<lower-triangular|#is-lower-triangular>,
-L<diagonal|#is-diagonal>, L<diagonally-dominant|#is-diagonally-dominant>, L<diagonal-constant|#is-diagonal-constant>, L<catalecticant|#is-catalecticant>,
+L<square|#is-square>, L<triangular|#is-triangular>, L<upper-triangular|#is-upper-triangular>, L<lower-triangular|#is-lower-triangular>,
+L<frobenius|#is-frobenius>,
+L<zero|#is-zero>, L<identity|#identity>, L<diagonal|#is-diagonal>,
+L<diagonally-dominant|#is-diagonally-dominant>, L<diagonal-constant|#is-diagonal-constant>, L<catalecticant|#is-catalecticant>,
 L<symmetric|#is-symmetric>, L<anti-symmetric|#is-antisymmetric>, L<unitary|#is-unitary>, L<self-adjoint|#is-self-adjoint>, L<invertible|#is-invertible>,
 L<orthogonal|#is-orthogonal>, L<positive-definite|#is-positive-definite>, L<positive-semidefinite|#is-positive-semidefinite>
 
@@ -464,6 +465,15 @@ Has also an optional, boolean argument named :strict.
     Example:    0 0 0
                 2 0 0
                 5 8 0
+
+=head3 L<is-frobenius|#boolean-properties>
+
+L<Square|#is-square> matrix which differs from L<identity|#is-identity> only in the lower part (below diagonal)
+of one column. (Main diagonal consist of ones and rest is zero.)
+
+Example:    1 0 0
+            2 1 0
+            5 0 1
 
 =head3 L<is-zero|#boolean-properties>
 

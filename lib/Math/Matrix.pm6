@@ -14,6 +14,7 @@ has Int $!row-count;
 has Int $!column-count;
 
 has Bool $!is-square is lazy;
+has Bool $!is-frobenius is lazy;
 has Bool $!is-zero is lazy;
 has Bool $!is-main-diagonal-zero is lazy;
 has Bool $!is-identity is lazy;
@@ -92,7 +93,7 @@ method clone { self.bless( rows => @!rows ) }
 multi method new-zero(PosInt $size) {
     self.bless( rows => self!zero-array($size, $size),
             determinant => 0, rank => 0, nullity => $size, density => 0.0, trace => 0,
-            is-zero => True, is-identity => False, is-diagonal => True, 
+            is-zero => True, is-identity => False, is-diagonal => True,
             is-square => True, is-symmetric => True );
 }
 multi method new-zero(Math::Matrix:U: PosInt $rows, PosInt $cols) {
@@ -102,9 +103,9 @@ multi method new-zero(Math::Matrix:U: PosInt $rows, PosInt $cols) {
 }
 
 method new-identity( Int $size where * > 0 ) {
-    self.bless( rows => self!identity-array($size),  
+    self.bless( rows => self!identity-array($size),
                 determinant => 1, rank => $size, nullity => 0, density => 1/$size, trace => $size,
-                is-zero => False, is-identity => True, 
+                is-zero => False, is-identity => True,
                 is-square => True, is-diagonal => True, is-symmetric => True );
 }
 
@@ -132,8 +133,8 @@ method new-upper-triangular( @m ) {
 method new-vector-product (@column_vector, @row_vector){
     fail "Expect two Arrays of Number" unless @column_vector ~~ NumArray and @row_vector ~~ NumArray;
     my @p;
-    for ^+@column_vector X ^+@row_vector -> ($r, $c) { 
-        @p[$r][$c] = @column_vector[$r] * @row_vector[$c] 
+    for ^+@column_vector X ^+@row_vector -> ($r, $c) {
+        @p[$r][$c] = @column_vector[$r] * @row_vector[$c]
     }
     my $rank = ( all(@column_vector) ~~ 0 or all(@row_vector) ~~ 0) ?? 0 !! 1;
     self.bless( rows => @p, determinant => 0 , rank => $rank );
@@ -212,7 +213,7 @@ multi method gist(Math::Matrix:D: Int :$max-chars?, Int :$max-rows? --> Str) {
         my $max-width = (not $max-chars.defined or $max-chars < 5) ?? 80 !! $max-chars;
         my $max-heigth = (not $max-rows.defined or $max-rows < 2) ?? 20 !! $max-rows;
         my @fmt-content = @!rows.map: {    # all values in optimized complex format
-            (.map: { $_ ~~ Bool   ?? %( re => $_,             im => '' ) !! 
+            (.map: { $_ ~~ Bool   ?? %( re => $_,             im => '' ) !!
                     $_ ~~ Complex ?? %( re => $_.re.fmt("%g"),im => (($_.im >= 0 ??'+'!!'')~$_.im.fmt("%g")~'i') ) !!
                                      %( re => $_.fmt("%g"),   im => '' )
         }).Array};
@@ -226,7 +227,7 @@ multi method gist(Math::Matrix:D: Int :$max-chars?, Int :$max-rows? --> Str) {
         my ($shown-cols, $width-index);
         for @max-width.kv -> $ci, $max {
             $width-index += 2 + $max<re> + $max<im>;
-            if ($ci < @max-width.end and $width-index <= $max-width-3) 
+            if ($ci < @max-width.end and $width-index <= $max-width-3)
             or $width-index <= $max-width {$shown-cols++}
             else                          {last}
         }
@@ -236,7 +237,7 @@ multi method gist(Math::Matrix:D: Int :$max-chars?, Int :$max-rows? --> Str) {
             if $ri == $shown-rows {$out ~= "  ...\n" ; last}
             for $row.kv -> $ci, $val {
                 if $ci == $shown-cols { $out ~= ' ..' ; last}
-                $out ~= (' ' x (@max-width[$ci]<re> - @col-width[$ci]<re>[$ri]) + 2) ~ $val<re> ~ 
+                $out ~= (' ' x (@max-width[$ci]<re> - @col-width[$ci]<re>[$ri]) + 2) ~ $val<re> ~
                         $val<im> ~ (' ' x (@max-width[$ci]<im> - @col-width[$ci]<im>[$ri]));
             }
             $out ~= "\n";
@@ -257,14 +258,30 @@ method !build_is-zero(    Math::Matrix:D: --> Bool)        { self.density() == 0
 method !build_is-identity( Math::Matrix:D: --> Bool)        { $.is-diagonal and [==](($.diagonal.flat,1).flat)}
 method !build_is-main-diagonal-zero(Math::Matrix:D: --> Bool){ [==](($.diagonal.flat,0).flat) }
 
-method is-triangular(Math::Matrix:D: --> Bool) {
-    $.is-square and ($.lower-bandwith == 0 or $.upper-bandwith == 0) 
+method is-triangular(Math::Matrix:D: :$strict = False --> Bool) {
+    return False unless $.is-square;
+    return False if $strict and not $.is-main-diagonal-zero;
+    $.lower-bandwith == 0 or $.upper-bandwith == 0;
 }
 method is-upper-triangular(Math::Matrix:D: Bool :$strict = False --> Bool) {
     $.is-square and $.lower-bandwith == 0 and (!$strict or $.is-main-diagonal-zero)
 }
 method is-lower-triangular( Math::Matrix:D: Bool :$strict = False --> Bool) {
     $.is-square and $.upper-bandwith == 0 and (!$strict or $.is-main-diagonal-zero)
+}
+
+method !build_is-frobenius(Math::Matrix:D: --> Bool) {
+    return False unless self.is-square;
+    my $col;
+    for ^$!row-count X ^$!column-count     -> ($r, $c) {
+        if    $r < $c  {return False if @!rows[$r][$c] != 0}
+        elsif $r == $c {return False if @!rows[$r][$c] != 1}
+        else           {
+            if $col.defined { return False if @!rows[$r][$c] != 0 and $col != $c }
+            else            { $col = $c if @!rows[$r][$c] != 0 }
+        }
+    }
+    True;
 }
 
 method !build_is-diagonal( Math::Matrix:D: --> Bool) {
@@ -278,17 +295,17 @@ method !build_is-catalecticant( Math::Matrix:D: --> Bool) {
     $.is-square and [&&](map { [==] $.skew-diagonal($_).list }, -$!column-count+1 .. $!row-count-1);
 }
 
-method is-diagonally-dominant( Math::Matrix:D: Bool :$strict = False, 
+method is-diagonally-dominant( Math::Matrix:D: Bool :$strict = False,
                               Str :$along where {$^orient eq any <column row both>} = 'column' --> Bool) {
     return False unless self.is-square;
     my $greater = $strict ?? &[>] !! &[>=];
     my Bool $colwise;
     if $along ~~ any <column both> {
-        $colwise = [and] map {my $c = $_; &$greater( @!rows[$c][$c] * 2, 
+        $colwise = [and] map {my $c = $_; &$greater( @!rows[$c][$c] * 2,
                                                      [+](map {abs $_[$c]}, @!rows)) }, ^$!row-count;
     }
     return $colwise if $along eq 'column';
-    my Bool $rowwise = [and] map { &$greater( @!rows[$^r][$^r] * 2, 
+    my Bool $rowwise = [and] map { &$greater( @!rows[$^r][$^r] * 2,
                                               [+](map {abs $^c}, @!rows[$^r].flat)) }, ^$!row-count;
     return $rowwise if $along eq 'row';
     $colwise and $rowwise;
@@ -373,7 +390,7 @@ method !build_upper-bandwith(Math::Matrix:D: --> Int) {
 method !build_lower-bandwith(Math::Matrix:D: --> Int) {
     for $!row-count-1 ... 1  -> $i {
         return $i unless [&&](map * == 0, $.diagonal($i).list)
-    }   
+    }
     0;
 }
 method bandwith(Math::Matrix:D: Str $which = '' --> Int) { max $.upper-bandwith, $.lower-bandwith }
@@ -504,7 +521,7 @@ method conjugated(Math::Matrix:D: --> Math::Matrix:D )    { self.map( { $_.conj}
 
 method adjugated(Math::Matrix:D: --> Math::Matrix:D) {
     fail "Number of columns has to be same as number of rows" unless self.is-square;
-    $!row-count == 1 ?? self.new([[1]]) 
+    $!row-count == 1 ?? self.new([[1]])
                      !! self.map-index({ self.minor($^m, $^n) * self.cofactor-sign($^m, $^n) });
 }
 
@@ -593,7 +610,7 @@ method decompositionLU(Math::Matrix:D: Bool :$pivot = True, :$diagonal = False) 
             push @D, @U[$c][$c];
             @U[$c][$c] = 1;
         }
-        $pivot ?? (Math::Matrix.new-lower-triangular(@L), Math::Matrix.new-diagonal(@D), 
+        $pivot ?? (Math::Matrix.new-lower-triangular(@L), Math::Matrix.new-diagonal(@D),
                    Math::Matrix.new-upper-triangular(@U), Math::Matrix.new(@P))
                !! (Math::Matrix.new-lower-triangular(@L), Math::Matrix.new-diagonal(@D),
                    Math::Matrix.new-upper-triangular(@U));
@@ -680,7 +697,7 @@ multi method add(Math::Matrix:D: Numeric $s, --> Math::Matrix:D )               
 multi method add(Math::Matrix:D: Numeric $s, Int :$row!, Int :$column --> Math::Matrix:D ) {
     self!check-row-index($row)       if $row.defined;
     self!check-column-index($column) if $column.defined;
-    self.map(rows  => $row.defined ?? ($row..$row) !! ^$!row-count, 
+    self.map(rows  => $row.defined ?? ($row..$row) !! ^$!row-count,
              columns => $column.defined ?? ($column..$column) !! ^$!column-count, { $_ + $s } );
 }
 
@@ -781,7 +798,7 @@ method reduce-columns(Math::Matrix:D: &coderef) {(^$!column-count).map: { self.c
 ################################################################################
 
 multi method move-row (Math::Matrix:D: Pair $p --> Math::Matrix:D) {
-    self.move-row($p.key, $p.value) 
+    self.move-row($p.key, $p.value)
 }
 multi method move-row (Math::Matrix:D: Int $from, Int $to --> Math::Matrix:D) {
     self!check-row-indices([$from, $to]);
@@ -792,7 +809,7 @@ multi method move-row (Math::Matrix:D: Int $from, Int $to --> Math::Matrix:D) {
 }
 
 multi method move-column (Math::Matrix:D: Pair $p --> Math::Matrix:D) {
-    self.move-column($p.key, $p.value) 
+    self.move-column($p.key, $p.value)
 }
 multi method move-column (Math::Matrix:D: Int $from, Int $to --> Math::Matrix:D) {
     self!check-column-indices([$from, $to]);
