@@ -1,3 +1,4 @@
 *.swp
 /lib/.precomp/*
 .precomp/*
+/t/.precomp/*
