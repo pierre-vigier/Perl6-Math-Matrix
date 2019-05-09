@@ -690,7 +690,9 @@ Return the reduced row echelon form of a matrix, a.k.a. row canonical form
 [Decompositions](#methods)
 --------------------------
 
-Methods that return lists of matrices, which in their product or otherwise can be recombined to the original matrix. In case of cholesky only one matrix is returned, because the other one is its transposed.
+Methods that return a list of matrices, which can be recombined into the original matrix (mostly by [dot product](#dot-product)). Sometimes some matrices of the list are omitted (like in the case of the cholesy) can be recombined to the original matrix. In case of cholesky only one matrix is returned, because the other one is its transposed.
+
+[decompositionLU](#decompositionLU), [decompositionLUCrout](#decompositionLUCrout), [decompositionCholesky](#decompositionCholesky)
 
 ### [decompositionLU](#decompositions)
 
@@ -713,10 +715,10 @@ $L is a left triangular matrix and $R is a right one This decomposition works on
 
 ### [decompositionCholesky](#decompositions)
 
-This decomposition works only on symmetric and definite positive matrices.
+This decomposition is faster than the previous, but works only on matrices that are [symmetric](#is-symmetric) and [positive-definite](#is-positive-definite). Four output formats are supported: G (default), GG, LD and LDL (GG and LDL are just convenience).
 
-    my $D = $matrix.decompositionCholesky( );  # $D is a left triangular matrix
-    $D dot $D.T eq $matrix;                    # True
+    my $G = $matrix.decompositionCholesky( );  # $D is a left triangular matrix
+    $G dot $G.T eq $matrix;                    # True
 
 [Mathematical Operations](#methods)
 -----------------------------------

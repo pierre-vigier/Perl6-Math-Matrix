@@ -288,6 +288,8 @@ If you provide none of them, the result will be the original matrix.
 
 Even more powerful or explicit in syntax are the L<structural ops|#structural-operations>.
 
+
+
 =head2 L<Converter|#methods>
 
 Methods that convert a matrix into other types: L<Bool|#bool>, L<Str|#str>, L<Numeric|#numeric>, L<Range|#range>, L<Array|#array>, L<Hash|#hash>, L<list|#list>,
@@ -403,7 +405,6 @@ You change the cache by calling gist with arguments again.
 Conversion into String that can reevaluated into the same object later using default constructor.
 
     my $clone = eval $matrix.perl;       # same as: $matrix.clone
-
 
 
 
@@ -799,9 +800,15 @@ Return the reduced row echelon form of a matrix, a.k.a. row canonical form
 
 =head2 L<Decompositions|#methods>
 
-Methods that return lists of matrices, which in their product or otherwise
+Methods that return a list of matrices, which can be recombined into the original matrix
+(mostly by L<dot product|#dot-product>).
+Sometimes some matrices of the list are omitted (like in the case of the cholesy)
 can be recombined to the original matrix. In case of cholesky only one
 matrix is returned, because the other one is its transposed.
+
+L<decompositionLU|#decompositionLU>,
+L<decompositionLUCrout|#decompositionLUCrout>,
+L<decompositionCholesky|#decompositionCholesky>
 
 =head3 L<decompositionLU|#decompositions>
 
@@ -828,10 +835,14 @@ This decomposition works only on invertible matrices (L<square|#is-square> and f
 
 =head3 L<decompositionCholesky|#decompositions>
 
-This decomposition works only on symmetric and definite positive matrices.
+This decomposition is faster than the previous, but works only on matrices that are
+L<symmetric|#is-symmetric> and L<positive-definite|#is-positive-definite>.
+Four output formats are supported: G (default), GG, LD and LDL
+(GG and LDL are just convenience).
 
-    my $D = $matrix.decompositionCholesky( );  # $D is a left triangular matrix
-    $D dot $D.T eq $matrix;                    # True
+
+    my $G = $matrix.decompositionCholesky( );  # $D is a left triangular matrix
+    $G dot $G.T eq $matrix;                    # True
 
 
 

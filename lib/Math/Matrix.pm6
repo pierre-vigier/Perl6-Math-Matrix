@@ -641,9 +641,12 @@ method decompositionLUCrout(Math::Matrix:D: ) {
     return Math::Matrix.new($L), Math::Matrix.new($U);
 }
 
-method decompositionCholesky(Math::Matrix:D: --> Math::Matrix:D) {
+method decompositionCholesky(Math::Matrix:D: Str :$fmt = 'G' --> Math::Matrix:D) {
     fail "Not symmetric matrix" unless self.is-symmetric;
     fail "Not positive definite" unless self.is-positive-definite;
+    my $format = $fmt.uc;
+    fail "Unknown cholesky decomposition format. Known are: 'G' (default) , 'GG', 'LD', 'LDL')"
+        unless $format (elem) <G GG LD LDL>;
     my @D = self!clone-cells();
     for 0 ..^$!row-count -> $k {
         @D[$k][$k] -= @D[$k][$_]**2 for 0 .. $k-1;
@@ -654,7 +657,6 @@ method decompositionCholesky(Math::Matrix:D: --> Math::Matrix:D) {
         }
     }
     for ^$!row-count X ^$!column-count -> ($r, $c) { @D[$r][$c] = 0 if $r < $c }
-    #return Math::Matrix.BUILD( rows => @D, is-lower-triangular => True );
     return Math::Matrix.new-lower-triangular( @D );
 }
 

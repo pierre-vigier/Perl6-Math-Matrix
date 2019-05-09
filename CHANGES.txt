@@ -1,7 +1,9 @@
  0.3.9:
-    § 2018.12.
-    + bool property triangular
-
+    § 2019.5.
+    * cholesky decomposition known now 4 output formats
+    + bool property is-triangular (optionally :strict)
+    + bool property is-frobenius
+    ! change API to all decomposition methods
 
  0.3.8:
     § 2018.11.26
