@@ -641,7 +641,7 @@ method decompositionLUCrout(Math::Matrix:D: ) {
     return Math::Matrix.new($L), Math::Matrix.new($U);
 }
 
-method decompositionCholesky(Math::Matrix:D: Str :$fmt = 'G' --> Math::Matrix:D) {
+method decomposition-cholesky(Math::Matrix:D: Str $fmt? = 'G' --> Math::Matrix:D) {
     fail "Not symmetric matrix" unless self.is-symmetric;
     fail "Not positive definite" unless self.is-positive-definite;
     my $format = $fmt.uc;

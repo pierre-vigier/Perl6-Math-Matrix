@@ -60,7 +60,7 @@ All computation heavy properties will be calculated lazily and cached.
 
   * **[derived matrices](#derived-matrices)**: [transposed](#transposed), [negated](#negated), [conjugated](#conjugated), [adjugated](#adjugated), [inverted](#inverted), [reduced-row-echelon-form](#reduced-row-echelon-form)
 
-  * **[decompositions](#decompositions)**: [LUCrout](#decompositionlucrout), [LU](#decompositionlu), [Cholesky](#decompositioncholesky)
+  * **[decompositions](#decompositions)**: [LUCrout](#decompositionlucrout), [LU](#decompositionlu), [cholesky](#decomposition-cholesky)
 
   * **[math ops](#mathematical-operations)**: [equal](#equal), [add](#add), [multiply](#multiply), [dot-product](#dot-product), [tensor-product](#tensor-product)
 
@@ -692,7 +692,7 @@ Return the reduced row echelon form of a matrix, a.k.a. row canonical form
 
 Methods that return a list of matrices, which can be recombined into the original matrix (mostly by [dot product](#dot-product)). Sometimes some matrices of the list are omitted (like in the case of the cholesy) can be recombined to the original matrix. In case of cholesky only one matrix is returned, because the other one is its transposed.
 
-[decompositionLU](#decompositionLU), [decompositionLUCrout](#decompositionLUCrout), [decompositionCholesky](#decompositionCholesky)
+[decompositionLU](#decompositionLU), [decompositionLUCrout](#decompositionLUCrout), [decomposition-cholesky](#decomposition-cholesky)
 
 ### [decompositionLU](#decompositions)
 
@@ -713,12 +713,19 @@ $L is a left triangular matrix and $R is a right one Without pivotisation the ma
 
 $L is a left triangular matrix and $R is a right one This decomposition works only on invertible matrices ([square](#is-square) and full [rank](#rank)ed).
 
-### [decompositionCholesky](#decompositions)
+### [decomposition-cholesky](#decompositions)
 
-This decomposition is faster than the previous, but works only on matrices that are [symmetric](#is-symmetric) and [positive-definite](#is-positive-definite). Four output formats are supported: G (default), GG, LD and LDL (GG and LDL are just convenience).
+This decomposition is faster than the previous, but works only on matrices that are [symmetric](#is-symmetric) and [positive-definite](#is-positive-definite). Four output formats are supported: G (default), GG, LD and LDL (GG and LDL are just convenience). The first G or L in a format name refers to a [lower triangular matrix](#is-lower-triangular) and D to a [diagonal](#is-diagonal) matrix. G = L * sqrt(D). In each case the second L or G is the [transposed](#transposed) version of the first G or L.
 
-    my $G = $matrix.decompositionCholesky( );  # $D is a left triangular matrix
-    $G dot $G.T eq $matrix;                    # True
+    my $G = $matrix.decomposition-cholesky( );       # $G is a left triangular matrix
+    my $G = $matrix.decomposition-cholesky('G');     # same as before
+    $G dot $G.T == $matrix;                          # True
+    my ($G, $GT) = $matrix.decomposition-cholesky('GG');
+    $G.T == $GT;                                     # True
+    my ($L, $D) = $matrix.decomposition-cholesky('LD');
+    $L dot $D dot $L.T == $matrix;                   # True
+    my ($L, $D, $LT) = $matrix.decomposition-cholesky('LDL');
+    $L.T == $LT;                                     # True
 
 [Mathematical Operations](#methods)
 -----------------------------------

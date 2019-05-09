@@ -35,10 +35,9 @@ subtest {
     my $simple = Math::Matrix.new([[1,3],[3,25]]);
     my $simpleD = Math::Matrix.new([[1,0],[3,4]]);
 
-    dies-ok {$zero.decompositionCholesky},           "no decomposition of none square matrices";
-    ok $identity.decompositionCholesky ~~ $identity, "decomposed identity is identity";
-    ok $diagonal.decompositionCholesky ~~ $diagonalD,"in decomposed diagonal matrix cell values get squared";
-    ok $simple.decompositionCholesky ~~ $simpleD,    "simple custom cholesky decomposition";
+    dies-ok {$zero.decomposition-cholesky},           "no decomposition of none square matrices";
+    ok $identity.decomposition-cholesky ~~ $identity, "decomposed identity is identity";
+    ok $diagonal.decomposition-cholesky ~~ $diagonalD,"in decomposed diagonal matrix cell values get squared";
+    ok $simple.decomposition-cholesky ~~ $simpleD,    "simple custom cholesky decomposition";
 
 }, "Choleski";
-
