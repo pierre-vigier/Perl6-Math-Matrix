@@ -641,23 +641,36 @@ method decompositionLUCrout(Math::Matrix:D: ) {
     return Math::Matrix.new($L), Math::Matrix.new($U);
 }
 
-method decomposition-cholesky(Math::Matrix:D: Str $fmt? = 'G' --> Math::Matrix:D) {
-    fail "Not symmetric matrix" unless self.is-symmetric;
-    fail "Not positive definite" unless self.is-positive-definite;
+method decomposition-cholesky(Math::Matrix:D: Str $fmt? = 'G') {
+    fail "Matrix is not symmetric"         unless self.is-symmetric;
+    fail "Matrix is not positive definite" unless self.is-positive-definite;
     my $format = $fmt.uc;
     fail "Unknown cholesky decomposition format. Known are: 'G' (default) , 'GG', 'LD', 'LDL')"
         unless $format (elem) <G GG LD LDL>;
-    my @D = self!clone-cells();
+    my @L = self!clone-cells();
     for 0 ..^$!row-count -> $k {
-        @D[$k][$k] -= @D[$k][$_]**2 for 0 .. $k-1;
-        @D[$k][$k]  = sqrt @D[$k][$k];
+        @L[$k][$k] -= @L[$k][$_]**2 for 0 .. $k-1;
+        @L[$k][$k]  = @L[$k][$k].sqrt;
         for $k+1 ..^ $!row-count -> $i {
-            @D[$i][$k] -= @D[$i][$_] * @D[$k][$_] for 0 ..^ $k ;
-            @D[$i][$k]  = @D[$i][$k] / @D[$k][$k];
+            @L[$i][$k] -= @L[$i][$_] * @L[$k][$_] for 0 ..^ $k ;
+            @L[$i][$k]  = @L[$i][$k] / @L[$k][$k];
         }
     }
-    for ^$!row-count X ^$!column-count -> ($r, $c) { @D[$r][$c] = 0 if $r < $c }
-    return Math::Matrix.new-lower-triangular( @D );
+    for ^$!row-count X ^$!column-count -> ($r, $c) { @L[$r][$c] = 0 if $r < $c }
+    if $format.substr(0,1) eq 'G' {
+        my $G = Math::Matrix.new-lower-triangular( @L );
+        return $G if $format eq 'G';
+        return $G, $G.T;
+    }
+    my @D;
+    for ^$!row-count -> $r {
+        @D[$r] = @L[$r][$r] ** 2 ;
+        @L[$r][$r] = 1;
+    }
+    my $L = Math::Matrix.new-lower-triangular( @L );
+    my $D = Math::Matrix.new-diagonal( @D );
+    return $L, $D if $format eq 'LD';
+    $L, $D, $L.T;
 }
 
 ################################################################################

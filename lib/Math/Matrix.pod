@@ -840,8 +840,8 @@ L<symmetric|#is-symmetric> and L<positive-definite|#is-positive-definite>.
 Four output formats are supported: G (default), GG, LD and LDL
 (GG and LDL are just convenience). The first G or L in a format name refers to a
 L<lower triangular matrix|#is-lower-triangular> and D to a L<diagonal|#is-diagonal> matrix.
-G = L * sqrt(D). In each case the second L or G is the L<transposed|#transposed>
-version of the first G or L.
+The main L<diagonal|#diagonal> of L is filled with ones and G = L * sqrt(D).
+In each case the second L or G is the L<transposed|#transposed> version of the first G or L.
 
     my $G = $matrix.decomposition-cholesky( );       # $G is a left triangular matrix
     my $G = $matrix.decomposition-cholesky('G');     # same as before
@@ -852,8 +852,6 @@ version of the first G or L.
     $L dot $D dot $L.T == $matrix;                   # True
     my ($L, $D, $LT) = $matrix.decomposition-cholesky('LDL');
     $L.T == $LT;                                     # True
-
-
 
 
 
