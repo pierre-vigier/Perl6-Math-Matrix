@@ -6,6 +6,7 @@ build: off
 
 environment:
     matrix:
+    - test_moar: '2017.10'
     - test_moar: '' #latest
 
 install:
@@ -22,7 +23,6 @@ install:
   - zef --depsonly install .
 
 test_script:
-#  - prove6 -l --loose -v t
    - set TEST_AUTHOR=1 && prove -ve "perl6 -Ilib"
    - zef --debug install .
 
