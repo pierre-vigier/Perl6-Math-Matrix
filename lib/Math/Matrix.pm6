@@ -583,7 +583,7 @@ method reduced-row-echelon-form(Math::Matrix:D: --> Math::Matrix:D) {
 ################################################################################
 
 # LU factorization with optional partial pivoting and optional diagonal matrix
-method decompositionLU(Math::Matrix:D: Bool :$pivot = True, :$diagonal = False) {
+method decompositionLU(Math::Matrix:D: Bool :$pivot = True, Bool :$diagonal = False) {
     fail "Not an square matrix" unless self.is-square;
     fail "Has to be invertible when not using pivoting" if not $pivot and not self.is-invertible;
     my $size = $!row-count;
@@ -641,12 +641,9 @@ method decompositionLUCrout(Math::Matrix:D: ) {
     return Math::Matrix.new($L), Math::Matrix.new($U);
 }
 
-method decomposition-cholesky(Math::Matrix:D: Str $fmt? = 'G') {
+method decomposition-cholesky(Math::Matrix:D: Bool :$diagonal = False) {
     fail "Matrix is not symmetric"         unless self.is-symmetric;
     fail "Matrix is not positive definite" unless self.is-positive-definite;
-    my $format = $fmt.uc;
-    fail "Unknown cholesky decomposition format. Known are: 'G' (default) , 'GG', 'LD', 'LDL')"
-        unless $format (elem) <G GG LD LDL>;
     my @L = self!clone-cells();
     for 0 ..^$!row-count -> $k {
         @L[$k][$k] -= @L[$k][$_]**2 for 0 .. $k-1;
@@ -657,20 +654,13 @@ method decomposition-cholesky(Math::Matrix:D: Str $fmt? = 'G') {
         }
     }
     for ^$!row-count X ^$!column-count -> ($r, $c) { @L[$r][$c] = 0 if $r < $c }
-    if $format.substr(0,1) eq 'G' {
-        my $G = Math::Matrix.new-lower-triangular( @L );
-        return $G if $format eq 'G';
-        return $G, $G.T;
-    }
+    return Math::Matrix.new-lower-triangular( @L ) unless $diagonal;
     my @D;
     for ^$!row-count -> $r {
         @D[$r] = @L[$r][$r] ** 2 ;
         @L[$r][$r] = 1;
     }
-    my $L = Math::Matrix.new-lower-triangular( @L );
-    my $D = Math::Matrix.new-diagonal( @D );
-    return $L, $D if $format eq 'LD';
-    $L, $D, $L.T;
+    Math::Matrix.new-lower-triangular( @L ), Math::Matrix.new-diagonal( @D );
 }
 
 ################################################################################

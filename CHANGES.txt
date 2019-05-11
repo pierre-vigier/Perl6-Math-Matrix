@@ -3,7 +3,7 @@
     + QR decomposition
     + bool property is-triangular (optionally :strict)
     + bool property is-frobenius
-    * cholesky decomposition knows now 4 output formats (G, GG, LD, LDL)
+    * cholesky decomposition knows now also LDL format (optionally :diagonal)
     ! change API to all decomposition methods to perl 6 standarts
 
  0.3.8:

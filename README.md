@@ -715,17 +715,13 @@ $L is a left triangular matrix and $R is a right one This decomposition works on
 
 ### [decomposition-cholesky](#decompositions)
 
-This decomposition is faster than the previous, but works only on matrices that are [symmetric](#is-symmetric) and [positive-definite](#is-positive-definite). Four output formats are supported: G (default), GG, LD and LDL (GG and LDL are just convenience). The first G or L in a format name refers to a [lower triangular matrix](#is-lower-triangular) and D to a [diagonal](#is-diagonal) matrix. The main [diagonal](#diagonal) of L is filled with ones and G = L * sqrt(D). In each case the second L or G is the [transposed](#transposed) version of the first G or L.
+This decomposition does roughly the same and is faster than the previous, but works only on matrices that are [symmetric](#is-symmetric) and [positive-definite](#is-positive-definite). The result will be a [lower triangular matrix](#is-lower-triangular) matrix called G that multiplied with its [transposed](#transposed) gives you the original matrix. When the optional, boolean parameter :diagonal is positive (negative is default) you get two matrices (L and D) as a result. L again is a [lower triangular matrix](#is-lower-triangular), but with ones in its main diagonal. D is a [diagonal](#diagonal) matrix ( G = L * sqrt(D)). This output format is also known as *LDL*. You get the second L matrix easily by transposing the L you got.
 
-    my $G = $matrix.decomposition-cholesky( );       # $G is a left triangular matrix
-    my $G = $matrix.decomposition-cholesky('G');     # same as before
-    $G dot $G.T == $matrix;                          # True
-    my ($G, $GT) = $matrix.decomposition-cholesky('GG');
-    $G.T == $GT;                                     # True
-    my ($L, $D) = $matrix.decomposition-cholesky('LD');
-    $L dot $D dot $L.T == $matrix;                   # True
-    my ($L, $D, $LT) = $matrix.decomposition-cholesky('LDL');
-    $L.T == $LT;                                     # True
+    my $G = $matrix.decomposition-cholesky( );          # $G is a left triangular matrix
+    my $G = $matrix.decomposition-cholesky(:!diagonal); # same as before
+    $G dot $G.T == $matrix;                             # True
+    my ($L, $D) = $matrix.decomposition-cholesky(:diagonal);
+    $L dot $D dot $L.T == $matrix;                      # True
 
 [Mathematical Operations](#methods)
 -----------------------------------
