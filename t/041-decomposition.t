@@ -43,7 +43,7 @@ subtest {
     ok $simple.decomposition-cholesky ~~ $simpleD,     "simple custom cholesky decomposition";
     ok $simple.decomposition-cholesky(:!diagonal) ~~ $simpleD,"format 'G' is default";
     my ($G) = $simple.decomposition-cholesky();
-    ok $G dot $G.T ~~ $simple,                         "cholesky GG is a working decomposition";
+    ok $G dot $G.T ~~ $simple,                         "cholesky without diagonal matrix is a working decomposition";
     my ($L, $D) = $simple.decomposition-cholesky(:diagonal);
-    ok $L dot $D dot $L.T ~~ $simple,                  "cholesky LD is a working decomposition";
+    ok $L dot $D dot $L.T ~~ $simple,                  "cholesky with a diagonal matrix is a working decomposition";
 }, "Choleski";
