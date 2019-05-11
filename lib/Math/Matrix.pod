@@ -54,7 +54,7 @@ All computation heavy properties will be calculated lazily and cached.
       L<determinant|#determinant>, L<minor|#minor>, L<norm|#norm>, L<condition|#condition>, L<element-type|#element-type>
 =item B<L<derived matrices|#derived-matrices>>: L<transposed|#transposed>, L<negated|#negated>, L<conjugated|#conjugated>, L<adjugated|#adjugated>, L<inverted|#inverted>,
       L<reduced-row-echelon-form|#reduced-row-echelon-form>
-=item B<L<decompositions|#decompositions>>: L<LUCrout|#decompositionlucrout>, L<LU|#decompositionlu>, L<cholesky|#decomposition-cholesky>
+=item B<L<decompositions|#decompositions>>: L<LU|#decompositionlu>, L<LUCrout|#decompositionlucrout>, L<cholesky|#decomposition-cholesky>
 =item B<L<math ops|#mathematical-operations>>: L<equal|#equal>, L<add|#add>, L<multiply|#multiply>, L<dot-product|#dot-product>, L<tensor-product|#tensor-product>
 =item B<L<list like ops|#list-like-operations>>: L<elems|#elems>, L<elem|#elem>, L<cont|#cont>, L<map|#map>, L<map-with-index|#map-with-index>,
       L<reduce|#reduce>, L<reduce-rows|#reduce-rows>, L<reduce-columns|#reduce-columns>

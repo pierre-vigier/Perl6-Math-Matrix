@@ -1,6 +1,4 @@
 [![Build Status](https://travis-ci.org/pierre-vigier/Perl6-Math-Matrix.svg?branch=master)](https://travis-ci.org/pierre-vigier/Perl6-Math-Matrix)
-[![Build status](https://ci.appveyor.com/api/projects/status/github/pierre-vigier/Perl6-Math-Matrix?svg=true)](https://ci.appveyor.com/project/pierre-vigier/Perl6-Math-Matrix/branch/master)
-
 NAME
 ====
 
@@ -60,7 +58,7 @@ All computation heavy properties will be calculated lazily and cached.
 
   * **[derived matrices](#derived-matrices)**: [transposed](#transposed), [negated](#negated), [conjugated](#conjugated), [adjugated](#adjugated), [inverted](#inverted), [reduced-row-echelon-form](#reduced-row-echelon-form)
 
-  * **[decompositions](#decompositions)**: [LUCrout](#decompositionlucrout), [LU](#decompositionlu), [cholesky](#decomposition-cholesky)
+  * **[decompositions](#decompositions)**: [LU](#decompositionlu), [LUCrout](#decompositionlucrout), [cholesky](#decomposition-cholesky)
 
   * **[math ops](#mathematical-operations)**: [equal](#equal), [add](#add), [multiply](#multiply), [dot-product](#dot-product), [tensor-product](#tensor-product)
 
