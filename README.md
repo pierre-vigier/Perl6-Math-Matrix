@@ -58,7 +58,7 @@ All computation heavy properties will be calculated lazily and cached. Mathemati
 
   * **[derived matrices](#derived-matrices)**: [transposed](#transposed), [negated](#negated), [conjugated](#conjugated), [adjugated](#adjugated), [inverted](#inverted), [reduced-row-echelon-form](#reduced-row-echelon-form)
 
-  * **[decompositions](#decompositions)**: [LU](#decompositionlu), [LUCrout](#decompositionlucrout), [cholesky](#decomposition-cholesky)
+  * **[decompositions](#decompositions)**: [LU](#decompositionlu), [LUCrout](#decompositionlucrout), [cholesky](#cholesky-decomposition)
 
   * **[math ops](#mathematical-operations)**: [equal](#equal), [add](#add), [multiply](#multiply), [dot-product](#dot-product), [tensor-product](#tensor-product)
 
@@ -690,7 +690,7 @@ Return the reduced row echelon form of a matrix, a.k.a. row canonical form
 
 Methods that return a list of matrices, which can be recombined into the original matrix (mostly by [dot product](#dot-product)). Sometimes some matrices of the list are omitted (like in the case of the cholesy) can be recombined to the original matrix. In case of cholesky only one matrix is returned, because the other one is its transposed.
 
-[decompositionLU](#decompositionLU), [decompositionLUCrout](#decompositionLUCrout), [decomposition-cholesky](#decomposition-cholesky)
+[decompositionLU](#decompositionLU), [decompositionLUCrout](#decompositionLUCrout), [cholesky-decomposition](#cholesky-decomposition)
 
 ### [decompositionLU](#decompositions)
 
@@ -711,14 +711,14 @@ $L is a left triangular matrix and $R is a right one Without pivotisation the ma
 
 $L is a left triangular matrix and $R is a right one This decomposition works only on invertible matrices ([square](#is-square) and full [rank](#rank)ed).
 
-### [decomposition-cholesky](#decompositions)
+### [cholesky-decomposition](#decompositions)
 
 This decomposition does roughly the same and is faster than the previous, but works only on matrices that are [symmetric](#is-symmetric) and [positive-definite](#is-positive-definite). The result will be a [lower triangular matrix](#is-lower-triangular) matrix called G that multiplied with its [transposed](#transposed) gives you the original matrix. When the optional, boolean parameter :diagonal is positive (negative is default) you get two matrices (L and D) as a result. L again is a [lower triangular matrix](#is-lower-triangular), but with ones in its main diagonal. D is a [diagonal](#diagonal) matrix ( G = L * sqrt(D)). This output format is also known as *LDL*. You get the second L matrix easily by transposing the L you got.
 
-    my $G = $matrix.decomposition-cholesky( );          # $G is a left triangular matrix
-    my $G = $matrix.decomposition-cholesky(:!diagonal); # same as before
+    my $G = $matrix.cholesky-decomposition( );          # $G is a left triangular matrix
+    my $G = $matrix.cholesky-decomposition(:!diagonal); # same as before
     $G dot $G.T == $matrix;                             # True
-    my ($L, $D) = $matrix.decomposition-cholesky(:diagonal);
+    my ($L, $D) = $matrix.cholesky-decomposition(:diagonal);
     $L dot $D dot $L.T == $matrix;                      # True
 
 [Mathematical Operations](#methods)

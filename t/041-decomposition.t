@@ -35,15 +35,15 @@ subtest {
     my $simple = Math::Matrix.new([[1,3],[3,25]]);
     my $simpleD = Math::Matrix.new([[1,0],[3,4]]);
 
-    dies-ok {$zero.decomposition-cholesky},            "no decomposition of none square matrices";
-    dies-ok {Math::Matrix.new([[1,1,3],[5,2,1],[5,3,4]]).decomposition-cholesky},
+    dies-ok {$zero.cholesky-decomposition},            "no decomposition of none square matrices";
+    dies-ok {Math::Matrix.new([[1,1,3],[5,2,1],[5,3,4]]).cholesky-decomposition},
                                                        'no decomposition of none diagonal dominant matrices';
-    ok $identity.decomposition-cholesky ~~ $identity,  "decomposed identity is identity";
-    ok $diagonal.decomposition-cholesky ~~ $diagonalD, "in decomposed diagonal matrix cell values get squared";
-    ok $simple.decomposition-cholesky ~~ $simpleD,     "simple custom cholesky decomposition";
-    ok $simple.decomposition-cholesky(:!diagonal) ~~ $simpleD,"format 'G' is default";
-    my ($G) = $simple.decomposition-cholesky();
+    ok $identity.cholesky-decomposition ~~ $identity,  "decomposed identity is identity";
+    ok $diagonal.cholesky-decomposition ~~ $diagonalD, "in decomposed diagonal matrix cell values get squared";
+    ok $simple.cholesky-decomposition ~~ $simpleD,     "simple custom cholesky decomposition";
+    ok $simple.cholesky-decomposition(:!diagonal) ~~ $simpleD,"format without diagonal is default";
+    my ($G) = $simple.cholesky-decomposition();
     ok $G dot $G.T ~~ $simple,                         "cholesky without diagonal matrix is a working decomposition";
-    my ($L, $D) = $simple.decomposition-cholesky(:diagonal);
+    my ($L, $D) = $simple.cholesky-decomposition(:diagonal);
     ok $L dot $D dot $L.T ~~ $simple,                  "cholesky with a diagonal matrix is a working decomposition";
 }, "Choleski";
