@@ -34,11 +34,12 @@ there is a need for a dedicated data type. The aim is to provide a full featured
 mathematical operations that integrate fully with the Perl 6 conventions.
 This module is pure perl and we plan to use native shaped arrays one day.
 
-Matrices are readonly - operations and functions do create new matrix objects.
+Matrices are readonly - methods and operators do create new matrix objects.
 All methods return readonly data or deep clones - also the constructor does a deep clone of provided data.
 In that sense the library is thread safe.
 
 All computation heavy properties will be calculated lazily and cached.
+Mathematically or otherwise undefined operations will cause an exception.
 
 =head1 L<METHODS|#synopsis>
 =item B<L<constructors|#constructors>>: L<new []|#new-->, L<new ()|#new---1>, L<new ""|#new---2>,
@@ -560,11 +561,10 @@ A Hermitian or self-adjoint matrix is L<equal|#equal> to its L<transposed|#trans
 
 =head3 L<is-invertible|#boolean-properties>
 
-Also called I<nonsingular> or I<nondegenerate>.
-(To ask if matrix is degenerate or singular - simply negate the result with ! or I<not>).
-Is True if matrix (L<is-square|#is-square>) and L<determinant|#determinant> is not zero.
-All rows or colums have to be independent vectors.
-Please check this before using $matrix.L<inverted|#inverted>, or you will get an exception, in case it was degenerate.
+, also called I<nonsingular> or I<nondegenerate>, is a L<square|#is-square> matrix,
+which has a none zerot L<determinant|#determinant>. That means all rows or colums
+have to be independent vectors. Please check this property before calling
+$matrix.L<inverted|#inverted>, or you will get an exception.
 
 =head3 L<is-orthogonal|#boolean-properties>
 

@@ -39,9 +39,9 @@ DESCRIPTION
 
 Because the list based, functional toolbox of Perl 6 is not enough to calculate matrices comfortably, there is a need for a dedicated data type. The aim is to provide a full featured set of structural and mathematical operations that integrate fully with the Perl 6 conventions. This module is pure perl and we plan to use native shaped arrays one day.
 
-Matrices are readonly - operations and functions do create new matrix objects. All methods return readonly data or deep clones - also the constructor does a deep clone of provided data. In that sense the library is thread safe.
+Matrices are readonly - methods and operators do create new matrix objects. All methods return readonly data or deep clones - also the constructor does a deep clone of provided data. In that sense the library is thread safe.
 
-All computation heavy properties will be calculated lazily and cached.
+All computation heavy properties will be calculated lazily and cached. Mathematically or otherwise undefined operations will cause an exception.
 
 [METHODS](#synopsis)
 ====================
@@ -488,7 +488,7 @@ A Hermitian or self-adjoint matrix is [equal](#equal) to its [transposed](#trans
 
 ### [is-invertible](#boolean-properties)
 
-Also called *nonsingular* or *nondegenerate*. (To ask if matrix is degenerate or singular - simply negate the result with ! or *not*). Is True if matrix ([is-square](#is-square)) and [determinant](#determinant) is not zero. All rows or colums have to be independent vectors. Please check this before using $matrix.[inverted](#inverted), or you will get an exception, in case it was degenerate.
+, also called *nonsingular* or *nondegenerate*, is a [square](#is-square) matrix, which has a none zerot [determinant](#determinant). That means all rows or colums have to be independent vectors. Please check this property before calling $matrix.[inverted](#inverted), or you will get an exception.
 
 ### [is-orthogonal](#boolean-properties)
 
