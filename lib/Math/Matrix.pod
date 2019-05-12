@@ -573,8 +573,8 @@ is an L<identity|#is-identity> matrix or in other words: L<transposed|#transpose
 
 =head3 L<is-unitary|#boolean-properties>
 
-An unitery matrix multiplied (L<dot-product|#dot-product>) with its concjugate transposed
-derivative (.conj.T) is an L<identity|#is-identity> matrix, or said differently:
+An unitery matrix multiplied (L<dot-product|#dot-product>) with its L<concjugated|#conjugated>
+and transposed derivative (.conj.T) is an L<identity|#is-identity> matrix, or said differently:
 the concjugate transposed matrix equals the L<inverted|#inverted> matrix.
 
 
