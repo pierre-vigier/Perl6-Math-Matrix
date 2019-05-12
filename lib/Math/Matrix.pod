@@ -224,9 +224,10 @@ The matrix does not have to be a quadratic (L<square|#is-square>).
 
 =head3 L<skew-diagonal|#accessors>
 
-Unlike a I<diagonal>, a skew diagonal is only defined for L<square|#is-square> matrixes.
-It runs from $matrix[n][0] to $matrix[0][n], n being row or column size - 1.
-Use the optional parameter to get any other parallel skew diagonal.
+Unlike a I<diagonal>, which runs from the left upper corner to the right lower,
+a (main) skew diagonal is only defined for L<square|#is-square> matrixes and runs 
+from left lower corner to the right upper (from $matrix[n][0] to $matrix[0][n]).
+Use the optional argument to get any other parallel skew diagonal.
 Positive value for the ones below - negative above.
 
     say $matrix.skew-diagonal    : (2, 3)

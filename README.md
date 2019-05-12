@@ -207,7 +207,7 @@ Without an argument it returns values of main diagonal elements as a list. Use t
 
 ### [skew-diagonal](#accessors)
 
-Unlike a *diagonal*, a skew diagonal is only defined for [square](#is-square) matrixes. It runs from $matrix[n][0] to $matrix[0][n], n being row or column size - 1. Use the optional parameter to get any other parallel skew diagonal. Positive value for the ones below - negative above.
+Unlike a *diagonal*, which runs from the left upper corner to the right lower, a (main) skew diagonal is only defined for [square](#is-square) matrixes and runs from left lower corner to the right upper (from $matrix[n][0] to $matrix[0][n]). Use the optional argument to get any other parallel skew diagonal. Positive value for the ones below - negative above.
 
     say $matrix.skew-diagonal    : (2, 3)
     say $matrix.skew-diagonal(0) : (2, 3)
