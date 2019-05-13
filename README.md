@@ -118,7 +118,9 @@ Alternatively you can define the matrix from a string, which makes most sense wh
 
 ### [new-zero](#constructors)
 
-This method is a constructor, that returns a zero matrix (sometimes called empty), as checked by [is-zero](is-zero). It has the [size](#size) as given by arguments. If only one argument is given, the matrix is [quadratic](#is-square). All the [element](#element)s are set to 0.
+This method is a constructor, that returns a *zero* matrix, which is sometimes called empty. That is a matrix, which holds zeros in all its [element](#element)s (as checked by [is-zero](#is-zero)).
+
+*new-zero* needs one ore two integer arguments. These are the numbers of rows and columns - the size [size](#size) of the new matrix. If both numbers are the same, you can omit the ladder and get a [quadratic](#is-square) matrix filld with zeros.
 
     say Math::Matrix.new-zero( 3, 4 ) :
 
@@ -133,7 +135,7 @@ This method is a constructor, that returns a zero matrix (sometimes called empty
 
 ### [new-identity](#constructors)
 
-This method is a constructor that returns an identity matrix (as checked by [is-identity](is-identity)) of the size given in the only and required parameter. All the [element](#element)s are set to 0 except the top/left to bottom/right diagonale is set to 1.
+This method creates a new *identity matrix* (as checked by [is-identity](#is-identity)). It contains only zeros, except in the main [diagonal](#diagonal), which consist of ones. Since identity matrices have to be [quadratic](#is-square), *new-identity* requires only one integer arguments, which sets the number of rows and columns of the new matrix.
 
     say Math::Matrix.new-identity( 3 ) :
 
@@ -143,7 +145,7 @@ This method is a constructor that returns an identity matrix (as checked by [is-
 
 ### [new-diagonal](#constructors)
 
-This method is a constructor that returns an diagonal matrix (as checked by [is-diagonal](#is-diagonal)) of the size given by count of the parameter. All the [element](#element)s are set to 0 except the top/left to bottom/right diagonal, set to given values.
+creates a [diagonal](#is-diagonal) matrix which again contains zeros, except in the main [diagonal](#diagonal), that can hold arbitrary values. The only required argument is a list of numbers, which will become the content of the main diagonal. Naturally diagonal matrices are also always [quadratic](#is-square).
 
     say Math::Matrix.new-diagonal( 2, 4, 5 ) :
 
@@ -153,7 +155,7 @@ This method is a constructor that returns an diagonal matrix (as checked by [is-
 
 ### [new-vector-product](#constructors)
 
-This method is a constructor that returns a matrix which is a result of the matrix product (method [dot-product](dot-product), or operator dot) of a column vector (first argument) and a row vector (second argument). It can also be understood as a tensor product of row and column.
+This method is a constructor that returns a matrix which is a result of the matrix product (method [dot-product](#dot-product), or operator dot) of a column vector (first argument) and a row vector (second argument). It can also be understood as a tensor product of row and column.
 
     say Math::Matrix.new-vector-product([1,2,3],[2,3,4]) :
 
@@ -171,7 +173,7 @@ Methods that return the content of selected elements.
 
 ### [element](#accessors)
 
-Gets value of one element in [row](#row) (first parameter) and [column](#column) (second parameter - counting always from 0). Sometimes its called matrix cell, to distinct from other type of elements. See: [elems](elems), [elem](elem), [element-type](element-type)
+Gets value of one element in [row](#row) (first parameter) and [column](#column) (second parameter - counting always from 0). Sometimes its called matrix cell, to distinct from other type of elements. See: [elems](elems), [elem](elem), [element-type](#element-type)
 
     my $matrix = Math::Matrix.new([[1,2],[3,4]]);
     say $matrix.element(0,1)            : 2
@@ -259,11 +261,11 @@ Even more powerful or explicit in syntax are the [structural ops](#structural-op
 [Converter](#methods)
 ---------------------
 
-Methods that convert a matrix into other types: [Bool](#bool), [Str](#str), [Numeric](#numeric), [Range](#range), [Array](#array), [Hash](#hash), [list](list), [list-rows](list-rows), [list-columns](list-columns) or allow different views on the overall content (output formats): [gist](gist), [perl](perl).
+Methods that convert a matrix into other types: [Bool](#bool), [Str](#str), [Numeric](#numeric), [Range](#range), [Array](#array), [Hash](#hash), [list](#list), [list-rows](#list-rows), [list-columns](#list-columns) or allow different views on the overall content (output formats): [gist](#gist), [perl](#perl).
 
 ### [Bool](#converter)
 
-Conversion into Bool context. Returns False if matrix is zero (all elements equal zero as in [is-zero](is-zero)), otherwise True.
+Conversion into Bool context. Returns False if matrix is zero (all elements equal zero as in [is-zero](#is-zero)), otherwise True.
 
     $matrix.Bool
     ? $matrix           # alias op
@@ -271,7 +273,7 @@ Conversion into Bool context. Returns False if matrix is zero (all elements equa
 
 ### [Str](#converter)
 
-Returns values of all [element](#element)s, separated by one whitespace, rows by new line. This is the same format as expected by [new("")](#new---2). Str is called implicitly by put and print. A shortened version is provided by [gist](gist)
+Returns values of all [element](#element)s, separated by one whitespace, rows by new line. This is the same format as expected by [new("")](#new---2). Str is called implicitly by put and print. A shortened version is provided by [gist](#gist)
 
     say Math::Matrix.new([[1,2],[3,4]]).Str:
 
