@@ -168,10 +168,10 @@ Naturally diagonal matrices are also always L<quadratic|#is-square>.
 
 =head3 L<new-vector-product|#constructors>
 
-This method is a constructor that returns a matrix which is a result of
-the matrix product (method L<dot-product|#dot-product>, or operator dot) of a column vector
-(first argument) and a row vector (second argument). It can also be understood
-as a tensor product of row and column.
+creates a matrix by calculating the L<tensor-product|#tensor-product> of two vectors,
+which are in a list or Array form the two required arguments to the method.
+Both lists don't have to be of the same size. The length of the first list will
+determine the amount of rows and the length of the second the amount of columns.
 
     say Math::Matrix.new-vector-product([1,2,3],[2,3,4]) :
 
