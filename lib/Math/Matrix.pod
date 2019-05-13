@@ -221,11 +221,15 @@ Gets values of specified column (first required parameter) as a list.
 
 =head3 L<diagonal|#accessors>
 
-Without an argument it returns the values of main diagonal elements as a list.
-The main diagonal runs from the left upper corner and going in each step
-one cell down and one right the reach the next element of the main diagonal.
-Use the optional parameter to get any other parallel diagonal.
-Positive value for the ones above - negative below and 0 for the main diagonal.
+Called without an argument, it returns the values of main diagonal as a list.
+The main diagonal starts at the left upper corner (index [0][0]).  Every next cell
+of the diagonal is reached by going one step below and one step to the right
+(indices [n;n] - n being an integer within the size of the matrix).
+
+Use the optional parameter of the method to get any other parallel diagonal.
+A positive value for a parallel diagonale above and to the right of the main one -
+a negative value to access a parallel diagonal to the left and below the
+main diagonal. 0 is default.
 The matrix does not have to be a quadratic (L<square|#is-square>).
 
     say Math::Matrix.new([[1,2],[3,4]]      ).diagonal    : (1, 4)
