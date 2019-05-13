@@ -155,7 +155,7 @@ creates a [diagonal](#is-diagonal) matrix which again contains zeros, except in 
 
 ### [new-vector-product](#constructors)
 
-creates a matrix by calculating the [tensor-product](#tensor-product) of two vectors, which are in a list or Array form the two required arguments to the method. Both lists don't have to be of the same size. The length of the first list will determine the amount of rows and the length of the second the amount of columns.
+creates a matrix by calculating the [tensor-product](#tensor-product) of two vectors, which are in a list or Array form the two required arguments of the method. Both lists don't have to be of the same size. The length of the first list will determine the amount of rows and the length of the second the amount of columns.
 
     say Math::Matrix.new-vector-product([1,2,3],[2,3,4]) :
 
@@ -201,7 +201,7 @@ Gets values of specified column (first required parameter) as a list.
 
 ### [diagonal](#accessors)
 
-Without an argument it returns values of main diagonal elements as a list. Use the optional parameter to get any other parallel diagonal. Positive value for the ones above - negative below and 0 for the main diagonal. The matrix does not have to be a quadratic ([square](#is-square)).
+Without an argument it returns the values of main diagonal elements as a list. The main diagonal runs from the left upper corner and going in each step one cell down and one right the reach the next element of the main diagonal. Use the optional parameter to get any other parallel diagonal. Positive value for the ones above - negative below and 0 for the main diagonal. The matrix does not have to be a quadratic ([square](#is-square)).
 
     say Math::Matrix.new([[1,2],[3,4]]      ).diagonal    : (1, 4)
     say Math::Matrix.new([[1,2],[3,4]]      ).diagonal(1) : (2)

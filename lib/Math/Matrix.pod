@@ -169,7 +169,7 @@ Naturally diagonal matrices are also always L<quadratic|#is-square>.
 =head3 L<new-vector-product|#constructors>
 
 creates a matrix by calculating the L<tensor-product|#tensor-product> of two vectors,
-which are in a list or Array form the two required arguments to the method.
+which are in a list or Array form the two required arguments of the method.
 Both lists don't have to be of the same size. The length of the first list will
 determine the amount of rows and the length of the second the amount of columns.
 
@@ -221,7 +221,9 @@ Gets values of specified column (first required parameter) as a list.
 
 =head3 L<diagonal|#accessors>
 
-Without an argument it returns values of main diagonal elements as a list.
+Without an argument it returns the values of main diagonal elements as a list.
+The main diagonal runs from the left upper corner and going in each step
+one cell down and one right the reach the next element of the main diagonal.
 Use the optional parameter to get any other parallel diagonal.
 Positive value for the ones above - negative below and 0 for the main diagonal.
 The matrix does not have to be a quadratic (L<square|#is-square>).
