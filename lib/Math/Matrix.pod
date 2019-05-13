@@ -43,24 +43,22 @@ Mathematically or otherwise undefined operations will cause an exception.
 
 =head1 L<METHODS|#synopsis>
 =item B<L<constructors|#constructors>>: L<new []|#new-->, L<new ()|#new---1>, L<new ""|#new---2>,
-      L<new-zero|#new-zero>, L<new-identity|#new-identity>, L<new-diagonal|#new-diagonal>, L<new-vector-product|#new-vector-product>
-=item B<L<accessors|#accessors>>: L<element|#element>, L<AT-POS|#at-pos>, L<row|#row>, L<column|#column>, L<diagonal|#diagonal>, L<skew-diagonal|#skew-diagonal>, L<submatrix|#submatrix>
+      L<new-zero|#new-zero>, L<new-identity|#new-identity>, L<new-diagonal>, L<new-vector-product>
+=item B<L<accessors|#accessors>>: L<element>, L<AT-POS|#at-pos>, L<row>, L<column>, L<diagonal>, L<skew-diagonal>, L<submatrix>
 =item B<L<converter|#converter>>: L<Bool|#bool>, L<Str|#str>, L<Numeric|#numeric>, L<Range|#range>,
       L<Array|#array>, L<list|#list>, L<list-rows|#list-rows>, L<list-columns|#list-columns>, L<Hash|#hash>, L<gist|#gist>, L<perl|#perl>
 =item B<L<boolean properties|#boolean-properties>>: L<square|#is-square>, L<triangular|#is-triangular>, L<frobenius|#is-frobenius>,
-      L<zero|#is-zero>, L<identity|#identity>, L<diagonal|#is-diagonal>, L<-dominant|#is-diagonally-dominant>, L<-constant|#is-diagonal-constant>, L<catalecticant|#is-catalecticant>,
+      L<zero|#is-zero>, L<identity|#is-identity>, L<diagonal|#is-diagonal>, L<-dominant|#is-diagonally-dominant>, L<-constant|#is-diagonal-constant>, L<catalecticant|#is-catalecticant>,
       L<anti-|#is-antisymmetric>, L<symmetric|#is-symmetric>, L<unitary|#is-unitary>, L<self-adjoint|#is-self-adjoint>, L<invertible|#is-invertible>, L<orthogonal|#is-orthogonal>,
       L<positive-definite|#is-positive-definite>, L<positive-semidefinite|#is-positive-semidefinite>
-=item B<L<numeric properties|#numeric-properties>>: L<size|#size>, L<density|#density>, L<bandwith|#bandwith>, L<trace|#trace>, L<rank|#rank>, L<nullity|#nullity>,
-      L<determinant|#determinant>, L<minor|#minor>, L<norm|#norm>, L<condition|#condition>, L<element-type|#element-type>
-=item B<L<derived matrices|#derived-matrices>>: L<transposed|#transposed>, L<negated|#negated>, L<conjugated|#conjugated>, L<adjugated|#adjugated>, L<inverted|#inverted>,
-      L<reduced-row-echelon-form|#reduced-row-echelon-form>
+=item B<L<numeric properties>>: L<size>, L<density>, L<bandwith>, L<trace>, L<rank>, L<nullity>, L<determinant>, L<minor>, L<norm>, L<condition>, L<element-type>
+=item B<L<derived matrices>>: L<transposed>, L<negated>, L<conjugated>, L<adjugated>, L<inverted>, L<reduced-row-echelon-form>
 =item B<L<decompositions|#decompositions>>: L<LU|#decompositionlu>, L<LUCrout|#decompositionlucrout>, L<Cholesky|#Cholesky-decomposition>
-=item B<L<math ops|#mathematical-operations>>: L<equal|#equal>, L<add|#add>, L<multiply|#multiply>, L<dot-product|#dot-product>, L<tensor-product|#tensor-product>
-=item B<L<list like ops|#list-like-operations>>: L<elems|#elems>, L<elem|#elem>, L<cont|#cont>, L<map|#map>, L<map-with-index|#map-with-index>,
-      L<reduce|#reduce>, L<reduce-rows|#reduce-rows>, L<reduce-columns|#reduce-columns>
-=item B<L<structural ops|#structural-operations>>: L<move-row|#move-row>, L<move-column|#move-column>, L<swap-rows|#swap-rows>, L<swap-columns|#swap-columns>,
-      L<splice-rows|#splice-rows>, L<splice-columns|#splice-columns>
+=item B<L<math ops|#mathematical-operations>>: L<equal>, L<add>, L<multiply>, L<dot-product>, L<tensor-product>
+=item B<L<list like ops|#list-like-operations>>: L<elems>, L<elem>, L<cont>, L<map>, L<map-with-index>,
+      L<reduce>, L<reduce-rows>, L<reduce-columns>
+=item B<L<structural ops|#structural-operations>>: L<move-row>, L<move-column>, L<swap-rows>, L<swap-columns>,
+      L<splice-rows>, L<splice-columns>
 =item B<L<shortcuts|#shortcuts>>:   L<T|#transposed>,   L<conj|#conjugated>,   L<det|#determinant>,   L<rref|#reduced-row-echelon-form>
 =item B<L<operators|#operator-methods>>:   MM,  ?,  ~,  |,  @,  %,  +,  -,  *,  **,  dot,  ⋅,  ÷,  X*,  ⊗,  ==,  ~~,  ❘ ❘,  ‖ ‖,  [ ]
 
@@ -120,8 +118,8 @@ Alternatively you can define the matrix from a string, which makes most sense wh
 =head3 L<new-zero|#constructors>
 
 This method is a constructor, that returns a zero matrix (sometimes called empty),
-as checked by L<is-zero|#is-zero>. It has the L<size|#size> as given by arguments.
-If only one argument is given, the matrix is L<quadratic|#is-square>. All the L<element|#element>s are set to 0.
+as checked by L<is-zero>. It has the L<size> as given by arguments.
+If only one argument is given, the matrix is L<quadratic|#is-square>. All the L<element>s are set to 0.
 
     say Math::Matrix.new-zero( 3, 4 ) :
 
@@ -136,9 +134,9 @@ If only one argument is given, the matrix is L<quadratic|#is-square>. All the L<
 
 =head3 L<new-identity|#constructors>
 
-This method is a constructor that returns an identity matrix (as checked by L<is-identity|#is-identity>)
+This method is a constructor that returns an identity matrix (as checked by L<is-identity>)
 of the size given in the only and required parameter.
-All the L<element|#element>s are set to 0 except the top/left to bottom/right diagonale is set to 1.
+All the L<element>s are set to 0 except the top/left to bottom/right diagonale is set to 1.
 
     say Math::Matrix.new-identity( 3 ) :
 
@@ -148,9 +146,9 @@ All the L<element|#element>s are set to 0 except the top/left to bottom/right di
 
 =head3 L<new-diagonal|#constructors>
 
-This method is a constructor that returns an diagonal matrix (as checked by L<is-diagonal|#is-diagonal>)
+This method is a constructor that returns an diagonal matrix (as checked by L<is-diagonal>)
 of the size given by count of the parameter.
-All the L<element|#element>s are set to 0 except the top/left to bottom/right diagonal, set to given values.
+All the L<element>s are set to 0 except the top/left to bottom/right diagonal, set to given values.
 
     say Math::Matrix.new-diagonal( 2, 4, 5 ) :
 
@@ -161,7 +159,7 @@ All the L<element|#element>s are set to 0 except the top/left to bottom/right di
 =head3 L<new-vector-product|#constructors>
 
 This method is a constructor that returns a matrix which is a result of
-the matrix product (method L<dot-product|#dot-product>, or operator dot) of a column vector
+the matrix product (method L<dot-product>, or operator dot) of a column vector
 (first argument) and a row vector (second argument). It can also be understood
 as a tensor product of row and column.
 
@@ -178,13 +176,13 @@ as a tensor product of row and column.
 
 Methods that return the content of selected elements.
 
-L<element|#element>, L<AT-POS|#at-pos>, L<row|#row>, L<column|#column>, L<diagonal|#diagonal>, L<skew-diagonal|#skew-diagonal>, L<submatrix|#submatrix>
+L<element>, L<AT-POS|#at-pos>, L<row>, L<column>, L<diagonal>, L<skew-diagonal>, L<submatrix>
 
 =head3 L<element|#accessors>
 
 Gets value of one element in row (first parameter) and column (second parameter - counting always from 0).
 Sometimes its called matrix cell, to distinct from other type of elements.
-See: L<elems|#elems>, L<elem|#elem>, L<element-type|#element-type>
+See: L<elems>, L<elem>, L<element-type>
 
     my $matrix = Math::Matrix.new([[1,2],[3,4]]);
     say $matrix.element(0,1)            : 2
@@ -294,13 +292,13 @@ Even more powerful or explicit in syntax are the L<structural ops|#structural-op
 
 =head2 L<Converter|#methods>
 
-Methods that convert a matrix into other types: L<Bool|#bool>, L<Str|#str>, L<Numeric|#numeric>, L<Range|#range>, L<Array|#array>, L<Hash|#hash>, L<list|#list>,
-L<list-rows|#list-rows>, L<list-columns|#list-columns> or allow different views on the overall content (output formats): L<gist|#gist>, L<perl|#perl>.
+Methods that convert a matrix into other types: L<Bool>, L<Str>, L<Numeric>, L<Range>, L<Array>, L<Hash>, L<list>,
+L<list-rows>, L<list-columns> or allow different views on the overall content (output formats): L<gist>, L<perl>.
 
 =head3 L<Bool|#converter>
 
 Conversion into Bool context. Returns False if matrix is zero
-(all elements equal zero as in L<is-zero|#is-zero>), otherwise True.
+(all elements equal zero as in L<is-zero>), otherwise True.
 
     $matrix.Bool
     ? $matrix           # alias op
@@ -308,9 +306,9 @@ Conversion into Bool context. Returns False if matrix is zero
 
 =head3 L<Str|#converter>
 
-Returns values of all L<element|#element>s, separated by one whitespace, rows by new line.
+Returns values of all L<element>s, separated by one whitespace, rows by new line.
 This is the same format as expected by L<new("")|#new---2>.
-Str is called implicitly by put and print. A shortened version is provided by L<gist|#gist>
+Str is called implicitly by put and print. A shortened version is provided by L<gist>
 
     say Math::Matrix.new([[1,2],[3,4]]).Str:
 
@@ -321,7 +319,7 @@ Str is called implicitly by put and print. A shortened version is provided by L<
 
 =head3 L<Numeric|#converter>
 
-Conversion into Numeric context. Returns Euclidean L<norm|#norm>.
+Conversion into Numeric context. Returns Euclidean L<norm>.
 Please note, only a prefix operator + (as in: + $matrix) will call this Method.
 An infix (as in $matrix + $number) calls $matrix.add($number).
 
@@ -330,7 +328,7 @@ An infix (as in $matrix + $number) calls $matrix.add($number).
 
 =head3 L<Range|#converter>
 
-Returns an range object that reflects the content of all L<element|#element>s.
+Returns an range object that reflects the content of all L<element>s.
 Please note that complex number can not be endpoints of ranges.
 
     say $matrix.Range: 1..4
@@ -342,14 +340,14 @@ To get single endpoints you could write:
 
 =head3 L<Array|#converter>
 
-Content of all L<element|#element>s as an array of arrays (same format that was put into L<new([...])|#new-->).
+Content of all L<element>s as an array of arrays (same format that was put into L<new([...])|#new-->).
 
     say Math::Matrix.new([[1,2],[3,4]]).Array : [[1 2] [3 4]]
     say @ $matrix       # alias op, space between @ and $ needed
 
 =head3 L<list|#converter>
 
-Returns a flat list with all L<element|#element>s (same as .list-rows.flat.list).
+Returns a flat list with all L<element>s (same as .list-rows.flat.list).
 
     say $matrix.list    : (1 2 3 4)
     say |$matrix        # alias op
@@ -414,7 +412,7 @@ Conversion into String that can reevaluated into the same object later using def
 
 These are mathematical properties, a given matrix has or not.
 Thus, the return value is a always of boolean type.
-Arguments, like in case of L<is-diagonally-dominant|#is-diagonally-dominant>,
+Arguments, like in case of L<is-diagonally-dominant>,
 are only necessary when a method can tell you about a group of closely related properties.
 
 L<square|#is-square>, B<L<triangular|#is-triangular>>, L<frobenius|#is-frobenius>,
@@ -429,9 +427,9 @@ True if number of rows and colums are the same (see L<size|#size>).
 
 =head3 L<is-triangular|#boolean-properties>
 
-True if all L<element|#element>s above or below the main L<diagonal> are zero.
+True if all L<element>s above or below the main L<diagonal> are zero.
 This method accepts four optional, boolean arguments:
-L<:upper|upper_triangular>, I<:lower>, I<:strict> and I<:unit>.
+L<:upper|upper-triangular>, L<:lower|lower-triangula>, L<:strict|strict-triangular> and L<:unit|unit-triangular>.
 Each argument can be used in a positive form (I<:upper>), as a negative (I<:!upper>),
 or omitted. Positively they demand a certain property, negatively the absence
 or opposite. When omitted, both states are acceptable.
@@ -442,7 +440,7 @@ L<Identity|#is-identity> matrices are I<:upper>, I<:lower> and I<:unit>.
 
 =head4 L<upper triangular|#is-triangular>
 
-a.k.a I<right triangular matrix>: all L<element|#element>s left-below the main I<diagonal> are zero.
+a.k.a I<right triangular matrix>: all L<element>s left-below the main I<diagonal> are zero.
 In other words: the L<lower-bandwith> has to be zero.
 
     $tri-matrix.is-triangular(:upper);       # matrix in the example below would pass this test
@@ -454,7 +452,7 @@ In other words: the L<lower-bandwith> has to be zero.
 
 =head4 L<lower triangular|#is-triangular>
 
-a.k.a I<left triangular> matrix: every L<element|#element> right and above the L<diagonal|#diagonal>
+a.k.a I<left triangular> matrix: every L<element> right and above the L<diagonal>
 (where row index is greater than column index) are zero.
 In other words: the L<upper-bandwith> has to be zero.
 
@@ -486,7 +484,7 @@ $tri-matrix.is-triangular(:strict);       # matrix in the example below would pa
 $tri-matrix.is-triangular(:!unit, :lower);# True too
 
     Example:    0 0 0
-                5 0 8
+                5 0 0
                 0 6 0
 
 =head3 L<is-frobenius|#boolean-properties>
@@ -501,11 +499,11 @@ of one column. (Main diagonal consist of ones and rest is zero.)
 
 =head3 L<is-zero|#boolean-properties>
 
-True if every L<element|#element> has value of 0 (as created by L<new-zero|#new-zero>).
+True if every L<element> has value of 0 (as created by L<new-zero|#new-zero>).
 
 =head3 L<is-identity|#boolean-properties>
 
-True if every L<element|#element> on the main L<diagonal|#diagonal> (where row index equals column index) is 1
+True if every L<element> on the main L<diagonal> (where row index equals column index) is 1
 and any other element is 0.
 
     Example:    1 0 0
@@ -514,7 +512,7 @@ and any other element is 0.
 
 =head3 L<is-diagonal|#boolean-properties>
 
-True if matrix is L<square|#is-square> and only elements on the L<diagonal|#diagonal> differ from 0.
+True if matrix is L<square|#is-square> and only elements on the L<diagonal> differ from 0.
 In other words: if matrix is L<upper-triangular|#is-upper-triangular> and L<lower-triangular|#is-lower-triangular>.
 
     Example:    1 0 0
@@ -523,7 +521,7 @@ In other words: if matrix is L<upper-triangular|#is-upper-triangular> and L<lowe
 
 =head3 L<is-diagonally-dominant|#boolean-properties>
 
-True when L<element|#element>s on the L<diagonal|#diagonal> have a bigger (if strict) or at least equal (in none strict)
+True when L<element>s on the L<diagonal> have a bigger (if strict) or at least equal (in none strict)
 absolute value than the sum of its row (sum of absolute values of the row except diagonal element).
 
    if $matrix.is-diagonally-dominant {
@@ -536,7 +534,7 @@ absolute value than the sum of its row (sum of absolute values of the row except
 =head3 L<is-diagonal-constant|#boolean-properties>
 
 Checks if caller is a I<diagonal-constant> or I<Töplitz matrix>.
-True if every L<diagonal|#diagonal> is the a collection of L<element|#element>s that hold the same value.
+True if every L<diagonal> is the a collection of L<element>s that hold the same value.
 
     Example:     0  1  2
                 -1  0  1
@@ -554,7 +552,7 @@ Catalecticant matrices are L<symmetric|#is-symmetric>.
 
 =head3 L<is-symmetric|#boolean-properties>
 
-True if every L<element|#element> with coordinates x y has same value as the element on y x.
+True if every L<element> with coordinates x y has same value as the element on y x.
 In other words: $matrix and $matrix.L<transposed|#transposed> (alias T) are the same.
 
     Example:    1 2 3
@@ -612,7 +610,7 @@ True if all main L<minors|#minor> or all Eigenvalues are greater equal zero.
 Matrix properties that are expressed with a single number, which will be calculated without further input.
 
 L<size|#size>, L<density|#density>, B<L<bandwith|#bandwith>>: (L<lower-bandwith|#lower-bandwith>, L<upper-bandwith|#upper-bandwith>), L<trace|#trace>, L<rank|#rank>, L<nullity|#nullity>,
-L<determinant|#determinant>, L<minor|#minor>, L<norm|#norm>, L<condition|#condition>, B<L<element-type|#element-type>>:
+L<determinant|#determinant>, L<minor|#minor>, L<norm>, L<condition|#condition>, B<L<element-type|#element-type>>:
 (L<narrowest-element-type|#narrowest-element-type>, L<widest-element-type|#widest-element-type>)
 
 =head3 L<size|#numeric-properties>
@@ -624,13 +622,13 @@ List of two values: number of rows and number of columns.
 
 =head3 L<density|#numeric-properties>
 
-I<Density> is the percentage of L<element|#element>s which are not zero. I<sparsity> = 1 - I<density>.
+I<Density> is the percentage of L<element>s which are not zero. I<sparsity> = 1 - I<density>.
 
     my $d = $matrix.density;
 
 =head3 L<bandwith|#numeric-properties>
 
-Is roughly the greatest distance of a none zero value from the main L<diagonal|#diagonal>.
+Is roughly the greatest distance of a none zero value from the main L<diagonal>.
 A matrix that L<is-diagonal|#is-diagonal> has a bandwith of 0. If there is a none zero
 value on an diagonal above or below the main diagonal, tha bandwith would be one.
 
@@ -638,13 +636,13 @@ value on an diagonal above or below the main diagonal, tha bandwith would be one
 
 =head4 L<lower-bandwith|#bandwith>
 
-In a matrix with the lower bandwith of k, every L<element|#element> with row index m and column index n,
-for which holds m - k > n, the content has to be zero. Literally speaking: there are k L<diagonal|#diagonal>s
+In a matrix with the lower bandwith of k, every L<element> with row index m and column index n,
+for which holds m - k > n, the content has to be zero. Literally speaking: there are k L<diagonal>s
 below the main diagonal, that contain none zero values.
 
 =head4 L<upper-bandwith|#bandwith>
 
-Analogously, every L<element|#element> with m + k < n is zero if matrix has an upper bandwith of k.
+Analogously, every L<element> with m + k < n is zero if matrix has an upper bandwith of k.
 
     Example:    1  0  0
                 4  2  0
@@ -655,7 +653,7 @@ The I<bidiagonal> example matrix has an upper bandwith of zero and lower bandwit
 
 =head3 L<trace|#numeric-properties>
 
-The trace of a L<square|#is-square> matrix is the sum of the L<element|#element>s on the main diagonal.
+The trace of a L<square|#is-square> matrix is the sum of the L<element>s on the main diagonal.
 In other words: sum of elements which row and column value is identical.
 
     my $tr = $matrix.trace;
@@ -688,7 +686,7 @@ and has a kernel (not a full L<rank|#rank> - thus is not L<invertible|#is-invert
 =head3 L<minor|#numeric-properties>
 
 A Minor is the determinant of a L<submatrix|#leaving-out-one> (first variant with same 2 scalar arguments a minor method).
-The two required positional arguments are row and column indices of an existing L<element|#element>.
+The two required positional arguments are row and column indices of an existing L<element>.
 
 
     my $m = $matrix.minor(1,2);
@@ -697,7 +695,7 @@ The two required positional arguments are row and column indices of an existing 
 
 A norm is a single positive number, which is an abstraction to the concept of size.
 Most common form for matrices is the p-norm, where in step 1
-the absolute value of every L<element|#element> is taken to the power of p.
+the absolute value of every L<element> is taken to the power of p.
 The sum of these results is taken to the power of 1/p.
 The p-q-Norm extents this process. In his step 2 every column-sum is taken to the power of (p/q).
 In step 3 the sum of these are taken to the power of (1/q).
@@ -726,7 +724,7 @@ Condition number of a matrix is L2 norm * L2 of L<inverted|#inverted> matrix.
 
 =head4 L<widest-element-type|#numeric-properties>
 
-Matrix L<element|#element>s can be (from most narrow to widest), of type (Bool), (Int), (Num), (Rat), (FatRat) or (Complex).
+Matrix L<element>s can be (from most narrow to widest), of type (Bool), (Int), (Num), (Rat), (FatRat) or (Complex).
 The widest type of any element will returned as type object.
 
 In the next example the smartmatch returns true, because no element of our default example matrix has wider type
@@ -762,7 +760,7 @@ Returns a new, transposed Matrix, where rows became colums and vice versa.
 
 =head3 L<negated|#derived-matrices>
 
-Creates a matrix where every L<element|#element> has the negated value of the original (invertion of sign).
+Creates a matrix where every L<element> has the negated value of the original (invertion of sign).
 
     my $new = $matrix.negated();     # invert sign of all elements
     my $neg = - $matrix;             # operator alias
@@ -772,7 +770,7 @@ Creates a matrix where every L<element|#element> has the negated value of the or
 
 =head3 L<conjugated|#derived-matrices>
 
-Creates a matrix where every L<element|#element> is the complex conjugated of the original.
+Creates a matrix where every L<element> is the complex conjugated of the original.
 
     my $c = $matrix.conjugated();    # change every value to its complex conjugated
     my $c = $matrix.conj();          # short alias (official Perl 6 name)
@@ -859,7 +857,7 @@ The result will be a L<lower triangular matrix|#is-lower-triangular> matrix (her
 that multiplied with its L<transposed|#transposed> gives you the original matrix.
 When the optional, boolean parameter :diagonal is positive (negative is default)
 you get two matrices (L and D) as a result. L again is a L<lower triangular matrix|#is-lower-triangular>,
-but with ones in its main diagonal. D is a L<diagonal|#diagonal> matrix ( G = L * sqrt(D)).
+but with ones in its main diagonal. D is a L<diagonal> matrix ( G = L * sqrt(D)).
 This output format is also known as I<LDL decomposition>.
 You get the second L matrix easily by transposing the L you got.
 
@@ -880,7 +878,7 @@ They are: L<equal|#equal>, L<add|#add>, L<multiply|#multiply>, L<dot-product|#do
 
 =head3 L<equal|#mathematical-operations>
 
-Checks two matrices for equality. They have to be of same L<size|#size> and every L<element|#element>
+Checks two matrices for equality. They have to be of same L<size|#size> and every L<element>
 of the first matrix on a particular position has to be numerically equal (as checked by I<==>) to the element
 (on the same position) of the second matrix.
 
@@ -924,7 +922,7 @@ and give a list or array (which have to fit the matrix size).
 
 =head4 L<add scalar|#add>
 
-When adding a single number to the matrix, it will be added to every L<element|#element>.
+When adding a single number to the matrix, it will be added to every L<element>.
 If you provide a row or column number it will be only added to that row or column.
 In case you provide both, only a single element gets a different value in the result matrix.
 
@@ -943,7 +941,7 @@ In case you provide both, only a single element gets a different value in the re
 =head3 L<multiply|#mathematical-operations>
 
 Unlike the L<dot-product|#dot-product> and L<tensor-product|#tensor-product>,
-this operation is the simple, scalar multiplication applied to L<element|#element>s.
+this operation is the simple, scalar multiplication applied to L<element>s.
 That is why this method works analogous to the scalar variant of L<add|#add-scalar>.
 However, when a matrix of same size is given, the result will be a matrix
 of that size again. Each element will be the product of two the two elements of the
@@ -1001,7 +999,7 @@ Matrix multiplication of two fitting matrices (colums left == rows right).
 
 The I<tensor product> (a.k.a I<Kronecker product>) between a matrix A of I<size|#size> (m,n)
 and matrix B of size (p,q) is a matrix C of size (m*p,n*q).
-C is a concatination of matrices you get if you take every L<element|#element> of A
+C is a concatination of matrices you get if you take every L<element> of A
 and do a L<scalar multiplication|#multiply> with B as in $B.multiply($A.element(..,..)).
 
     Example:    1 2  X*  2 3   =  1*[2 3] 2*[2 3]  =  2  3  4  6
@@ -1022,13 +1020,13 @@ Methods that usually are provided by Lists and Arrays, but make also sense in co
 
 =head3 L<elems|#list-like-operations>
 
-Number (count) of L<element|#element>s = rows * columns (see L<size|#size>).
+Number (count) of L<element>s = rows * columns (see L<size|#size>).
 
     say $matrix.elems();
 
 =head3 L<elem|#list-like-operations>
 
-Asks if all L<element|#element> of Matrix (cell) values are an element of the given set or range.
+Asks if all L<element> of Matrix (cell) values are an element of the given set or range.
 
 
     Math::Matrix.new([[1,2],[3,4]]).elem(1..4) :   True
@@ -1050,7 +1048,7 @@ within this range to make the result true.
 
 =head3 L<map|#list-like-operations>
 
-Creates a new matrix of same size by iterating over all or some L<element|#element>s.
+Creates a new matrix of same size by iterating over all or some L<element>s.
 For every chosen element with the indices (m,n),
 a provided code block (required argument) will be run once.
 That block will be given the elements(m,n) value as an argument.
@@ -1087,7 +1085,7 @@ can recieve one to three arguments: (row index, column index and cell value).
 
 =head3 L<reduce|#list-like-operations>
 
-Like the built in reduce method, it iterates over all L<element|#element>s and joins
+Like the built in reduce method, it iterates over all L<element>s and joins
 them into one value, by applying the given operator or method
 to the previous result and the next element. I starts with the element [0][0]
 and moving from left to right in the first row and continue with the first
@@ -1237,7 +1235,7 @@ For more explanations of the ops (with examples) see the L<next chapter|#operato
 =item infix **  -->  dot-product inverted
 =item infix ⊗ X*  -->  L<tensor-product|#tensor-product>
 =item circumfix ｜..｜ -->  L<determinant|#determinant>
-=item circumfix ‖..‖  -->  L<norm|#norm>
+=item circumfix ‖..‖  -->  L<norm>
 =item postcircumfix [..]  -->  L<AT-POS|#at-pos>
 
 =head1 L<Operators|#synopsis>

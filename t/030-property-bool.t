@@ -1,7 +1,7 @@
 use lib "lib";
 use Test;
 use Math::Matrix;
-plan 91;
+plan 94;
 
 my $matrixa = Math::Matrix.new([[1,2],[3,4]]);
 my $matrixc = Math::Matrix.new([[8,8],[8,8]]);
@@ -54,12 +54,15 @@ nok $uut.is-triangular(:strict),      "An unit upper triangular matrix is not a 
 nok $lut.is-triangular(:strict),      "An unit lower triangular matrix is not a strict triangular";
 nok $symmetric.is-triangular,         "full ranked matrix is not triangular";
 nok $symmetric.is-triangular(:strict),"full ranked matrix is not strictly triangular";
+nok $ut.is-triangular(:unit,:strict), "no matrix can be unit and strict";
 
 ok $ut.is-triangular(:upper),         "Is an upper triangular matrix";
+ok $ut.is-triangular(:upper,:!lower), "Is an upper triangular matrix is upper and not lower";
 ok $ut.is-triangular(:!strict,:upper),"Is an upper triangular, none strict matrix";
 nok $ut.is-triangular(:strict,:upper),"Upper triangular matrix is not strict";
 ok $sut.is-triangular(:strict,:upper),"Is strictly upper triangular matrix";
 ok $diagonal.is-triangular(:upper),   "Diagonal are upper triangular";
+ok $diagonal.is-triangular(:upper,:lower),"Diagonal matrix is an upper and lower triangular";
 nok $matrixa.is-triangular(:upper),   "Is not an upper triangular matrix";
 nok $lt.is-triangular(:upper),        "lower triangular is no upper triangular matrix";
 
