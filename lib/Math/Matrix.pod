@@ -43,22 +43,21 @@ Mathematically or otherwise undefined operations will cause an exception.
 
 =head1 L<METHODS|#synopsis>
 =item B<L<constructors|#constructors>>: L<new []|#new-->, L<new ()|#new---1>, L<new ""|#new---2>,
-      L<new-zero|#new-zero>, L<new-identity|#new-identity>, L<new-diagonal>, L<new-vector-product>
+      L<new-zero|#new-zero>, L<new-identity>, L<new-diagonal>, L<new-vector-product>
 =item B<L<accessors|#accessors>>: L<element>, L<AT-POS|#at-pos>, L<row>, L<column>, L<diagonal>, L<skew-diagonal>, L<submatrix>
 =item B<L<converter|#converter>>: L<Bool|#bool>, L<Str|#str>, L<Numeric|#numeric>, L<Range|#range>,
-      L<Array|#array>, L<list|#list>, L<list-rows|#list-rows>, L<list-columns|#list-columns>, L<Hash|#hash>, L<gist|#gist>, L<perl|#perl>
+      L<Array|#array>, L<list>, L<list-rows>, L<list-columns>, L<Hash|#hash>, L<gist>, L<perl>
 =item B<L<boolean properties|#boolean-properties>>: L<square|#is-square>, L<triangular|#is-triangular>, L<frobenius|#is-frobenius>,
       L<zero|#is-zero>, L<identity|#is-identity>, L<diagonal|#is-diagonal>, L<-dominant|#is-diagonally-dominant>, L<-constant|#is-diagonal-constant>, L<catalecticant|#is-catalecticant>,
       L<anti-|#is-antisymmetric>, L<symmetric|#is-symmetric>, L<unitary|#is-unitary>, L<self-adjoint|#is-self-adjoint>, L<invertible|#is-invertible>, L<orthogonal|#is-orthogonal>,
       L<positive-definite|#is-positive-definite>, L<positive-semidefinite|#is-positive-semidefinite>
-=item B<L<numeric properties>>: L<size>, L<density>, L<bandwith>, L<trace>, L<rank>, L<nullity>, L<determinant>, L<minor>, L<norm>, L<condition>, L<element-type>
-=item B<L<derived matrices>>: L<transposed>, L<negated>, L<conjugated>, L<adjugated>, L<inverted>, L<reduced-row-echelon-form>
+=item B<L<numeric properties|#numeric-properties>>: L<size>, L<density>, L<bandwith>, L<trace>, L<rank>, L<nullity>, L<determinant>, L<minor>, L<norm>, L<condition>, L<element-type>
+=item B<L<derived matrices|#drived-matrices>>: L<transposed>, L<negated>, L<conjugated>, L<adjugated>, L<inverted>, L<reduced-row-echelon-form>
 =item B<L<decompositions|#decompositions>>: L<LU|#decompositionlu>, L<LUCrout|#decompositionlucrout>, L<Cholesky|#Cholesky-decomposition>
 =item B<L<math ops|#mathematical-operations>>: L<equal>, L<add>, L<multiply>, L<dot-product>, L<tensor-product>
 =item B<L<list like ops|#list-like-operations>>: L<elems>, L<elem>, L<cont>, L<map>, L<map-with-index>,
       L<reduce>, L<reduce-rows>, L<reduce-columns>
-=item B<L<structural ops|#structural-operations>>: L<move-row>, L<move-column>, L<swap-rows>, L<swap-columns>,
-      L<splice-rows>, L<splice-columns>
+=item B<L<structural ops|#structural-operations>>: L<move-row>, L<move-column>, L<swap-rows>, L<swap-columns>, L<splice-rows>, L<splice-columns>
 =item B<L<shortcuts|#shortcuts>>:   L<T|#transposed>,   L<conj|#conjugated>,   L<det|#determinant>,   L<rref|#reduced-row-echelon-form>
 =item B<L<operators|#operator-methods>>:   MM,  ?,  ~,  |,  @,  %,  +,  -,  *,  **,  dot,  ⋅,  ÷,  X*,  ⊗,  ==,  ~~,  ❘ ❘,  ‖ ‖,  [ ]
 
@@ -292,8 +291,9 @@ Even more powerful or explicit in syntax are the L<structural ops|#structural-op
 
 =head2 L<Converter|#methods>
 
-Methods that convert a matrix into other types: L<Bool>, L<Str>, L<Numeric>, L<Range>, L<Array>, L<Hash>, L<list>,
-L<list-rows>, L<list-columns> or allow different views on the overall content (output formats): L<gist>, L<perl>.
+Methods that convert a matrix into other types: L<Bool|#bool>, L<Str|#str>, L<Numeric|#numeric>,
+L<Range|#range>, L<Array|#array>, L<Hash|#hash>, L<list>, L<list-rows>, L<list-columns>
+or allow different views on the overall content (output formats): L<gist>, L<perl>.
 
 =head3 L<Bool|#converter>
 
@@ -429,7 +429,7 @@ True if number of rows and colums are the same (see L<size|#size>).
 
 True if all L<element>s above or below the main L<diagonal> are zero.
 This method accepts four optional, boolean arguments:
-L<:upper|upper-triangular>, L<:lower|lower-triangula>, L<:strict|strict-triangular> and L<:unit|unit-triangular>.
+L<:upper|#upper-triangular>, L<:lower|#lower-triangula>, L<:strict|#strict-triangular> and L<:unit|#unit-triangular>.
 Each argument can be used in a positive form (I<:upper>), as a negative (I<:!upper>),
 or omitted. Positively they demand a certain property, negatively the absence
 or opposite. When omitted, both states are acceptable.

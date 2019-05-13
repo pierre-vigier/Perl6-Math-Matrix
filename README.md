@@ -46,17 +46,17 @@ All computation heavy properties will be calculated lazily and cached. Mathemati
 [METHODS](#synopsis)
 ====================
 
-  * **[constructors](#constructors)**: [new []](#new--), [new ()](#new---1), [new ""](#new---2), [new-zero](#new-zero), [new-identity](#new-identity), [new-diagonal](new-diagonal), [new-vector-product](new-vector-product)
+  * **[constructors](#constructors)**: [new []](#new--), [new ()](#new---1), [new ""](#new---2), [new-zero](#new-zero), [new-identity](new-identity), [new-diagonal](new-diagonal), [new-vector-product](new-vector-product)
 
   * **[accessors](#accessors)**: [element](element), [AT-POS](#at-pos), [row](row), [column](column), [diagonal](diagonal), [skew-diagonal](skew-diagonal), [submatrix](submatrix)
 
-  * **[converter](#converter)**: [Bool](#bool), [Str](#str), [Numeric](#numeric), [Range](#range), [Array](#array), [list](#list), [list-rows](#list-rows), [list-columns](#list-columns), [Hash](#hash), [gist](#gist), [perl](#perl)
+  * **[converter](#converter)**: [Bool](#bool), [Str](#str), [Numeric](#numeric), [Range](#range), [Array](#array), [list](list), [list-rows](list-rows), [list-columns](list-columns), [Hash](#hash), [gist](gist), [perl](perl)
 
   * **[boolean properties](#boolean-properties)**: [square](#is-square), [triangular](#is-triangular), [frobenius](#is-frobenius), [zero](#is-zero), [identity](#is-identity), [diagonal](#is-diagonal), [-dominant](#is-diagonally-dominant), [-constant](#is-diagonal-constant), [catalecticant](#is-catalecticant), [anti-](#is-antisymmetric), [symmetric](#is-symmetric), [unitary](#is-unitary), [self-adjoint](#is-self-adjoint), [invertible](#is-invertible), [orthogonal](#is-orthogonal), [positive-definite](#is-positive-definite), [positive-semidefinite](#is-positive-semidefinite)
 
-  * **[numeric properties](numeric properties)**: [size](size), [density](density), [bandwith](bandwith), [trace](trace), [rank](rank), [nullity](nullity), [determinant](determinant), [minor](minor), [norm](norm), [condition](condition), [element-type](element-type)
+  * **[numeric properties](#numeric-properties)**: [size](size), [density](density), [bandwith](bandwith), [trace](trace), [rank](rank), [nullity](nullity), [determinant](determinant), [minor](minor), [norm](norm), [condition](condition), [element-type](element-type)
 
-  * **[derived matrices](derived matrices)**: [transposed](transposed), [negated](negated), [conjugated](conjugated), [adjugated](adjugated), [inverted](inverted), [reduced-row-echelon-form](reduced-row-echelon-form)
+  * **[derived matrices](#drived-matrices)**: [transposed](transposed), [negated](negated), [conjugated](conjugated), [adjugated](adjugated), [inverted](inverted), [reduced-row-echelon-form](reduced-row-echelon-form)
 
   * **[decompositions](#decompositions)**: [LU](#decompositionlu), [LUCrout](#decompositionlucrout), [Cholesky](#Cholesky-decomposition)
 
@@ -259,7 +259,7 @@ Even more powerful or explicit in syntax are the [structural ops](#structural-op
 [Converter](#methods)
 ---------------------
 
-Methods that convert a matrix into other types: [Bool](Bool), [Str](Str), [Numeric](Numeric), [Range](Range), [Array](Array), [Hash](Hash), [list](list), [list-rows](list-rows), [list-columns](list-columns) or allow different views on the overall content (output formats): [gist](gist), [perl](perl).
+Methods that convert a matrix into other types: [Bool](#bool), [Str](#str), [Numeric](#numeric), [Range](#range), [Array](#array), [Hash](#hash), [list](list), [list-rows](list-rows), [list-columns](list-columns) or allow different views on the overall content (output formats): [gist](gist), [perl](perl).
 
 ### [Bool](#converter)
 
@@ -370,7 +370,7 @@ True if number of rows and colums are the same (see [size](#size)).
 
 ### [is-triangular](#boolean-properties)
 
-True if all [element](element)s above or below the main [diagonal](diagonal) are zero. This method accepts four optional, boolean arguments: [:upper](upper-triangular), [:lower](lower-triangula), [:strict](strict-triangular) and [:unit](unit-triangular). Each argument can be used in a positive form (*:upper*), as a negative (*:!upper*), or omitted. Positively they demand a certain property, negatively the absence or opposite. When omitted, both states are acceptable.
+True if all [element](element)s above or below the main [diagonal](diagonal) are zero. This method accepts four optional, boolean arguments: [:upper](#upper-triangular), [:lower](#lower-triangula), [:strict](#strict-triangular) and [:unit](#unit-triangular). Each argument can be used in a positive form (*:upper*), as a negative (*:!upper*), or omitted. Positively they demand a certain property, negatively the absence or opposite. When omitted, both states are acceptable.
 
 Please note that a triangular matrix can never be *:unit* and *:strict* at the same time, nor *:!upper* and *:!lower*. A triangular matrix that is *:upper* and *:lower* [is-diagonal](is-diagonal). [Identity](#is-identity) matrices are *:upper*, *:lower* and *:unit*.
 
