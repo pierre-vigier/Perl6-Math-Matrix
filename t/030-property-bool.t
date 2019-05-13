@@ -1,7 +1,7 @@
 use lib "lib";
 use Test;
 use Math::Matrix;
-plan 84;
+plan 85;
 
 my $matrixa = Math::Matrix.new([[1,2],[3,4]]);
 my $matrixc = Math::Matrix.new([[8,8],[8,8]]);
@@ -73,6 +73,7 @@ nok $ut.is-zero,          "An upper triangular matrix is not zero";
 
 ok $identity.is-identity,         "Is an identity matrix";
 nok $diagonal.is-identity,        "diagonal is not an identity matrix";
+ok $frobenius.is-identity,        "a frobenius matrix is not an identity matrix";
 nok $almostidentity.is-identity,  "none square is not an identity matrix";
 
 

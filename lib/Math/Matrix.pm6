@@ -641,7 +641,7 @@ method decompositionLUCrout(Math::Matrix:D: ) {
     return Math::Matrix.new($L), Math::Matrix.new($U);
 }
 
-method cholesky-decomposition(Math::Matrix:D: Bool :$diagonal = False) {
+method Cholesky-decomposition(Math::Matrix:D: Bool :$diagonal = False) {
     fail "Matrix is not symmetric"         unless self.is-symmetric;
     fail "Matrix is not positive definite" unless self.is-positive-definite;
     my @L = self!clone-cells();
