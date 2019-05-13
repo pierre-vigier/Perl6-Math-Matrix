@@ -58,7 +58,7 @@ All computation heavy properties will be calculated lazily and cached. Mathemati
 
   * **[derived matrices](#derived-matrices)**: [transposed](#transposed), [negated](#negated), [conjugated](#conjugated), [adjugated](#adjugated), [inverted](#inverted), [reduced-row-echelon-form](#reduced-row-echelon-form)
 
-  * **[decompositions](#decompositions)**: [LU](#decompositionlu), [LUCrout](#decompositionlucrout), [cholesky](#cholesky-decomposition)
+  * **[decompositions](#decompositions)**: [LU](#decompositionlu), [LUCrout](#decompositionlucrout), [Cholesky](#Cholesky-decomposition)
 
   * **[math ops](#mathematical-operations)**: [equal](#equal), [add](#add), [multiply](#multiply), [dot-product](#dot-product), [tensor-product](#tensor-product)
 
@@ -362,7 +362,7 @@ Conversion into String that can reevaluated into the same object later using def
 
 These are mathematical properties, a given matrix has or not. Thus, the return value is a always of boolean type. Arguments, like in case of [is-diagonally-dominant](#is-diagonally-dominant), are only necessary when a method can tell you about a group of closely related properties.
 
-[square](#is-square), [triangular](#is-triangular), [upper-triangular](#is-upper-triangular), [lower-triangular](#is-lower-triangular), [frobenius](#is-frobenius), [zero](#is-zero), [identity](#identity), [diagonal](#is-diagonal), [diagonally-dominant](#is-diagonally-dominant), [diagonal-constant](#is-diagonal-constant), [catalecticant](#is-catalecticant), [symmetric](#is-symmetric), [anti-symmetric](#is-antisymmetric), [unitary](#is-unitary), [self-adjoint](#is-self-adjoint), [invertible](#is-invertible), [orthogonal](#is-orthogonal), [positive-definite](#is-positive-definite), [positive-semidefinite](#is-positive-semidefinite)
+[square](#is-square), **[triangular](#is-triangular)**, [frobenius](#is-frobenius), [zero](#is-zero), [identity](#is-identity), [diagonal](#is-diagonal), **[diagonally-dominant](#is-diagonally-dominant)**, [diagonal-constant](#is-diagonal-constant), [catalecticant](#is-catalecticant), [symmetric](#is-symmetric), [anti-symmetric](#is-antisymmetric), [unitary](#is-unitary), [self-adjoint](#is-self-adjoint), [invertible](#is-invertible), [orthogonal](#is-orthogonal), [positive-definite](#is-positive-definite), [positive-semidefinite](#is-positive-semidefinite)
 
 ### [is-square](#boolean-properties)
 
@@ -370,41 +370,53 @@ True if number of rows and colums are the same (see [size](#size)).
 
 ### [is-triangular](#boolean-properties)
 
-True if matrix *is-upper-triangular* or *is-lower-triangular*. When optional named boolean argument :strict is added, the matrix has to be a strictly upper triangula or a strictly lower triangular (default is none strict).
+True if all [element](#element)s above or below the main [diagonal](diagonal) are zero. This method accepts four optional, boolean arguments: [:upper](upper_triangular), *:lower*, *:strict* and *:unit*. Each argument can be used in a positive form (*:upper*), as a negative (*:!upper*), or omitted. Positively they demand a certain property, negatively the absence or opposite. When omitted, both states are acceptable.
 
-#### [is-upper-triangular](#boolean-properties)
+Please note that a triangular matrix can never be *:unit* and *:strict* at the same time, nor *:!upper* and *:!lower*. A triangular matrix that is *:upper* and *:lower* [is-diagonal](is-diagonal). [Identity](#is-identity) matrices are *:upper*, *:lower* and *:unit*.
 
-a.k.a *right triangular* matrix: every [element](#element) below the [diagonal](#diagonal) (where row index is greater than column index) is 0. In other words: the [lower-bandwith](#lower-bandwith) is zero.
+#### [upper triangular](#is-triangular)
+
+a.k.a *right triangular matrix*: all [element](#element)s left-below the main *diagonal* are zero. In other words: the [lower-bandwith](lower-bandwith) has to be zero.
+
+    $tri-matrix.is-triangular(:upper);       # matrix in the example below would pass this test
+    $tri-matrix.is-triangular();             # True, there is a lower or upper triangle
 
     Example:    1 2 5
                 0 3 8
                 0 0 7
 
-There is an optional, boolean argument named :strict.
+#### [lower triangular](#is-triangular)
 
-    $matrix.is-upper-triangular(:!strict);   # asks for matrix is none strict triangular (default)
-    $matrix.is-upper-triangular(:strict);    # search for strictly triangular matrix
+a.k.a *left triangular* matrix: every [element](#element) right and above the [diagonal](#diagonal) (where row index is greater than column index) are zero. In other words: the [upper-bandwith](upper-bandwith) has to be zero.
 
-    Example:    0 2 5
-                0 0 8
-                0 0 0
-
-#### [is-lower-triangular](#boolean-properties)
-
-a.k.a *left triangular* matrix: every [element](#element) above the [diagonal](#diagonal) (where row index is smaller than column index) is 0. In other words: the [upper-bandwith](#upper-bandwith) is zero.
+    $tri-matrix.is-triangular(:lower);        # matrix in the example below would pass this test
+    $tri-matrix.is-triangular();              # True too
+    $tri-matrix.is-triangular(:!upper);       # True, because the is a triangle, but not an upper
+    $tri-matrix.is-triangular(:lower,:!upper);# True still, even a bit redundant
 
     Example:    1 0 0
                 2 3 0
                 5 8 7
 
-Has also an optional, named boolean argument named :strict.
+#### [unit triangular](#is-triangular)
 
-    $matrix.is-lower-triangular(:!strict);   # asks for matrix is none strict triangular (default)
-    $matrix.is-lower-triangular(:strict);    # search for strictly triangular matrix
+are triangular matrices that have a [diagonal](diagonal) consisting only of values equal one.
+
+$tri-matrix.is-triangular(:unit); # matrix in the example below would pass this test $tri-matrix.is-triangular(:unit, :lower); # False, because unit upper triangular
+
+    Example:    1 2 5
+                0 1 8
+                0 0 1
+
+#### [strict triangular](#is-triangular)
+
+are triangular matrices that have a [diagonal](diagonal) consisting only of values equal zero.
+
+$tri-matrix.is-triangular(:strict); # matrix in the example below would pass this test $tri-matrix.is-triangular(:!unit, :lower);# True too
 
     Example:    0 0 0
-                2 0 0
-                5 8 0
+                5 0 8
+                0 6 0
 
 ### [is-frobenius](#boolean-properties)
 
@@ -688,9 +700,9 @@ Return the reduced row echelon form of a matrix, a.k.a. row canonical form
 [Decompositions](#methods)
 --------------------------
 
-Methods that return a list of matrices, which can be recombined into the original matrix (mostly by [dot product](#dot-product)). Sometimes some matrices of the list are omitted (like in the case of the cholesy) can be recombined to the original matrix. In case of cholesky only one matrix is returned, because the other one is its transposed.
+Methods that return a list of matrices, which can be recombined into the original matrix (mostly by [dot product](#dot-product)).
 
-[decompositionLU](#decompositionLU), [decompositionLUCrout](#decompositionLUCrout), [cholesky-decomposition](#cholesky-decomposition)
+[LU-decomposition](#decompositionLU), [LU-decomposition-Crout](#decompositionLUCrout), [Cholesky-decomposition](#Cholesky-decomposition)
 
 ### [decompositionLU](#decompositions)
 
@@ -706,19 +718,21 @@ $L is a left triangular matrix and $R is a right one Without pivotisation the ma
 
 ### [decompositionLUCrout](#decompositions)
 
+LU decomposition after Crout algorithm
+
     my ($L, $U) = $matrix.decompositionLUCrout( );
     $L dot $U eq $matrix;                # True
 
 $L is a left triangular matrix and $R is a right one This decomposition works only on invertible matrices ([square](#is-square) and full [rank](#rank)ed).
 
-### [cholesky-decomposition](#decompositions)
+### [Cholesky-decomposition](#decompositions)
 
-This decomposition does roughly the same and is faster than the previous, but works only on matrices that are [symmetric](#is-symmetric) and [positive-definite](#is-positive-definite). The result will be a [lower triangular matrix](#is-lower-triangular) matrix called G that multiplied with its [transposed](#transposed) gives you the original matrix. When the optional, boolean parameter :diagonal is positive (negative is default) you get two matrices (L and D) as a result. L again is a [lower triangular matrix](#is-lower-triangular), but with ones in its main diagonal. D is a [diagonal](#diagonal) matrix ( G = L * sqrt(D)). This output format is also known as *LDL*. You get the second L matrix easily by transposing the L you got.
+This decomposition does roughly the same and is faster than the previous, but works only on matrices that are [symmetric](#is-symmetric) and [positive-definite](#is-positive-definite). The result will be a [lower triangular matrix](#is-lower-triangular) matrix (here called G) that multiplied with its [transposed](#transposed) gives you the original matrix. When the optional, boolean parameter :diagonal is positive (negative is default) you get two matrices (L and D) as a result. L again is a [lower triangular matrix](#is-lower-triangular), but with ones in its main diagonal. D is a [diagonal](#diagonal) matrix ( G = L * sqrt(D)). This output format is also known as *LDL decomposition*. You get the second L matrix easily by transposing the L you got.
 
-    my $G = $matrix.cholesky-decomposition( );          # $G is a left triangular matrix
-    my $G = $matrix.cholesky-decomposition(:!diagonal); # same as before
+    my $G = $matrix.Cholesky-decomposition( );          # $G is a left triangular matrix
+    my $G = $matrix.Cholesky-decomposition(:!diagonal); # same as before
     $G dot $G.T == $matrix;                             # True
-    my ($L, $D) = $matrix.cholesky-decomposition(:diagonal);
+    my ($L, $D) = $matrix.Cholesky-decomposition(:diagonal);
     $L dot $D dot $L.T == $matrix;                      # True
 
 [Mathematical Operations](#methods)

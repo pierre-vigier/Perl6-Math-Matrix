@@ -1,7 +1,7 @@
 use lib "lib";
 use Test;
 use Math::Matrix;
-plan 85;
+plan 91;
 
 my $matrixa = Math::Matrix.new([[1,2],[3,4]]);
 my $matrixc = Math::Matrix.new([[8,8],[8,8]]);
@@ -11,10 +11,17 @@ my $matrixh = Math::Matrix.new([[1,2+i],[2-i,4]]);
 my $matrixu = Math::Matrix.new([[0,i],[i,0]]);
 
 my $zero = Math::Matrix.new-zero(3,4);
+my $z3 = Math::Matrix.new-zero(3);
 my $identity = Math::Matrix.new-identity(3);
 my $diagonal = Math::Matrix.new-diagonal(1,2,3);
 my $ut = Math::Matrix.new([[1,2,3],[0,5,6],[0,0,6]]);
 my $lt = Math::Matrix.new([[1,0,0],[4,5,0],[4,5,6]]);
+my $sut = Math::Matrix.new([[0,1],[0,0]]); # strictly upper triangular matrix
+my $slt = Math::Matrix.new([[0,0],[1,0]]); # strictly lower triangular matrix
+my $uut = Math::Matrix.new([[1,2,3],[0,1,6],[0,0,1]]);
+my $lut = Math::Matrix.new([[1,0,0],[4,1,0],[4,5,1]]);
+
+
 my $symmetric = Math::Matrix.new([[ 1, 2, 3, 4 ],
                                   [ 2, 1, 5, 6 ],
                                   [ 3, 5, 1, 7 ],
@@ -31,25 +38,6 @@ my $frobenius = Math::Matrix.new([[ 1, 0, 0, 0 ],
 ok $matrixa.is-square,    "Is a square matrix";
 nok $matrixd.is-square,   "Is not a square matrix";
 
-my $z3 = Math::Matrix.new-zero(3);
-my $sut = Math::Matrix.new([[0,1],[0,0]]); # strictly upper triangular matrix
-ok $ut.is-upper-triangular,           "Is an upper triangular matrix";
-ok $ut.is-upper-triangular(:!strict), "Is an upper triangular, none strict matrix";
-nok $ut.is-upper-triangular(:strict), "Upper triangular matrix is not strict";
-ok $sut.is-upper-triangular(:strict), "Is strictly upper triangular matrix";
-ok $diagonal.is-upper-triangular,     "Diagonal are upper triangular";
-nok $matrixa.is-upper-triangular,     "Is not an upper triangular matrix";
-nok $lt.is-upper-triangular,          "lower triangular is no upper triangular matrix";
-
-my $slt = Math::Matrix.new([[0,0],[1,0]]); # strictly lower triangular matrix
-ok $lt.is-lower-triangular,           "Is an lower triangular matrix";
-ok $lt.is-lower-triangular(:!strict), "Is an lower triangular, none strict matrix";
-nok $lt.is-lower-triangular(:strict), "Lower triangugal matrix is not strict";
-ok $slt.is-lower-triangular(:strict), "Is a strictly lower triangular matrix";
-ok $diagonal.is-lower-triangular,     "Diagonal are lower triangular";
-nok $matrixc.is-lower-triangular,     "Is not an lower diagonal matrix";
-nok $ut.is-lower-triangular,          "upper triangular is no lower triangular matrix";
-
 ok $ut.is-triangular,                 "An upper triangular matrix is triangular";
 ok $lt.is-triangular,                 "An lower triangular matrix is triangular";
 nok $ut.is-triangular(:strict),       "An upper triangular matrix is not strictly triangular";
@@ -58,22 +46,44 @@ ok $ut.is-triangular(:!strict),       "An upper triangular matrix is not strictl
 ok $lt.is-triangular(:!strict),       "An lower triangular matrix is not strictly triangular";
 ok $sut.is-triangular(:strict),       "An strictly upper triangular matrix is strictly triangular";
 ok $slt.is-triangular(:strict),       "An strictly lower triangular matrix is strictly triangular";
+nok $sut.is-triangular(:unit),        "An strictly upper triangular matrix is not unit triangular";
+nok $slt.is-triangular(:unit),        "An strictly lower triangular matrix is not unit triangular";
+ok $uut.is-triangular(:unit),         "An unit upper triangular matrix is unit triangular";
+ok $lut.is-triangular(:unit),         "An unit lower triangular matrix is unit triangular";
+nok $uut.is-triangular(:strict),      "An unit upper triangular matrix is not a strict triangular";
+nok $lut.is-triangular(:strict),      "An unit lower triangular matrix is not a strict triangular";
 nok $symmetric.is-triangular,         "full ranked matrix is not triangular";
 nok $symmetric.is-triangular(:strict),"full ranked matrix is not strictly triangular";
+
+ok $ut.is-triangular(:upper),         "Is an upper triangular matrix";
+ok $ut.is-triangular(:!strict,:upper),"Is an upper triangular, none strict matrix";
+nok $ut.is-triangular(:strict,:upper),"Upper triangular matrix is not strict";
+ok $sut.is-triangular(:strict,:upper),"Is strictly upper triangular matrix";
+ok $diagonal.is-triangular(:upper),   "Diagonal are upper triangular";
+nok $matrixa.is-triangular(:upper),   "Is not an upper triangular matrix";
+nok $lt.is-triangular(:upper),        "lower triangular is no upper triangular matrix";
+
+ok $lt.is-triangular(:lower),         "Is an lower triangular matrix";
+ok $lt.is-triangular(:!strict,:lower),"Is an lower triangular, none strict matrix";
+nok $lt.is-triangular(:strict,:lower),"Lower triangugal matrix is not strict";
+ok $slt.is-triangular(:strict,:lower),"Is a strictly lower triangular matrix";
+ok $diagonal.is-triangular(:lower),   "Diagonal are lower triangular";
+nok $matrixc.is-triangular(:lower),   "Is not an lower diagonal matrix";
+nok $ut.is-triangular(:lower),        "upper triangular is no lower triangular matrix";
 
 ok $frobenius.is-frobenius,           "detect a frobenius matrix";
 ok $identity.is-frobenius,            "identity is a frobenius matrix";
 nok $zero.is-frobenius,               "zero is not a frobenius matrix";
 nok $symmetric.is-frobenius,          "a fully ranked matrix is not a frobenius matrix";
 
-ok $zero.is-zero,         "Is a zero matrix";
-ok $z3.is-zero,           "Another zero matrix";
-nok $identity.is-zero,    "Is not a zero matrix";
-nok $ut.is-zero,          "An upper triangular matrix is not zero";
+ok $zero.is-zero,            "Is a zero matrix";
+ok $z3.is-zero,              "Another zero matrix";
+nok $identity.is-zero,       "Is not a zero matrix";
+nok $ut.is-zero,             "An upper triangular matrix is not zero";
 
 ok $identity.is-identity,         "Is an identity matrix";
 nok $diagonal.is-identity,        "diagonal is not an identity matrix";
-ok $frobenius.is-identity,        "a frobenius matrix is not an identity matrix";
+nok $frobenius.is-identity,       "a frobenius matrix is not an identity matrix";
 nok $almostidentity.is-identity,  "none square is not an identity matrix";
 
 

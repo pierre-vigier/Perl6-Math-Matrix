@@ -417,10 +417,9 @@ Thus, the return value is a always of boolean type.
 Arguments, like in case of L<is-diagonally-dominant|#is-diagonally-dominant>,
 are only necessary when a method can tell you about a group of closely related properties.
 
-L<square|#is-square>, L<triangular|#is-triangular>, L<upper-triangular|#is-upper-triangular>, L<lower-triangular|#is-lower-triangular>,
-L<frobenius|#is-frobenius>,
-L<zero|#is-zero>, L<identity|#identity>, L<diagonal|#is-diagonal>,
-L<diagonally-dominant|#is-diagonally-dominant>, L<diagonal-constant|#is-diagonal-constant>, L<catalecticant|#is-catalecticant>,
+L<square|#is-square>, B<L<triangular|#is-triangular>>, L<frobenius|#is-frobenius>,
+L<zero|#is-zero>, L<identity|#is-identity>, L<diagonal|#is-diagonal>,
+B<L<diagonally-dominant|#is-diagonally-dominant>>, L<diagonal-constant|#is-diagonal-constant>, L<catalecticant|#is-catalecticant>,
 L<symmetric|#is-symmetric>, L<anti-symmetric|#is-antisymmetric>, L<unitary|#is-unitary>, L<self-adjoint|#is-self-adjoint>, L<invertible|#is-invertible>,
 L<orthogonal|#is-orthogonal>, L<positive-definite|#is-positive-definite>, L<positive-semidefinite|#is-positive-semidefinite>
 
@@ -430,46 +429,65 @@ True if number of rows and colums are the same (see L<size|#size>).
 
 =head3 L<is-triangular|#boolean-properties>
 
-True if matrix  I<is-upper-triangular> or I<is-lower-triangular>.
-When optional named boolean argument :strict is added, the matrix has to be a
-strictly upper triangula or a strictly lower triangular (default is none strict).
+True if all L<element|#element>s above or below the main L<diagonal> are zero.
+This method accepts four optional, boolean arguments:
+L<:upper|upper_triangular>, I<:lower>, I<:strict> and I<:unit>.
+Each argument can be used in a positive form (I<:upper>), as a negative (I<:!upper>),
+or omitted. Positively they demand a certain property, negatively the absence
+or opposite. When omitted, both states are acceptable.
 
+Please note that a triangular matrix can never be I<:unit> and I<:strict> at the same time,
+nor I<:!upper> and I<:!lower>. A triangular matrix that is I<:upper> and I<:lower> L<is-diagonal>.
+L<Identity|#is-identity> matrices are I<:upper>, I<:lower> and I<:unit>.
 
-=head4 L<is-upper-triangular|#boolean-properties>
+=head4 L<upper triangular|#is-triangular>
 
-a.k.a I<right triangular> matrix: every L<element|#element> below the L<diagonal|#diagonal> (where row index is greater than column index) is 0.
-In other words: the L<lower-bandwith|#lower-bandwith> is zero.
+a.k.a I<right triangular matrix>: all L<element|#element>s left-below the main I<diagonal> are zero.
+In other words: the L<lower-bandwith> has to be zero.
+
+    $tri-matrix.is-triangular(:upper);       # matrix in the example below would pass this test
+    $tri-matrix.is-triangular();             # True, there is a lower or upper triangle
 
     Example:    1 2 5
                 0 3 8
                 0 0 7
 
-There is an optional, boolean argument named :strict.
+=head4 L<lower triangular|#is-triangular>
 
-    $matrix.is-upper-triangular(:!strict);   # asks for matrix is none strict triangular (default)
-    $matrix.is-upper-triangular(:strict);    # search for strictly triangular matrix
+a.k.a I<left triangular> matrix: every L<element|#element> right and above the L<diagonal|#diagonal>
+(where row index is greater than column index) are zero.
+In other words: the L<upper-bandwith> has to be zero.
 
-    Example:    0 2 5
-                0 0 8
-                0 0 0
-
-=head4 L<is-lower-triangular|#boolean-properties>
-
-a.k.a I<left triangular> matrix: every L<element|#element> above the L<diagonal|#diagonal> (where row index is smaller than column index) is 0.
-In other words: the L<upper-bandwith|#upper-bandwith> is zero.
+    $tri-matrix.is-triangular(:lower);        # matrix in the example below would pass this test
+    $tri-matrix.is-triangular();              # True too
+    $tri-matrix.is-triangular(:!upper);       # True, because the is a triangle, but not an upper
+    $tri-matrix.is-triangular(:lower,:!upper);# True still, even a bit redundant
 
     Example:    1 0 0
                 2 3 0
                 5 8 7
 
-Has also an optional, named boolean argument named :strict.
+=head4 L<unit triangular|#is-triangular>
 
-    $matrix.is-lower-triangular(:!strict);   # asks for matrix is none strict triangular (default)
-    $matrix.is-lower-triangular(:strict);    # search for strictly triangular matrix
+are triangular matrices that have a L<diagonal> consisting only of values equal one.
+
+$tri-matrix.is-triangular(:unit);         # matrix in the example below would pass this test
+$tri-matrix.is-triangular(:unit, :lower); # False, because unit upper triangular
+
+    Example:    1 2 5
+                0 1 8
+                0 0 1
+
+=head4 L<strict triangular|#is-triangular>
+
+are triangular matrices that have a L<diagonal> consisting only of values equal zero.
+
+$tri-matrix.is-triangular(:strict);       # matrix in the example below would pass this test
+$tri-matrix.is-triangular(:!unit, :lower);# True too
 
     Example:    0 0 0
-                2 0 0
-                5 8 0
+                5 0 8
+                0 6 0
 
 =head3 L<is-frobenius|#boolean-properties>
 

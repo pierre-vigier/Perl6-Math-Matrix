@@ -17,6 +17,7 @@ has Bool $!is-square is lazy;
 has Bool $!is-frobenius is lazy;
 has Bool $!is-zero is lazy;
 has Bool $!is-main-diagonal-zero is lazy;
+has Bool $!is-main-diagonal-one is lazy;
 has Bool $!is-identity is lazy;
 has Bool $!is-diagonal is lazy;
 has Bool $!is-diagonal-constant is lazy;
@@ -255,28 +256,25 @@ multi method perl(Math::Matrix:D: --> Str){ self.WHAT.perl ~ ".new(" ~ @!rows.pe
 
 method !build_is-square( Math::Matrix:D: --> Bool)        { $!column-count == $!row-count }
 method !build_is-zero(    Math::Matrix:D: --> Bool)        { self.density() == 0 }
-method !build_is-identity( Math::Matrix:D: --> Bool)        { $.is-diagonal and [==](($.diagonal.flat,1).flat)}
+method !build_is-identity( Math::Matrix:D: --> Bool)        { $.is-triangular(:upper, :lower, :unit)}
 method !build_is-main-diagonal-zero(Math::Matrix:D: --> Bool){ [==](($.diagonal.flat,0).flat) }
+method !build_is-main-diagonal-one(Math::Matrix:D: --> Bool){ [==](($.diagonal.flat,1).flat) }
 
-method is-triangular(Math::Matrix:D: :$strict = False --> Bool) {
+method is-triangular(Math::Matrix:D: Bool :$strict, Bool :$unit, Bool :$upper,  Bool :$lower --> Bool) {
     return False unless $.is-square;
-    return False if $strict and not $.is-main-diagonal-zero;
+    return False if $strict and $unit;
+    return False if $strict.defined and ($strict xor $.is-main-diagonal-zero);
+    return False if $unit.defined and ($unit xor $.is-main-diagonal-one);
+    return False if $upper.defined and ($upper xor $.lower-bandwith == 0);
+    return False if $lower.defined and ($lower xor $.upper-bandwith == 0);
     $.lower-bandwith == 0 or $.upper-bandwith == 0;
-}
-method is-upper-triangular(Math::Matrix:D: Bool :$strict = False --> Bool) {
-    $.is-square and $.lower-bandwith == 0 and (!$strict or $.is-main-diagonal-zero)
-}
-method is-lower-triangular( Math::Matrix:D: Bool :$strict = False --> Bool) {
-    $.is-square and $.upper-bandwith == 0 and (!$strict or $.is-main-diagonal-zero)
 }
 
 method !build_is-frobenius(Math::Matrix:D: --> Bool) {
-    return False unless self.is-square;
+    return False unless $.is-square and $.upper-bandwith == 0 and $.is-main-diagonal-one;
     my $col;
-    for ^$!row-count X ^$!column-count     -> ($r, $c) {
-        if    $r < $c  {return False if @!rows[$r][$c] != 0}
-        elsif $r == $c {return False if @!rows[$r][$c] != 1}
-        else           {
+    for ^$!row-count X ^$!column-count -> ($r, $c) {
+        if $r > $c  {
             if $col.defined { return False if @!rows[$r][$c] != 0 and $col != $c }
             else            { $col = $c if @!rows[$r][$c] != 0 }
         }
