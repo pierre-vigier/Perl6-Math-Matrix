@@ -201,7 +201,7 @@ Gets values of specified column (first required parameter) as a list.
 
 ### [diagonal](#accessors)
 
-Called without an argument, it returns the values of main diagonal as a list. The main diagonal starts at the left upper corner (index [0][0]). Every next cell of the diagonal is reached by going one step below and one step to the right (indices [n;n] - n being an integer within the size of the matrix).
+Called without an argument, it returns the values of main diagonal as a list. The main diagonal starts at the left upper corner (index [0][0]). Every next cell of the diagonal is reached by going one step below and one step to the right (indices [x;x] - x being an integer within the size of the matrix).
 
 Use the optional parameter of the method to get any other parallel diagonal. A positive value for a parallel diagonale above and to the right of the main one - a negative value to access a parallel diagonal to the left and below the main diagonal. 0 is default. The matrix does not have to be a quadratic ([square](#is-square)).
 
@@ -424,7 +424,7 @@ $tri-matrix.is-triangular(:strict); # matrix in the example below would pass thi
 
 ### [is-frobenius](#boolean-properties)
 
-[Square](#is-square) matrix which differs from [identity](#is-identity) only in the lower part (below diagonal) of one column. (Main diagonal consist of ones and rest is zero.)
+[Square](#is-square) matrix which differs from [identity](#is-identity) only in the lower part (below diagonal) of one column. In other words: a frobenius matrix is a unit lower triangular matrix, that contains only in one column none zero values.
 
     Example:    1 0 0 0
                 0 1 0 0
