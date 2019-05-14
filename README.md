@@ -189,21 +189,21 @@ Gets row as array to enable direct postcircumfix syntax as shown in last example
 
 ### [row](#accessors)
 
-Gets values of specified row (first required parameter) as a list.
+returns the values of specified row (first required parameter) as a list.
 
     say Math::Matrix.new([[1,2],[3,4]]).row(0) : (1, 2)
 
 ### [column](#accessors)
 
-Gets values of specified column (first required parameter) as a list.
+returns values of specified column (first required parameter) as a list.
 
     say Math::Matrix.new([[1,2],[3,4]]).column(0) : (1, 3)
 
 ### [diagonal](#accessors)
 
-Called without an argument, it returns the values of main diagonal as a list. The main diagonal starts at the left upper corner (index [0][0]). Every next cell of the diagonal is reached by going one step below and one step to the right (indices [x;x] - x being an integer within the size of the matrix).
+Called without an argument, it returns the values of main diagonal as a list. The main diagonal starts at the left upper corner (index [0][0]). Every next cell of the diagonal is reached by going one step below and one step to the right (indices [x][x] - x being an integer within the size of the matrix).
 
-Use the optional parameter of the method to get any other parallel diagonal. A positive value for a parallel diagonale above and to the right of the main one - a negative value to access a parallel diagonal to the left and below the main diagonal. 0 is default. The matrix does not have to be a quadratic ([square](#is-square)).
+Use the optional parameter of the method to get any other parallel diagonal. A positive value for a parallel diagonale above and to the right of the main one - a negative value to access a parallel diagonal to the left and below the main diagonal. 0 is the default value. The matrix does not have to be a quadratic ([square](#is-square)).
 
     say Math::Matrix.new([[1,2],[3,4]]      ).diagonal    : (1, 4)
     say Math::Matrix.new([[1,2],[3,4]]      ).diagonal(1) : (2)
@@ -211,7 +211,7 @@ Use the optional parameter of the method to get any other parallel diagonal. A p
 
 ### [skew-diagonal](#accessors)
 
-Unlike a *diagonal*, which runs from the left upper corner to the right lower, a (main) skew diagonal is only defined for [square](#is-square) matrixes and runs from left lower corner to the right upper (from $matrix[n][0] to $matrix[0][n]). Use the optional argument to get any other parallel skew diagonal. Positive value for the ones below - negative above.
+Unlike a *diagonal*, which runs from the left upper corner to the right lower, the (main) skew diagonal is only defined for [square](#is-square) matrixes and runs from left lower corner to the right upper (from $matrix[m][0] to $matrix[0][m]). Use the optional argument to get any other parallel skew diagonal. Positive value for the ones below - negative above.
 
     say $matrix.skew-diagonal    : (2, 3)
     say $matrix.skew-diagonal(0) : (2, 3)
@@ -229,7 +229,7 @@ Returns a matrix that might miss certain [row](#row)s and columns of the origina
 
 #### [leaving out one](#submatrix)
 
-In mathematics, a submatrix is built by leaving out one [row](#row) and one column. In the two argument format you name these by their index ($row, $column).
+In mathematics, a submatrix is built by leaving out one [row](#row) and one [column](#column). In the two positional argument format you name these by their index ($row, $column).
 
     say $m.submatrix(1,2) :    1 2 4
                                3 4 6
@@ -237,7 +237,7 @@ In mathematics, a submatrix is built by leaving out one [row](#row) and one colu
 
 #### [leaving out more](#submatrix)
 
-If you provide two ranges (row-min .. row-max, col-min .. col-max - both optional) to the appropriately named arguments, you get the excerpt of the matrix, that contains only the requested rows and columns - still in the original order.
+If you provide two ranges (row-min .. row-max, col-min .. col-max - both optional) to the appropriately named arguments, you get the excerpt of the matrix, that contains only the requested rows and columns - in the original order.
 
     say $m.submatrix( rows => 1..1, columns => 1..*) :      4 5
     say $m.submatrix( rows => 1..1 )                 :    3 4 5
