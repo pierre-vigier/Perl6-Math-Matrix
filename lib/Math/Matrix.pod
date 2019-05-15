@@ -450,8 +450,8 @@ True if every L<element|#element> has value of 0 (as created by L<new-zero|#new-
 This matrix behaves like a zero element regarding to the L<dot-product|#dot-product>
 operation. Every matrix multiplied with a zero matrix is a zero matrix (A * 0 = 0).
 
-Example:    0 0 0
-            0 0 0
+    Example:    0 0 0
+                0 0 0
 
 =head3 L<is-identity|#boolean-properties>
 

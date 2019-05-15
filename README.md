@@ -371,7 +371,8 @@ These are mathematical properties, a given matrix has or not. Thus, the return v
 
 True if every [element](#element) has value of 0 (as created by [new-zero](#new-zero)). This matrix behaves like a zero element regarding to the [dot-product](#dot-product) operation. Every matrix multiplied with a zero matrix is a zero matrix (A * 0 = 0).
 
-Example: 0 0 0 0 0 0
+    Example:    0 0 0
+                0 0 0
 
 ### [is-identity](#boolean-properties)
 
