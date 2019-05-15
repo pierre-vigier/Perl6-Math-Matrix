@@ -427,7 +427,7 @@ method !build_determinant(Math::Matrix:D: --> Numeric) {
     return @!rows[0][0] if $!row-count == 1;
     if $!row-count > 4 {
         #up to 4x4 naive method is fully usable
-        return [*] $.diagonal.flat if $.is-upper-triangular || $.is-lower-triangular;
+        return [*] $.diagonal.flat if $.is-triangular();
         try {
             my ($L, $U, $P) = $.decompositionLU();
             return $P.inverted.det * $L.det * $U.det;
