@@ -48,8 +48,9 @@ Mathematically or otherwise undefined operations will cause an exception.
         L<diagonal|#diagonal>, L<skew-diagonal|#skew-diagonal>, L<submatrix|#submatrix>
 =item B<L<converter|#converter>>: L<Bool|#bool>, L<Str|#str>, L<Numeric|#numeric>, L<Range|#range>,
         L<Array|#array>, L<list|#list>, L<list-rows|#list-rows>, L<list-columns|#list-columns>, L<Hash|#hash>, L<gist|#gist>, L<perl|#perl>
-=item B<L<boolean properties|#boolean-properties>>: L<square|#is-square>, L<triangular|#is-triangular>, L<tridiagonal|#is-tridiagonal>,
-        L<zero|#is-zero>, L<identity|#is-identity>, L<diagonal|#is-diagonal>, L<-dominant|#is-diagonally-dominant>, L<-constant|#is-diagonal-constant>, L<catalecticant|#is-catalecticant>,
+=item B<L<boolean properties|#boolean-properties>>: L<zero|#is-zero>, L<identity|#is-identity>,
+        L<square|#is-square>, L<triangular|#is-triangular>, L<tridiagonal|#is-tridiagonal>, L<diagonal|#is-diagonal>,
+        L<-dominant|#is-diagonally-dominant>, L<-constant|#is-diagonal-constant>, L<catalecticant|#is-catalecticant>,
         L<anti-|#is-antisymmetric>, L<symmetric|#is-symmetric>, L<unitary|#is-unitary>, L<self-adjoint|#is-self-adjoint>, L<invertible|#is-invertible>, L<orthogonal|#is-orthogonal>,
         L<positive-definite|#is-positive-definite>, L<positive-semidefinite|#is-positive-semidefinite>
 =item B<L<numeric properties|#numeric-properties>>: L<size|#size>, L<density|#density>, L<bandwith|#bandwith>,
@@ -450,8 +451,8 @@ True if every L<element|#element> has value of 0 (as created by L<new-zero|#new-
 This matrix behaves like a zero element regarding to the L<dot-product|#dot-product>
 operation. Every matrix multiplied with a zero matrix is a zero matrix (A * 0 = 0).
 
-    Example:    0 0 0
-                0 0 0
+Example:    0 0 0
+            0 0 0
 
 =head3 L<is-identity|#boolean-properties>
 

@@ -52,7 +52,7 @@ All computation heavy properties will be calculated lazily and cached. Mathemati
 
   * **[converter](#converter)**: [Bool](#bool), [Str](#str), [Numeric](#numeric), [Range](#range), [Array](#array), [list](#list), [list-rows](#list-rows), [list-columns](#list-columns), [Hash](#hash), [gist](#gist), [perl](#perl)
 
-  * **[boolean properties](#boolean-properties)**: [square](#is-square), [triangular](#is-triangular), [tridiagonal](#is-tridiagonal), [zero](#is-zero), [identity](#is-identity), [diagonal](#is-diagonal), [-dominant](#is-diagonally-dominant), [-constant](#is-diagonal-constant), [catalecticant](#is-catalecticant), [anti-](#is-antisymmetric), [symmetric](#is-symmetric), [unitary](#is-unitary), [self-adjoint](#is-self-adjoint), [invertible](#is-invertible), [orthogonal](#is-orthogonal), [positive-definite](#is-positive-definite), [positive-semidefinite](#is-positive-semidefinite)
+  * **[boolean properties](#boolean-properties)**: [zero](#is-zero), [identity](#is-identity), [square](#is-square), [triangular](#is-triangular), [tridiagonal](#is-tridiagonal), [diagonal](#is-diagonal), [-dominant](#is-diagonally-dominant), [-constant](#is-diagonal-constant), [catalecticant](#is-catalecticant), [anti-](#is-antisymmetric), [symmetric](#is-symmetric), [unitary](#is-unitary), [self-adjoint](#is-self-adjoint), [invertible](#is-invertible), [orthogonal](#is-orthogonal), [positive-definite](#is-positive-definite), [positive-semidefinite](#is-positive-semidefinite)
 
   * **[numeric properties](#numeric-properties)**: [size](#size), [density](#density), [bandwith](#bandwith), [trace](#trace), [rank](#rank), [nullity](#nullity), [determinant](#determinant), [minor](#minor), [norm](#norm), [condition](#condition), [element-type](#element-type)
 
@@ -371,8 +371,7 @@ These are mathematical properties, a given matrix has or not. Thus, the return v
 
 True if every [element](#element) has value of 0 (as created by [new-zero](#new-zero)). This matrix behaves like a zero element regarding to the [dot-product](#dot-product) operation. Every matrix multiplied with a zero matrix is a zero matrix (A * 0 = 0).
 
-    Example:    0 0 0
-                0 0 0
+Example: 0 0 0 0 0 0
 
 ### [is-identity](#boolean-properties)
 

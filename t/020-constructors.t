@@ -44,8 +44,8 @@ ok $matrixa ~~ $matrixb      , "~~ operator working";
 nok $matrixa.equal( $matrixc), "Non equal matrices, with equal method";
 nok $matrixa ~~ $matrixc     , "Non equal matrices, foud via ~~";
 
-ok $matrixa.equal( $matrixd) , "equal method working";
-ok $matrixa ~~ $matrixd      , "~~ operator working";
+ok $matrixa.equal( $matrixd) , "equal method working with real values";
+ok $matrixa ~~ $matrixd      , "~~ operator working with real values";
 
 my $zero = Math::Matrix.new-zero(3,4);
 my $expectz = Math::Matrix.new([[0,0,0,0],[0,0,0,0],[0,0,0,0]]);

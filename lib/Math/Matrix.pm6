@@ -8,10 +8,9 @@ use AttrX::Lazy;
 # attributes
 ################################################################################
 
-has @!rows is required; # primary content
-
-has Int $!row-count;
-has Int $!column-count;
+has @!rows is required;           # primary content
+has Int $!row-count is required;
+has Int $!column-count is required;
 
 has Bool $!is-zero is lazy;
 has Bool $!is-identity is lazy;
@@ -42,6 +41,7 @@ has Numeric $!narrowest-element-type is lazy;
 has Numeric $!widest-element-type is lazy;
 
 has Str     $!gist;
+has Rat     @!eigenvalues;
 
 ################################################################################
 # types
@@ -52,13 +52,13 @@ subset NumList of List where { .all ~~ Numeric };
 subset NumArray of Array where { .all ~~ Numeric };
 
 ################################################################################
-# private accessors
+# private accessors - interface to util role
 ################################################################################
 
-method !rows       { @!rows }
+method !rows      { @!rows }
+method !row-count  { $!row-count }
+method !column-count{ $!column-count }
 method !clone-cells  { self!AoA-clone(@!rows) }
-method !row-count    { $!row-count }
-method !column-count  { $!column-count }
 
 ################################################################################
 # public methods: constructors
@@ -69,9 +69,7 @@ multi method new( @m ) {
     self.bless( rows => @m );
 }
 multi method new (Str $m){
-    my @m = $m.lines.map: { .words.map: {.Bool.Str eq $_ ?? .Bool !! .Numeric} };
-    self!check-matrix-data( @m );
-    self.bless( rows => @m );
+    Math::Matrix.new( $m.lines.map: { .words.map: {.Bool.Str eq $_ ?? .Bool !! .Numeric} } );
 }
 
 submethod BUILD( :@rows!, :$density, :$trace, :$determinant, :$rank, :$nullity, :$is-zero, :$is-identity, :$is-symmetric) {
@@ -88,7 +86,7 @@ submethod BUILD( :@rows!, :$density, :$trace, :$determinant, :$rank, :$nullity, 
     $!is-symmetric = $is-symmetric if $is-symmetric.defined;
 }
 
-method clone { self.bless( rows => @!rows ) }
+method clone { self.bless( rows => self!clone-cells() ) }
 
 multi method new-zero(PosInt $size) {
     self.bless( rows => self!zero-array($size, $size),
@@ -345,6 +343,8 @@ method !build_is-orthogonal(Math::Matrix:D: --> Bool) {
 method !build_is-invertible(Math::Matrix:D: --> Bool) {
     self.is-square and self.determinant != 0;
 }
+
+# method is-definite(Math::Matrix:D: Bool :positive, Bool :negative, Bool :semi --> Bool){}
 
 method !build_is-positive-definite (Math::Matrix:D: --> Bool) { # with Sylvester's criterion
     return False unless self.is-square;
