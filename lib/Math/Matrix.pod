@@ -48,7 +48,7 @@ Mathematically or otherwise undefined operations will cause an exception.
         L<diagonal|#diagonal>, L<skew-diagonal|#skew-diagonal>, L<submatrix|#submatrix>
 =item B<L<converter|#converter>>: L<Bool|#bool>, L<Str|#str>, L<Numeric|#numeric>, L<Range|#range>,
         L<Array|#array>, L<list|#list>, L<list-rows|#list-rows>, L<list-columns|#list-columns>, L<Hash|#hash>, L<gist|#gist>, L<perl|#perl>
-=item B<L<boolean properties|#boolean-properties>>: L<square|#is-square>, L<triangular|#is-triangular>, L<frobenius|#is-frobenius>,
+=item B<L<boolean properties|#boolean-properties>>: L<square|#is-square>, L<triangular|#is-triangular>, L<tridiagonal|#is-tridiagonal>,
         L<zero|#is-zero>, L<identity|#is-identity>, L<diagonal|#is-diagonal>, L<-dominant|#is-diagonally-dominant>, L<-constant|#is-diagonal-constant>, L<catalecticant|#is-catalecticant>,
         L<anti-|#is-antisymmetric>, L<symmetric|#is-symmetric>, L<unitary|#is-unitary>, L<self-adjoint|#is-self-adjoint>, L<invertible|#is-invertible>, L<orthogonal|#is-orthogonal>,
         L<positive-definite|#is-positive-definite>, L<positive-semidefinite|#is-positive-semidefinite>
@@ -155,10 +155,10 @@ new matrix.
 
 =head3 L<new-diagonal|#constructors>
 
-creates a L<diagonal|#is-diagonal> matrix which again contains zeros, except in the
-main L<diagonal|#diagonal>, that can hold arbitrary values. The only required argument
-is a list of numbers, which will become the content of the main diagonal.
-Naturally diagonal matrices are also always L<quadratic|#is-square>.
+creates a I<diagonal> matrix (as checked by L<is-diagonal|#is-diagonal>),
+which contains zeros, except in the main L<diagonal|#diagonal>, that can hold arbitrary values.
+The only required argument is a list these arbitrary numbers,
+which will become the content of the main diagonal.
 
     say Math::Matrix.new-diagonal( 2, 4, 5 ) :
 
@@ -278,8 +278,10 @@ If you provide two ranges (row-min .. row-max, col-min .. col-max - both optiona
 to the appropriately named arguments, you get the excerpt of the matrix,
 that contains only the requested rows and columns - in the original order.
 
-    say $m.submatrix( rows => 1..1, columns => 1..*) :      4 5
-    say $m.submatrix( rows => 1..1 )                 :    3 4 5
+say $m.submatrix( rows => 1..1, columns => 1..2) :    3 4
+say $m.submatrix( rows => 1..1, columns => 2..*) :      4 5
+say $m.submatrix( rows => 1..2 )                 :  2 3 4 5
+                                                    3 4 5 6
 
 =head4 L<reordering|#submatrix>
 
@@ -432,12 +434,36 @@ Thus, the return value is a always of boolean type.
 Arguments, like in case of L<is-diagonally-dominant>,
 are only necessary when a method can tell you about a group of closely related properties.
 
-L<square|#is-square>, B<L<triangular|#is-triangular>>, L<frobenius|#is-frobenius>,
-L<zero|#is-zero>, L<identity|#is-identity>, L<diagonal|#is-diagonal>,
-B<L<diagonally-dominant|#is-diagonally-dominant>>, L<diagonal-constant|#is-diagonal-constant>, L<catalecticant|#is-catalecticant>,
-L<symmetric|#is-symmetric>, L<anti-symmetric|#is-antisymmetric>, L<unitary|#is-unitary>,
-L<self-adjoint|#is-self-adjoint>, L<invertible|#is-invertible>, L<orthogonal|#is-orthogonal>,
+L<zero|#is-zero>, L<identity|#is-identity>,
+L<square|#is-square>, B<L<triangular|#is-triangular>>,
+L<tridiagonal|#is-tridiagonal>, L<diagonal|#is-diagonal>,
+L<diagonal-constant|#is-diagonal-constant>, L<catalecticant|#is-catalecticant>,
+L<symmetric|#is-symmetric>, L<anti-symmetric|#is-antisymmetric>,
+L<self-adjoint|#is-self-adjoint>,
+L<invertible|#is-invertible>, L<orthogonal|#is-orthogonal>, L<unitary|#is-unitary>,
+B<L<diagonally-dominant|#is-diagonally-dominant>>,
 L<positive-definite|#is-positive-definite>, L<positive-semidefinite|#is-positive-semidefinite>
+
+=head3 L<is-zero|#boolean-properties>
+
+True if every L<element|#element> has value of 0 (as created by L<new-zero|#new-zero>).
+This matrix behaves like a zero element regarding to the L<dot-product|#dot-product>
+operation. Every matrix multiplied with a zero matrix is a zero matrix (A * 0 = 0).
+
+Example:    0 0 0
+            0 0 0
+
+=head3 L<is-identity|#boolean-properties>
+
+True if every L<element|#element> on the main L<diagonal|#diagonal>
+(where row index equals column index) is 1 and any other element is 0.
+Neutral element in redgards to the L<dot-product|#dot-product>. Every matrix
+multiplied with a fitting identiy matrix results in the same matrix again (A * I = A).
+Every identity matrix has to be a square matrix.
+
+    Example:    1 0 0
+                0 1 0
+                0 0 1
 
 =head3 L<is-square|#boolean-properties>
 
@@ -446,14 +472,15 @@ True if number of rows and colums are the same (see L<size|#size>).
 =head3 L<is-triangular|#boolean-properties>
 
 True if all L<element|#element>s above or below the main L<diagonal|#diagonal> are zero.
-This method accepts four optional, boolean arguments:
-L<:upper|#upper-triangular>, L<:lower|#lower-triangula>, L<:strict|#strict-triangular> and L<:unit|#unit-triangular>.
+This method accepts five optional, boolean arguments:
+L<:upper|#upper-triangular>, L<:lower|#lower-triangula>, L<:strict|#strict-triangular>, L<:unit|#unit-triangular> and L<:atomic|#atomic-triangular>.
 Each argument can be used in a positive form (I<:upper>), as a negative (I<:!upper>),
 or omitted. Positively they demand a certain property, negatively the absence
 or opposite. When omitted, both states are acceptable.
 
-Please note that a triangular matrix can never be I<:unit> and I<:strict> at the same time,
-nor I<:!upper> and I<:!lower>. A triangular matrix that is I<:upper> and I<:lower> L<is-diagonal|#is-diagonal>.
+Please note that a triangular matrix can never be I<:unit> and I<:strict> or
+I<:atomic> and I<:strict> at the same time, nor I<:!upper> and I<:!lower>.
+A triangular matrix that is I<:upper> and I<:lower> L<is-diagonal|#is-diagonal>.
 L<Identity|#is-identity> matrices are I<:upper>, I<:lower> and I<:unit>.
 
 =head4 L<upper triangular|#is-triangular>
@@ -485,7 +512,7 @@ In other words: the L<upper-bandwith|#upper-bandwith> has to be zero.
 
 =head4 L<unit triangular|#is-triangular>
 
-are triangular matrices that have a L<diagonal|#diagonal> consisting only of values equal one.
+a.k.a unitriangular matrices have a L<diagonal|#diagonal> consisting only of values equal one.
 
 $tri-matrix.is-triangular(:unit);         # matrix in the example below would pass this test
 $tri-matrix.is-triangular(:unit, :lower); # False, because unit upper triangular
@@ -505,50 +532,32 @@ $tri-matrix.is-triangular(:!unit, :lower);# True too
                 5 0 0
                 0 6 0
 
-=head3 L<is-frobenius|#boolean-properties>
+=head4 L<atomic triangular|#boolean-properties>
 
-L<Square|#is-square> matrix which differs from L<identity|#is-identity> only in the lower part (below diagonal)
-of one column. In other words: a frobenius matrix is a unit lower triangular matrix,
-that contains only in one column none zero values.
+a.k.a frobenius matrix is a unit triangular matrix with one column of 'none zero values.
+$tri-matrix.is-triangular(:atomic);        # matrix in the example below would pass this test
 
     Example:    1 0 0 0
                 0 1 0 0
                 0 2 1 0
                 0 5 0 1
 
-=head3 L<is-zero|#boolean-properties>
+=head3 L<is-tridiagonal|#boolean-properties>
 
-True if every L<element|#element> has value of 0 (as created by L<new-zero|#new-zero>).
+    Example:    1 2 0 0
+                3 4 5 0
+                0 6 7 8
+                0 0 9 1
 
-=head3 L<is-identity|#boolean-properties>
-
-True if every L<element|#element> on the main L<diagonal|#diagonal> (where row index equals column index) is 1
-and any other element is 0.
-
-    Example:    1 0 0
-                0 1 0
-                0 0 1
 
 =head3 L<is-diagonal|#boolean-properties>
 
-True if matrix is L<square|#is-square> and only elements on the L<diagonal|#diagonal> differ from 0.
+L<square|#is-square> matrix where only elements on the main L<diagonal|#diagonal> differ from 0.
 In other words: if matrix is L<upper-triangular|#is-upper-triangular> and L<lower-triangular|#is-lower-triangular>.
 
     Example:    1 0 0
                 0 3 0
                 0 0 7
-
-=head3 L<is-diagonally-dominant|#boolean-properties>
-
-True when L<element|#element>s on the L<diagonal|#diagonal> have a bigger (if strict) or at least equal (in none strict)
-absolute value than the sum of its row (sum of absolute values of the row except diagonal element).
-
-   if $matrix.is-diagonally-dominant {
-   $matrix.is-diagonally-dominant(:!strict)      # same thing (default)
-   $matrix.is-diagonally-dominant(:strict)       # diagonal elements (DE) are stricly greater (>)
-   $matrix.is-diagonally-dominant(:!strict, :along<column>) # default
-   $matrix.is-diagonally-dominant(:strict,  :along<row>)    # DE > sum of rest row
-   $matrix.is-diagonally-dominant(:!strict, :along<both>)   # DE >= sum of rest row and rest column
 
 =head3 L<is-diagonal-constant|#boolean-properties>
 
@@ -613,6 +622,18 @@ An unitery matrix multiplied (L<dot-product|#dot-product>) with its L<concjugate
 and transposed derivative (.conj.T) is an L<identity|#is-identity> matrix, or said differently:
 the concjugate transposed matrix equals the L<inverted|#inverted> matrix.
 
+=head3 L<is-diagonally-dominant|#boolean-properties>
+
+True when L<element|#element>s on the L<diagonal|#diagonal> have a bigger (if strict) or at least equal (in none strict)
+absolute value than the sum of its row (sum of absolute values of the row except diagonal element).
+
+   if $matrix.is-diagonally-dominant {
+   $matrix.is-diagonally-dominant(:!strict)      # same thing (default)
+   $matrix.is-diagonally-dominant(:strict)       # diagonal elements (DE) are stricly greater (>)
+   $matrix.is-diagonally-dominant(:!strict, :along<column>) # default
+   $matrix.is-diagonally-dominant(:strict,  :along<row>)    # DE > sum of rest row
+   $matrix.is-diagonally-dominant(:!strict, :along<both>)   # DE >= sum of rest row and rest column
+
 
 =head3 L<is-positive-definite|#boolean-properties>
 
@@ -621,7 +642,6 @@ True if all main L<minors|#minor> or all Eigenvalues are strictly greater zero.
 =head3 L<is-positive-semidefinite|#boolean-properties>
 
 True if all main L<minors|#minor> or all Eigenvalues are greater equal zero.
-
 
 
 =head2 L<Numeric Properties|#methods>

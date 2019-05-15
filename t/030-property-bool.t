@@ -1,7 +1,7 @@
 use lib "lib";
 use Test;
 use Math::Matrix;
-plan 94;
+plan 98;
 
 my $matrixa = Math::Matrix.new([[1,2],[3,4]]);
 my $matrixc = Math::Matrix.new([[8,8],[8,8]]);
@@ -35,8 +35,23 @@ my $frobenius = Math::Matrix.new([[ 1, 0, 0, 0 ],
                                   [ 0, 5, 1, 0 ],
                                   [ 0, 6, 0, 1 ]]);
 
-ok $matrixa.is-square,    "Is a square matrix";
-nok $matrixd.is-square,   "Is not a square matrix";
+my $tridiag = Math::Matrix.new([[ 2, 3, 0, 0 ],
+                                [ 1, 2, 3, 0 ],
+                                [ 0, 1, 2, 3 ],
+                                [ 0, 0, 1, 2 ]]);
+
+ok $zero.is-zero,            "Is a zero matrix";
+ok $z3.is-zero,              "Another zero matrix";
+nok $identity.is-zero,       "Is not a zero matrix";
+nok $ut.is-zero,             "An upper triangular matrix is not zero";
+
+ok $identity.is-identity,         "Is an identity matrix";
+nok $diagonal.is-identity,        "diagonal is not an identity matrix";
+nok $frobenius.is-identity,       "a frobenius matrix is not an identity matrix";
+nok $almostidentity.is-identity,  "none square is not an identity matrix";
+
+ok $matrixa.is-square,            "Is a square matrix";
+nok $matrixd.is-square,           "Is not a square matrix";
 
 ok $ut.is-triangular,                 "An upper triangular matrix is triangular";
 ok $lt.is-triangular,                 "An lower triangular matrix is triangular";
@@ -74,21 +89,10 @@ ok $diagonal.is-triangular(:lower),   "Diagonal are lower triangular";
 nok $matrixc.is-triangular(:lower),   "Is not an lower diagonal matrix";
 nok $ut.is-triangular(:lower),        "upper triangular is no lower triangular matrix";
 
-ok $frobenius.is-frobenius,           "detect a frobenius matrix";
-ok $identity.is-frobenius,            "identity is a frobenius matrix";
-nok $zero.is-frobenius,               "zero is not a frobenius matrix";
-nok $symmetric.is-frobenius,          "a fully ranked matrix is not a frobenius matrix";
-
-ok $zero.is-zero,            "Is a zero matrix";
-ok $z3.is-zero,              "Another zero matrix";
-nok $identity.is-zero,       "Is not a zero matrix";
-nok $ut.is-zero,             "An upper triangular matrix is not zero";
-
-ok $identity.is-identity,         "Is an identity matrix";
-nok $diagonal.is-identity,        "diagonal is not an identity matrix";
-nok $frobenius.is-identity,       "a frobenius matrix is not an identity matrix";
-nok $almostidentity.is-identity,  "none square is not an identity matrix";
-
+ok $frobenius.is-triangular(:atomic),  "detect an atomic triangular matrix";
+ok $identity.is-triangular(:atomic),   "identity is a frobenius matrix";
+nok $zero.is-triangular(:atomic),      "zero is not a frobenius matrix";
+nok $symmetric.is-triangular(:atomic), "a fully ranked matrix is not a frobenius matrix";
 
 nok $almostidentity.is-diagonal,  "none square is not an diagonal matrix";
 ok  $identity.is-diagonal,        "Is an diagonal matrix";
@@ -97,6 +101,12 @@ ok  $z3.is-diagonal,              "square zero matrix is diagonal";
 nok $zero.is-diagonal,            "none square zero matrix is not diagonal";
 nok $lt.is-diagonal,              "Lower triangular matrix is no an diagonal matrix";
 nok $ut.is-diagonal,              "Upper triangular matrix is no an diagonal matrix";
+
+ok $tridiag.is-tridiagonal(),     "detect tridiagonal matrix";
+ok $diagonal.is-tridiagonal(),    "diagonal is also tridiagonal matrix";
+nok $lt.is-tridiagonal,           "Lower triangular matrix is no an tridiagonal matrix";
+nok $ut.is-tridiagonal,           "Upper triangular matrix is no an tridiagonal matrix";
+
 
 my $cat = Math::Matrix.new([[0,1],[1,0]]);
 ok $zero.is-diagonal-constant,      "zero matrix is diagonal constant";

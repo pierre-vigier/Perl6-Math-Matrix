@@ -52,7 +52,7 @@ All computation heavy properties will be calculated lazily and cached. Mathemati
 
   * **[converter](#converter)**: [Bool](#bool), [Str](#str), [Numeric](#numeric), [Range](#range), [Array](#array), [list](#list), [list-rows](#list-rows), [list-columns](#list-columns), [Hash](#hash), [gist](#gist), [perl](#perl)
 
-  * **[boolean properties](#boolean-properties)**: [square](#is-square), [triangular](#is-triangular), [frobenius](#is-frobenius), [zero](#is-zero), [identity](#is-identity), [diagonal](#is-diagonal), [-dominant](#is-diagonally-dominant), [-constant](#is-diagonal-constant), [catalecticant](#is-catalecticant), [anti-](#is-antisymmetric), [symmetric](#is-symmetric), [unitary](#is-unitary), [self-adjoint](#is-self-adjoint), [invertible](#is-invertible), [orthogonal](#is-orthogonal), [positive-definite](#is-positive-definite), [positive-semidefinite](#is-positive-semidefinite)
+  * **[boolean properties](#boolean-properties)**: [square](#is-square), [triangular](#is-triangular), [tridiagonal](#is-tridiagonal), [zero](#is-zero), [identity](#is-identity), [diagonal](#is-diagonal), [-dominant](#is-diagonally-dominant), [-constant](#is-diagonal-constant), [catalecticant](#is-catalecticant), [anti-](#is-antisymmetric), [symmetric](#is-symmetric), [unitary](#is-unitary), [self-adjoint](#is-self-adjoint), [invertible](#is-invertible), [orthogonal](#is-orthogonal), [positive-definite](#is-positive-definite), [positive-semidefinite](#is-positive-semidefinite)
 
   * **[numeric properties](#numeric-properties)**: [size](#size), [density](#density), [bandwith](#bandwith), [trace](#trace), [rank](#rank), [nullity](#nullity), [determinant](#determinant), [minor](#minor), [norm](#norm), [condition](#condition), [element-type](#element-type)
 
@@ -145,7 +145,7 @@ This method creates a new *identity matrix* (as checked by [is-identity](#is-ide
 
 ### [new-diagonal](#constructors)
 
-creates a [diagonal](#is-diagonal) matrix which again contains zeros, except in the main [diagonal](#diagonal), that can hold arbitrary values. The only required argument is a list of numbers, which will become the content of the main diagonal. Naturally diagonal matrices are also always [quadratic](#is-square).
+creates a *diagonal* matrix (as checked by [is-diagonal](#is-diagonal)), which contains zeros, except in the main [diagonal](#diagonal), that can hold arbitrary values. The only required argument is a list these arbitrary numbers, which will become the content of the main diagonal.
 
     say Math::Matrix.new-diagonal( 2, 4, 5 ) :
 
@@ -239,8 +239,7 @@ In mathematics, a submatrix is built by leaving out one [row](#row) and one [col
 
 If you provide two ranges (row-min .. row-max, col-min .. col-max - both optional) to the appropriately named arguments, you get the excerpt of the matrix, that contains only the requested rows and columns - in the original order.
 
-    say $m.submatrix( rows => 1..1, columns => 1..*) :      4 5
-    say $m.submatrix( rows => 1..1 )                 :    3 4 5
+say $m.submatrix( rows => 1..1, columns => 1..2) : 3 4 say $m.submatrix( rows => 1..1, columns => 2..*) : 4 5 say $m.submatrix( rows => 1..2 ) : 2 3 4 5 3 4 5 6
 
 #### [reordering](#submatrix)
 
@@ -366,7 +365,21 @@ Conversion into String that can reevaluated into the same object later using def
 
 These are mathematical properties, a given matrix has or not. Thus, the return value is a always of boolean type. Arguments, like in case of [is-diagonally-dominant](is-diagonally-dominant), are only necessary when a method can tell you about a group of closely related properties.
 
-[square](#is-square), **[triangular](#is-triangular)**, [frobenius](#is-frobenius), [zero](#is-zero), [identity](#is-identity), [diagonal](#is-diagonal), **[diagonally-dominant](#is-diagonally-dominant)**, [diagonal-constant](#is-diagonal-constant), [catalecticant](#is-catalecticant), [symmetric](#is-symmetric), [anti-symmetric](#is-antisymmetric), [unitary](#is-unitary), [self-adjoint](#is-self-adjoint), [invertible](#is-invertible), [orthogonal](#is-orthogonal), [positive-definite](#is-positive-definite), [positive-semidefinite](#is-positive-semidefinite)
+[zero](#is-zero), [identity](#is-identity), [square](#is-square), **[triangular](#is-triangular)**, [tridiagonal](#is-tridiagonal), [diagonal](#is-diagonal), [diagonal-constant](#is-diagonal-constant), [catalecticant](#is-catalecticant), [symmetric](#is-symmetric), [anti-symmetric](#is-antisymmetric), [self-adjoint](#is-self-adjoint), [invertible](#is-invertible), [orthogonal](#is-orthogonal), [unitary](#is-unitary), **[diagonally-dominant](#is-diagonally-dominant)**, [positive-definite](#is-positive-definite), [positive-semidefinite](#is-positive-semidefinite)
+
+### [is-zero](#boolean-properties)
+
+True if every [element](#element) has value of 0 (as created by [new-zero](#new-zero)). This matrix behaves like a zero element regarding to the [dot-product](#dot-product) operation. Every matrix multiplied with a zero matrix is a zero matrix (A * 0 = 0).
+
+Example: 0 0 0 0 0 0
+
+### [is-identity](#boolean-properties)
+
+True if every [element](#element) on the main [diagonal](#diagonal) (where row index equals column index) is 1 and any other element is 0. Neutral element in redgards to the [dot-product](#dot-product). Every matrix multiplied with a fitting identiy matrix results in the same matrix again (A * I = A). Every identity matrix has to be a square matrix.
+
+    Example:    1 0 0
+                0 1 0
+                0 0 1
 
 ### [is-square](#boolean-properties)
 
@@ -374,9 +387,9 @@ True if number of rows and colums are the same (see [size](#size)).
 
 ### [is-triangular](#boolean-properties)
 
-True if all [element](#element)s above or below the main [diagonal](#diagonal) are zero. This method accepts four optional, boolean arguments: [:upper](#upper-triangular), [:lower](#lower-triangula), [:strict](#strict-triangular) and [:unit](#unit-triangular). Each argument can be used in a positive form (*:upper*), as a negative (*:!upper*), or omitted. Positively they demand a certain property, negatively the absence or opposite. When omitted, both states are acceptable.
+True if all [element](#element)s above or below the main [diagonal](#diagonal) are zero. This method accepts five optional, boolean arguments: [:upper](#upper-triangular), [:lower](#lower-triangula), [:strict](#strict-triangular), [:unit](#unit-triangular) and [:atomic](#atomic-triangular). Each argument can be used in a positive form (*:upper*), as a negative (*:!upper*), or omitted. Positively they demand a certain property, negatively the absence or opposite. When omitted, both states are acceptable.
 
-Please note that a triangular matrix can never be *:unit* and *:strict* at the same time, nor *:!upper* and *:!lower*. A triangular matrix that is *:upper* and *:lower* [is-diagonal](#is-diagonal). [Identity](#is-identity) matrices are *:upper*, *:lower* and *:unit*.
+Please note that a triangular matrix can never be *:unit* and *:strict* or *:atomic* and *:strict* at the same time, nor *:!upper* and *:!lower*. A triangular matrix that is *:upper* and *:lower* [is-diagonal](#is-diagonal). [Identity](#is-identity) matrices are *:upper*, *:lower* and *:unit*.
 
 #### [upper triangular](#is-triangular)
 
@@ -404,7 +417,7 @@ a.k.a *left triangular* matrix: every [element](#element) right and above the [d
 
 #### [unit triangular](#is-triangular)
 
-are triangular matrices that have a [diagonal](#diagonal) consisting only of values equal one.
+a.k.a unitriangular matrices have a [diagonal](#diagonal) consisting only of values equal one.
 
 $tri-matrix.is-triangular(:unit); # matrix in the example below would pass this test $tri-matrix.is-triangular(:unit, :lower); # False, because unit upper triangular
 
@@ -422,45 +435,29 @@ $tri-matrix.is-triangular(:strict); # matrix in the example below would pass thi
                 5 0 0
                 0 6 0
 
-### [is-frobenius](#boolean-properties)
+#### [atomic triangular](#boolean-properties)
 
-[Square](#is-square) matrix which differs from [identity](#is-identity) only in the lower part (below diagonal) of one column. In other words: a frobenius matrix is a unit lower triangular matrix, that contains only in one column none zero values.
+a.k.a frobenius matrix is a unit triangular matrix with one column of 'none zero values. $tri-matrix.is-triangular(:atomic); # matrix in the example below would pass this test
 
     Example:    1 0 0 0
                 0 1 0 0
                 0 2 1 0
                 0 5 0 1
 
-### [is-zero](#boolean-properties)
+### [is-tridiagonal](#boolean-properties)
 
-True if every [element](#element) has value of 0 (as created by [new-zero](#new-zero)).
-
-### [is-identity](#boolean-properties)
-
-True if every [element](#element) on the main [diagonal](#diagonal) (where row index equals column index) is 1 and any other element is 0.
-
-    Example:    1 0 0
-                0 1 0
-                0 0 1
+    Example:    1 2 0 0
+                3 4 5 0
+                0 6 7 8
+                0 0 9 1
 
 ### [is-diagonal](#boolean-properties)
 
-True if matrix is [square](#is-square) and only elements on the [diagonal](#diagonal) differ from 0. In other words: if matrix is [upper-triangular](#is-upper-triangular) and [lower-triangular](#is-lower-triangular).
+[square](#is-square) matrix where only elements on the main [diagonal](#diagonal) differ from 0. In other words: if matrix is [upper-triangular](#is-upper-triangular) and [lower-triangular](#is-lower-triangular).
 
     Example:    1 0 0
                 0 3 0
                 0 0 7
-
-### [is-diagonally-dominant](#boolean-properties)
-
-True when [element](#element)s on the [diagonal](#diagonal) have a bigger (if strict) or at least equal (in none strict) absolute value than the sum of its row (sum of absolute values of the row except diagonal element).
-
-    if $matrix.is-diagonally-dominant {
-    $matrix.is-diagonally-dominant(:!strict)      # same thing (default)
-    $matrix.is-diagonally-dominant(:strict)       # diagonal elements (DE) are stricly greater (>)
-    $matrix.is-diagonally-dominant(:!strict, :along<column>) # default
-    $matrix.is-diagonally-dominant(:strict,  :along<row>)    # DE > sum of rest row
-    $matrix.is-diagonally-dominant(:!strict, :along<both>)   # DE >= sum of rest row and rest column
 
 ### [is-diagonal-constant](#boolean-properties)
 
@@ -513,6 +510,17 @@ An orthogonal matrix multiplied ([dot-product](#dot-product)) with its transpose
 ### [is-unitary](#boolean-properties)
 
 An unitery matrix multiplied ([dot-product](#dot-product)) with its [concjugated](#conjugated) and transposed derivative (.conj.T) is an [identity](#is-identity) matrix, or said differently: the concjugate transposed matrix equals the [inverted](#inverted) matrix.
+
+### [is-diagonally-dominant](#boolean-properties)
+
+True when [element](#element)s on the [diagonal](#diagonal) have a bigger (if strict) or at least equal (in none strict) absolute value than the sum of its row (sum of absolute values of the row except diagonal element).
+
+    if $matrix.is-diagonally-dominant {
+    $matrix.is-diagonally-dominant(:!strict)      # same thing (default)
+    $matrix.is-diagonally-dominant(:strict)       # diagonal elements (DE) are stricly greater (>)
+    $matrix.is-diagonally-dominant(:!strict, :along<column>) # default
+    $matrix.is-diagonally-dominant(:strict,  :along<row>)    # DE > sum of rest row
+    $matrix.is-diagonally-dominant(:!strict, :along<both>)   # DE >= sum of rest row and rest column
 
 ### [is-positive-definite](#boolean-properties)
 

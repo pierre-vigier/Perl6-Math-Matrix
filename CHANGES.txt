@@ -1,8 +1,8 @@
  0.4.0:
     § 2019.5.
     + QR decomposition
-    + bool property is-frobenius
-    * bool property is-triangular (optionally :strict, :unit, :upper, :lower)
+    + bool property is-tridiagonal
+    * bool property is-triangular got 5 attributes (optionally :upper, :lower, :strict, :unit, :atomic)
     * cholesky decomposition knows now also LDL format (optionally :diagonal)
     ! change API to all decomposition methods to perl 6 standarts
 
