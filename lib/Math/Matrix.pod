@@ -469,9 +469,11 @@ Every identity matrix has to be a square.
                 0 0 1
 
 =head3 L<is-square|#boolean-properties>
+
 True if number of rows and colums are the same (see L<size|#size>).
 
 =head3 L<is-triangular|#boolean-properties>
+
 L<square|#is-square> matrix where all L<element|#element>s above the main L<diagonal|#diagonal>
 or all elements below the main diagonal are zero. The method accepts five optional, boolean arguments:
 L<:upper|#upper-triangular>, L<:lower|#lower-triangula>, L<:strict|#strict-triangular>, L<:unit|#unit-triangular> and L<:atomic|#atomic-triangular>.
@@ -496,6 +498,7 @@ In other words: the L<lower-bandwith|#lower-bandwith> has to be zero.
                 0 0 7
 
 =head4 L<lower triangular|#is-triangular>
+
 a.k.a I<left triangular> matrix: every L<element|#element> right and above the L<diagonal|#diagonal>
 (where L<row|#row> index is greater than L<column|#column> index) are zero.
 In other words: the L<upper-bandwith|#upper-bandwith> has to be zero.
@@ -510,6 +513,7 @@ In other words: the L<upper-bandwith|#upper-bandwith> has to be zero.
                 5 8 7
 
 =head4 L<unit triangular|#is-triangular>
+
 a.k.a I<unitriangular> matrices have a L<diagonal|#diagonal> consisting only of values equal one.
 An L<identity|#is-identity> matrix is I<:unit>, I<:upper> and I<:lower>.
 
@@ -532,6 +536,7 @@ are I<triangular> matrices, that have a L<diagonal|#diagonal> consisting only of
                 0 6 0
 
 =head4 L<atomic triangular|#boolean-properties>
+
 a.k.a I<Frobenius> matrix is a unit triangular matrix with one column of 'none zero values.
 
     $tri-matrix.is-triangular(:atomic);        # matrix in the example below would pass this test
@@ -542,6 +547,7 @@ a.k.a I<Frobenius> matrix is a unit triangular matrix with one column of 'none z
                 0 5 0 1
 
 =head3 L<is-diagonal|#boolean-properties>
+
 L<square|#is-square> matrix, where only elements on the main L<diagonal|#diagonal> differ from 0
 (as created by L<new-diagonal|#new-diagonal>).
 
@@ -554,6 +560,7 @@ L<square|#is-square> matrix, where only elements on the main L<diagonal|#diagona
                 0 0 7
 
 =head3 L<is-tridiagonal|#boolean-properties>
+
 L<square|#is-square> matrix, where only elements on the main L<diagonal|#diagonal>
 and their direct parallels differ from 0.
 
@@ -567,6 +574,7 @@ and their direct parallels differ from 0.
 
 
 =head3 L<is-diagonal-constant|#boolean-properties>
+
 a.k.a. or I<Töplitz> matrix is a matrix where every L<diagonal|#diagonal>
 is the a collection of L<element|#element>s that hold the same value.
 
