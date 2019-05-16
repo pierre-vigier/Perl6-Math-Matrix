@@ -369,14 +369,14 @@ These are mathematical properties, a given matrix has or not. Thus, the return v
 
 ### [is-zero](#boolean-properties)
 
-True if every [element](#element) has value of 0 (as created by [new-zero](#new-zero)). [Density](#density) of zero matrices is 0. This matrix behaves like a zero element regarding to the [dot-product](#dot-product) operation. Every matrix multiplied with a zero matrix is a zero matrix (A * 0 = 0 * A = 0).
+True if every [element](#element) has value of 0 (as created by [new-zero](#new-zero)). [Density](#density) of zero matrices is 0. This matrix behaves like a zero element regarding to the [dot-product](#dot-product). Every matrix multiplied with a zero matrix is a zero matrix (A * 0 = 0 * A = 0).
 
     Example:    0 0 0
                 0 0 0
 
 ### [is-identity](#boolean-properties)
 
-True if every [element](#element) on the main [diagonal](#diagonal) (where row index equals column index) is 1 and any other element is 0. Neutral element in redgards to the [dot-product](#dot-product). Every matrix multiplied with a fitting identiy matrix results in the same matrix again (A * I = I * A = A). Every identity matrix has to be a square matrix.
+True if every [element](#element) on the main [diagonal](#diagonal) (where row index equals column index) is 1 and any other element is 0. Such a matrix will be created by [new-identity](#new-identity). It is the neutral element in redgards to the [dot-product](#dot-product). Every matrix multiplied with a fitting identiy matrix results in the same matrix again (A * I = I * A = A). Every identity matrix has to be a square matrix.
 
     Example:    1 0 0
                 0 1 0
