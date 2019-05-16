@@ -188,7 +188,7 @@ determine the amount of rows and the length of the second the amount of columns.
 Methods that return the content of selected elements.
 
 L<element|#element>, L<AT-POS|#at-pos>, L<row|#row>, L<column|#column>, L<diagonal|#diagonal>, L<skew-diagonal>,
-B<L<submatrix>>: (L<leaving out one|#leaving-out-one>, L<leaving out more|#leaving-out-more>, L<reordering|#reordering>, )
+B<L<submatrix>>: (L<leaving out one|#leaving-out-one>, L<leaving out more|#leaving-out-more>, L<reordering|#reordering>)
 
 =head3 L<element|#accessors>
 
@@ -439,7 +439,7 @@ when a method can tell you about a group of closely related properties.
 
 L<zero|#is-zero>, L<identity|#is-identity>, L<square|#is-square>,
 B<L<triangular|#is-triangular>>: (L<upper|#upper-triangular>, L<lower|#lower-triangular>,
-     L<unit|#unit-triangular>, L<strict|#strict-triangular>, L<atomic|#atomic-triangular>),
+     L<strict|#strict-triangular>, L<unit|#unit-triangular>, L<atomic|#atomic-triangular>),
 L<diagonal|#is-diagonal>, L<tridiagonal|#is-tridiagonal>,
 L<diagonal-constant|#is-diagonal-constant>, L<catalecticant|#is-catalecticant>,
 L<symmetric|#is-symmetric>, L<anti-symmetric|#is-antisymmetric>, L<self-adjoint|#is-self-adjoint>,
@@ -515,6 +515,17 @@ In other words: the L<upper-bandwith|#upper-bandwith> has to be zero.
                 2 3 0
                 5 8 7
 
+=head4 L<strict triangular|#is-triangular>
+
+are I<triangular> matrices, that have a L<diagonal|#diagonal> consisting only of values equal zero.
+
+    $tri-matrix.is-triangular(:strict);       # matrix in the example below would pass this test
+    $tri-matrix.is-triangular(:!unit, :lower);# True too
+
+    Example:    0 0 0
+                5 0 0
+                0 6 0
+
 =head4 L<unit triangular|#is-triangular>
 
 a.k.a I<unitriangular> matrices have a L<diagonal|#diagonal> consisting only of values equal one.
@@ -526,17 +537,6 @@ An L<identity|#is-identity> matrix is I<:unit>, I<:upper> and I<:lower>.
     Example:    1 2 5
                 0 1 8
                 0 0 1
-
-=head4 L<strict triangular|#is-triangular>
-
-are I<triangular> matrices, that have a L<diagonal|#diagonal> consisting only of values equal zero.
-
-    $tri-matrix.is-triangular(:strict);       # matrix in the example below would pass this test
-    $tri-matrix.is-triangular(:!unit, :lower);# True too
-
-    Example:    0 0 0
-                5 0 0
-                0 6 0
 
 =head4 L<atomic triangular|#boolean-properties>
 
@@ -555,7 +555,7 @@ L<square|#is-square> matrix, where only elements on the main L<diagonal|#diagona
 (as created by L<new-diagonal|#new-diagonal>).
 
     $tri-matrix.is-diagonal();
-    $tri-matrix.is-triangular(:upper, :lower); # alias
+    $tri-matrix.is-triangular(:upper, :lower); # same thing
     $tri-matrix.lower-bandwith() == $tri-matrix.upper-bandwith() == 0; # True
 
     Example:    1 0 0

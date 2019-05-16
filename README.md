@@ -169,7 +169,7 @@ creates a matrix by calculating the [tensor-product](#tensor-product) of two vec
 
 Methods that return the content of selected elements.
 
-[element](#element), [AT-POS](#at-pos), [row](#row), [column](#column), [diagonal](#diagonal), [skew-diagonal](skew-diagonal), **[submatrix](submatrix)**: ([leaving out one](#leaving-out-one), [leaving out more](#leaving-out-more), [reordering](#reordering), )
+[element](#element), [AT-POS](#at-pos), [row](#row), [column](#column), [diagonal](#diagonal), [skew-diagonal](skew-diagonal), **[submatrix](submatrix)**: ([leaving out one](#leaving-out-one), [leaving out more](#leaving-out-more), [reordering](#reordering))
 
 ### [element](#accessors)
 
@@ -365,7 +365,7 @@ Conversion into String that can reevaluated into the same object later using def
 
 These are mathematical properties, a given matrix has or not. Thus, the return value is a always of boolean type (Bool). Arguments, like in case of [triangular](#is-triangular) and [is-diagonally-dominant](#is-diagonally-dominant) are only necessary, when a method can tell you about a group of closely related properties.
 
-[zero](#is-zero), [identity](#is-identity), [square](#is-square), **[triangular](#is-triangular)**: ([upper](#upper-triangular), [lower](#lower-triangular), [unit](#unit-triangular), [strict](#strict-triangular), [atomic](#atomic-triangular)), [diagonal](#is-diagonal), [tridiagonal](#is-tridiagonal), [diagonal-constant](#is-diagonal-constant), [catalecticant](#is-catalecticant), [symmetric](#is-symmetric), [anti-symmetric](#is-antisymmetric), [self-adjoint](#is-self-adjoint), [invertible](#is-invertible), [orthogonal](#is-orthogonal), [unitary](#is-unitary), **[diagonally-dominant](#is-diagonally-dominant)**, [positive-definite](#is-positive-definite), [positive-semidefinite](#is-positive-semidefinite)
+[zero](#is-zero), [identity](#is-identity), [square](#is-square), **[triangular](#is-triangular)**: ([upper](#upper-triangular), [lower](#lower-triangular), [strict](#strict-triangular), [unit](#unit-triangular), [atomic](#atomic-triangular)), [diagonal](#is-diagonal), [tridiagonal](#is-tridiagonal), [diagonal-constant](#is-diagonal-constant), [catalecticant](#is-catalecticant), [symmetric](#is-symmetric), [anti-symmetric](#is-antisymmetric), [self-adjoint](#is-self-adjoint), [invertible](#is-invertible), [orthogonal](#is-orthogonal), [unitary](#is-unitary), **[diagonally-dominant](#is-diagonally-dominant)**, [positive-definite](#is-positive-definite), [positive-semidefinite](#is-positive-semidefinite)
 
 ### [is-zero](#boolean-properties)
 
@@ -416,17 +416,6 @@ a.k.a *left triangular* matrix: every [element](#element) right and above the [d
                 2 3 0
                 5 8 7
 
-#### [unit triangular](#is-triangular)
-
-a.k.a *unitriangular* matrices have a [diagonal](#diagonal) consisting only of values equal one. An [identity](#is-identity) matrix is *:unit*, *:upper* and *:lower*.
-
-    $tri-matrix.is-triangular(:unit);         # matrix in the example below would pass this test
-    $tri-matrix.is-triangular(:unit, :lower); # False, because unit upper triangular
-
-    Example:    1 2 5
-                0 1 8
-                0 0 1
-
 #### [strict triangular](#is-triangular)
 
 are *triangular* matrices, that have a [diagonal](#diagonal) consisting only of values equal zero.
@@ -437,6 +426,17 @@ are *triangular* matrices, that have a [diagonal](#diagonal) consisting only of 
     Example:    0 0 0
                 5 0 0
                 0 6 0
+
+#### [unit triangular](#is-triangular)
+
+a.k.a *unitriangular* matrices have a [diagonal](#diagonal) consisting only of values equal one. An [identity](#is-identity) matrix is *:unit*, *:upper* and *:lower*.
+
+    $tri-matrix.is-triangular(:unit);         # matrix in the example below would pass this test
+    $tri-matrix.is-triangular(:unit, :lower); # False, because unit upper triangular
+
+    Example:    1 2 5
+                0 1 8
+                0 0 1
 
 #### [atomic triangular](#boolean-properties)
 
@@ -454,7 +454,7 @@ a.k.a *Frobenius* matrix is a unit triangular matrix with one column of 'none ze
 [square](#is-square) matrix, where only elements on the main [diagonal](#diagonal) differ from 0 (as created by [new-diagonal](#new-diagonal)).
 
     $tri-matrix.is-diagonal();
-    $tri-matrix.is-triangular(:upper, :lower); # alias
+    $tri-matrix.is-triangular(:upper, :lower); # same thing
     $tri-matrix.lower-bandwith() == $tri-matrix.upper-bandwith() == 0; # True
 
     Example:    1 0 0
