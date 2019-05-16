@@ -953,7 +953,7 @@ Named arguments I<:row> and I<:column> are only used to add a vector (one) or sc
 =head4 L<add matrix|#add>
 
 When adding two matrices, they have to be of the same L<size|#size>.
-Instead of a Math::matrix object you can also provide the content of a matrix as
+Instead of a Math::Matrix object you can also provide the content of a matrix as
 L<new []|#new-->, L<new ()|#new---1> or L<new ""|#new---2> would accept it.
 
     $matrix.add( $matrix2 );
@@ -1007,6 +1007,9 @@ That is why this method works analogous to L<add|#add>.
 When a matrix of same size is given, the result will be a matrix
 of that size again. Each element will be the product of two the two elements of the
 operands with the same indices (position).
+Instead of a Math::Matrix object you can also provide the content of a matrix as
+L<new []|#new-->, L<new ()|#new---1> or L<new ""|#new---2> would accept it.
+
 
     my $product = $matrix.multiply( $matrix2 );  # element wise multiplication of same size matrices
     my $p = $matrix * $matrix2;                  # works too
@@ -1017,6 +1020,11 @@ operands with the same indices (position).
 
 =head4 L<multiply vector|#multiply>
 
+    my $product = $matrix.multiply( row => 0, (2, 3) );   # multiply every element with number
+
+
+    Example:    1 2  *  2 3  =  2 6
+                3 4             3 4
 
 =head4 L<multiply scalar|#multiply>
 

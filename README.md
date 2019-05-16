@@ -782,7 +782,7 @@ Adding a matrix, [vector](#add-vector) or [scalar](#scalar-scalar). Named argume
 
 #### [add matrix](#add)
 
-When adding two matrices, they have to be of the same [size](#size). Instead of a Math::matrix object you can also provide the content of a matrix as [new []](#new--), [new ()](#new---1) or [new ""](#new---2) would accept it.
+When adding two matrices, they have to be of the same [size](#size). Instead of a Math::Matrix object you can also provide the content of a matrix as [new []](#new--), [new ()](#new---1) or [new ""](#new---2) would accept it.
 
     $matrix.add( $matrix2 );
     $matrix.add( [[2,3],[4,5]] ); # data alias
@@ -824,7 +824,7 @@ Unlike the [dot-product](#dot-product) and [tensor-product](#tensor-product), th
 
 #### [multiply matrix](#multiply)
 
-When a matrix of same size is given, the result will be a matrix of that size again. Each element will be the product of two the two elements of the operands with the same indices (position).
+When a matrix of same size is given, the result will be a matrix of that size again. Each element will be the product of two the two elements of the operands with the same indices (position). Instead of a Math::Matrix object you can also provide the content of a matrix as [new []](#new--), [new ()](#new---1) or [new ""](#new---2) would accept it.
 
     my $product = $matrix.multiply( $matrix2 );  # element wise multiplication of same size matrices
     my $p = $matrix * $matrix2;                  # works too
@@ -833,6 +833,12 @@ When a matrix of same size is given, the result will be a matrix of that size ag
                 3 4     4 5     12 20
 
 #### [multiply vector](#multiply)
+
+    my $product = $matrix.multiply( row => 0, (2, 3) );   # multiply every element with number
+
+
+    Example:    1 2  *  2 3  =  2 6
+                3 4             3 4
 
 #### [multiply scalar](#multiply)
 
