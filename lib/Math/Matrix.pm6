@@ -696,11 +696,14 @@ multi method add(Math::Matrix:D: @v where {@v.all ~~ Numeric}, Int :$column! -->
 }
 # add scalar
 multi method add(Math::Matrix:D: Numeric $s, --> Math::Matrix:D )                          { self.map( *  + $s  ) }
-multi method add(Math::Matrix:D: Numeric $s, Int :$row!, Int :$column --> Math::Matrix:D ) {
+multi method add(Math::Matrix:D: Numeric $s, Int :$row, Int :$column --> Math::Matrix:D ) {
     self!check-row-index($row)       if $row.defined;
     self!check-column-index($column) if $column.defined;
-    self.map(rows  => $row.defined ?? ($row..$row) !! ^$!row-count,
-             columns => $column.defined ?? ($column..$column) !! ^$!column-count, { $_ + $s } );
+    my @sum = self!clone-cells;
+    for   ($row.defined ?? ($row..$row) !! ^$!row-count)
+        X ($column.defined ?? ($column..$column) !! ^$!column-count)
+       -> ($r, $c) { @sum[$r][$c] += $s }
+    Math::Matrix.new( @sum );
 }
 
 # multiply matrix
@@ -731,8 +734,11 @@ multi method multiply(Math::Matrix:D: Numeric $f --> Math::Matrix:D )           
 multi method multiply(Math::Matrix:D: Numeric $f, Int :$row, Int :$column --> Math::Matrix:D ) {
     self!check-row-index($row)       if $row.defined;
     self!check-column-index($column) if $column.defined;
-    self.map(rows  => $row.defined ?? ($row..$row) !! ^$!row-count,
-             columns => $column.defined ?? ($column..$column) !! ^$!column-count, { $_ * $f } );
+    my @product = self!clone-cells;
+    for   ($row.defined ?? ($row..$row) !! ^$!row-count)
+        X ($column.defined ?? ($column..$column) !! ^$!column-count)
+       -> ($r, $c) { @product[$r][$c] *= $f }
+    Math::Matrix.new( @product );
 }
 
 method dot-product(Math::Matrix:D: Math::Matrix $b --> Math::Matrix:D ) {

@@ -61,7 +61,7 @@ Mathematically or otherwise undefined operations will cause an exception.
 =item B<L<decompositions|#decompositions>>: L<LU|#decompositionlu>, L<LUCrout|#decompositionlucrout>, L<Cholesky|#Cholesky-decomposition>
 =item B<L<math ops|#mathematical-operations>>: L<equal|#equal>, L<add|#add>, L<multiply|#multiply>, L<dot-product|#dot-product>, L<tensor-product|#tensor-product>
 =item B<L<list like ops|#list-like-operations>>: L<elems|#elems>, L<elem|#elem>, L<cont|#cont>,
-        L<map|#map>, L<map-with-index>, L<reduce|#reduce>, L<reduce-rows|#reduce-rows>, L<reduce-columns|#reduce-columns>
+        L<map|#map>, L<map-with-index|#map-with-index>, L<reduce|#reduce>, L<reduce-rows|#reduce-rows>, L<reduce-columns|#reduce-columns>
 =item B<L<structural ops|#structural-operations>>: L<move-row|#move-row>, L<move-column|#move-column>,
         L<swap-rows|#swap-rows>, L<swap-columns|#swap-columns>, L<splice-rows|#splice-rows>, L<splice-columns|#splice-columns>
 =item B<L<shortcuts|#shortcuts>>:   L<T|#transposed>,   L<conj|#conjugated>,   L<det|#determinant>,   L<rref|#reduced-row-echelon-form>
@@ -1020,6 +1020,10 @@ L<new []|#new-->, L<new ()|#new---1> or L<new ""|#new---2> would accept it.
 
 =head4 L<multiply vector|#multiply>
 
+Takes a vector (list of numbers) and a Pair thst specifies an existing row or column.
+This row or column will than multiplied with the vector
+(element one by vector element one, and so on).
+
     my $product = $matrix.multiply( row => 0, (2, 3) );   # multiply every element with number
 
 
@@ -1027,6 +1031,7 @@ L<new []|#new-->, L<new ()|#new---1> or L<new ""|#new---2> would accept it.
                 3 4             3 4
 
 =head4 L<multiply scalar|#multiply>
+
 
 Especially when doing Gaussian elimination you have to multiply just one row.
 

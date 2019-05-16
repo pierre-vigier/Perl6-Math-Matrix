@@ -62,7 +62,7 @@ All computation heavy properties will be calculated lazily and cached. Mathemati
 
   * **[math ops](#mathematical-operations)**: [equal](#equal), [add](#add), [multiply](#multiply), [dot-product](#dot-product), [tensor-product](#tensor-product)
 
-  * **[list like ops](#list-like-operations)**: [elems](#elems), [elem](#elem), [cont](#cont), [map](#map), [map-with-index](map-with-index), [reduce](#reduce), [reduce-rows](#reduce-rows), [reduce-columns](#reduce-columns)
+  * **[list like ops](#list-like-operations)**: [elems](#elems), [elem](#elem), [cont](#cont), [map](#map), [map-with-index](#map-with-index), [reduce](#reduce), [reduce-rows](#reduce-rows), [reduce-columns](#reduce-columns)
 
   * **[structural ops](#structural-operations)**: [move-row](#move-row), [move-column](#move-column), [swap-rows](#swap-rows), [swap-columns](#swap-columns), [splice-rows](#splice-rows), [splice-columns](#splice-columns)
 
@@ -833,6 +833,8 @@ When a matrix of same size is given, the result will be a matrix of that size ag
                 3 4     4 5     12 20
 
 #### [multiply vector](#multiply)
+
+Takes a vector (list of numbers) and a Pair thst specifies an existing row or column. This row or column will than multiplied with the vector (element one by vector element one, and so on).
 
     my $product = $matrix.multiply( row => 0, (2, 3) );   # multiply every element with number
 
