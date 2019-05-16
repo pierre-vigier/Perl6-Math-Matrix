@@ -365,7 +365,7 @@ Conversion into String that can reevaluated into the same object later using def
 
 These are mathematical properties, a given matrix has or not. Thus, the return value is a always of boolean type. Arguments, like in case of [is-diagonally-dominant](is-diagonally-dominant), are only necessary when a method can tell you about a group of closely related properties.
 
-[zero](#is-zero), [identity](#is-identity), [square](#is-square), **[triangular](#is-triangular)**, [tridiagonal](#is-tridiagonal), [diagonal](#is-diagonal), [diagonal-constant](#is-diagonal-constant), [catalecticant](#is-catalecticant), [symmetric](#is-symmetric), [anti-symmetric](#is-antisymmetric), [self-adjoint](#is-self-adjoint), [invertible](#is-invertible), [orthogonal](#is-orthogonal), [unitary](#is-unitary), **[diagonally-dominant](#is-diagonally-dominant)**, [positive-definite](#is-positive-definite), [positive-semidefinite](#is-positive-semidefinite)
+[zero](#is-zero), [identity](#is-identity), [square](#is-square), **[triangular](#is-triangular)**, [diagonal](#is-diagonal), [tridiagonal](#is-tridiagonal), [diagonal-constant](#is-diagonal-constant), [catalecticant](#is-catalecticant), [symmetric](#is-symmetric), [anti-symmetric](#is-antisymmetric), [self-adjoint](#is-self-adjoint), [invertible](#is-invertible), [orthogonal](#is-orthogonal), [unitary](#is-unitary), **[diagonally-dominant](#is-diagonally-dominant)**, [positive-definite](#is-positive-definite), [positive-semidefinite](#is-positive-semidefinite)
 
 ### [is-zero](#boolean-properties)
 
@@ -376,7 +376,7 @@ True if every [element](#element) has value of 0 (as created by [new-zero](#new-
 
 ### [is-identity](#boolean-properties)
 
-True if every [element](#element) on the main [diagonal](#diagonal) (where row index equals column index) is 1 and any other element is 0. Such a matrix will be created by [new-identity](#new-identity). It is the neutral element in redgards to the [dot-product](#dot-product). Every matrix multiplied with a fitting identiy matrix results in the same matrix again (A * I = I * A = A). Every identity matrix has to be a square matrix.
+True if every [element](#element) on the main [diagonal](#diagonal) (where row index equals column index) is 1 and any other element is 0. Such a matrix will be created by [new-identity](#new-identity). It is the neutral element in redgards to the [dot-product](#dot-product). Every matrix multiplied with a fitting identiy matrix results in the same matrix again (A * I = I * A = A). Every identity matrix has to be a square.
 
     Example:    1 0 0
                 0 1 0
@@ -420,7 +420,8 @@ a.k.a *left triangular* matrix: every [element](#element) right and above the [d
 
 a.k.a unitriangular matrices have a [diagonal](#diagonal) consisting only of values equal one.
 
-$tri-matrix.is-triangular(:unit); # matrix in the example below would pass this test $tri-matrix.is-triangular(:unit, :lower); # False, because unit upper triangular
+    $tri-matrix.is-triangular(:unit);         # matrix in the example below would pass this test
+    $tri-matrix.is-triangular(:unit, :lower); # False, because unit upper triangular
 
     Example:    1 2 5
                 0 1 8
@@ -430,7 +431,8 @@ $tri-matrix.is-triangular(:unit); # matrix in the example below would pass this 
 
 are triangular matrices that have a [diagonal](#diagonal) consisting only of values equal zero.
 
-$tri-matrix.is-triangular(:strict); # matrix in the example below would pass this test $tri-matrix.is-triangular(:!unit, :lower);# True too
+    $tri-matrix.is-triangular(:strict);       # matrix in the example below would pass this test
+    $tri-matrix.is-triangular(:!unit, :lower);# True too
 
     Example:    0 0 0
                 5 0 0
@@ -438,27 +440,35 @@ $tri-matrix.is-triangular(:strict); # matrix in the example below would pass thi
 
 #### [atomic triangular](#boolean-properties)
 
-a.k.a frobenius matrix is a unit triangular matrix with one column of 'none zero values. $tri-matrix.is-triangular(:atomic); # matrix in the example below would pass this test
+a.k.a frobenius matrix is a unit triangular matrix with one column of 'none zero values.
+
+    $tri-matrix.is-triangular(:atomic);        # matrix in the example below would pass this test
 
     Example:    1 0 0 0
                 0 1 0 0
                 0 2 1 0
                 0 5 0 1
 
-### [is-tridiagonal](#boolean-properties)
+### [is-diagonal](#boolean-properties)
+
+[square](#is-square) matrix where only elements on the main [diagonal](#diagonal) differ from 0 (as created by [new-diagonal](#new-diagonal)).
+
+    $tri-matrix.is-diagonal();
+    $tri-matrix.is-triangular(:upper, :lower); # alias
+
+    Example:    1 0 0
+                0 3 0
+                0 0 7
+
+### [is-tridiagonal](#boolean-properties) [square](#is-square) matrix where only elements on the main [diagonal](#diagonal) and their direct parallels differ from 0.
+
+    $tri-matrix.is-tridiagonal();
+    $tri-matrix.lower-bandwith() <= 1 and $tri-matrix.upper-bandwith() <= 1; # True
 
     Example:    1 2 0 0
                 3 4 5 0
                 0 6 7 8
                 0 0 9 1
-
-### [is-diagonal](#boolean-properties)
-
-[square](#is-square) matrix where only elements on the main [diagonal](#diagonal) differ from 0. In other words: if matrix is [upper-triangular](#is-upper-triangular) and [lower-triangular](#is-lower-triangular).
-
-    Example:    1 0 0
-                0 3 0
-                0 0 7
 
 ### [is-diagonal-constant](#boolean-properties)
 

@@ -437,10 +437,9 @@ are only necessary when a method can tell you about a group of closely related p
 
 L<zero|#is-zero>, L<identity|#is-identity>,
 L<square|#is-square>, B<L<triangular|#is-triangular>>,
-L<tridiagonal|#is-tridiagonal>, L<diagonal|#is-diagonal>,
+L<diagonal|#is-diagonal>, L<tridiagonal|#is-tridiagonal>,
 L<diagonal-constant|#is-diagonal-constant>, L<catalecticant|#is-catalecticant>,
-L<symmetric|#is-symmetric>, L<anti-symmetric|#is-antisymmetric>,
-L<self-adjoint|#is-self-adjoint>,
+L<symmetric|#is-symmetric>, L<anti-symmetric|#is-antisymmetric>, L<self-adjoint|#is-self-adjoint>,
 L<invertible|#is-invertible>, L<orthogonal|#is-orthogonal>, L<unitary|#is-unitary>,
 B<L<diagonally-dominant|#is-diagonally-dominant>>,
 L<positive-definite|#is-positive-definite>, L<positive-semidefinite|#is-positive-semidefinite>
@@ -462,7 +461,7 @@ True if every L<element|#element> on the main L<diagonal|#diagonal>
 Such a matrix will be created by L<new-identity|#new-identity>.
 It is the neutral element in redgards to the L<dot-product|#dot-product>. Every matrix
 multiplied with a fitting identiy matrix results in the same matrix again (A * I = I * A = A).
-Every identity matrix has to be a square matrix.
+Every identity matrix has to be a square.
 
     Example:    1 0 0
                 0 1 0
@@ -517,8 +516,8 @@ In other words: the L<upper-bandwith|#upper-bandwith> has to be zero.
 
 a.k.a unitriangular matrices have a L<diagonal|#diagonal> consisting only of values equal one.
 
-$tri-matrix.is-triangular(:unit);         # matrix in the example below would pass this test
-$tri-matrix.is-triangular(:unit, :lower); # False, because unit upper triangular
+    $tri-matrix.is-triangular(:unit);         # matrix in the example below would pass this test
+    $tri-matrix.is-triangular(:unit, :lower); # False, because unit upper triangular
 
     Example:    1 2 5
                 0 1 8
@@ -528,8 +527,8 @@ $tri-matrix.is-triangular(:unit, :lower); # False, because unit upper triangular
 
 are triangular matrices that have a L<diagonal|#diagonal> consisting only of values equal zero.
 
-$tri-matrix.is-triangular(:strict);       # matrix in the example below would pass this test
-$tri-matrix.is-triangular(:!unit, :lower);# True too
+    $tri-matrix.is-triangular(:strict);       # matrix in the example below would pass this test
+    $tri-matrix.is-triangular(:!unit, :lower);# True too
 
     Example:    0 0 0
                 5 0 0
@@ -538,29 +537,38 @@ $tri-matrix.is-triangular(:!unit, :lower);# True too
 =head4 L<atomic triangular|#boolean-properties>
 
 a.k.a frobenius matrix is a unit triangular matrix with one column of 'none zero values.
-$tri-matrix.is-triangular(:atomic);        # matrix in the example below would pass this test
+
+    $tri-matrix.is-triangular(:atomic);        # matrix in the example below would pass this test
 
     Example:    1 0 0 0
                 0 1 0 0
                 0 2 1 0
                 0 5 0 1
 
+=head3 L<is-diagonal|#boolean-properties>
+
+L<square|#is-square> matrix where only elements on the main L<diagonal|#diagonal> differ from 0
+(as created by L<new-diagonal|#new-diagonal>).
+
+    $tri-matrix.is-diagonal();
+    $tri-matrix.is-triangular(:upper, :lower); # alias
+
+    Example:    1 0 0
+                0 3 0
+                0 0 7
+
 =head3 L<is-tridiagonal|#boolean-properties>
+L<square|#is-square> matrix where only elements on the main L<diagonal|#diagonal>
+and their direct parallels differ from 0.
+
+    $tri-matrix.is-tridiagonal();
+    $tri-matrix.lower-bandwith() <= 1 and $tri-matrix.upper-bandwith() <= 1; # True
 
     Example:    1 2 0 0
                 3 4 5 0
                 0 6 7 8
                 0 0 9 1
 
-
-=head3 L<is-diagonal|#boolean-properties>
-
-L<square|#is-square> matrix where only elements on the main L<diagonal|#diagonal> differ from 0.
-In other words: if matrix is L<upper-triangular|#is-upper-triangular> and L<lower-triangular|#is-lower-triangular>.
-
-    Example:    1 0 0
-                0 3 0
-                0 0 7
 
 =head3 L<is-diagonal-constant|#boolean-properties>
 
