@@ -946,7 +946,7 @@ of the first matrix on a particular position has to be numerically equal (as che
 
 =head3 L<add|#mathematical-operations>
 
-Adding a matrix, L<vector|#add-vector> or L<add-scalar|#scalar>.
+Adding a matrix, L<vector|#add-vector> or L<scalar|#scalar-scalar>.
 Named arguments I<:row> and I<:column> are only used to add a vector (one) or scalar (both).
 
 
@@ -1083,7 +1083,10 @@ and do a L<scalar multiplication|#multiply> with B as in $B.multiply($A.element(
 
 =head2 L<List Like Operations|#methods>
 
-Methods that usually are provided by Lists and Arrays, but make also sense in context of matrices.
+Methods (or extensions thereof) that usually are provided by Lists and Arrays,
+but make also sense in context of matrices:
+ L<elems|#elems>, L<elem|#elem>, L<cont|#cont>, L<map|#map>, L<map-with-index|#map-with-index>,
+ L<reduce|#reduce>, L<reduce-rows|#reduce-rows>, L<reduce-columns|#reduce-columns>
 
 
 =head3 L<elems|#list-like-operations>
@@ -1177,11 +1180,12 @@ resulting list:
     say Math::Matrix.new([[1,2],[3,4]]).reduce-columns(&[*]): (3, 8)
 
 
-
 =head2 L<Structural Operations|#methods>
 
 Methods that reorder rows and columns, delete some or even add new.
 The accessor L<submatrix|#submatrix> is also useful for that purpose.
+L<move-row|#move-row>, L<move-column|#move-column>, L<swap-rows|#swap-rows>, L<swap-rows|#swap-columns>,
+L<splice-rows|#splice-rows>, L<splice-columns|#splice-columns>
 
 =head3 L<move-row|#structural-matrix-operations>
 
@@ -1224,32 +1228,32 @@ The third and alos optional parameter will be an array of arrays (line .new woul
 that fitting row lengths. These rows will be inserted before the row with the number of first parameter.
 The third parameter can also be a fitting Math::Matrix.
 
-    Math::Matrix.new([[1,2],[3,4]]).splice-rows(0,0, Math::Matrix.new([[5,6],[7,8]]) ); # aka prepend
-    Math::Matrix.new([[1,2],[3,4]]).splice-rows(0,0,                  [[5,6],[7,8]]  ); # same result
+    $matrix.splice-rows(0,0, Math::Matrix.new([[5,6],[7,8]]) ); # aka prepend
+    $matrix.splice-rows(0,0,                  [[5,6],[7,8]]  ); # same result
 
     5 6
     7 8
     1 2
     3 4
 
-    Math::Matrix.new([[1,2],[3,4]]).splice-rows(1,0, Math::Matrix.new([[5,6],[7,8]]) ); # aka insert
-    Math::Matrix.new([[1,2],[3,4]]).splice-rows(1,0,                  [[5,6],[7,8]]  ); # same result
+    $matrix.splice-rows(1,0, Math::Matrix.new([[5,6],[7,8]]) ); # aka insert
+    $matrix.splice-rows(1,0,                  [[5,6],[7,8]]  ); # same result
 
     1 2
     5 6
     7 8
     3 4
 
-    Math::Matrix.new([[1,2],[3,4]]).splice-rows(1,1, Math::Matrix.new([[5,6],[7,8]]) ); # aka replace
-    Math::Matrix.new([[1,2],[3,4]]).splice-rows(1,1,                  [[5,6],[7,8]]  ); # same result
+    $matrix.splice-rows(1,1, Math::Matrix.new([[5,6],[7,8]]) ); # aka replace
+    $matrix.splice-rows(1,1,                  [[5,6],[7,8]]  ); # same result
 
     1 2
     5 6
     7 8
 
-    Math::Matrix.new([[1,2],[3,4]]).splice-rows(2,0, Math::Matrix.new([[5,6],[7,8]]) ); # aka append
-    Math::Matrix.new([[1,2],[3,4]]).splice-rows(2,0,                  [[5,6],[7,8]]  ); # same result
-    Math::Matrix.new([[1,2],[3,4]]).splice-rows(-1,0,                 [[5,6],[7,8]]  ); # with negative index
+    $matrix.splice-rows(2,0, Math::Matrix.new([[5,6],[7,8]]) ); # aka append
+    $matrix.splice-rows(2,0,                  [[5,6],[7,8]]  ); # same result
+    $matrix.splice-rows(-1,0,                 [[5,6],[7,8]]  ); # with negative index
 
     1 2
     3 4
@@ -1260,10 +1264,9 @@ The third parameter can also be a fitting Math::Matrix.
 
 Same as splice-rows, just horizontally.
 
-
-    Math::Matrix.new([[1,2],[3,4]]).splice-columns(2,0, Math::Matrix.new([[5,6],[7,8]]) ); # aka append
-    Math::Matrix.new([[1,2],[3,4]]).splice-columns(2,0,                  [[5,6],[7,8]]  ); # same result
-    Math::Matrix.new([[1,2],[3,4]]).splice-columns(-1,0,                 [[5,6],[7,8]]  ); # with negative index
+    $matrix.splice-columns(2,0, Math::Matrix.new([[5,6],[7,8]]) ); # aka append
+    $matrix.splice-columns(2,0,                  [[5,6],[7,8]]  ); # same result
+    $matrix.splice-columns(-1,0,                 [[5,6],[7,8]]  ); # same result with negative index
 
     1 2  ~  5 6  =  1 2 5 6
     3 4     7 8     3 4 7 8

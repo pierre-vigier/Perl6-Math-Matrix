@@ -778,7 +778,7 @@ Checks two matrices for equality. They have to be of same [size](#size) and ever
 
 ### [add](#mathematical-operations)
 
-Adding a matrix, [vector](#add-vector) or [add-scalar](#scalar). Named arguments *:row* and *:column* are only used to add a vector (one) or scalar (both).
+Adding a matrix, [vector](#add-vector) or [scalar](#scalar-scalar). Named arguments *:row* and *:column* are only used to add a vector (one) or scalar (both).
 
 #### [add matrix](#add)
 
@@ -895,7 +895,7 @@ The *tensor product* (a.k.a *Kronecker product*) between a matrix A of *size|#si
 [List Like Operations](#methods)
 --------------------------------
 
-Methods that usually are provided by Lists and Arrays, but make also sense in context of matrices.
+Methods (or extensions thereof) that usually are provided by Lists and Arrays, but make also sense in context of matrices: [elems](#elems), [elem](#elem), [cont](#cont), [map](#map), [map-with-index](#map-with-index), [reduce](#reduce), [reduce-rows](#reduce-rows), [reduce-columns](#reduce-columns)
 
 ### [elems](#list-like-operations)
 
@@ -972,7 +972,7 @@ Similar to reduce-rows, this method reduces each column to one value in the resu
 [Structural Operations](#methods)
 ---------------------------------
 
-Methods that reorder rows and columns, delete some or even add new. The accessor [submatrix](#submatrix) is also useful for that purpose.
+Methods that reorder rows and columns, delete some or even add new. The accessor [submatrix](#submatrix) is also useful for that purpose. [move-row](#move-row), [move-column](#move-column), [swap-rows](#swap-rows), [swap-rows](#swap-columns), [splice-rows](#splice-rows), [splice-columns](#splice-columns)
 
 ### [move-row](#structural-matrix-operations)
 
@@ -1012,32 +1012,32 @@ Methods that reorder rows and columns, delete some or even add new. The accessor
 
 Like the splice for lists: the first two parameter are position and amount (optional) of rows to be deleted. The third and alos optional parameter will be an array of arrays (line .new would accept), that fitting row lengths. These rows will be inserted before the row with the number of first parameter. The third parameter can also be a fitting Math::Matrix.
 
-    Math::Matrix.new([[1,2],[3,4]]).splice-rows(0,0, Math::Matrix.new([[5,6],[7,8]]) ); # aka prepend
-    Math::Matrix.new([[1,2],[3,4]]).splice-rows(0,0,                  [[5,6],[7,8]]  ); # same result
+    $matrix.splice-rows(0,0, Math::Matrix.new([[5,6],[7,8]]) ); # aka prepend
+    $matrix.splice-rows(0,0,                  [[5,6],[7,8]]  ); # same result
 
     5 6
     7 8
     1 2
     3 4
 
-    Math::Matrix.new([[1,2],[3,4]]).splice-rows(1,0, Math::Matrix.new([[5,6],[7,8]]) ); # aka insert
-    Math::Matrix.new([[1,2],[3,4]]).splice-rows(1,0,                  [[5,6],[7,8]]  ); # same result
+    $matrix.splice-rows(1,0, Math::Matrix.new([[5,6],[7,8]]) ); # aka insert
+    $matrix.splice-rows(1,0,                  [[5,6],[7,8]]  ); # same result
 
     1 2
     5 6
     7 8
     3 4
 
-    Math::Matrix.new([[1,2],[3,4]]).splice-rows(1,1, Math::Matrix.new([[5,6],[7,8]]) ); # aka replace
-    Math::Matrix.new([[1,2],[3,4]]).splice-rows(1,1,                  [[5,6],[7,8]]  ); # same result
+    $matrix.splice-rows(1,1, Math::Matrix.new([[5,6],[7,8]]) ); # aka replace
+    $matrix.splice-rows(1,1,                  [[5,6],[7,8]]  ); # same result
 
     1 2
     5 6
     7 8
 
-    Math::Matrix.new([[1,2],[3,4]]).splice-rows(2,0, Math::Matrix.new([[5,6],[7,8]]) ); # aka append
-    Math::Matrix.new([[1,2],[3,4]]).splice-rows(2,0,                  [[5,6],[7,8]]  ); # same result
-    Math::Matrix.new([[1,2],[3,4]]).splice-rows(-1,0,                 [[5,6],[7,8]]  ); # with negative index
+    $matrix.splice-rows(2,0, Math::Matrix.new([[5,6],[7,8]]) ); # aka append
+    $matrix.splice-rows(2,0,                  [[5,6],[7,8]]  ); # same result
+    $matrix.splice-rows(-1,0,                 [[5,6],[7,8]]  ); # with negative index
 
     1 2
     3 4
@@ -1048,9 +1048,9 @@ Like the splice for lists: the first two parameter are position and amount (opti
 
 Same as splice-rows, just horizontally.
 
-    Math::Matrix.new([[1,2],[3,4]]).splice-columns(2,0, Math::Matrix.new([[5,6],[7,8]]) ); # aka append
-    Math::Matrix.new([[1,2],[3,4]]).splice-columns(2,0,                  [[5,6],[7,8]]  ); # same result
-    Math::Matrix.new([[1,2],[3,4]]).splice-columns(-1,0,                 [[5,6],[7,8]]  ); # with negative index
+    $matrix.splice-columns(2,0, Math::Matrix.new([[5,6],[7,8]]) ); # aka append
+    $matrix.splice-columns(2,0,                  [[5,6],[7,8]]  ); # same result
+    $matrix.splice-columns(-1,0,                 [[5,6],[7,8]]  ); # same result with negative index
 
     1 2  ~  5 6  =  1 2 5 6
     3 4     7 8     3 4 7 8
