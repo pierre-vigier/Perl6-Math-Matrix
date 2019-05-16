@@ -436,8 +436,9 @@ Arguments, like in case of L<triangular|#is-triangular> and
 L<is-diagonally-dominant|#is-diagonally-dominant> are only necessary,
 when a method can tell you about a group of closely related properties.
 
-L<zero|#is-zero>, L<identity|#is-identity>, L<square|#is-square>, 
-B<L<triangular|#is-triangular>>: (L<upper|#upper-triangular>),
+L<zero|#is-zero>, L<identity|#is-identity>, L<square|#is-square>,
+B<L<triangular|#is-triangular>>: (L<upper|#upper-triangular>, L<lower|#lower-triangular>,
+     L<unit|#unit-triangular>, L<strict|#strict-triangular>, L<atomic|#atomic-triangular>),
 L<diagonal|#is-diagonal>, L<tridiagonal|#is-tridiagonal>,
 L<diagonal-constant|#is-diagonal-constant>, L<catalecticant|#is-catalecticant>,
 L<symmetric|#is-symmetric>, L<anti-symmetric|#is-antisymmetric>, L<self-adjoint|#is-self-adjoint>,
