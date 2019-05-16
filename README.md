@@ -388,7 +388,7 @@ True if number of rows and colums are the same (see [size](#size)).
 
 ### [is-triangular](#boolean-properties)
 
-True if all [element](#element)s above or below the main [diagonal](#diagonal) are zero. This method accepts five optional, boolean arguments: [:upper](#upper-triangular), [:lower](#lower-triangula), [:strict](#strict-triangular), [:unit](#unit-triangular) and [:atomic](#atomic-triangular). Each argument can be used in a positive form (*:upper*), as a negative (*:!upper*), or omitted. Positively they demand a certain property, negatively the absence or opposite. When omitted, both states are acceptable.
+[square](#is-square) matrix where all [element](#element)s above the main [diagonal](#diagonal) or all elements below the main diagonal are zero. The method accepts five optional, boolean arguments: [:upper](#upper-triangular), [:lower](#lower-triangula), [:strict](#strict-triangular), [:unit](#unit-triangular) and [:atomic](#atomic-triangular). Each argument can be used in a positive form (*:upper*), as a negative (*:!upper*), or omitted. Positively they demand a certain property, negatively the absence or opposite. When omitted, both states are acceptable.
 
 Please note that a triangular matrix can never be *:unit* and *:strict* or *:atomic* and *:strict* at the same time, nor *:!upper* and *:!lower*. A triangular matrix that is *:upper* and *:lower* [is-diagonal](#is-diagonal). [Identity](#is-identity) matrices are *:upper*, *:lower* and *:unit*.
 

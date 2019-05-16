@@ -473,8 +473,8 @@ True if number of rows and colums are the same (see L<size|#size>).
 
 =head3 L<is-triangular|#boolean-properties>
 
-True if all L<element|#element>s above or below the main L<diagonal|#diagonal> are zero.
-This method accepts five optional, boolean arguments:
+L<square|#is-square> matrix where all L<element|#element>s above the main L<diagonal|#diagonal>
+or all elements below the main diagonal are zero. The method accepts five optional, boolean arguments:
 L<:upper|#upper-triangular>, L<:lower|#lower-triangula>, L<:strict|#strict-triangular>, L<:unit|#unit-triangular> and L<:atomic|#atomic-triangular>.
 Each argument can be used in a positive form (I<:upper>), as a negative (I<:!upper>),
 or omitted. Positively they demand a certain property, negatively the absence
