@@ -669,7 +669,6 @@ method Cholesky-decomposition(Math::Matrix:D: Bool :$diagonal = False) {
 method equal(Math::Matrix:D: Math::Matrix $b --> Bool)           { @!rows ~~ $b!rows }
 multi method ACCEPTS(Math::Matrix:D: Math::Matrix:D $b --> Bool) { self.equal( $b )  }
 
-
 # add matrix
 multi method add(Math::Matrix:D: Str $b --> Math::Matrix:D ) { self.add( Math::Matrix.new( $b ) ) }
 multi method add(Math::Matrix:D:     @b --> Math::Matrix:D ) { self.add( Math::Matrix.new( @b ) ) }
@@ -704,16 +703,30 @@ multi method add(Math::Matrix:D: Numeric $s, Int :$row!, Int :$column --> Math::
              columns => $column.defined ?? ($column..$column) !! ^$!column-count, { $_ + $s } );
 }
 
-
+# multiply matrix
 multi method multiply(Math::Matrix:D: Str $b --> Math::Matrix:D ) { self.multiply( Math::Matrix.new( $b ) ) }
 multi method multiply(Math::Matrix:D:     @b --> Math::Matrix:D ) { self.multiply( Math::Matrix.new( @b ) ) }
 multi method multiply(Math::Matrix:D: Math::Matrix $b where {self.size eqv $b.size} --> Math::Matrix:D ) {
     my @product;
-    for ^$!row-count X ^$!column-count -> ($r, $c) {
-        @product[$r][$c] = @!rows[$r][$c] * $b!rows[$r][$c];
-    }
+    for ^$!row-count X ^$!column-count -> ($r, $c) { @product[$r][$c] = @!rows[$r][$c] * $b!rows[$r][$c] }
     Math::Matrix.new( @product );
 }
+# multiply vector
+multi method multiply(Math::Matrix:D: @v where {@v.all ~~ Numeric}, Int :$row! --> Math::Matrix:D) {
+    fail "Matrix has $!column-count columns, but got "~ +@v ~ "element row." unless $!column-count == +@v;
+    self!check-row-index($row);
+    my @m = self!clone-cells;
+    @m[$row] = @m[$row] <<*>> @v;
+    Math::Matrix.new( @m );
+}
+multi method multiply(Math::Matrix:D: @v where {@v.all ~~ Numeric}, Int :$column! --> Math::Matrix:D ) {
+    self!check-column-index($column);
+    fail "Matrix has $!row-count rows, but got "~ +@v ~ "element column." unless $!row-count == +@v;
+    my @m = self!clone-cells;
+    @v.keys.map:{ @m[$_][$column] *= @v[$_] };
+    Math::Matrix.new( @m );
+}
+# multiply scalar
 multi method multiply(Math::Matrix:D: Numeric $f --> Math::Matrix:D )                          { self.map( *  * $f  ) }
 multi method multiply(Math::Matrix:D: Numeric $f, Int :$row, Int :$column --> Math::Matrix:D ) {
     self!check-row-index($row)       if $row.defined;

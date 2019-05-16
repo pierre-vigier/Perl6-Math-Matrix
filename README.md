@@ -766,7 +766,7 @@ This decomposition does roughly the same and is faster than the previous, but wo
 
 Matrix math methods on full matrices and also parts (for gaussian table operations).
 
-They are: [equal](#equal), [add](#add), [multiply](#multiply), [dot-product](#dot-product), [tensor-product](#tensor-product).
+They are: [equal](#equal), **[add](#add)**: ([matrix](#add-matrix), [vector](#add-vector), [scalar](#add-scalar)), **[multiply](#multiply)**: ([matrix](#multiply-matrix), [vector](#multiply-vector), [scalar](#multiply-scalar)), [dot-product](#dot-product), [tensor-product](#tensor-product).
 
 ### [equal](#mathematical-operations)
 
@@ -778,11 +778,11 @@ Checks two matrices for equality. They have to be of same [size](#size) and ever
 
 ### [add](#mathematical-operations)
 
-Adding a matrix, vector or scalar. Named arguments *:row* and *:column* have no fixed position.
+Adding a matrix, [vector](#add-vector) or [add-scalar](#scalar). Named arguments *:row* and *:column* are only used to add a vector (one) or scalar (both).
 
 #### [add matrix](#add)
 
-When adding two matrices, they have to be of the same size. Instead of Math::matrix object you can also provide the element data as [new []](#new--), [new ()](#new---1) or [new ""](#new---2) would accept it.
+When adding two matrices, they have to be of the same [size](#size). Instead of a Math::matrix object you can also provide the content of a matrix as [new []](#new--), [new ()](#new---1) or [new ""](#new---2) would accept it.
 
     $matrix.add( $matrix2 );
     $matrix.add( [[2,3],[4,5]] ); # data alias
@@ -809,27 +809,22 @@ To add a vector you have to specify to which row or column it should be added an
 
 When adding a single number to the matrix, it will be added to every [element](#element). If you provide a row or column number it will be only added to that row or column. In case you provide both, only a single element gets a different value in the result matrix.
 
-    $matrix.add( $number );       # adds number from every element
+    $matrix.add( $number );       # adds number to every element
     $matrix + $number;            # works too
 
     Example:    1 2  +  5    =  6 7
                 3 4             8 9
-
-                1 2  +  2 3  =  3 5
-                3 4     4 5     7 9
 
     $matrix.add( row => 1, 3 ):             [[1,2],[6,7]]
     $matrix.add( row => 1, column=> 0, 2 ): [[1,2],[5,4]]
 
 ### [multiply](#mathematical-operations)
 
-Unlike the [dot-product](#dot-product) and [tensor-product](#tensor-product), this operation is the simple, scalar multiplication applied to [element](#element)s. That is why this method works analogous to the scalar variant of [add](#add-scalar). However, when a matrix of same size is given, the result will be a matrix of that size again. Each element will be the product of two the two elements of the operands with the same indices (position).
+Unlike the [dot-product](#dot-product) and [tensor-product](#tensor-product), this operation is the simple, scalar multiplication applied to each [element](#element). The second factor might come from the cells of another [matrix](#multiply-matrix), a [vector](#multiply-vector) or a [single value](#multiply-scalar). That is why this method works analogous to [add](#add).
 
-    my $product = $matrix.multiply( $number );   # multiply every element with number
-    my $p = $matrix * $number;                   # works too
+#### [multiply matrix](#multiply)
 
-    Example:    1 2  *  5    =   5 10
-                3 4             15 20
+When a matrix of same size is given, the result will be a matrix of that size again. Each element will be the product of two the two elements of the operands with the same indices (position).
 
     my $product = $matrix.multiply( $matrix2 );  # element wise multiplication of same size matrices
     my $p = $matrix * $matrix2;                  # works too
@@ -837,6 +832,17 @@ Unlike the [dot-product](#dot-product) and [tensor-product](#tensor-product), th
     Example:    1 2  *  2 3  =   2  6
                 3 4     4 5     12 20
 
+#### [multiply vector](#multiply)
+
+#### [multiply scalar](#multiply)
+
+Especially when doing Gaussian elimination you have to multiply just one row.
+
+    my $product = $matrix.multiply( $number );   # multiply every element with number
+    my $p = $matrix * $number;                   # does the same
+
+    Example:    1 2  *  5    =   5 10
+                3 4             15 20
 
     $matrix.multiply( row => 0, 2);
 

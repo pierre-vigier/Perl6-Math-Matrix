@@ -929,7 +929,8 @@ You get the second L matrix easily by transposing the L you got.
 
 Matrix math methods on full matrices and also parts (for gaussian table operations).
 
-They are: L<equal|#equal>, L<add|#add>, L<multiply|#multiply>, L<dot-product|#dot-product>, L<tensor-product|#tensor-product>.
+They are: L<equal|#equal>, B<L<add|#add>>: (L<matrix|#add-matrix>, L<vector|#add-vector>, L<scalar|#add-scalar>),
+B<L<multiply|#multiply>>: (L<matrix|#multiply-matrix>, L<vector|#multiply-vector>, L<scalar|#multiply-scalar>), L<dot-product|#dot-product>, L<tensor-product|#tensor-product>.
 
 
 =head3 L<equal|#mathematical-operations>
@@ -945,13 +946,14 @@ of the first matrix on a particular position has to be numerically equal (as che
 
 =head3 L<add|#mathematical-operations>
 
-Adding a matrix, vector or scalar. Named arguments I<:row> and I<:column> have no fixed position.
+Adding a matrix, L<vector|#add-vector> or L<add-scalar|#scalar>.
+Named arguments I<:row> and I<:column> are only used to add a vector (one) or scalar (both).
 
 
 =head4 L<add matrix|#add>
 
-When adding two matrices, they have to be of the same size. Instead of
-Math::matrix object you can also provide the element data as
+When adding two matrices, they have to be of the same L<size|#size>.
+Instead of a Math::matrix object you can also provide the content of a matrix as
 L<new []|#new-->, L<new ()|#new---1> or L<new ""|#new---2> would accept it.
 
     $matrix.add( $matrix2 );
@@ -982,14 +984,11 @@ When adding a single number to the matrix, it will be added to every L<element|#
 If you provide a row or column number it will be only added to that row or column.
 In case you provide both, only a single element gets a different value in the result matrix.
 
-    $matrix.add( $number );       # adds number from every element
+    $matrix.add( $number );       # adds number to every element
     $matrix + $number;            # works too
 
     Example:    1 2  +  5    =  6 7
                 3 4             8 9
-
-                1 2  +  2 3  =  3 5
-                3 4     4 5     7 9
 
     $matrix.add( row => 1, 3 ):             [[1,2],[6,7]]
     $matrix.add( row => 1, column=> 0, 2 ): [[1,2],[5,4]]
@@ -997,17 +996,17 @@ In case you provide both, only a single element gets a different value in the re
 =head3 L<multiply|#mathematical-operations>
 
 Unlike the L<dot-product|#dot-product> and L<tensor-product|#tensor-product>,
-this operation is the simple, scalar multiplication applied to L<element|#element>s.
-That is why this method works analogous to the scalar variant of L<add|#add-scalar>.
-However, when a matrix of same size is given, the result will be a matrix
+this operation is the simple, scalar multiplication applied to each L<element|#element>.
+The second factor might come from the cells of another L<matrix|#multiply-matrix>,
+a L<vector|#multiply-vector> or a L<single value|#multiply-scalar>.
+That is why this method works analogous to L<add|#add>.
+
+
+=head4 L<multiply matrix|#multiply>
+
+When a matrix of same size is given, the result will be a matrix
 of that size again. Each element will be the product of two the two elements of the
 operands with the same indices (position).
-
-    my $product = $matrix.multiply( $number );   # multiply every element with number
-    my $p = $matrix * $number;                   # works too
-
-    Example:    1 2  *  5    =   5 10
-                3 4             15 20
 
     my $product = $matrix.multiply( $matrix2 );  # element wise multiplication of same size matrices
     my $p = $matrix * $matrix2;                  # works too
@@ -1015,6 +1014,19 @@ operands with the same indices (position).
     Example:    1 2  *  2 3  =   2  6
                 3 4     4 5     12 20
 
+
+=head4 L<multiply vector|#multiply>
+
+
+=head4 L<multiply scalar|#multiply>
+
+Especially when doing Gaussian elimination you have to multiply just one row.
+
+    my $product = $matrix.multiply( $number );   # multiply every element with number
+    my $p = $matrix * $number;                   # does the same
+
+    Example:    1 2  *  5    =   5 10
+                3 4             15 20
 
     $matrix.multiply( row => 0, 2);
 
