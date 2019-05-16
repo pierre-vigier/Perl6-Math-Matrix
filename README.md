@@ -365,7 +365,7 @@ Conversion into String that can reevaluated into the same object later using def
 
 These are mathematical properties, a given matrix has or not. Thus, the return value is a always of boolean type (Bool). Arguments, like in case of [triangular](#is-triangular) and [is-diagonally-dominant](#is-diagonally-dominant) are only necessary, when a method can tell you about a group of closely related properties.
 
-[zero](#is-zero), [identity](#is-identity), [square](#is-square), **[triangular](#is-triangular)**, [diagonal](#is-diagonal), [tridiagonal](#is-tridiagonal), [diagonal-constant](#is-diagonal-constant), [catalecticant](#is-catalecticant), [symmetric](#is-symmetric), [anti-symmetric](#is-antisymmetric), [self-adjoint](#is-self-adjoint), [invertible](#is-invertible), [orthogonal](#is-orthogonal), [unitary](#is-unitary), **[diagonally-dominant](#is-diagonally-dominant)**, [positive-definite](#is-positive-definite), [positive-semidefinite](#is-positive-semidefinite)
+[zero](#is-zero), [identity](#is-identity), [square](#is-square), **[triangular](#is-triangular)**: ([upper](#upper-triangular)), [diagonal](#is-diagonal), [tridiagonal](#is-tridiagonal), [diagonal-constant](#is-diagonal-constant), [catalecticant](#is-catalecticant), [symmetric](#is-symmetric), [anti-symmetric](#is-antisymmetric), [self-adjoint](#is-self-adjoint), [invertible](#is-invertible), [orthogonal](#is-orthogonal), [unitary](#is-unitary), **[diagonally-dominant](#is-diagonally-dominant)**, [positive-definite](#is-positive-definite), [positive-semidefinite](#is-positive-semidefinite)
 
 ### [is-zero](#boolean-properties)
 
@@ -392,7 +392,9 @@ True if number of rows and colums are the same (see [size](#size)).
 
 Please note that a triangular matrix can never be *:unit* and *:strict* or *:atomic* and *:strict* at the same time, nor *:!upper* and *:!lower*. A triangular matrix that is *:upper* and *:lower* [is-diagonal](#is-diagonal). [Identity](#is-identity) matrices are *:upper*, *:lower* and *:unit*.
 
-#### [upper triangular](#is-triangular) a.k.a *right triangular matrix*: all [element](#element)s left-below the main *diagonal* are zero. In other words: the [lower-bandwith](#lower-bandwith) has to be zero.
+#### [upper triangular](#is-triangular)
+
+a.k.a *right triangular matrix*: all [element](#element)s left-below the main *diagonal* are zero. In other words: the [lower-bandwith](#lower-bandwith) has to be zero.
 
     $tri-matrix.is-triangular(:upper);       # matrix in the example below would pass this test
     $tri-matrix.is-triangular();             # True, there is a lower or upper triangle
@@ -547,7 +549,7 @@ True if all main [minors](#minor) or all Eigenvalues are greater equal zero.
 
 Matrix properties that are expressed with a single number, which will be calculated without further input.
 
-[size](#size), [density](#density), **[bandwith](#bandwith)**: ([lower-bandwith](#lower-bandwith), [upper-bandwith](#upper-bandwith)), [trace](#trace), [rank](#rank), [nullity](#nullity), [determinant](#determinant), [minor](#minor), [norm](#norm), [condition](#condition), **[element-type](#element-type)**: ([narrowest-element-type](#narrowest-element-type), [widest-element-type](#widest-element-type))
+[size](#size), [density](#density), **[bandwith](#bandwith)**: ([lower-](#lower-bandwith), [upper-](#upper-bandwith)), [trace](#trace), [rank](#rank), [nullity](#nullity), [determinant](#determinant), [minor](#minor), [norm](#norm), [condition](#condition), **[element-type](#element-type)**: ([narrowest-](#narrowest-element-type), [widest-](#widest-element-type))
 
 ### [size](#numeric-properties)
 

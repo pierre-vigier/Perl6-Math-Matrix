@@ -436,8 +436,8 @@ Arguments, like in case of L<triangular|#is-triangular> and
 L<is-diagonally-dominant|#is-diagonally-dominant> are only necessary,
 when a method can tell you about a group of closely related properties.
 
-L<zero|#is-zero>, L<identity|#is-identity>,
-L<square|#is-square>, B<L<triangular|#is-triangular>>,
+L<zero|#is-zero>, L<identity|#is-identity>, L<square|#is-square>, 
+B<L<triangular|#is-triangular>>: (L<upper|#upper-triangular>),
 L<diagonal|#is-diagonal>, L<tridiagonal|#is-tridiagonal>,
 L<diagonal-constant|#is-diagonal-constant>, L<catalecticant|#is-catalecticant>,
 L<symmetric|#is-symmetric>, L<anti-symmetric|#is-antisymmetric>, L<self-adjoint|#is-self-adjoint>,
@@ -487,6 +487,7 @@ A triangular matrix that is I<:upper> and I<:lower> L<is-diagonal|#is-diagonal>.
 L<Identity|#is-identity> matrices are I<:upper>, I<:lower> and I<:unit>.
 
 =head4 L<upper triangular|#is-triangular>
+
 a.k.a I<right triangular matrix>: all L<element|#element>s left-below the main I<diagonal> are zero.
 In other words: the L<lower-bandwith|#lower-bandwith> has to be zero.
 
@@ -662,9 +663,9 @@ True if all main L<minors|#minor> or all Eigenvalues are greater equal zero.
 
 Matrix properties that are expressed with a single number, which will be calculated without further input.
 
-L<size|#size>, L<density|#density>, B<L<bandwith|#bandwith>>: (L<lower-bandwith|#lower-bandwith>, L<upper-bandwith|#upper-bandwith>), L<trace|#trace>, L<rank|#rank>, L<nullity|#nullity>,
+L<size|#size>, L<density|#density>, B<L<bandwith|#bandwith>>: (L<lower-|#lower-bandwith>, L<upper-|#upper-bandwith>), L<trace|#trace>, L<rank|#rank>, L<nullity|#nullity>,
 L<determinant|#determinant>, L<minor|#minor>, L<norm|#norm>, L<condition|#condition>, B<L<element-type|#element-type>>:
-(L<narrowest-element-type|#narrowest-element-type>, L<widest-element-type|#widest-element-type>)
+(L<narrowest-|#narrowest-element-type>, L<widest-|#widest-element-type>)
 
 =head3 L<size|#numeric-properties>
 
