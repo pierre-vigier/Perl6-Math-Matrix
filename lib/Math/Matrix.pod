@@ -514,8 +514,8 @@ In other words: the L<upper-bandwith|#upper-bandwith> has to be zero.
 
 =head4 L<unit triangular|#is-triangular>
 
-a.k.a unitriangular matrices have a L<diagonal|#diagonal> consisting only of values equal one.
-An L<identity|#is-identity> matrix is I<:unit>, I<:upper> and I<:lower>. 
+a.k.a I<unitriangular> matrices have a L<diagonal|#diagonal> consisting only of values equal one.
+An L<identity|#is-identity> matrix is I<:unit>, I<:upper> and I<:lower>.
 
     $tri-matrix.is-triangular(:unit);         # matrix in the example below would pass this test
     $tri-matrix.is-triangular(:unit, :lower); # False, because unit upper triangular
@@ -526,7 +526,7 @@ An L<identity|#is-identity> matrix is I<:unit>, I<:upper> and I<:lower>.
 
 =head4 L<strict triangular|#is-triangular>
 
-are triangular matrices that have a L<diagonal|#diagonal> consisting only of values equal zero.
+are I<triangular> matrices, that have a L<diagonal|#diagonal> consisting only of values equal zero.
 
     $tri-matrix.is-triangular(:strict);       # matrix in the example below would pass this test
     $tri-matrix.is-triangular(:!unit, :lower);# True too
@@ -537,7 +537,7 @@ are triangular matrices that have a L<diagonal|#diagonal> consisting only of val
 
 =head4 L<atomic triangular|#boolean-properties>
 
-a.k.a frobenius matrix is a unit triangular matrix with one column of 'none zero values.
+a.k.a I<Frobenius> matrix is a unit triangular matrix with one column of 'none zero values.
 
     $tri-matrix.is-triangular(:atomic);        # matrix in the example below would pass this test
 
@@ -548,22 +548,23 @@ a.k.a frobenius matrix is a unit triangular matrix with one column of 'none zero
 
 =head3 L<is-diagonal|#boolean-properties>
 
-L<square|#is-square> matrix where only elements on the main L<diagonal|#diagonal> differ from 0
+L<square|#is-square> matrix, where only elements on the main L<diagonal|#diagonal> differ from 0
 (as created by L<new-diagonal|#new-diagonal>).
 
     $tri-matrix.is-diagonal();
     $tri-matrix.is-triangular(:upper, :lower); # alias
+    $tri-matrix.lower-bandwith() == $tri-matrix.upper-bandwith() == 0; # True
 
     Example:    1 0 0
                 0 3 0
                 0 0 7
 
 =head3 L<is-tridiagonal|#boolean-properties>
-L<square|#is-square> matrix where only elements on the main L<diagonal|#diagonal>
+L<square|#is-square> matrix, where only elements on the main L<diagonal|#diagonal>
 and their direct parallels differ from 0.
 
     $tri-matrix.is-tridiagonal();
-    $tri-matrix.lower-bandwith() <= 1 and $tri-matrix.upper-bandwith() <= 1; # True
+    $tri-matrix.lower-bandwith() < 2 and $tri-matrix.upper-bandwith() < 2; # True
 
     Example:    1 2 0 0
                 3 4 5 0
@@ -573,8 +574,8 @@ and their direct parallels differ from 0.
 
 =head3 L<is-diagonal-constant|#boolean-properties>
 
-Checks if caller is a I<diagonal-constant> or I<Töplitz matrix>.
-True if every L<diagonal|#diagonal> is the a collection of L<element|#element>s that hold the same value.
+a.k.a. or I<Töplitz> matrix is a matrix where every L<diagonal|#diagonal>
+is the a collection of L<element|#element>s that hold the same value.
 
     Example:     0  1  2
                 -1  0  1
@@ -582,9 +583,9 @@ True if every L<diagonal|#diagonal> is the a collection of L<element|#element>s 
 
 =head3 L<is-catalecticant|#boolean-properties>
 
-Checks if caller is a I<catalecticant> or I<Hankel matrix>.
-True if every L<skew diagonal|#skew-diagonal> is the a collection of elements that hold the same value.
-Catalecticant matrices are L<symmetric|#is-symmetric>.
+a.k.a I<Hankel> matrix is a L<square|#is-square> matrix, where every L<skew-diagonal|#skew-diagonal>
+is the a collection of L<element|#element>s that hold the same value.
+I<Catalecticant> matrices are L<symmetric|#is-symmetric>.
 
     Example:     0  1  2
                  1  2  3

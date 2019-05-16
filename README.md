@@ -418,7 +418,7 @@ a.k.a *left triangular* matrix: every [element](#element) right and above the [d
 
 #### [unit triangular](#is-triangular)
 
-a.k.a unitriangular matrices have a [diagonal](#diagonal) consisting only of values equal one. An [identity](#is-identity) matrix is *:unit*, *:upper* and *:lower*. 
+a.k.a *unitriangular* matrices have a [diagonal](#diagonal) consisting only of values equal one. An [identity](#is-identity) matrix is *:unit*, *:upper* and *:lower*.
 
     $tri-matrix.is-triangular(:unit);         # matrix in the example below would pass this test
     $tri-matrix.is-triangular(:unit, :lower); # False, because unit upper triangular
@@ -429,7 +429,7 @@ a.k.a unitriangular matrices have a [diagonal](#diagonal) consisting only of val
 
 #### [strict triangular](#is-triangular)
 
-are triangular matrices that have a [diagonal](#diagonal) consisting only of values equal zero.
+are *triangular* matrices, that have a [diagonal](#diagonal) consisting only of values equal zero.
 
     $tri-matrix.is-triangular(:strict);       # matrix in the example below would pass this test
     $tri-matrix.is-triangular(:!unit, :lower);# True too
@@ -440,7 +440,7 @@ are triangular matrices that have a [diagonal](#diagonal) consisting only of val
 
 #### [atomic triangular](#boolean-properties)
 
-a.k.a frobenius matrix is a unit triangular matrix with one column of 'none zero values.
+a.k.a *Frobenius* matrix is a unit triangular matrix with one column of 'none zero values.
 
     $tri-matrix.is-triangular(:atomic);        # matrix in the example below would pass this test
 
@@ -451,19 +451,20 @@ a.k.a frobenius matrix is a unit triangular matrix with one column of 'none zero
 
 ### [is-diagonal](#boolean-properties)
 
-[square](#is-square) matrix where only elements on the main [diagonal](#diagonal) differ from 0 (as created by [new-diagonal](#new-diagonal)).
+[square](#is-square) matrix, where only elements on the main [diagonal](#diagonal) differ from 0 (as created by [new-diagonal](#new-diagonal)).
 
     $tri-matrix.is-diagonal();
     $tri-matrix.is-triangular(:upper, :lower); # alias
+    $tri-matrix.lower-bandwith() == $tri-matrix.upper-bandwith() == 0; # True
 
     Example:    1 0 0
                 0 3 0
                 0 0 7
 
-### [is-tridiagonal](#boolean-properties) [square](#is-square) matrix where only elements on the main [diagonal](#diagonal) and their direct parallels differ from 0.
+### [is-tridiagonal](#boolean-properties) [square](#is-square) matrix, where only elements on the main [diagonal](#diagonal) and their direct parallels differ from 0.
 
     $tri-matrix.is-tridiagonal();
-    $tri-matrix.lower-bandwith() <= 1 and $tri-matrix.upper-bandwith() <= 1; # True
+    $tri-matrix.lower-bandwith() < 2 and $tri-matrix.upper-bandwith() < 2; # True
 
     Example:    1 2 0 0
                 3 4 5 0
@@ -472,7 +473,7 @@ a.k.a frobenius matrix is a unit triangular matrix with one column of 'none zero
 
 ### [is-diagonal-constant](#boolean-properties)
 
-Checks if caller is a *diagonal-constant* or *Töplitz matrix*. True if every [diagonal](#diagonal) is the a collection of [element](#element)s that hold the same value.
+a.k.a. or *Töplitz* matrix is a matrix where every [diagonal](#diagonal) is the a collection of [element](#element)s that hold the same value.
 
     Example:     0  1  2
                 -1  0  1
@@ -480,7 +481,7 @@ Checks if caller is a *diagonal-constant* or *Töplitz matrix*. True if every [d
 
 ### [is-catalecticant](#boolean-properties)
 
-Checks if caller is a *catalecticant* or *Hankel matrix*. True if every [skew diagonal](#skew-diagonal) is the a collection of elements that hold the same value. Catalecticant matrices are [symmetric](#is-symmetric).
+a.k.a *Hankel* matrix is a [square](#is-square) matrix, where every [skew-diagonal](#skew-diagonal) is the a collection of [element](#element)s that hold the same value. *Catalecticant* matrices are [symmetric](#is-symmetric).
 
     Example:     0  1  2
                  1  2  3

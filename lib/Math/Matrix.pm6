@@ -254,7 +254,7 @@ multi method perl(Math::Matrix:D: --> Str){ self.WHAT.perl ~ ".new(" ~ @!rows.pe
 method !build_is-square( Math::Matrix:D: --> Bool)   {$!column-count == $!row-count}
 method !build_is-zero(    Math::Matrix:D: --> Bool)  {self.density() == 0}
 method !build_is-identity( Math::Matrix:D: --> Bool) {$.is-diagonal and $.is-main-diagonal-constant and @!rows[0][0] == 1}
-method !build_is-diagonal( Math::Matrix:D: --> Bool) {self.is-square and $.lower-bandwith == 0 and $.upper-bandwith == 0}
+method !build_is-diagonal( Math::Matrix:D: --> Bool) {self.is-square and $.lower-bandwith == $.upper-bandwith == 0}
 method !build_is-main-diagonal-constant(Math::Matrix:D: --> Bool){ [==](($.diagonal.flat).flat) }
 
 method !build_is-diagonal-constant( Math::Matrix:D: --> Bool) {
