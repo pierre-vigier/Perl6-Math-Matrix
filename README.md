@@ -418,7 +418,7 @@ a.k.a *left triangular* matrix: every [element](#element) right and above the [d
 
 #### [unit triangular](#is-triangular)
 
-a.k.a unitriangular matrices have a [diagonal](#diagonal) consisting only of values equal one.
+a.k.a unitriangular matrices have a [diagonal](#diagonal) consisting only of values equal one. An [identity](#is-identity) matrix is *:unit*, *:upper* and *:lower*. 
 
     $tri-matrix.is-triangular(:unit);         # matrix in the example below would pass this test
     $tri-matrix.is-triangular(:unit, :lower); # False, because unit upper triangular

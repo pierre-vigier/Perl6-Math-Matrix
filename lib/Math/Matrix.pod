@@ -515,6 +515,7 @@ In other words: the L<upper-bandwith|#upper-bandwith> has to be zero.
 =head4 L<unit triangular|#is-triangular>
 
 a.k.a unitriangular matrices have a L<diagonal|#diagonal> consisting only of values equal one.
+An L<identity|#is-identity> matrix is I<:unit>, I<:upper> and I<:lower>. 
 
     $tri-matrix.is-triangular(:unit);         # matrix in the example below would pass this test
     $tri-matrix.is-triangular(:unit, :lower); # False, because unit upper triangular
