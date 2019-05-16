@@ -363,7 +363,7 @@ Conversion into String that can reevaluated into the same object later using def
 [Boolean Properties](#methods)
 ------------------------------
 
-These are mathematical properties, a given matrix has or not. Thus, the return value is a always of boolean type. Arguments, like in case of [is-diagonally-dominant](is-diagonally-dominant), are only necessary when a method can tell you about a group of closely related properties.
+These are mathematical properties, a given matrix has or not. Thus, the return value is a always of boolean type (Bool). Arguments, like in case of [triangular](#is-triangular) and [is-diagonally-dominant](#is-diagonally-dominant) are only necessary, when a method can tell you about a group of closely related properties.
 
 [zero](#is-zero), [identity](#is-identity), [square](#is-square), **[triangular](#is-triangular)**, [diagonal](#is-diagonal), [tridiagonal](#is-tridiagonal), [diagonal-constant](#is-diagonal-constant), [catalecticant](#is-catalecticant), [symmetric](#is-symmetric), [anti-symmetric](#is-antisymmetric), [self-adjoint](#is-self-adjoint), [invertible](#is-invertible), [orthogonal](#is-orthogonal), [unitary](#is-unitary), **[diagonally-dominant](#is-diagonally-dominant)**, [positive-definite](#is-positive-definite), [positive-semidefinite](#is-positive-semidefinite)
 
@@ -382,19 +382,13 @@ True if every [element](#element) on the main [diagonal](#diagonal) (where row i
                 0 1 0
                 0 0 1
 
-### [is-square](#boolean-properties)
+### [is-square](#boolean-properties) True if number of rows and colums are the same (see [size](#size)).
 
-True if number of rows and colums are the same (see [size](#size)).
-
-### [is-triangular](#boolean-properties)
-
-[square](#is-square) matrix where all [element](#element)s above the main [diagonal](#diagonal) or all elements below the main diagonal are zero. The method accepts five optional, boolean arguments: [:upper](#upper-triangular), [:lower](#lower-triangula), [:strict](#strict-triangular), [:unit](#unit-triangular) and [:atomic](#atomic-triangular). Each argument can be used in a positive form (*:upper*), as a negative (*:!upper*), or omitted. Positively they demand a certain property, negatively the absence or opposite. When omitted, both states are acceptable.
+### [is-triangular](#boolean-properties) [square](#is-square) matrix where all [element](#element)s above the main [diagonal](#diagonal) or all elements below the main diagonal are zero. The method accepts five optional, boolean arguments: [:upper](#upper-triangular), [:lower](#lower-triangula), [:strict](#strict-triangular), [:unit](#unit-triangular) and [:atomic](#atomic-triangular). Each argument can be used in a positive form (*:upper*), as a negative (*:!upper*), or omitted. Positively they demand a certain property, negatively the absence or opposite. When omitted, both states are acceptable.
 
 Please note that a triangular matrix can never be *:unit* and *:strict* or *:atomic* and *:strict* at the same time, nor *:!upper* and *:!lower*. A triangular matrix that is *:upper* and *:lower* [is-diagonal](#is-diagonal). [Identity](#is-identity) matrices are *:upper*, *:lower* and *:unit*.
 
-#### [upper triangular](#is-triangular)
-
-a.k.a *right triangular matrix*: all [element](#element)s left-below the main *diagonal* are zero. In other words: the [lower-bandwith](#lower-bandwith) has to be zero.
+#### [upper triangular](#is-triangular) a.k.a *right triangular matrix*: all [element](#element)s left-below the main *diagonal* are zero. In other words: the [lower-bandwith](#lower-bandwith) has to be zero.
 
     $tri-matrix.is-triangular(:upper);       # matrix in the example below would pass this test
     $tri-matrix.is-triangular();             # True, there is a lower or upper triangle
@@ -403,9 +397,7 @@ a.k.a *right triangular matrix*: all [element](#element)s left-below the main *d
                 0 3 8
                 0 0 7
 
-#### [lower triangular](#is-triangular)
-
-a.k.a *left triangular* matrix: every [element](#element) right and above the [diagonal](#diagonal) (where [row](#row) index is greater than [column](#column) index) are zero. In other words: the [upper-bandwith](#upper-bandwith) has to be zero.
+#### [lower triangular](#is-triangular) a.k.a *left triangular* matrix: every [element](#element) right and above the [diagonal](#diagonal) (where [row](#row) index is greater than [column](#column) index) are zero. In other words: the [upper-bandwith](#upper-bandwith) has to be zero.
 
     $tri-matrix.is-triangular(:lower);        # matrix in the example below would pass this test
     $tri-matrix.is-triangular();              # True too
@@ -416,9 +408,7 @@ a.k.a *left triangular* matrix: every [element](#element) right and above the [d
                 2 3 0
                 5 8 7
 
-#### [unit triangular](#is-triangular)
-
-a.k.a *unitriangular* matrices have a [diagonal](#diagonal) consisting only of values equal one. An [identity](#is-identity) matrix is *:unit*, *:upper* and *:lower*.
+#### [unit triangular](#is-triangular) a.k.a *unitriangular* matrices have a [diagonal](#diagonal) consisting only of values equal one. An [identity](#is-identity) matrix is *:unit*, *:upper* and *:lower*.
 
     $tri-matrix.is-triangular(:unit);         # matrix in the example below would pass this test
     $tri-matrix.is-triangular(:unit, :lower); # False, because unit upper triangular
@@ -438,9 +428,7 @@ are *triangular* matrices, that have a [diagonal](#diagonal) consisting only of 
                 5 0 0
                 0 6 0
 
-#### [atomic triangular](#boolean-properties)
-
-a.k.a *Frobenius* matrix is a unit triangular matrix with one column of 'none zero values.
+#### [atomic triangular](#boolean-properties) a.k.a *Frobenius* matrix is a unit triangular matrix with one column of 'none zero values.
 
     $tri-matrix.is-triangular(:atomic);        # matrix in the example below would pass this test
 
@@ -449,9 +437,7 @@ a.k.a *Frobenius* matrix is a unit triangular matrix with one column of 'none ze
                 0 2 1 0
                 0 5 0 1
 
-### [is-diagonal](#boolean-properties)
-
-[square](#is-square) matrix, where only elements on the main [diagonal](#diagonal) differ from 0 (as created by [new-diagonal](#new-diagonal)).
+### [is-diagonal](#boolean-properties) [square](#is-square) matrix, where only elements on the main [diagonal](#diagonal) differ from 0 (as created by [new-diagonal](#new-diagonal)).
 
     $tri-matrix.is-diagonal();
     $tri-matrix.is-triangular(:upper, :lower); # alias
@@ -471,9 +457,7 @@ a.k.a *Frobenius* matrix is a unit triangular matrix with one column of 'none ze
                 0 6 7 8
                 0 0 9 1
 
-### [is-diagonal-constant](#boolean-properties)
-
-a.k.a. or *Töplitz* matrix is a matrix where every [diagonal](#diagonal) is the a collection of [element](#element)s that hold the same value.
+### [is-diagonal-constant](#boolean-properties) a.k.a. or *Töplitz* matrix is a matrix where every [diagonal](#diagonal) is the a collection of [element](#element)s that hold the same value.
 
     Example:     0  1  2
                 -1  0  1
