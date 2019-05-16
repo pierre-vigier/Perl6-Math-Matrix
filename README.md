@@ -169,7 +169,7 @@ creates a matrix by calculating the [tensor-product](#tensor-product) of two vec
 
 Methods that return the content of selected elements.
 
-[element](#element), [AT-POS](#at-pos), [row](#row), [column](#column), [diagonal](#diagonal), [skew-diagonal](skew-diagonal), [submatrix](submatrix)
+[element](#element), [AT-POS](#at-pos), [row](#row), [column](#column), [diagonal](#diagonal), [skew-diagonal](skew-diagonal), **[submatrix](submatrix)**: ([leaving out one](#leaving-out-one), [leaving out more](#leaving-out-more), [reordering](#reordering), )
 
 ### [element](#accessors)
 

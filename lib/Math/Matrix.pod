@@ -187,7 +187,8 @@ determine the amount of rows and the length of the second the amount of columns.
 
 Methods that return the content of selected elements.
 
-L<element|#element>, L<AT-POS|#at-pos>, L<row|#row>, L<column|#column>, L<diagonal|#diagonal>, L<skew-diagonal>, L<submatrix>
+L<element|#element>, L<AT-POS|#at-pos>, L<row|#row>, L<column|#column>, L<diagonal|#diagonal>, L<skew-diagonal>,
+B<L<submatrix>>: (L<leaving out one|#leaving-out-one>, L<leaving out more|#leaving-out-more>, L<reordering|#reordering>, )
 
 =head3 L<element|#accessors>
 
