@@ -17,7 +17,7 @@ Matrices are tables with rows and columns (index counting from 0)
 of numbers (Numeric type - Bool or Int or Num or Rat or FatRat or Complex):
 
  transpose, invert, negate, add, multiply, dot product, tensor product, 22 ops, determinant, rank, norm
- 14 numerical properties, 25 boolean properties, 3 decompositions, submatrix, splice, map, reduce and more
+ 14 numerical properties, 26 boolean properties, 3 decompositions, submatrix, splice, map, reduce and more
 
 Table of Content:
 
@@ -49,7 +49,7 @@ Mathematically or otherwise undefined operations will cause an exception.
 =item B<L<converter|#converter>>: L<Bool|#bool>, L<Str|#str>, L<Numeric|#numeric>, L<Range|#range>,
         L<Array|#array>, L<list|#list>, L<list-rows|#list-rows>, L<list-columns|#list-columns>, L<Hash|#hash>, L<gist|#gist>, L<perl|#perl>
 =item B<L<boolean properties|#boolean-properties>>: L<zero|#is-zero>, L<identity|#is-identity>,
-        L<square|#is-square>, L<triangular|#is-triangular>, L<tridiagonal|#is-tridiagonal>, L<diagonal|#is-diagonal>,
+        L<square|#is-square>, L<triangular|#is-triangular>, L<tri-|#is-tridiagonal>, L<anti-|#is-anti-diagonal>, L<diagonal|#is-diagonal>,
         L<-dominant|#is-diagonally-dominant>, L<-constant|#is-diagonal-constant>, L<catalecticant|#is-catalecticant>,
         L<anti-|#is-antisymmetric>, L<symmetric|#is-symmetric>, L<unitary|#is-unitary>, L<self-adjoint|#is-self-adjoint>, L<invertible|#is-invertible>, L<orthogonal|#is-orthogonal>,
         L<positive-definite|#is-positive-definite>, L<positive-semidefinite|#is-positive-semidefinite>
@@ -440,7 +440,7 @@ when a method can tell you about a group of closely related properties.
 L<zero|#is-zero>, L<identity|#is-identity>, L<square|#is-square>,
 B<L<triangular|#is-triangular>>: (L<upper|#upper-triangular>, L<lower|#lower-triangular>,
      L<strict|#strict-triangular>, L<unit|#unit-triangular>, L<atomic|#atomic-triangular>),
-L<diagonal|#is-diagonal>, L<tridiagonal|#is-tridiagonal>,
+L<diagonal|#is-diagonal>, L<anti-diagonal|#is-anti-diagonal>, L<tridiagonal|#is-tridiagonal>,
 L<diagonal-constant|#is-diagonal-constant>, L<catalecticant|#is-catalecticant>,
 L<symmetric|#is-symmetric>, L<anti-symmetric|#is-antisymmetric>, L<self-adjoint|#is-self-adjoint>,
 L<invertible|#is-invertible>, L<orthogonal|#is-orthogonal>, L<unitary|#is-unitary>,
@@ -559,8 +559,18 @@ L<square|#is-square> matrix, where only elements on the main L<diagonal|#diagona
     $tri-matrix.lower-bandwith() == $tri-matrix.upper-bandwith() == 0; # True
 
     Example:    1 0 0
-                0 3 0
-                0 0 7
+                0 5 0
+                0 0 9
+
+=head3 L<is-anti-diagonal|#boolean-properties>
+
+L<square|#is-square> matrix, where only elements on the main L<skew-diagonal|#skew-diagonal> differ from 0.
+
+    $tri-matrix.is-anti-diagonal();
+
+    Example:    0 0 3
+                0 5 0
+                7 0 0
 
 =head3 L<is-tridiagonal|#boolean-properties>
 

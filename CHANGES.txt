@@ -1,10 +1,10 @@
  0.4.0:
     § 2019.5.
     + QR decomposition
-    + bool property is-tridiagonal
+    + bool property is-tridiagonal, is-anti-diagonal
     * bool property is-triangular got 5 attributes (optionally :upper, :lower, :strict, :unit, :atomic)
     * cholesky decomposition knows now also LDL format (optionally :diagonal)
-    ! change API to all decomposition methods to perl 6 standarts
+    ! change method names to all decompositions to meet the perl 6 standards
 
  0.3.8:
     § 2018.11.26

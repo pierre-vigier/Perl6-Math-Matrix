@@ -1,7 +1,7 @@
 use lib "lib";
 use Test;
 use Math::Matrix;
-plan 98;
+plan 100;
 
 my $matrixa = Math::Matrix.new([[1,2],[3,4]]);
 my $matrixc = Math::Matrix.new([[8,8],[8,8]]);
@@ -39,6 +39,11 @@ my $tridiag = Math::Matrix.new([[ 2, 3, 0, 0 ],
                                 [ 1, 2, 3, 0 ],
                                 [ 0, 1, 2, 3 ],
                                 [ 0, 0, 1, 2 ]]);
+
+my $antidiag = Math::Matrix.new([[ 0, 0, 1 ],
+                                 [ 0, 2, 0 ],
+                                 [ 3, 0, 0 ],]);
+
 
 ok $zero.is-zero,            "Is a zero matrix";
 ok $z3.is-zero,              "Another zero matrix";
@@ -101,6 +106,9 @@ ok  $z3.is-diagonal,              "square zero matrix is diagonal";
 nok $zero.is-diagonal,            "none square zero matrix is not diagonal";
 nok $lt.is-diagonal,              "Lower triangular matrix is no an diagonal matrix";
 nok $ut.is-diagonal,              "Upper triangular matrix is no an diagonal matrix";
+
+ok $antidiag.is-anti-diagonal(),   'detected anti diagonal matrix';
+nok $diagonal.is-anti-diagonal(),  'diagonal is not an anti diagonal matrix';
 
 ok $tridiag.is-tridiagonal(),     "detect tridiagonal matrix";
 ok $diagonal.is-tridiagonal(),    "diagonal is also tridiagonal matrix";

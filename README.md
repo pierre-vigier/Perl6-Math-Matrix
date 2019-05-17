@@ -20,7 +20,7 @@ SYNOPSIS
 Matrices are tables with rows and columns (index counting from 0) of numbers (Numeric type - Bool or Int or Num or Rat or FatRat or Complex):
 
     transpose, invert, negate, add, multiply, dot product, tensor product, 22 ops, determinant, rank, norm
-    14 numerical properties, 25 boolean properties, 3 decompositions, submatrix, splice, map, reduce and more
+    14 numerical properties, 26 boolean properties, 3 decompositions, submatrix, splice, map, reduce and more
 
 Table of Content:
 
@@ -52,7 +52,7 @@ All computation heavy properties will be calculated lazily and cached. Mathemati
 
   * **[converter](#converter)**: [Bool](#bool), [Str](#str), [Numeric](#numeric), [Range](#range), [Array](#array), [list](#list), [list-rows](#list-rows), [list-columns](#list-columns), [Hash](#hash), [gist](#gist), [perl](#perl)
 
-  * **[boolean properties](#boolean-properties)**: [zero](#is-zero), [identity](#is-identity), [square](#is-square), [triangular](#is-triangular), [tridiagonal](#is-tridiagonal), [diagonal](#is-diagonal), [-dominant](#is-diagonally-dominant), [-constant](#is-diagonal-constant), [catalecticant](#is-catalecticant), [anti-](#is-antisymmetric), [symmetric](#is-symmetric), [unitary](#is-unitary), [self-adjoint](#is-self-adjoint), [invertible](#is-invertible), [orthogonal](#is-orthogonal), [positive-definite](#is-positive-definite), [positive-semidefinite](#is-positive-semidefinite)
+  * **[boolean properties](#boolean-properties)**: [zero](#is-zero), [identity](#is-identity), [square](#is-square), [triangular](#is-triangular), [tri-](#is-tridiagonal), [anti-](#is-anti-diagonal), [diagonal](#is-diagonal), [-dominant](#is-diagonally-dominant), [-constant](#is-diagonal-constant), [catalecticant](#is-catalecticant), [anti-](#is-antisymmetric), [symmetric](#is-symmetric), [unitary](#is-unitary), [self-adjoint](#is-self-adjoint), [invertible](#is-invertible), [orthogonal](#is-orthogonal), [positive-definite](#is-positive-definite), [positive-semidefinite](#is-positive-semidefinite)
 
   * **[numeric properties](#numeric-properties)**: [size](#size), [density](#density), [bandwith](#bandwith), [trace](#trace), [rank](#rank), [nullity](#nullity), [determinant](#determinant), [minor](#minor), [norm](#norm), [condition](#condition), [element-type](#element-type)
 
@@ -365,7 +365,7 @@ Conversion into String that can reevaluated into the same object later using def
 
 These are mathematical properties, a given matrix has or not. Thus, the return value is a always of boolean type (Bool). Arguments, like in case of [triangular](#is-triangular) and [is-diagonally-dominant](#is-diagonally-dominant) are only necessary, when a method can tell you about a group of closely related properties.
 
-[zero](#is-zero), [identity](#is-identity), [square](#is-square), **[triangular](#is-triangular)**: ([upper](#upper-triangular), [lower](#lower-triangular), [strict](#strict-triangular), [unit](#unit-triangular), [atomic](#atomic-triangular)), [diagonal](#is-diagonal), [tridiagonal](#is-tridiagonal), [diagonal-constant](#is-diagonal-constant), [catalecticant](#is-catalecticant), [symmetric](#is-symmetric), [anti-symmetric](#is-antisymmetric), [self-adjoint](#is-self-adjoint), [invertible](#is-invertible), [orthogonal](#is-orthogonal), [unitary](#is-unitary), **[diagonally-dominant](#is-diagonally-dominant)**, [positive-definite](#is-positive-definite), [positive-semidefinite](#is-positive-semidefinite)
+[zero](#is-zero), [identity](#is-identity), [square](#is-square), **[triangular](#is-triangular)**: ([upper](#upper-triangular), [lower](#lower-triangular), [strict](#strict-triangular), [unit](#unit-triangular), [atomic](#atomic-triangular)), [diagonal](#is-diagonal), [anti-diagonal](#is-anti-diagonal), [tridiagonal](#is-tridiagonal), [diagonal-constant](#is-diagonal-constant), [catalecticant](#is-catalecticant), [symmetric](#is-symmetric), [anti-symmetric](#is-antisymmetric), [self-adjoint](#is-self-adjoint), [invertible](#is-invertible), [orthogonal](#is-orthogonal), [unitary](#is-unitary), **[diagonally-dominant](#is-diagonally-dominant)**, [positive-definite](#is-positive-definite), [positive-semidefinite](#is-positive-semidefinite)
 
 ### [is-zero](#boolean-properties)
 
@@ -458,8 +458,18 @@ a.k.a *Frobenius* matrix is a unit triangular matrix with one column of 'none ze
     $tri-matrix.lower-bandwith() == $tri-matrix.upper-bandwith() == 0; # True
 
     Example:    1 0 0
-                0 3 0
-                0 0 7
+                0 5 0
+                0 0 9
+
+### [is-anti-diagonal](#boolean-properties)
+
+[square](#is-square) matrix, where only elements on the main [skew-diagonal](#skew-diagonal) differ from 0.
+
+    $tri-matrix.is-anti-diagonal();
+
+    Example:    0 0 3
+                0 5 0
+                7 0 0
 
 ### [is-tridiagonal](#boolean-properties)
 

@@ -15,8 +15,9 @@ has Int $!column-count is required;
 has Bool $!is-zero is lazy;
 has Bool $!is-identity is lazy;
 has Bool $!is-square is lazy;
-has Bool $!is-tridiagonal is lazy;
 has Bool $!is-diagonal is lazy;
+has Bool $!is-anti-diagonal is lazy;
+has Bool $!is-tridiagonal is lazy;
 has Bool $!is-diagonal-constant is lazy;
 has Bool $!is-main-diagonal-constant is lazy;
 has Bool $!is-catalecticant is lazy;
@@ -275,7 +276,6 @@ method is-triangular(Math::Matrix:D: Bool :$strict, Bool :$unit, Bool :$atomic, 
     return False if $lower.defined and ($lower xor $.upper-bandwith == 0);
     $.lower-bandwith == 0 or $.upper-bandwith == 0;
 }
-
 method !is-frobenius(Math::Matrix:D: --> Bool){
     my $col;
     for ^$!row-count X ^$!column-count -> ($r, $c) {
@@ -283,6 +283,14 @@ method !is-frobenius(Math::Matrix:D: --> Bool){
         next if @!rows[$r][$c] == 0;
         if $col.defined { return False if $col != $c }
         else            { $col = $c  }
+    }
+    True;
+}
+
+method !build_is-anti-diagonal(Math::Matrix:D: --> Bool){
+    for ^$!row-count X ^$!column-count -> ($r, $c) {
+        next if $r == $!column-count - $c - 1 or @!rows[$r][$c] == 0;
+        return False;
     }
     True;
 }

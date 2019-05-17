@@ -20,10 +20,10 @@ lives-ok { my $matrix = Math::Matrix.new( ((1,2),(3,4))) }   , "Able to create m
 lives-ok { my $matrix = Math::Matrix.new( "1 2 \n 3 4") }    , "Able to create a int matrix with Str syntax";
 
 my $matrixa = Math::Matrix.new([[1,2],[3,4]]);
-ok $matrixa ~~ Math::Matrix        , "object was created of right type";
+ok $matrixa ~~ Math::Matrix                   , "object was created of right type";
 dies-ok  { my $matrixa.new([[1,2],[1,2,3]]); }, "can not call new on existing matrix";
 ok $matrixa ~~ Math::Matrix.new(((1,2),(3,4))), "AoA and LoL syntax work the same";
-ok $matrixa ~~ Math::Matrix.new("1 2 \n 3 4"), "AoA and Str syntax work the same";
+ok $matrixa ~~ Math::Matrix.new("1 2 \n 3 4") , "AoA and Str syntax work the same";
 
 
 my $data   =   [[1,3],[3,25]];
@@ -31,7 +31,7 @@ my $samedata = [[1,3],[3,25]];
 my $dataMatrix = Math::Matrix.new($data);;
 my $samedataMatrix = Math::Matrix.new($samedata);;
 $data[0][0] = 0;
-ok $dataMatrix ~~ $samedataMatrix  , "no bleed from input data to matrix";
+ok $dataMatrix ~~ $samedataMatrix, "no bleed from input data to matrix";
 
 
 my $matrixb = Math::Matrix.new([[1,2],[3,4]]);
