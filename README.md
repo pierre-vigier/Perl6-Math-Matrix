@@ -774,9 +774,9 @@ This decomposition does roughly the same and is faster than the previous, but wo
 [Mathematical Operations](#methods)
 -----------------------------------
 
-Matrix math methods on full matrices and also parts (for gaussian table operations).
+Math methods that work on a whole matrix or just some parts of it. The operands will not be changed but a the result matrix will be returned.
 
-They are: [equal](#equal), **[add](#add)**: ([matrix](#add-matrix), [vector](#add-vector), [scalar](#add-scalar)), **[multiply](#multiply)**: ([matrix](#multiply-matrix), [vector](#multiply-vector), [scalar](#multiply-scalar)), [dot-product](#dot-product), [tensor-product](#tensor-product).
+[equal](#equal), **[add](#add)**: ([matrix](#add-matrix), [vector](#add-vector), [scalar](#add-scalar)), **[multiply](#multiply)**: ([matrix](#multiply-matrix), [vector](#multiply-vector), [scalar](#multiply-scalar)), [dot-product](#dot-product), [tensor-product](#tensor-product).
 
 ### [equal](#mathematical-operations)
 
@@ -803,7 +803,7 @@ When adding two matrices, they have to be of the same [size](#size). Instead of 
 
 #### [add vector](#add)
 
-To add a vector you have to specify to which row or column it should be added and give a list or array (which have to fit the matrix size).
+To add a vector you have to specify to which row or column it should be added. The other argument is a list or array (which have to fit the row or column size).
 
     $matrix.add( row => 1, [2,3] );
 
@@ -817,7 +817,7 @@ To add a vector you have to specify to which row or column it should be added an
 
 #### [add scalar](#add)
 
-When adding a single number to the matrix, it will be added to every [element](#element). If you provide a row or column number it will be only added to that row or column. In case you provide both, only a single element gets a different value in the result matrix.
+When adding a single number to the matrix (providing one argument), the number will be added to every [element](#element) of the matrix. If you additionally provide a row or column number, only in that row or column, every element gets added to. In case you provide row and column numbber (three args), only a single element of the result matrix might be different.
 
     $matrix.add( $number );       # adds number to every element
     $matrix + $number;            # works too

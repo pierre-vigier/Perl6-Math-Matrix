@@ -937,9 +937,10 @@ You get the second L matrix easily by transposing the L you got.
 
 =head2 L<Mathematical Operations|#methods>
 
-Matrix math methods on full matrices and also parts (for gaussian table operations).
+Math methods that work on a whole matrix or just some parts of it.
+The operands will not be changed but a the result matrix will be returned.
 
-They are: L<equal|#equal>, B<L<add|#add>>: (L<matrix|#add-matrix>, L<vector|#add-vector>, L<scalar|#add-scalar>),
+L<equal|#equal>, B<L<add|#add>>: (L<matrix|#add-matrix>, L<vector|#add-vector>, L<scalar|#add-scalar>),
 B<L<multiply|#multiply>>: (L<matrix|#multiply-matrix>, L<vector|#multiply-vector>, L<scalar|#multiply-scalar>), L<dot-product|#dot-product>, L<tensor-product|#tensor-product>.
 
 
@@ -975,8 +976,8 @@ L<new []|#new-->, L<new ()|#new---1> or L<new ""|#new---2> would accept it.
 
 =head4 L<add vector|#add>
 
-To add a vector you have to specify to which row or column it should be added
-and give a list or array (which have to fit the matrix size).
+To add a vector you have to specify to which row or column it should be added.
+The other argument is a list or array (which have to fit the row or column size).
 
     $matrix.add( row => 1, [2,3] );
 
@@ -990,9 +991,12 @@ and give a list or array (which have to fit the matrix size).
 
 =head4 L<add scalar|#add>
 
-When adding a single number to the matrix, it will be added to every L<element|#element>.
-If you provide a row or column number it will be only added to that row or column.
-In case you provide both, only a single element gets a different value in the result matrix.
+When adding a single number to the matrix (providing one argument),
+the number will be added to every L<element|#element> of the matrix.
+If you additionally provide a row or column number, only in that row or column,
+every element gets added to.
+In case you provide row and column numbber (three args), only a single element
+of the result matrix might be different.
 
     $matrix.add( $number );       # adds number to every element
     $matrix + $number;            # works too
