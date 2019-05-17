@@ -830,7 +830,7 @@ When adding a single number to the matrix (providing one argument), the number w
 
 ### [multiply](#mathematical-operations)
 
-Unlike the [dot-product](#dot-product) and [tensor-product](#tensor-product), this operation is the simple, scalar multiplication applied to each [element](#element). The second factor might come from the cells of another [matrix](#multiply-matrix), a [vector](#multiply-vector) or a [single value](#multiply-scalar). That is why this method works analogous to [add](#add).
+Unlike the [dot-product](#dot-product) and [tensor-product](#tensor-product), this operation is the simple, scalar multiplication applied to each ore some [element](#element)s. The second factor might come from the cells of another [matrix](#multiply-matrix), a [vector](#multiply-vector) or a [single value](#multiply-scalar). That is why this method works analogous to [add](#add).
 
 #### [multiply matrix](#multiply)
 
@@ -854,7 +854,7 @@ Takes a vector (list of numbers) and a Pair thst specifies an existing row or co
 
 #### [multiply scalar](#multiply)
 
-Especially when doing Gaussian elimination you have to multiply just one row.
+If you provide just one number, every matrix element will be multiplied by this number. When you additionally add a valid row or column index, only the cells in that row or column get multiplied. (This is especially useful, when doing Gaussian elimination.) If both are provided, only one cell gets multiplied.
 
     my $product = $matrix.multiply( $number );   # multiply every element with number
     my $p = $matrix * $number;                   # does the same

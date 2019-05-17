@@ -1007,14 +1007,14 @@ of the result matrix might be different.
     $matrix.add( row => 1, 3 ):             [[1,2],[6,7]]
     $matrix.add( row => 1, column=> 0, 2 ): [[1,2],[5,4]]
 
+
 =head3 L<multiply|#mathematical-operations>
 
 Unlike the L<dot-product|#dot-product> and L<tensor-product|#tensor-product>,
-this operation is the simple, scalar multiplication applied to each L<element|#element>.
+this operation is the simple, scalar multiplication applied to each ore some L<element|#element>s.
 The second factor might come from the cells of another L<matrix|#multiply-matrix>,
 a L<vector|#multiply-vector> or a L<single value|#multiply-scalar>.
 That is why this method works analogous to L<add|#add>.
-
 
 =head4 L<multiply matrix|#multiply>
 
@@ -1031,7 +1031,6 @@ L<new []|#new-->, L<new ()|#new---1> or L<new ""|#new---2> would accept it.
     Example:    1 2  *  2 3  =   2  6
                 3 4     4 5     12 20
 
-
 =head4 L<multiply vector|#multiply>
 
 Takes a vector (list of numbers) and a Pair thst specifies an existing row or column.
@@ -1046,8 +1045,10 @@ This row or column will than multiplied with the vector
 
 =head4 L<multiply scalar|#multiply>
 
-
-Especially when doing Gaussian elimination you have to multiply just one row.
+If you provide just one number, every matrix element will be multiplied by this number.
+When you additionally add a valid row or column index, only the cells in that row or
+column get multiplied. (This is especially useful, when doing Gaussian elimination.)
+If both are provided, only one cell gets multiplied.
 
     my $product = $matrix.multiply( $number );   # multiply every element with number
     my $p = $matrix * $number;                   # does the same
