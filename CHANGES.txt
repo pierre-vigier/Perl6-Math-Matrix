@@ -1,9 +1,12 @@
  0.4.0:
-    § 2019.5.
-    + QR decomposition
+    § 2019.8.
+#    + QR decomposition
     + bool property is-tridiagonal, is-anti-diagonal
+    + method .H to created conjugated transposed matrix
     * bool property is-triangular got 5 attributes (optionally :upper, :lower, :strict, :unit, :atomic)
     * cholesky decomposition knows now also LDL format (optionally :diagonal)
+    * added multiply vector
+    x add and multiply scalar to column was broken
     ! change method names to all decompositions to meet the perl 6 standards
 
  0.3.8:
@@ -37,7 +40,7 @@
     ! renamed kernel -> nullity
     ! constructors reject now empty matrices
     ! 2 unconventional submatrix variants receive now optional named arguments and can be combined
- 
+
  0.3.5:
     § 2018.9.23
     * accept list of list as input for new
@@ -76,7 +79,7 @@
  0.2.0:
     § 2018.3.26
     + add methods: add-row, add-column, multiply-row, multiply-column, map-row, map-column
-    + add methods move-row, move-column, swap-rows, swap-columns, 
+    + add methods move-row, move-column, swap-rows, swap-columns,
           prepend-vertically, append-vertically, prepend-horizontally, append-horizontally
     + add method elem to check if any cell is equal to value or in a range
     + new property: antisymmetric
@@ -104,7 +107,7 @@
 
  0.1.6:
     § 2018.3.15
-    + added methods: reduce-rows and reduce-columns, 
+    + added methods: reduce-rows and reduce-columns,
     = added and clarified docs
 
  0.1.5:
@@ -121,7 +124,7 @@ Legend:
   + new (added) feature
   - removed feature
   * enhanced feature
-  / reduced feature 
+  / reduced feature
   ! API change
   x bug fiX
   = documentation

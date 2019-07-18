@@ -17,7 +17,6 @@ has Bool $!is-identity is lazy;
 has Bool $!is-square is lazy;
 has Bool $!is-diagonal is lazy;
 has Bool $!is-anti-diagonal is lazy;
-has Bool $!is-tridiagonal is lazy;
 has Bool $!is-diagonal-constant is lazy;
 has Bool $!is-main-diagonal-constant is lazy;
 has Bool $!is-catalecticant is lazy;
@@ -295,7 +294,7 @@ method !build_is-anti-diagonal(Math::Matrix:D: --> Bool){
     True;
 }
 
-method !build_is-tridiagonal(Math::Matrix:D: --> Bool) {
+method is-tridiagonal(Math::Matrix:D: --> Bool) {
     $.is-square and $.lower-bandwith < 2 and $.upper-bandwith < 2;
 }
 
@@ -513,7 +512,7 @@ method !build_widest-element-type(Math::Matrix:D: --> Numeric){
 # end of numeric matrix properties - start create derivative matrices
 ################################################################################
 
-method T(Math::Matrix:D: --> Math::Matrix:D  )         { self.transposed }
+method T(         Math::Matrix:D: --> Math::Matrix:D ) { self.transposed }
 method transposed(Math::Matrix:D: --> Math::Matrix:D ) {
     my @transposed;
     for ^$!row-count X ^$!column-count -> ($r, $c) { @transposed[$c][$r] = @!rows[$r][$c] }
@@ -522,7 +521,9 @@ method transposed(Math::Matrix:D: --> Math::Matrix:D ) {
 
 method negated(Math::Matrix:D: --> Math::Matrix:D )       { self.map( - * ) }
 
-method conj(Math::Matrix:D: --> Math::Matrix:D  )         { self.conjugated }
+method H(         Math::Matrix:D: --> Math::Matrix:D )    { self.conjugated.transposed }
+
+method conj(      Math::Matrix:D: --> Math::Matrix:D )    { self.conjugated }
 method conjugated(Math::Matrix:D: --> Math::Matrix:D )    { self.map( { $_.conj} ) }
 
 method adjugated(Math::Matrix:D: --> Math::Matrix:D) {
