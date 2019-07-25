@@ -1,0 +1,7 @@
+more tests
+
+
+decompositions:
+
+  -- eigenvalue
+  -- singular value
