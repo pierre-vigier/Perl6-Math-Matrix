@@ -698,12 +698,14 @@ Creates a matrix where every [element](#element) has the negated value of the or
 Creates a matrix where every [element](#element) is the complex conjugated of the original.
 
     my $c = $matrix.conjugated();    # change every value to its complex conjugated
-    my $c = $matrix.conj();          # short alias (official Perl 6 name)
+    my $c = $matrix.conj();          # short alias (official Perl 6 shortcut for conjugation of numbers)
 
     say Math::Matrix.new([[1+i,2],[3,4-i]]).conj :
 
     1-1i  2
     3     4+1i
+
+    my $ct = $matrix.H;              # conjugated and transposed matrix (Hermitian transpose)
 
 ### [adjugated](#derived-matrices)
 
@@ -1079,6 +1081,8 @@ Same as splice-rows, just horizontally.
 Summary of all shortcut aliases (left) and their long form (right).
 
   * T --> [transposed](#transposed)
+
+  * H --> [conjugated and transposed](#conjugated)
 
   * conj --> [conjugated](#conjugated)
 
