@@ -5,7 +5,7 @@ Math::Matrix - create, compare, compute and measure 2D matrices
 
 =head1 VERSION
 
-0.3.8
+0.4.0
 
 =head1 !MOVING!
 
@@ -58,7 +58,7 @@ Mathematically or otherwise undefined operations will cause an exception.
         L<minor|#minor>, L<norm|#norm>, L<condition|#condition>, L<element-type|#element-type>
 =item B<L<derived matrices|#drived-matrices>>: L<transposed|#transposed>, L<negated|#negated>,
         L<conjugated|#conjugated>, L<adjugated|#adjugated>, L<inverted|#inverted>, L<reduced-row-echelon-form>
-=item B<L<decompositions|#decompositions>>: L<LU|#decompositionlu>, L<LUCrout|#decompositionlucrout>, L<Cholesky|#Cholesky-decomposition>
+=item B<L<decompositions|#decompositions>>: L<LU|#LU-decomposition>, L<LDU|#LU-decomposition>, L<Cholesky|#Cholesky-decomposition>, L<LDL|#Cholesky-decomposition>
 =item B<L<math ops|#mathematical-operations>>: L<equal|#equal>, L<add|#add>, L<multiply|#multiply>, L<dot-product|#dot-product>, L<tensor-product|#tensor-product>
 =item B<L<list like ops|#list-like-operations>>: L<elems|#elems>, L<elem|#elem>, L<cont|#cont>,
         L<map|#map>, L<map-with-index|#map-with-index>, L<reduce|#reduce>, L<reduce-rows|#reduce-rows>, L<reduce-columns|#reduce-columns>
@@ -889,50 +889,79 @@ Return the reduced row echelon form of a matrix, a.k.a. row canonical form
 Methods that return a list of matrices, which can be recombined into the original matrix
 (mostly by L<dot product|#dot-product>).
 
-L<LU-decomposition|#decompositionLU>,
-L<LU-decomposition-Crout|#decompositionLUCrout>,
-L<Cholesky-decomposition|#Cholesky-decomposition>
+L<LU|#LU-decomposition>,
+L<LU-Crout|#LU-Crout-decomposition>,
+L<LDU|#LDU-decomposition>,
+L<LUP|#LUP-decomposition>,
+L<Cholesky|#Cholesky-decomposition>
+L<LDL|#LDL-decomposition>
 
-=head3 L<decompositionLU|#decompositions>
+=head3 L<LU-decomposition|#decompositions>
 
-    my ($L, $U, $P) = $matrix.decompositionLU( );
+Decompose an L<invertible|#is-invertible>, matrix into a L<lower triangular|#is-lower-triangular> (called L)
+and an L<upper triangular matrix|#is-upper-triangular> (called U).
+The algorithm works along the lines of what is called Gaussian elimination.
+
+my ($L, $U) = $matrix.LU-decomposition();
+$L dot $U eq $matrix;                # True
+$U.is-triangular(:upper);             # True
+$L.is-triangular(:lower, :unit);       # True
+
+=head4 L<LU-Crout-decomposition|#decompositions>
+
+L will also be L<unit triangular matrix|#unit-triangular>, but not U - meaning
+the L<diagonal|#diagonal> elements of L are all equal 1 and the diagonal elements of U
+might differ from 1. If you prefer this to be the other way around, use the optional,
+boolean parameter I<:Crout>.
+
+my ($L, $U) = $matrix.LU-decomposition(:Crout);
+$L dot $U eq $matrix;                # True
+$L.is-triangular(:lower);             # True
+$U.is-triangular(:upper, :unit);       # True
+
+=head4 L<LDU-decomposition|#decompositions>
+
+If you want the diagonal elements separated into its own matrix, use the optional, boolean
+parameter I<:diagonal>. Note that you can not use this and I<:Crout> at once.
+
+my ($L, $D, $U) = $matrix.LU-decomposition( :diagonal);
+$L dot $D dot $U eq $matrix;         # True
+$L.is-triangular(:lower, :unit);      # True
+$U.is-triangular(:upper, :unit);       # True
+$D.is-diagonal();                       # True
+
+=head4 L<LUP-decomposition|#decompositions>
+
+If you choose the optional, boolean parameter I<:pivot>, you get additionally a permutation
+matrix, that contains the information which rows and columns were swapped, in order to achieve
+a decomposition. That is why the matrix no longer has to be L<invertible|#is-invertable>,
+but only L<square|#is-square> to run a LU decomposition with permutation.
+This option might be combined with I<:Crout> or I<:diagonal>, but not both.
+
+    my ($L, $U, $P) = $matrix.LU-decomposition( :pivot );
     $L dot $U eq $matrix dot $P;         # True
-    my ($L, $U) = $matrix.decompositionLUC(:!pivot);
-    $L dot $U eq $matrix;                # True
-
-$L is a left triangular matrix and $R is a right one
-Without pivotisation the marix has to be invertible (L<square|#is-square> and full L<rank|#rank>ed).
-In case you whant two unipotent triangular matrices and a diagonal (D):
-use the :diagonal option, which can be freely combined with :pivot.
-
-    my ($L, $D, $U, $P) = $matrix.decompositionLU( :diagonal );
-    $L dot $D dot $U eq $matrix dot $P;  # True
-
-=head3 L<decompositionLUCrout|#decompositions>
-
-LU decomposition after Crout algorithm
-
-    my ($L, $U) = $matrix.decompositionLUCrout( );
-    $L dot $U eq $matrix;                # True
-
-$L is a left triangular matrix and $R is a right one
-This decomposition works only on invertible matrices (L<square|#is-square> and full L<rank|#rank>ed).
 
 =head3 L<Cholesky-decomposition|#decompositions>
 
-This decomposition does roughly the same and is faster than the previous,
-but works only on matrices that are L<symmetric|#is-symmetric> and L<positive-definite|#is-positive-definite>.
-The result will be a L<lower triangular matrix|#is-lower-triangular> matrix (here called G)
+This decomposition does roughly the same as LU and is faster.
+But it works only on matrices that are L<symmetric|#is-symmetric> and L<positive-definite|#is-positive-definite>.
+The result will be an L<orthogonal|#is-orthogonal>,
+L<lower triangular matrix|#is-lower-triangular> matrix (here called G)
 that multiplied with its L<transposed|#transposed> gives you the original matrix.
-When the optional, boolean parameter :diagonal is positive (negative is default)
-you get two matrices (L and D) as a result. L again is a L<lower triangular matrix|#is-lower-triangular>,
-but with ones in its main diagonal. D is a L<diagonal|#diagonal> matrix ( G = L * sqrt(D)).
-This output format is also known as I<LDL decomposition>.
-You get the second L matrix easily by transposing the L you got.
 
     my $G = $matrix.Cholesky-decomposition( );          # $G is a left triangular matrix
     my $G = $matrix.Cholesky-decomposition(:!diagonal); # same as before
     $G dot $G.T == $matrix;                             # True
+
+=head4 L<LDL-decomposition|#decompositions>
+
+When the optional, boolean parameter :diagonal is positive (negative by default)
+you get two matrices (L and D) as a result. L is then a L<lower unit triangular matrix|#unit-triangular>,
+(with ones in its main diagonal). D is a L<diagonal|#diagonal> matrix ( G = L * sqrt(D)),
+containing the values formerly on the diagonal of G, but squared.
+This output format is also known as I<LDL decomposition>.
+You get the second L matrix easily by transposing the L you got.
+
     my ($L, $D) = $matrix.Cholesky-decomposition(:diagonal);
     $L dot $D dot $L.T == $matrix;                      # True
 

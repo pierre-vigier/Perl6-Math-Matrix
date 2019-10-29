@@ -7,8 +7,8 @@ unit module Math::Matrix::ArrayOfArray;
 # constructors
 ################################################################################
 
-our sub new-uniform( PosInt $rows, PosInt $columns, Numeric $content ) { [ [ $content xx $cols ] xx $rows ] }
-our sub new-zero( PosInt $rows, PosInt $cols = $rows )                 { new-uniform($rows, $cols, 0) }
+our sub new-uniform( PosInt $rows, PosInt $cols, Numeric $content ) { [ [ $content xx $cols ] xx $rows ] }
+our sub new-zero( PosInt $rows, PosInt $cols = $rows )              { new-uniform($rows, $cols, 0) }
 
 our sub new-identity( PosInt $size ) {
     my @identity = new-zero($size);
@@ -17,7 +17,7 @@ our sub new-identity( PosInt $size ) {
 }
 
 our sub new-diagonal( NumList $diag ) {
-    my @diagonal = new-zero($size);
+    my @diagonal = new-zero( $diag.elems );
     for ^$diag.elems -> $i { @diagonal[$i][$i] = $diag[$i] }
     @diagonal;
 }
@@ -72,7 +72,7 @@ our sub multiply(@a, @b){
 }
 
 our sub map (@m, &coderef){
-    my @res = clone(@a);
+    my @res = clone(@m);
     for ^@m.elems -> $row { @res[$row] = @res[$row].map(&coderef) }
     @res;
 }
