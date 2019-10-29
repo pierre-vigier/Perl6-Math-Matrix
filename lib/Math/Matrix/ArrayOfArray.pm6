@@ -25,7 +25,7 @@ our sub new-diagonal( NumList $diag ) {
 
 ################################################################################
 
-our sub clone (@m) {[ map {[ map {$^element.clone}, $^row.flat ]}, @m ]}
+our sub clone (@m) {[ @m.map: {[ $^row.flat.map({$^element.clone}) ]} ]}
 
 ################################################################################
 
