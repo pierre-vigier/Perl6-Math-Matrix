@@ -596,7 +596,6 @@ method LU-decomposition(Math::Matrix:D: Bool :$pivot = False, Bool :$diagonal = 
     my $size = $!row-count;
     my @L = Math::Matrix::ArrayOfArray::new-identity( $size );
     my @U = self!clone-cells( );
-
     my @P = Math::Matrix::ArrayOfArray::new-identity( $size );
 
     for 0 .. $size-2 -> $c {
