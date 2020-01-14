@@ -596,10 +596,8 @@ method LU-decomposition(Math::Matrix:D: Bool :$pivot = False, Bool :$diagonal = 
     my $size = $!row-count;
     my @L = Math::Matrix::ArrayOfArray::new-identity( $size );
     my Array @U = self!clone-cells( );
-    my @provisional;
-    
     my @P = Math::Matrix::ArrayOfArray::new-identity( $size );
-    
+
     for 0 .. $size-2 -> $c {
         if $pivot {
             my $maxrow = $c;
@@ -611,12 +609,11 @@ method LU-decomposition(Math::Matrix:D: Bool :$pivot = False, Bool :$diagonal = 
         for $c+1 ..^$size -> $r {
             next if @U[$r][$c] == 0;
             my $q = @L[$r][$c] = @U[$r][$c] / @U[$c][$c];
-            # @U[$r] = @U[$r] >>-<< $q <<*<< @U[$c];
 	    @U[$r;*] = @U[$r] >>-<< $q <<*<< @U[$c];
         }
     }
     #@U = self!AoA-clone( @U );
-    
+
     if $diagonal {
         my @D;
         for 0 ..^ $size -> $c {
