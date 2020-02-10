@@ -3,7 +3,7 @@ use v6.c;
 need Math::Matrix::Util;
 need Math::Matrix::Type;
 
-unit class Math::Matrix:ver<0.3.8>:auth<github:pierre-vigier> does Math::Matrix::Util;
+unit class Math::Matrix:ver<0.3.9>:auth<github:pierre-vigier> does Math::Matrix::Util;
 use AttrX::Lazy;
 use Math::Matrix::ArrayOfArray;
 
