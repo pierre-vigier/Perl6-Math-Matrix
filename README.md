@@ -12,7 +12,7 @@ VERSION
 !MOVING!
 ========
 
-This repo will be moved to a [different place](https://github.com/lichtkind/Perl6-Math-Matrix) soon.
+This repo will be moved to a [different place](https://github.com/lichtkind/Raku-Math-Matrix) soon.
 
 SYNOPSIS
 ========
@@ -744,7 +744,7 @@ Methods that return a list of matrices, which can be recombined into the origina
 
 ### [LU-decomposition](#decompositions)
 
-Decompose an [invertible](#is-invertible), matrix into a [lower triangular](#is-lower-triangular) (called L) and an [upper triangular matrix](#is-upper-triangular) (called U). This is basically whats called Gaussian elimination.
+Decompose an [invertible](#is-invertible), matrix into a [lower triangular](#is-lower-triangular) (called L) and an [upper triangular matrix](#is-upper-triangular) (called U). The algorithm works along the lines of what is called Gaussian elimination.
 
 my ($L, $U) = $matrix.LU-decomposition(); $L dot $U eq $matrix; # True $U.is-triangular(:upper); # True $L.is-triangular(:lower, :unit); # True
 
@@ -764,7 +764,7 @@ my ($L, $D, $U) = $matrix.LU-decomposition( :diagonal); $L dot $D dot $U eq $mat
 
 If you choose the optional, boolean parameter *:pivot*, you get additionally a permutation matrix, that contains the information which rows and columns were swapped, in order to achieve a decomposition. That is why the matrix no longer has to be [invertible](#is-invertable), but only [square](#is-square) to run a LU decomposition with permutation. This option might be combined with *:Crout* or *:diagonal*, but not both.
 
-    my ($L, $U, $P) = $matrix.LU-decomposition(:pivot );
+    my ($L, $U, $P) = $matrix.LU-decomposition( :pivot );
     $L dot $U eq $matrix dot $P;         # True
 
 ### [Cholesky-decomposition](#decompositions)
