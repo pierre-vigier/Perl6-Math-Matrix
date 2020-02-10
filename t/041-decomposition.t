@@ -4,7 +4,7 @@ use Math::Matrix;
 plan 2;
 
 subtest {
-    plan 16;
+    plan 9;
     my $mat = Math::Matrix.new([[7, 3, 7, 1, 1, 4],
                                 [9, 7, 6, 1, 9, 1],
                                 [9, 6, 2, 5, 5, 6],
@@ -30,13 +30,14 @@ subtest {
     nok $L2.is-triangular(:unit),        "L is not unit";
     dies-ok {$mat.LU-decomposition( :Crout, :diagonal )},  "attributes :Crout and :diagonal are mutually exclusive";
 
-die "good";
-    ( $L, $U, $P ) = $matrix.LU-decomposition();
-    ok $L dot $U ~~ $P dot $matrix, "LU = PA";
+# die "good";
+# NYI
+    # ( $L, $U, $P ) = $matrix.LU-decomposition();
+    # ok $L dot $U ~~ $P dot $matrix, "LU = PA";
 
-    ($L, $U) = $matrix.decompositionLUCrout();
-    ok ( $L ~~ $expectedL and $U ~~ $expectedU ) , "L and U are correct";
-    ok ($L dot $U) ~~ $matrix, "LU is equal to original matrix";
+    # ($L, $U) = $matrix.decompositionLUCrout();
+    # ok ( $L ~~ $expectedL and $U ~~ $expectedU ) , "L and U are correct";
+    # ok ($L dot $U) ~~ $matrix, "LU is equal to original matrix";
 
 }, "LU";
 
@@ -51,9 +52,9 @@ subtest {
     my $simple = Math::Matrix.new([[1,3],[3,25]]);
     my $simpleD = Math::Matrix.new([[1,0],[3,4]]);
 
-    dies-ok {$zero.Cholesky-decomposition},            "no decomposition of none square matrices";
+    dies-ok {$zero.Cholesky-decomposition},            "no decomposition of non-square matrices";
     dies-ok {Math::Matrix.new([[1,1,3],[5,2,1],[5,3,4]]).Cholesky-decomposition},
-                                                       'no decomposition of none diagonal dominant matrices';
+                                                       'no decomposition of non-diagonal dominant matrices';
     ok $identity.Cholesky-decomposition ~~ $identity,  "decomposed identity is identity";
     ok $diagonal.Cholesky-decomposition ~~ $diagonalD, "in decomposed diagonal matrix cell values get squared";
     ok $simple.Cholesky-decomposition ~~ $simpleD,     "simple custom Cholesky decomposition";

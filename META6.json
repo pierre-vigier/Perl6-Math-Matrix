@@ -11,12 +11,14 @@
   "name" : "Math::Matrix",
   "perl" : "6.c",
   "provides" : {
-    "Math::Matrix"       : "lib/Math/Matrix.pm6",
-    "Math::Matrix::Util" : "lib/Math/Matrix/Util.pm6"
+      "Math::Matrix"       : "lib/Math/Matrix.pm6",
+      "Math::Matrix::Util" : "lib/Math/Matrix/Util.pm6",
+      "Math::Matrix::Type" : "lib/Math/Matrix/Type.pm6",
+      "Math::Matrix::ArrayOfArray" : "lib/Math/Matrix/ArrayOfArray.pm6"
   },
   "resources" : [ ],
   "source-url" : "git://github.com/pierre-vigier/Perl6-Math-Matrix.git",
   "tags" : [ "Math" ],
   "test-depends" : [ "Test", "Test::META"],
-  "version" : "0.3.8"
+  "version" : "0.3.9"
 }
