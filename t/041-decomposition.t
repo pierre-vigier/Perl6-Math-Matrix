@@ -18,7 +18,7 @@ subtest {
 
     my ($L1, $U1) = $mat.LU-decomposition();
     ok $L1 dot $U1 ~~ $mat,              "LU = A";
-    say $U1 dot $L1;
+#    say $U1 dot $L1;
     ok $L1.is-triangular(:lower, :unit), "L is lower unit triangular";
     ok $U1.is-triangular(:upper),        "U is upper triangular";
     nok $U1.is-triangular(:unit),        "U is not unit";
