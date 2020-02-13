@@ -1436,6 +1436,7 @@ The postcircumfix [] - op will always work.
 =head1 L<Contributors|#synopsis>
 
 =item Patrick Spek
+=item Juan Julián Merelo Guervós
 
 =head1 L<License|#synopsis>
 
