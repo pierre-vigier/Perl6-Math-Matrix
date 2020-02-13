@@ -29,9 +29,9 @@ Table of Content:
 
 =head1 DESCRIPTION
 
-Because the list based, functional toolbox of Perl 6 is not enough to calculate matrices comfortably,
+Because the list based, functional toolbox of Raku is not enough to calculate matrices comfortably,
 there is a need for a dedicated data type. The aim is to provide a full featured set of structural and
-mathematical operations that integrate fully with the Perl 6 conventions.
+mathematical operations that integrate fully with the Raku conventions.
 This module is pure perl and we plan to use native shaped arrays one day.
 
 Matrices are readonly - methods and operators do create new matrix objects.
@@ -1440,5 +1440,9 @@ The postcircumfix [] - op will always work.
 =head1 L<License|#synopsis>
 
 Artistic License 2.0 (GPL and BSD at the same time)
+
+=head1 L<See Also|#synopsis>
+
+=item Math::Libgsl::Matrix
 
 =end pod
