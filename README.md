@@ -37,7 +37,7 @@ Table of Content:
 DESCRIPTION
 ===========
 
-Because the list based, functional toolbox of Perl 6 is not enough to calculate matrices comfortably, there is a need for a dedicated data type. The aim is to provide a full featured set of structural and mathematical operations that integrate fully with the Perl 6 conventions. This module is pure perl and we plan to use native shaped arrays one day.
+Because the list based, functional toolbox of Raku is not enough to calculate matrices comfortably, there is a need for a dedicated data type. The aim is to provide a full featured set of structural and mathematical operations that integrate fully with the Raku conventions. This module is pure perl and we plan to use native shaped arrays one day.
 
 Matrices are readonly - methods and operators do create new matrix objects. All methods return readonly data or deep clones - also the constructor does a deep clone of provided data. In that sense the library is thread safe.
 
@@ -1215,8 +1215,15 @@ They are exported when using no flag (same as :DEFAULT) or :ALL, but not under :
 
   * Patrick Spek
 
+  * Juan Julián Merelo Guervós
+
 [License](#synopsis)
 ====================
 
 Artistic License 2.0 (GPL and BSD at the same time)
+
+[See Also](#synopsis)
+=====================
+
+  * Math::Libgsl::Matrix
 
