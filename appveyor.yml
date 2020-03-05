@@ -1,10 +1,31 @@
+os: Visual Studio 2015
 
-language: perl6
-perl6:
-  - latest
+platform: x64
+
+build: off
+
+environment:
+    matrix:
+    - test_moar: '2018.01'
+#    - test_moar: '' #latest
+
 install:
-  - rakudobrew build-zef
-  - zef install --/test --test-depends --depsonly .
-script:
-  - prove -vr -e 'perl6 -Ilib' t/
-sudo: false
+  - '"C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x64'
+  - choco install strawberryperl --allow-empty-checksums
+  - SET PATH=C:\strawberry\c\bin;C:\strawberry\perl\site\bin;C:\strawberry\perl\bin;%PATH%
+  - git clone https://github.com/tadzik/rakudobrew %USERPROFILE%\rakudobrew
+  - SET PATH=%USERPROFILE%\rakudobrew\bin;%PATH%
+  - rakudobrew build moar 2018.01
+  - rakudobrew build zef
+  - cd %APPVEYOR_BUILD_FOLDER%
+  - zef install Test::META
+  - zef install AttrX::Lazy
+  - SET PATH=C:\Users\appveyor\rakudobrew\moar-%TEST_MOAR%\install\share\perl6\site\bin;%PATH%
+  - SET AUTHOR_TESTING=1
+  - zef --depsonly install .
+
+test_script:
+   - set TEST_AUTHOR=1 && prove -ve "perl6 -Ilib"
+   - zef --debug install .
+
+shallow_clone: true
