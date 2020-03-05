@@ -14,12 +14,14 @@ install:
   - choco install strawberryperl --allow-empty-checksums
   - SET PATH=C:\strawberry\c\bin;C:\strawberry\perl\site\bin;C:\strawberry\perl\bin;%PATH%
   - git clone https://github.com/tadzik/rakudobrew %USERPROFILE%\rakudobrew
-  - SET PATH=C:\Users\appveyor\rakudobrew\%TEST_MOAR%\install\share\perl6\site\bin;%PATH%
+  - SET PATH=%USERPROFILE%\rakudobrew\bin;%PATH%
   - rakudobrew build moar %TEST_MOAR%
   - rakudobrew build zef
   - cd %APPVEYOR_BUILD_FOLDER%
   - zef install Test::META
   - zef install AttrX::Lazy
+  - SET PATH=C:\Users\appveyor\rakudobrew\moar-%TEST_MOAR%\install\share\perl6\site\bin;%PATH%
+  - SET AUTHOR_TESTING=1
   - zef --depsonly install .
 
 test_script:
