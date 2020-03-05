@@ -1,14 +1,19 @@
  0.4.0:
-    § 2019.7.31
+    §
+    * merging crout algorithm into LU decomposition method
+    * cholesky decomposition knows now also LDL format (optionally :diagonal)
+    ! change method names to all decompositions to meet the perl 6 standards
+
+
+0.3.9:
+    § 2019.2.13
     + bool property is-tridiagonal, is-anti-diagonal
     + method .H to created conjugated transposed matrix
-    * merging crout algorithm into LU decomposition method
     * bool property is-triangular got 5 attributes (optionally :upper, :lower, :strict, :unit, :atomic)
-    * cholesky decomposition knows now also LDL format (optionally :diagonal)
-    * added multiply vector
-    x add and multiply scalar to column was broken
+    * added multiply_vector
     x do not allow undefined values in elements
-    ! change method names to all decompositions to meet the perl 6 standards
+    x add and multiply_scalar to column was broken
+
 
  0.3.8:
     § 2018.11.26
